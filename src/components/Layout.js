@@ -1,9 +1,20 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 
 function Layout() {
   return (
     <div style={{background: 'grey', textAlign: 'center', minHeight: '100vh', justifyContent: 'center'}}>
+        <nav style={{display: 'flex'}}>
+          <div>
+            <Link to="/">Home</Link>
+          </div>
+          <div style={{margin: '0 10px'}}>
+            <Link to="/test">Test</Link>
+          </div>
+          <div>
+            <Link to="/e">Error</Link>
+          </div>
+        </nav>
         <Outlet/>
     </div>
   );
