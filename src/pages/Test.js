@@ -24,7 +24,7 @@ function Test() {
         Test<br/>
         {title !== null? 
           <div>
-            <input value={title} onChange={(e) => setTitle(e.target.value)}/>
+            <input value={title} onChange={(e) => setTitle(e.target.value)}/><br/>
             <button onClick={onChange}>Submit</button>
           </div> 
         : 

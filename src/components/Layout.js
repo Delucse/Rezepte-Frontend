@@ -12,6 +12,12 @@ function Layout() {
             <Link to="/test">Test</Link>
           </div>
           <div>
+            <Link to="/test2">Test2</Link>
+          </div>
+          <div style={{margin: '0 10px'}}>
+            <Link to="/bilder">Bilder</Link>
+          </div>
+          <div>
             <Link to="/e">Error</Link>
           </div>
         </nav>
