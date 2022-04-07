@@ -27,12 +27,12 @@ function Navlink(props){
             style={({ isActive }) => ({ 
                 fontWeight: isActive ? "700" : 'inherit',
                 textDecoration: 'none', 
-                color: 'inherit'
+                color: isActive ? 'black': 'rgba(0, 0, 0, 0.54)'
             })}
         >
-            <ListItem button onClick={props.onClick} sx={{fontWeight: 'inherit'}}>
-                <ListItemIcon><Icon path={props.icon} size={1}/></ListItemIcon>
-                <ListItemText primary={props.text} sx={{fontWeight: 'inherit'}}/>
+            <ListItem button onClick={props.onClick}>
+                <ListItemIcon sx={{color: 'inherit'}}><Icon path={props.icon} size={1}/></ListItemIcon>
+                <ListItemText primary={props.text} primaryTypographyProps={{fontWeight: 'inherit', color: 'black'}}/>
             </ListItem>
         </NavLink>
     )
