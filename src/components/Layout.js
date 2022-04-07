@@ -1,27 +1,20 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+
+import Navbar from './Navbar';
+
+import Box from '@mui/material/Box';
 
 function Layout() {
+
   return (
-    <div style={{background: 'grey', textAlign: 'center', minHeight: '100vh', justifyContent: 'center'}}>
-        <nav style={{display: 'flex'}}>
-          <div>
-            <Link to="/">Home</Link>
-          </div>
-          <div style={{margin: '0 10px'}}>
-            <Link to="/test">Test</Link>
-          </div>
-          <div>
-            <Link to="/test2">Test2</Link>
-          </div>
-          <div style={{margin: '0 10px'}}>
-            <Link to="/bilder">Bilder</Link>
-          </div>
-          <div>
-            <Link to="/e">Error</Link>
-          </div>
-        </nav>
+    <div style={{minHeight: '100vh'}}>
+      <Navbar/>
+      <Box sx={{padding: (theme) => theme.spacing(2), minHeight: theme => `calc(100vh - 30px - 55px - 2 * ${theme.spacing(2)})`}}>
         <Outlet/>
+      </Box>
+      {/* Impressum */}
+      <div style={{height: '30px', background: 'lightgrey'}}>Impressum</div>
     </div>
   );
 }
