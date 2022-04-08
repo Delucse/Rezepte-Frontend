@@ -10,6 +10,7 @@
 
 # production
 /build
+/TWA
 
 # misc
 .DS_Store

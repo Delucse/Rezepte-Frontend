@@ -3,6 +3,7 @@
   "dir": "ltr",
   "short_name": "Delucse",
   "name": "Deine Plattform für Rezepte",
+  "description": "Rezepte entdecken und teilen",
   "icons": [
     {
       "src": "favicon.ico",
@@ -30,6 +31,7 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "none",
+  "orientation": "portrait",
+  "theme_color": "#000000",
   "background_color": "#E85917"
 }
