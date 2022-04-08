@@ -14,29 +14,29 @@ import { mdiHome } from '@mdi/js';
 function BreadCrumbs(){
 
     const theme = useTheme();
-    const {pathname} = useLocation();
+    const {pathname, key} = useLocation();
     const paths = pathname.split('/').filter(path => path !== "");
-    console.log(paths)
 
     return (
         paths.length > 0 ?
             <Breadcrumbs separator="›" sx={{marginBottom: '10px'}}>
                 <Link to={'/'} style={{textDecoration: 'none'}}>
-                    <Box sx={{color: theme.palette.secondary.main, '&:hover': {color: theme.palette.primary.main}}}>
+                    <Box sx={{color: theme.palette.primary.light, '&:hover': {color: theme.palette.primary.main}}}>
                         <Icon path={mdiHome} size={1} style={{color: 'inherit'}}/>
                     </Box>
                 </Link>
-                {paths.map((path, index) => {
+                {key !== 'default' ?
+                paths.map((path, index) => {
                     return (
                         index !== paths.length - 1 ?
-                        <Box sx={{color: theme.palette.secondary.main, '&:hover': {color: theme.palette.primary.main}}}>
-                            <Link to={paths.slice(0, index+1).join('/')} style={{textDecoration: 'none', color: 'inherit'}} key={index}>
+                        <Box sx={{color: theme.palette.primary.light, '&:hover': {color: theme.palette.primary.main}}} key={index}>
+                            <Link to={paths.slice(0, index+1).join('/')} style={{textDecoration: 'none', color: 'inherit'}}>
                                 {path}
                             </Link>
                             </Box>
                         :   <div key={index}>{path}</div>
                     );
-                })}
+                }) : <div>Error</div>}
             </Breadcrumbs>
         : null
     );

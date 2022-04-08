@@ -62,7 +62,7 @@ function Navbar(){
 
     return (
         <div>
-            <AppBar position="static" sx={{position: 'relative', zIndex: (theme) => theme.zIndex.modal + 1}}>
+            <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.modal + 1}}>
                 <Toolbar sx={{height: '55px', minHeight: '55px !important', padding: (theme) => `0 ${theme.spacing(2)}`}}>
                     <IconButton edge="start" color="inherit" onClick={toggle}>
                         <Icon path={open ? mdiClose : mdiMenu} size={1.3}/>
@@ -80,6 +80,8 @@ function Navbar(){
                     </NavLink>
                 </Toolbar>
             </AppBar>
+            <Toolbar sx={{height: '55px', minHeight: '55px !important'}}>
+            </Toolbar>
             <SwipeableDrawer
                 sx={{
                     '.MuiDrawer-paper': {
