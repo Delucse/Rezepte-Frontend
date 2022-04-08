@@ -1,0 +1,6 @@
+[{
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target" : { "namespace": "android_app", "package_name": "com.herokuapp.delucse.twa",
+                     "sha256_cert_fingerprints": ["74:58:E7:C3:01:FA:89:CB:24:F6:C7:77:2C:C4:0D:5F:BB:FB:54:67:8A:B9:A0:F2:57:2A:9F:AC:20:08:16:37"] }
+      }
+]
