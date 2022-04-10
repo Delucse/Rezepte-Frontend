@@ -19,7 +19,7 @@ function BreadCrumbs(){
 
     return (
         paths.length > 0 ?
-            <Breadcrumbs separator="›" sx={{marginBottom: '10px'}}>
+            <Breadcrumbs separator="›" sx={{zIndex: 1, height: '30px', padding: theme => `${theme.spacing(3)} ${theme.spacing(3)} 20px ${theme.spacing(3)}`, position: 'sticky', top: 'calc(55px)', background: 'white'}}>
                 <Link to={'/'} style={{textDecoration: 'none'}}>
                     <Box sx={{color: theme.palette.primary.light, '&:hover': {color: theme.palette.primary.main}}}>
                         <Icon path={mdiHome} size={1} style={{color: 'inherit'}}/>

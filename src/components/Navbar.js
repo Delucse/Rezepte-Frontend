@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 
 import Icon from '@mdi/react';
-import { mdiMenu, mdiClose, mdiCog, mdiFolderAccount, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
+import { mdiMenu, mdiClose, mdiCog, mdiFolderAccount, mdiFoodForkDrink, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
 
 
 function Navlink(props){
@@ -46,7 +46,8 @@ const menue = [
 ]
 
 const userMenue = [
-    { text: 'Mein Kochbuch', link: "/rezepte", icon: mdiBookOpenVariant  },
+    { text: 'Mein Kochbuch', link: "/rezepte", icon: mdiBookOpenVariant },
+    { text: 'Rezept erstellen', link: "/rezepte/erstellen", icon: mdiFoodForkDrink },
     { text: 'Konto', link: "/konto", icon: mdiFolderAccount },
     { text: 'Einstellungen', link: "/einstellungen", icon: mdiCog }
 ];

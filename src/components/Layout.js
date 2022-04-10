@@ -11,12 +11,12 @@ function Layout() {
   return (
     <div style={{minHeight: '100vh'}}>
       <Navbar/>
-      <Box sx={{padding: (theme) => theme.spacing(2), minHeight: theme => `calc(100vh - 30px - 55px - 2 * ${theme.spacing(2)})`}}>
-        <BreadCrumbs />
+      <BreadCrumbs />
+      <Box sx={{zIndex: 0, position: 'relative', padding: (theme) => `0 ${theme.spacing(3)} ${theme.spacing(3)} ${theme.spacing(3)}`, minHeight: theme => `calc(100vh - 30px - 55px - 2 * ${theme.spacing(3)})`, background: 'white'}}>
         <Outlet/>
       </Box>
       {/* Impressum */}
-      <div style={{height: '30px', background: 'lightgrey'}}>Impressum</div>
+      {/* <div style={{height: '30px', background: 'lightgrey'}}>Impressum</div> */}
     </div>
   );
 }
