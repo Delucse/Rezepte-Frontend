@@ -1,8 +1,12 @@
-import { SET_RECIPE_TITLE } from '../actions/types';
+import { SET_RECIPE_TITLE, SET_RECIPE_PORTION } from '../actions/types';
 
 
 const initialState = {
-    title: ''
+    title: '',
+    portion: {
+      count: 0,
+      volume: 0
+    }
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +16,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         title: action.payload
       };
+    case SET_RECIPE_PORTION:
+      return {
+        ...state,
+        portion: action.payload
+      }
     default:
       return state;
   }

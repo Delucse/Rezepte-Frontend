@@ -16,6 +16,9 @@ const steps = [
     },{
         title: 'Arbeitsschritte',
         content: <div>Step 4</div>
+    },{
+        title: 'Zusammenfassung',
+        content: <div>Vorschau</div>
     }
 ];
 

@@ -1,2 +1,3 @@
 // Recipe
 export const SET_RECIPE_TITLE = 'SET_RECIPE_TITLE';
+export const SET_RECIPE_PORTION = 'SET_RECIPE_PORTION';
