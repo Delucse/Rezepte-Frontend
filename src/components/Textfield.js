@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -8,17 +8,21 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 function Textfield(props) {
 
-    const [value, setValue] = useState('');
     const [error, setError] = useState(false);
 
-    const handleChange = (e) => {
-        setValue(e.target.value);
-        if(e.target.value.length === 0){
-            setError(true);
-        } else {
-            setError(false);
+    const isInitialMount = useRef(true);
+
+    useEffect(() => {
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+         } else {
+            if(props.value === ''){
+                setError(true)
+            } else {
+                setError(false)
+            }
         }
-    };
+    }, [props.value]);
 
     return (
         <FormControl
@@ -38,10 +42,11 @@ function Textfield(props) {
                 disabled={props.disabled}
                 color={error ? 'error' : null}
                 error={error}
-                value={value}
+                value={props.value}
                 label={props.label}
                 id={props.property}
-                onChange={handleChange}
+                onChange={props.onChange}
+                placeholder={props.placeholder}
                 startAdornment={props.start ? <InputAdornment sx={{maxHeight: '56px', height: '56px'}} position="start">{props.start}</InputAdornment> : null}
                 endAdornment={props.end ? <InputAdornment sx={{maxHeight: '56px', height: '56px'}} position="start">{props.end}</InputAdornment> : null}
             />

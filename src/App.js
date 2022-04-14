@@ -6,6 +6,9 @@ import {
   Route,
 } from "react-router-dom";
 
+import { Provider } from 'react-redux';
+import store from './store';
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import Home from './pages/Home';
@@ -35,23 +38,25 @@ function App() {
   const theme = createTheme(themeConfig);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />}/>
-              <Route exact path="test" element={<Test />}/>
-              <Route exact path="test2" element={<Test2 />}/>
-              <Route exact path="bilder" element={<Pictures />}/>
-              <Route path="rezepte">
-                <Route exact path="erstellen" element={<CreateRecipe />}/>
-                <Route index element={<Recipes />}/>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <Router>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Home />}/>
+                <Route exact path="test" element={<Test />}/>
+                <Route exact path="test2" element={<Test2 />}/>
+                <Route exact path="bilder" element={<Pictures />}/>
+                <Route path="rezepte">
+                  <Route exact path="erstellen" element={<CreateRecipe />}/>
+                  <Route index element={<Recipes />}/>
+                </Route>
+                <Route path="*" element={<Error />}/>
               </Route>
-              <Route path="*" element={<Error />}/>
-            </Route>
-          </Routes>
-      </Router>
-    </ThemeProvider>
+            </Routes>
+        </Router>
+      </ThemeProvider>
+    </Provider>
   );
 }
 
