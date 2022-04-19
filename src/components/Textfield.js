@@ -16,7 +16,7 @@ function Textfield(props) {
         if (isInitialMount.current) {
             isInitialMount.current = false;
          } else {
-            if(props.value === ''){
+            if(props.error && props.value === ''){
                 setError(true)
             } else {
                 setError(false)
@@ -28,7 +28,7 @@ function Textfield(props) {
         <FormControl
             variant="outlined"
             fullWidth
-            style={{ marginBottom: "20px" }}
+            style={{ marginBottom: props.margin ? "20px" : '0px' }}
         >
             <InputLabel
                 htmlFor={props.property}

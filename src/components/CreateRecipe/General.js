@@ -1,10 +1,11 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setRecipeTitle } from "../../actions/recipeActions";
+import { setRecipeTitle, setRecipeSource } from "../../actions/recipeActions";
 
 import Textfield from "../Textfield";
 import Portion from "./Portion";
+import Keywords from "./Keywords";
 
 import Icon from '@mdi/react';
 import { mdiCopyright, mdiTextShadow   } from '@mdi/js'; 
@@ -15,10 +16,14 @@ function General() {
 
     const dispatch = useDispatch();
     const recipe = useSelector((state) => state.recipe);
-    const {title} = recipe;
+    const {title, source} = recipe;
 
     const onChangeTitle = (e) => {
         dispatch(setRecipeTitle(e.target.value));
+    };
+
+    const onChangeSource = (e) => {
+        dispatch(setRecipeSource(e.target.value));
     };
 
     const updateTitle = () => {
@@ -27,12 +32,14 @@ function General() {
 
     return(
         <div>
-            <Textfield 
+            <Textfield
+                error
                 value={title} 
                 onChange={onChangeTitle} 
                 autoFocus 
                 property={'title'} 
-                label={'Titel'} 
+                label={'Titel'}
+                margin
                 start={
                     <Icon path={mdiTextShadow } size={1}/>
                 } 
@@ -46,11 +53,20 @@ function General() {
                     </Button>
                 }
             />
-            <Textfield property={'source'} label={'Quelle'} start={<Icon path={mdiCopyright} size={1}/>} placeholder='Test'/>
+            <Textfield 
+                error
+                value={source}
+                onChange={onChangeSource}
+                property={'source'} 
+                label={'Quelle'}
+                margin
+                start={<Icon path={mdiCopyright} size={1}/>} 
+            />
 
             {/* Portionen */}
             <Portion/>
             
+            <Keywords/>
         </div>
     );
 }

@@ -43,13 +43,13 @@ function Portion() {
     }
 
     return(
-        <div>
+        <div style={{marginBottom: '20px'}}>
             <FormControl>
                 <FormLabel id="Portionen">Portionen</FormLabel>
                 <RadioGroup
                     row
                     name="Portionen"
-                    value={volume > 0 ? 1 : 0}
+                    value={volume > 0 ? 1 : volume}
                     onChange={isDish}
                 >
                     <FormControlLabel value={0} control={<Radio />} label="Gericht" />
@@ -76,7 +76,7 @@ function Portion() {
                             +
                         </Button>
                     </div> 
-                : 
+                : volume > 0 ?
                     <FormControl fullWidth>
                         <InputLabel id="volume">Backform</InputLabel>
                         <Select
@@ -96,9 +96,9 @@ function Portion() {
                             <MenuItem value={20}>26er-Form</MenuItem>
                             <MenuItem value={30}>Backblech</MenuItem>
                         </Select>
-                    </FormControl>
+                    </FormControl> 
+                    : null
             }
-            
         </div>
     );
 }
