@@ -1,4 +1,4 @@
-import { SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE } from '../actions/types';
+import { SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_INGREDIENTS } from '../actions/types';
 
 
 const initialState = {
@@ -8,7 +8,15 @@ const initialState = {
       volume: -1
     },
     source: '',
-    keywords: []
+    keywords: [],
+    ingredients: [{
+      title: '',
+      food: [
+        {amount: -1, unit: '', aliment: ''},
+        {amount: -1, unit: '', aliment: ''},
+        {amount: -1, unit: '', aliment: ''}
+      ]
+    }]
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,6 +45,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         keywords: action.payload
+      }
+    case SET_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: action.payload
       }
     default:
       return state;

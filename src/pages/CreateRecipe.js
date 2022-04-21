@@ -1,5 +1,6 @@
 import React from 'react';
 import General from '../components/CreateRecipe/General';
+import Ingredients from '../components/CreateRecipe/Ingredients';
 
 import Stepper from '../components/CreateRecipe/Stepper';
 
@@ -12,7 +13,7 @@ const steps = [
         content: <div>Step 2</div>
     },{
         title: 'Zutaten',
-        content: <div>Step 3</div>
+        content: <Ingredients />
     },{
         title: 'Arbeitsschritte',
         content: <div>Step 4</div>

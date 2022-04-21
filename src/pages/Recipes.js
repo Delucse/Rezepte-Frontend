@@ -58,7 +58,7 @@ function Recipes(){
     const gutter = parseInt(theme.spacing(2).replace('px', ''))
 
     return(
-        <div>
+        <div style={{marginTop: '-10px'}}>
             <StackGrid
                 gridRef={() => ref}
                 style={{marginTop: '10px', marginBottom: '30px'}}

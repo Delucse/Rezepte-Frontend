@@ -38,7 +38,7 @@ function BreadCrumbs(){
                     );
                 }) : <div>Error</div>}
             </Breadcrumbs>
-        : null
+        : <Box sx={{zIndex: 1, padding: theme => `${theme.spacing(3)} ${theme.spacing(3)} 0px ${theme.spacing(3)}`, position: 'sticky', top: 'calc(55px)', background: 'white'}}/>
     );
 }
 
