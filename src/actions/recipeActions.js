@@ -1,4 +1,4 @@
-import { SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_INGREDIENTS} from '../actions/types';
+import { SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_INGREDIENTS, SET_STEPS} from '../actions/types';
 
 export const setRecipeTitle = (title) => (dispatch) => {
   dispatch({
@@ -139,5 +139,46 @@ export const changeFoodPosition = (ingredientsIndex, oldIndex, newIndex) => (dis
   dispatch({
     type: SET_INGREDIENTS,
     payload: ingredients
+  });
+};
+
+
+export const changeStep = (index, step) => (dispatch, getState) => {
+  var steps = getState().recipe.steps;
+  steps[index] = step;
+  dispatch({
+    type: SET_STEPS,
+    payload: steps
+  });
+};
+
+
+export const addStep = (index) => (dispatch, getState) => {
+  var steps = getState().recipe.steps;
+  var step = '';
+  steps.splice(index+1, 0, step);
+  dispatch({
+    type: SET_STEPS,
+    payload: steps
+  });
+};
+
+export const removeStep = (index) => (dispatch, getState) => {
+  var steps = getState().recipe.steps;
+  steps.splice(index, 1);
+  dispatch({
+    type: SET_STEPS,
+    payload: steps
+  });
+};
+
+export const changeStepPosition = (oldIndex, newIndex) => (dispatch, getState) => {
+  var steps = getState().recipe.steps;
+  var step = steps[oldIndex]
+  steps.splice(oldIndex, 1);
+  steps.splice(newIndex, 0, step);
+  dispatch({
+    type: SET_STEPS,
+    payload: steps
   });
 };

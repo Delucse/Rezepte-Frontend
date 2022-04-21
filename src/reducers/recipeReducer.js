@@ -1,4 +1,4 @@
-import { SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_INGREDIENTS } from '../actions/types';
+import { SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_INGREDIENTS, SET_STEPS } from '../actions/types';
 
 
 const initialState = {
@@ -16,7 +16,8 @@ const initialState = {
         {amount: -1, unit: '', aliment: ''},
         {amount: -1, unit: '', aliment: ''}
       ]
-    }]
+    }],
+    steps: ['','','']
 };
 
 const reducer = (state = initialState, action) => {
@@ -50,6 +51,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         ingredients: action.payload
+      }
+    case SET_STEPS:
+      return {
+        ...state,
+        steps: action.payload
       }
     default:
       return state;
