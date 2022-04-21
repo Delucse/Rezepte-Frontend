@@ -12,6 +12,33 @@ import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 
 function Stepper(props) {
     const [activeStep, setActiveStep] = React.useState(0);
+
+    const [touchStart, setTouchStart] = React.useState(0);
+    const [touchEnd, setTouchEnd] = React.useState(null);
+
+    const handleTouchStart = (e) => {
+        setTouchStart(e.targetTouches[0].clientX);
+    }
+    
+    const handleTouchMove = (e) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    }
+    
+    const handleTouchEnd = () => {
+        if(touchEnd){
+            if (touchStart - touchEnd > 150) {
+                if(activeStep > 0){
+                    handleBack();
+                }
+            }
+            else if (touchStart - touchEnd < -150) {
+                if(activeStep < props.steps.length-1){
+                    handleNext();
+                }
+            }
+        }
+        setTouchEnd(null)
+    }
   
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -26,7 +53,13 @@ function Stepper(props) {
       };
   
     return (
-        <div>
+        <div
+            // onPointerDown={(e) => console.log(e.pointerType )}
+            // onClick={(e) => e.preventDefault()}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+        >
             <Box sx={{height: '20px', paddingBottom: '10px', position: 'sticky', top: theme => `calc(55px + 50px + ${theme.spacing(3)})`, background: 'white', zIndex: 2}}>
                 {props.steps[activeStep].title}
             </Box>
