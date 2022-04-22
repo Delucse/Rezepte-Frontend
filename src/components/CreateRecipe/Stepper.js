@@ -60,7 +60,7 @@ function Stepper(props) {
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
         >
-            <Box sx={{height: '20px', paddingBottom: '10px', position: 'sticky', top: theme => `calc(55px + 50px + ${theme.spacing(3)})`, background: 'white', zIndex: 2}}>
+            <Box sx={{height: '20px', paddingBottom: '10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)})`, background: 'white', zIndex: 2}}>
                 {props.steps[activeStep].title}
             </Box>
             {activeStep === 0 ? 
@@ -83,15 +83,15 @@ function Stepper(props) {
                     <Icon path={mdiChevronRight} size={2}/>
                 </IconButton>
             }
-            <Box sx={{margin: {xs: '10px 0px', md: '10px 48px 10px 48px'}, width: {xs: '100%', md: 'calc(100% - 2 * 48px)'}, paddingBottom: '60px', minHeight: theme =>`calc(100vh - 55px - ${theme.spacing(3)} - 74px - 70px - 20px - 60px - 30px)`}}>
+            <Box sx={{margin: {xs: '10px 0px', md: '10px 48px 10px 48px'}, width: {xs: '100%', md: 'calc(100% - 2 * 48px)'}, paddingBottom: {xs: '24px', md: '60px'}, minHeight: {xs: `calc(100vh - 55px - ${'24px'} - 78px - 34px - 20px - 24px - 30px)`, md: `calc(100vh - 55px - ${'24px'} - 78px - 70px - 20px - 60px - 30px)`}}}>
                     {props.steps[activeStep].content}
             </Box>
-            <Box sx={{ position: 'sticky', width: '100%', background: 'white', height: '60px', bottom: theme => theme.spacing(3), paddingTop: '10px', zIndex: 2 }}>
+            <Box sx={{ position: 'sticky', width: '100%', background: 'white', height: {xs: '24px', md: '60px'}, bottom: theme => theme.spacing(3), paddingTop: '10px', zIndex: 2 }}>
                 <MuiStepper nonLinear activeStep={activeStep} alternativeLabel>
                     {props.steps.map((label, index) => (
-                        <Step key={index}>
-                            <StepButton color="inherit" onClick={handleStep(index)}>
-                                <StepLabel StepIconProps={{icon: ''}}><Box sx={{display: {xs: 'none', sm: 'inherit'}}}>{label.title}</Box></StepLabel>
+                        <Step key={index} sx={{height: {xs: '24px', md: 'inherit'}}}>
+                            <StepButton color="inherit" onClick={handleStep(index)} sx={{padding: '0px 16px', margin: '0px -16px'}}>
+                                <StepLabel StepIconProps={{icon: ''}} sx={{height: {xs: '24px', md: 'inherit'}}}><Box sx={{display: {xs: 'none', md: 'inherit'}}}>{label.title}</Box></StepLabel>
                             </StepButton>
                         </Step>
                     ))}

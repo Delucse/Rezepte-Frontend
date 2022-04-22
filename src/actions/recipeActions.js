@@ -1,4 +1,4 @@
-import { SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_INGREDIENTS, SET_STEPS} from '../actions/types';
+import { SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_INGREDIENTS, SET_STEPS, SET_PICTURES} from '../actions/types';
 
 export const setRecipeTitle = (title) => (dispatch) => {
   dispatch({
@@ -180,5 +180,47 @@ export const changeStepPosition = (oldIndex, newIndex) => (dispatch, getState) =
   dispatch({
     type: SET_STEPS,
     payload: steps
+  });
+};
+
+
+export const changePictures = (files) => (dispatch, getState) => {
+  var pictures = getState().recipe.pictures;
+  pictures = [...pictures];
+  // files is a FileList object (similar to NodeList)
+  // loop through files to prevent that an image is stored twice
+  for (const key of Object.keys(files)) {
+    var filter = pictures.filter(pic => pic.title === files[key].name);
+    if(filter.length === 0){
+      pictures.push({file: files[key], url: URL.createObjectURL(files[key]), title: files[key].name});
+    }
+    else {
+      alert('already exists');
+      // error: image already exists
+    }
+  }
+  dispatch({
+    type: SET_PICTURES,
+    payload: pictures
+  });
+};
+
+
+export const removePicture = (url) => (dispatch, getState) => {
+  var pictures = getState().recipe.pictures;
+  pictures = [...pictures];
+  const index = pictures.findIndex(pic => pic.url === url);
+  var newPictures = pictures.filter((el, idx) => index !== idx);
+  dispatch({
+    type: SET_PICTURES,
+    payload: newPictures
+  });
+};
+
+
+export const onDragEndPicture = (pictures) => (dispatch) => {
+  dispatch({
+    type: SET_PICTURES,
+    payload: pictures
   });
 };
