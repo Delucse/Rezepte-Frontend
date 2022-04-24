@@ -14,32 +14,33 @@ import { Button, MenuItem, InputLabel, Select, InputAdornment } from "@mui/mater
 
 import Icon from '@mdi/react';
 import { mdiCupcake } from '@mdi/js'; 
+import { getThemeProps } from "@mui/system";
 
 
 function Portion() {
 
     const dispatch = useDispatch();
-    const portion = useSelector((state) => state.recipe.portion);
+    const {portion, error} = useSelector((state) => state.recipe);
     const { count, volume } = portion;
 
     const portionAdd = () => {
-        dispatch(setRecipePortion(count + 1, 0))
+        dispatch(setRecipePortion(count + 1, volume))
     }
 
     const portionReduce = () => {
-        dispatch(setRecipePortion(count - 1, 0))
+        dispatch(setRecipePortion(count - 1, volume))
     }
 
     const isDish = (e) => {
         if(e.target.value === '0'){
             dispatch(setRecipePortion(count, 0))
         } else {
-            dispatch(setRecipePortion(1, 1));
+            dispatch(setRecipePortion(count, 1));
         } 
     }
 
     const setVolume = (e) => {
-        dispatch(setRecipePortion(1, parseInt(e.target.value)))
+        dispatch(setRecipePortion(count, parseInt(e.target.value)))
     }
 
     return(
@@ -49,56 +50,57 @@ function Portion() {
                 <RadioGroup
                     row
                     name="Portionen"
-                    value={volume > 0 ? 1 : volume}
+                    value={volume > 0 ? 1 : volume < 0 ? -1 : 0}
                     onChange={isDish}
                 >
                     <FormControlLabel value={0} control={<Radio />} label="Gericht" />
                     <FormControlLabel value={1} control={<Radio />} label="Gebäck" />
                 </RadioGroup>
             </FormControl>
-            {
-                volume === 0 ?
-                    <div style={{display: 'flex', width: '200px'}}>
+            {volume >= 0 ?
+                <div style={{display: 'flex'}}>
+                    <div style={{display: 'flex', width: '110px'}}>
                         <Button
-                            disabled={count === 0}
-                            sx={{height: '56px', borderRadius: 0, boxShadow: 'none'}} 
+                            disabled={count <= 1}
+                            sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '23px', padding: 0}} 
                             variant="contained" 
                             onClick={portionReduce}
                         >
                             -
                         </Button>
-                        <Textfield disabled value={count}/>
+                        <Textfield disabled value={count} error={count === 0 && error.portion}/>
                         <Button
-                            sx={{height: '56px', borderRadius: 0, boxShadow: 'none'}} 
+                            sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '23px', padding: 0}} 
                             variant="contained" 
                             onClick={portionAdd}
                         >
                             +
                         </Button>
                     </div> 
-                : volume > 0 ?
-                    <FormControl fullWidth>
-                        <InputLabel id="volume">Backform</InputLabel>
-                        <Select
-                            sx={{borderRadius: '0px'}}
-                            defaultOpen
-                            labelId="volume"
-                            value={volume}
-                            label='Backform'
-                            onChange={setVolume}
-                            startAdornment={
-                                <InputAdornment sx={{maxHeight: '56px', height: '56px'}} position="start">
-                                    <Icon path={mdiCupcake} size={1}/>
-                                </InputAdornment>
-                            }
-                        >   
-                            <MenuItem value={10}>28er-Form</MenuItem>
-                            <MenuItem value={20}>26er-Form</MenuItem>
-                            <MenuItem value={30}>Backblech</MenuItem>
-                        </Select>
-                    </FormControl> 
-                    : null
-            }
+                    { volume > 0 ?
+                        <FormControl fullWidth sx={{marginLeft: '20px'}} error={error.portion && volume === 1}>
+                            <InputLabel id="volume">Backform</InputLabel>
+                            <Select
+                                sx={{borderRadius: '0px'}}
+                                defaultOpen
+                                labelId="volume"
+                                value={volume}
+                                label='Backform'
+                                onChange={setVolume}
+                                startAdornment={
+                                    <InputAdornment sx={{maxHeight: '56px', height: '56px'}} position="start">
+                                        <Icon path={mdiCupcake} size={1}/>
+                                    </InputAdornment>
+                                }
+                            >   
+                                <MenuItem value={10}>28er-Form</MenuItem>
+                                <MenuItem value={20}>26er-Form</MenuItem>
+                                <MenuItem value={30}>Backblech</MenuItem>
+                            </Select>
+                        </FormControl> 
+                    : null}
+                </div>
+            : null}
         </div>
     );
 }

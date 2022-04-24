@@ -30,7 +30,7 @@ function App() {
   const themeConfig = {
     palette: {
         primary: {
-            main: '#E85917',
+            main: '#0B6623',//'#E85917',
             light: addAlphaToHex('#E85917', 0.65)
         }
     }

@@ -10,10 +10,10 @@ import { mdiDelete, mdiFullscreen, mdiClose, mdiCamera } from '@mdi/js';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box, InputLabel, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Grid, Card, CardContent, ImageListItem , ImageListItemBar } from "@mui/material";
+import { Alert, Box, InputLabel, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Grid, Card, CardContent, ImageListItem , ImageListItemBar } from "@mui/material";
 
 
-function PictureInput(){
+function PictureInput(props){
 
     const recipe = useSelector((state) => state.recipe);
     var {pictures} = recipe;
@@ -74,7 +74,7 @@ function PictureInput(){
                 type="file"
                 multiple
             />
-            <InputLabel htmlFor="picture-button-file" sx={{color: 'rgba(0, 0, 0, 0.54)', '&:hover': {color: theme => theme.palette.primary.main}}}>
+            <InputLabel htmlFor="picture-button-file" sx={{color: theme => props.error ? theme.palette.error.main : 'rgba(0, 0, 0, 0.54)', '&:hover': {color: theme => theme.palette.primary.main}}}>
                 <Box 
                     sx={{
                         fontSize: '1rem',
@@ -84,9 +84,9 @@ function PictureInput(){
                         alignItems: "center",
                         display:"flex",
                         padding: "10px",
-                        marginTop: '16px',
+                        // marginTop: '16px',
                         marginBottom: pictures.length > 0 ? '0.4rem' : '16px',
-                        border: theme => drag ? `2px dashed ${theme.palette.primary.main}` : "2px dashed rgba(0, 0, 0, 0.54)"
+                        border: theme => drag ? `2px dashed ${theme.palette.primary.main}` : props.error ? `2px dashed ${theme.palette.error.main}` : "2px dashed rgba(0, 0, 0, 0.54)"
                     }}
                 >
                     <div style={{textAlign: "center"}}>
@@ -105,7 +105,7 @@ function Pictures() {
     const dispatch = useDispatch();
 
     const recipe = useSelector((state) => state.recipe);
-    var {pictures} = recipe;
+    var {pictures, error} = recipe;
 
     const [open, setOpen] = useState(false);
     const [url, setUrl] = useState('');
@@ -129,59 +129,67 @@ function Pictures() {
     const col = lg ? 4 : md ? 3 : sm ? 2 : 1;
 
     return(
-        <Grid item xs={12}>
-            <PictureInput />
-            {pictures.length > 0 ?
-                <ReactSortable
-                    animation={200}
-                    list={pictures}
-                    setList={newState => dispatch(onDragEndPicture(newState))}
-                    style={{width: '100%', listStyle: 'none', marginBottom: '16px', display: 'grid', gridGap: '0.4rem', gridTemplateColumns: `repeat(${col}, calc(100% / ${col} - 0.4rem * ${(-1+col)/col}))`}}
+        <div>
+            {error.pictures ?
+                <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
+                    <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Bild ausgewählt werden.</Alert>
+                </Box>
+            : null}
+            <div style={error.pictures ? {marginTop: '10px'} : {}}/>
+            <Grid item xs={12}>
+                <PictureInput error={error.pictures}/>
+                {pictures.length > 0 ?
+                    <ReactSortable
+                        animation={200}
+                        list={pictures}
+                        setList={newState => dispatch(onDragEndPicture(newState))}
+                        style={{width: '100%', listStyle: 'none', marginBottom: '16px', display: 'grid', gridGap: '0.4rem', gridTemplateColumns: `repeat(${col}, calc(100% / ${col} - 0.4rem * ${(-1+col)/col}))`}}
+                    >
+                        {pictures.map((picture, index) => {
+                            return(
+                                <ImageListItem key={index} sx={index===0 ? {border: theme => `4px solid ${theme.palette.primary.main}`, padding: '0px', height: '180px'} : {height: '180px'}}>
+                                    <img src={picture.url} alt={picture.title}  style={{cursor: 'pointer', height: "180px", objectFit: 'cover'}}/>
+                                    <ImageListItemBar
+                                        title={picture.title}
+                                        actionIcon={
+                                            <div>
+                                                <IconButton sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} onClick={() => handleClickOpen(picture.title, picture.url)}>
+                                                    <Icon path={mdiFullscreen} size={1} />
+                                                </IconButton>
+                                                <IconButton sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} onClick={() => {dispatch(removePicture(picture.url))}}>
+                                                    <Icon path={mdiDelete} size={1} />
+                                                </IconButton>
+                                            </div>
+                                        }
+                                    />
+                                </ImageListItem>
+                            );
+                        })}
+                    </ReactSortable>
+                : 
+                    null
+                }
+                <Dialog
+                    sx={{zIndex: 1500}}
+                    PaperProps={{
+                        sx: {borderRadius: 0}
+                    }}
+                    fullWidth={true}
+                    open={open}
+                    onClose={handleClose}
                 >
-                    {pictures.map((picture, index) => {
-                        return(
-                            <ImageListItem key={index} sx={index===0 ? {border: theme => `4px solid ${theme.palette.primary.main}`, padding: '0px', height: '180px'} : {height: '180px'}}>
-                                <img src={picture.url} alt={picture.title}  style={{cursor: 'pointer', height: "180px", objectFit: 'cover'}}/>
-                                <ImageListItemBar
-                                    title={picture.title}
-                                    actionIcon={
-                                        <div>
-                                            <IconButton sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} onClick={() => handleClickOpen(picture.title, picture.url)}>
-                                                <Icon path={mdiFullscreen} size={1} />
-                                            </IconButton>
-                                            <IconButton sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} onClick={() => {dispatch(removePicture(picture.url))}}>
-                                                <Icon path={mdiDelete} size={1} />
-                                            </IconButton>
-                                        </div>
-                                    }
-                                />
-                            </ImageListItem>
-                        );
-                    })}
-                </ReactSortable>
-            : 
-                null
-            }
-            <Dialog
-                sx={{zIndex: 1500}}
-                PaperProps={{
-                    sx: {borderRadius: 0}
-                }}
-                fullWidth={true}
-                open={open}
-                onClose={handleClose}
-            >
-                <DialogTitle style={{padding: "10px 24px"}}>{title}</DialogTitle>
-                <DialogContent style={{padding: "0px", display: 'contents'}}>
-                    <img src={url} width="100%" alt={title}/>
-                </DialogContent>
-                {/* <DialogActions style={{padding: "10px 24px"}}>
-                    <IconButton style={{padding: "0px"}} color="primary" aria-label='Vollbild' onClick={handleClose}>
-                        <Icon path={mdiClose} size={1}/>
-                    </IconButton>
-                </DialogActions> */}
-            </Dialog>
-      </Grid>
+                    <DialogTitle style={{padding: "10px 24px"}}>{title}</DialogTitle>
+                    <DialogContent style={{padding: "0px", display: 'contents'}}>
+                        <img src={url} width="100%" alt={title}/>
+                    </DialogContent>
+                    {/* <DialogActions style={{padding: "10px 24px"}}>
+                        <IconButton style={{padding: "0px"}} color="primary" aria-label='Vollbild' onClick={handleClose}>
+                            <Icon path={mdiClose} size={1}/>
+                        </IconButton>
+                    </DialogActions> */}
+                </Dialog>
+            </Grid>
+        </div>
     );
 }
 

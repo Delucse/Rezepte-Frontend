@@ -17,7 +17,7 @@ function Keywords() {
     const [keyword, setKeyword] = useState('');
 
     const dispatch = useDispatch();
-    const keywords = useSelector((state) => state.recipe.keywords);
+    const { keywords, error } = useSelector((state) => state.recipe);
 
     const onChangeKeyword = (e) => {
         setKeyword(e.target.value);
@@ -36,9 +36,15 @@ function Keywords() {
     return(
         <div style={{marginBottom: '20px'}}>
             <div style={{display: 'flex'}}>
-                <Textfield value={keyword} onChange={onChangeKeyword} label='Schlüsselwörter' start={
-                    <Icon path={mdiKeyChain } size={1}/>
-                } />
+                <Textfield 
+                    error={error.keywords} 
+                    value={keyword} 
+                    onChange={onChangeKeyword} 
+                    label='Schlüsselwörter' 
+                    start={
+                        <Icon path={mdiKeyChain } size={1}/>
+                    }
+                />
                 <Button
                     sx={{height: '56px', borderRadius: 0, boxShadow: 'none'}} 
                     variant="contained" 

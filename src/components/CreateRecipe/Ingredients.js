@@ -8,7 +8,7 @@ import Textfield from "../Textfield";
 import Icon from '@mdi/react';
 import { mdiFoodVariant, mdiDelete, mdiChevronUp, mdiChevronDown, mdiPlus, mdiTextShadow } from '@mdi/js'; 
 
-import { Button } from "@mui/material";
+import { Button, Alert, Box } from "@mui/material";
 
 
 function Title(props){
@@ -31,14 +31,14 @@ function Title(props){
             <Textfield 
                 value={props.title} 
                 onChange={(e) => dispatch(changeIngredientsTitle(props.iIndex, e.target.value))}
-                // error
+                error={props.title === '' && props.error}
                 margin
                 label='Titel' 
                 start={
                     <Icon path={mdiTextShadow  } size={1}/>
                 }
             />
-            <Button disabled={props.length === 1} onClick={() => dispatch(removeIngredients(props.iIndex))} sx={{height: '56px', marginLeft: '5px', borderRadius: 0, minWidth: '20px', boxShadow: 'none', padding: '0px'}} variant='outlined'>
+            <Button disabled={props.length === 1} onClick={() => dispatch(removeIngredients(props.iIndex))} sx={{height: '56px', marginLeft: '5px', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} variant='outlined'>
                 <Icon path={mdiDelete} size={1}/>
             </Button>
         </div>
@@ -67,7 +67,7 @@ function Food(props){
                 <Textfield 
                     value={props.amount} 
                     onChange={(e) => dispatch(changeAmount(props.iIndex, props.fIndex, e.target.value))}
-                    // error
+                    error={parseInt(props.amount) > 0 && props.error}
                     label='Menge' 
                     // start={
                     //     <Icon path={mdiWeight  } size={1}/>
@@ -78,7 +78,7 @@ function Food(props){
                 <Textfield 
                     value={props.unit} 
                     onChange={(e) => dispatch(changeUnit(props.iIndex, props.fIndex, e.target.value))}
-                    // error
+                    error={props.unit === '' && props.error}
                     label='Einheit' 
                     // start={
                     //     <Icon path={mdiWeight  } size={1}/>
@@ -88,13 +88,13 @@ function Food(props){
             <Textfield 
                 value={props.aliment} 
                 onChange={(e) => dispatch(changeAliment(props.iIndex, props.fIndex, e.target.value))}
-                // error
+                error={props.aliment === '' && props.error}
                 label='Zutat' 
                 start={
                     <Icon path={mdiFoodVariant } size={1}/>
                 }
             />
-            <Button disabled={props.length === 1} onClick={() => dispatch(removeFood(props.iIndex, props.fIndex))} sx={{height: '56px', marginLeft: '5px', borderRadius: 0, minWidth: '20px', boxShadow: 'none', padding: '0px'}} variant='outlined'>
+            <Button disabled={props.length === 1} onClick={() => dispatch(removeFood(props.iIndex, props.fIndex))} sx={{height: '56px', marginLeft: '5px', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} variant='outlined'>
                 <Icon path={mdiDelete} size={1}/>
             </Button>
         </div>
@@ -104,19 +104,25 @@ function Food(props){
 function Ingredients() {
 
     const recipe = useSelector((state) => state.recipe);
-    var {ingredients} = recipe;
+    var {ingredients, error} = recipe;
 
     return(
         <div>
+            {error.ingredients.includes(true) ?
+            <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
+                <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0,}}>Es muss mindestens eine ausgefüllte Zutatenliste geben. Überflüssige Listen und Zutaten bitte löschen.</Alert>
+            </Box>
+            : null}
+            <div style={error.ingredients.includes(true) ? {marginTop: '10px'} : {}}/>
             {ingredients.map((ingredient, iIndex) => (
                 <div key={iIndex} style={{position: 'relative', marginTop: iIndex > 0 ? '58px': 0}}>
                     {/* Eingabefelder */}
                     <div style={{padding: '0px 10px'}}>
                         {/* Titel */}
-                        <Title key={iIndex} iIndex={iIndex} title={ingredient.title} length={ingredients.length}/>
+                        <Title key={iIndex} iIndex={iIndex} title={ingredient.title} length={ingredients.length} error={error.ingredients[iIndex]}/>
                         {/* Zutaten */}
                         {ingredient.food.map((food, fIndex) => (
-                            <Food key={fIndex} iIndex={iIndex} fIndex={fIndex} length={ingredient.food.length} amount={food.amount} unit={food.unit} aliment={food.aliment}/>
+                            <Food key={fIndex} iIndex={iIndex} fIndex={fIndex} length={ingredient.food.length} amount={food.amount} unit={food.unit} aliment={food.aliment} error={error.ingredients[iIndex]}/>
                         ))}
                     </div>
                     {/* Umrandung */}

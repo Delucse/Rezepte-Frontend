@@ -1,10 +1,11 @@
 import React from 'react';
+
 import General from '../components/CreateRecipe/General';
 import Ingredients from '../components/CreateRecipe/Ingredients';
 import Steps from '../components/CreateRecipe/Steps';
-
-import Stepper from '../components/CreateRecipe/Stepper';
+import Preview from '../components/CreateRecipe/Preview';
 import Pictures from '../components/CreateRecipe/Pictures';
+import Stepper from '../components/CreateRecipe/Stepper';
 
 const steps = [
     {
@@ -24,7 +25,7 @@ const steps = [
         content: <Pictures />
     },{
         title: 'Zusammenfassung',
-        content: <div>Vorschau</div>
+        content: <Preview />
     }
 ];
 
