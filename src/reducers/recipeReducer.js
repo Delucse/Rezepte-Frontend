@@ -1,4 +1,4 @@
-import { SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES } from '../actions/types';
+import { SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES } from '../actions/types';
 
 
 const initialState = {
@@ -8,6 +8,11 @@ const initialState = {
       volume: -1
     },
     source: '',
+    time: {
+      preparation: 0,
+      resting: 0,
+      baking: 0
+    },
     keywords: [],
     ingredients: [{
       title: '',
@@ -77,6 +82,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         error: action.payload
+      };
+    case SET_RECIPE_TIME:
+      return {
+        ...state,
+        time: action.payload
       };
     default:
       return state;

@@ -5,12 +5,13 @@ import { setRecipeTitle, setRecipeSource } from "../../actions/recipeActions";
 
 import Textfield from "../Textfield";
 import Portion from "./Portion";
+import Time from "./Time";
 import Keywords from "./Keywords";
 
 import Icon from '@mdi/react';
 import { mdiCopyright, mdiTextShadow   } from '@mdi/js'; 
 
-import { Button, Alert, Box } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 
 function General() {
 
@@ -32,7 +33,7 @@ function General() {
 
     return(
         <div>
-            {error.title || error.source || error.portion || error.keywords ? 
+            {error.title || error.source || error.portion || error.time || error.keywords ? 
                 <Box sx={{paddingBottom: '10px', marginBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
                     {error.title ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss ein Titel gewählt werden.</Alert>
@@ -42,6 +43,9 @@ function General() {
                     : null}
                     {error.portion ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss eine Portionsangabe gemacht werden.</Alert>
+                    : null}
+                    {error.time ?
+                        <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens eine Zeitangabe gemacht werden.</Alert>
                     : null}
                     {error.keywords ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Schlüsselwort hinzugefügt werden.</Alert>
@@ -83,6 +87,8 @@ function General() {
 
             {/* Portionen */}
             <Portion/>
+
+            <Time />
             
             <Keywords/>
         </div>

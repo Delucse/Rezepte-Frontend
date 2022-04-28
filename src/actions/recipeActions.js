@@ -1,4 +1,4 @@
-import { SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES} from '../actions/types';
+import { SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES} from '../actions/types';
 
 const setError = (key, value) => (dispatch, getState) => {
   var error = getState().recipe.error;
@@ -9,6 +9,19 @@ const setError = (key, value) => (dispatch, getState) => {
         error[key] = true;
       } else{
         error[key] = false;
+      }
+      break;
+    case 'time':
+      var sum = 0
+      Object.values(value).forEach(val => {
+        console.log('time', val)
+        sum += val;
+      });
+      if(sum > 0){
+        error[key] = false
+      }
+      else {
+        error[key] = true
       }
       break;
     case 'keywords':
@@ -98,6 +111,19 @@ export const setRecipeSource = (source) => (dispatch, getState) => {
   });
   if(getState().recipe.error.submit){
     dispatch(setError('source', source));
+  }
+};
+
+export const setRecipeTime = (time, type) => (dispatch, getState) => {
+  console.log(time)
+  var timeState = getState().recipe.time
+  timeState[type] = time
+  dispatch({
+    type: SET_RECIPE_TIME,
+    payload: timeState
+  });
+  if(getState().recipe.error.submit){
+    dispatch(setError('time', timeState));
   }
 };
 
