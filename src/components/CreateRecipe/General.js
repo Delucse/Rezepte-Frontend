@@ -6,7 +6,6 @@ import { setRecipeTitle, setRecipeSource } from "../../actions/recipeActions";
 import Textfield from "../Textfield";
 import Portion from "./Portion";
 import Time from "./Time";
-import Keywords from "./Keywords";
 
 import Icon from '@mdi/react';
 import { mdiCopyright, mdiTextShadow   } from '@mdi/js'; 
@@ -27,13 +26,9 @@ function General() {
         dispatch(setRecipeSource(e.target.value));
     };
 
-    const updateTitle = () => {
-        dispatch(setRecipeTitle(title+'Hallo'));
-    }
-
     return(
         <div>
-            {error.title || error.source || error.portion || error.time || error.keywords ? 
+            {error.title || error.source || error.portion || error.time ? 
                 <Box sx={{paddingBottom: '10px', marginBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
                     {error.title ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss ein Titel gewählt werden.</Alert>
@@ -47,12 +42,9 @@ function General() {
                     {error.time ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens eine Zeitangabe gemacht werden.</Alert>
                     : null}
-                    {error.keywords ?
-                        <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Schlüsselwort hinzugefügt werden.</Alert>
-                    : null}
                 </Box>
              : null}
-             <div style={error.title || error.source || error.portion || error.keywords ? {marginTop: '10px'} : {}}/>
+             <div style={error.title || error.source || error.portion || error.time ? {marginTop: '10px'} : {}}/>
             
             <Textfield
                 error={error.title}
@@ -89,8 +81,6 @@ function General() {
             <Portion/>
 
             <Time />
-            
-            <Keywords/>
         </div>
     );
 }

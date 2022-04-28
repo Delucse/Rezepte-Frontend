@@ -14,7 +14,6 @@ import { Button, MenuItem, InputLabel, Select, InputAdornment } from "@mui/mater
 
 import Icon from '@mdi/react';
 import { mdiCupcake } from '@mdi/js'; 
-import { getThemeProps } from "@mui/system";
 
 
 function Portion() {
@@ -53,8 +52,8 @@ function Portion() {
                     value={volume > 0 ? 1 : volume < 0 ? -1 : 0}
                     onChange={isDish}
                 >
-                    <FormControlLabel value={0} control={<Radio />} label="Gericht" />
-                    <FormControlLabel value={1} control={<Radio />} label="Gebäck" />
+                    <FormControlLabel value={0} control={<Radio sx={error.portion && volume < 0 ? {color: theme => theme.palette.error.main} : {}}/>} label="Gericht" />
+                    <FormControlLabel value={1} control={<Radio sx={error.portion && volume < 0 ? {color: theme => theme.palette.error.main} : {}}/>} label="Gebäck" />
                 </RadioGroup>
             </FormControl>
             {volume >= 0 ?

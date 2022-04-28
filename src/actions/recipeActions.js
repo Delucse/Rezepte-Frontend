@@ -1,4 +1,4 @@
-import { SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES} from '../actions/types';
+import { SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES, SET_RECIPE_CATEGORIES} from '../actions/types';
 
 const setError = (key, value) => (dispatch, getState) => {
   var error = getState().recipe.error;
@@ -14,7 +14,6 @@ const setError = (key, value) => (dispatch, getState) => {
     case 'time':
       var sum = 0
       Object.values(value).forEach(val => {
-        console.log('time', val)
         sum += val;
       });
       if(sum > 0){
@@ -23,6 +22,15 @@ const setError = (key, value) => (dispatch, getState) => {
       else {
         error[key] = true
       }
+      break;
+    case 'categories':
+      var errCategory = false
+      Object.values(value).forEach(val => {
+        if(val && val.length === 0){
+          errCategory = true
+        }
+      });
+      error[key] = errCategory;
       break;
     case 'keywords':
     case 'pictures':
@@ -73,14 +81,16 @@ const setError = (key, value) => (dispatch, getState) => {
 }
 
 export const submit = () => (dispatch, getState) => {
-  const recipe = getState().recipe;
-  dispatch(setError('title', recipe.title));
-  dispatch(setError('portion', recipe.portion));
-  dispatch(setError('source', recipe.source));
-  dispatch(setError('keywords', recipe.keywords));
-  dispatch(setError('ingredients', recipe.ingredients));
-  dispatch(setError('steps', recipe.steps));
-  dispatch(setError('pictures', recipe.pictures));
+  const {title, portion, source, time, categories, keywords, ingredients, steps, pictures} = getState().recipe;
+  dispatch(setError('title', title));
+  dispatch(setError('portion', portion));
+  dispatch(setError('source', source));
+  dispatch(setError('time', time));
+  dispatch(setError('categories', categories));
+  dispatch(setError('keywords', keywords));
+  dispatch(setError('ingredients', ingredients));
+  dispatch(setError('steps', steps));
+  dispatch(setError('pictures', pictures));
   dispatch(setError('submit'));
 }
 
@@ -115,7 +125,6 @@ export const setRecipeSource = (source) => (dispatch, getState) => {
 };
 
 export const setRecipeTime = (time, type) => (dispatch, getState) => {
-  console.log(time)
   var timeState = getState().recipe.time
   timeState[type] = time
   dispatch({
@@ -124,6 +133,18 @@ export const setRecipeTime = (time, type) => (dispatch, getState) => {
   });
   if(getState().recipe.error.submit){
     dispatch(setError('time', timeState));
+  }
+};
+
+export const setRecipeCategories = (category, type) => (dispatch, getState) => {
+  var categories = getState().recipe.categories
+  categories[type] = category
+  dispatch({
+    type: SET_RECIPE_CATEGORIES,
+    payload: categories
+  });
+  if(getState().recipe.error.submit){
+    dispatch(setError('categories', categories));
   }
 };
 

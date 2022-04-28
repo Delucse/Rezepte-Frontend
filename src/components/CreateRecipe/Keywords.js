@@ -40,7 +40,7 @@ function Keywords() {
                     error={error.keywords} 
                     value={keyword} 
                     onChange={onChangeKeyword} 
-                    label='Schlüsselwörter' 
+                    label='Schlagwörter' 
                     start={
                         <Icon path={mdiKeyChain } size={1}/>
                     }

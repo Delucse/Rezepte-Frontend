@@ -6,6 +6,7 @@ import Steps from '../components/CreateRecipe/Steps';
 import Preview from '../components/CreateRecipe/Preview';
 import Pictures from '../components/CreateRecipe/Pictures';
 import Stepper from '../components/CreateRecipe/Stepper';
+import Categories from '../components/CreateRecipe/Categories';
 
 const steps = [
     {
@@ -13,7 +14,7 @@ const steps = [
         content: <General/>
     },{
         title: 'Kategorien',
-        content: <div>Step 2</div>
+        content: <Categories />
     },{
         title: 'Zutaten',
         content: <Ingredients />

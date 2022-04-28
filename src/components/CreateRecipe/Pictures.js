@@ -6,11 +6,11 @@ import { changePictures, removePicture, onDragEndPicture } from "../../actions/r
 import { ReactSortable } from "react-sortablejs";
 
 import Icon from '@mdi/react';
-import { mdiDelete, mdiFullscreen, mdiClose, mdiCamera } from '@mdi/js'; 
+import { mdiDelete, mdiFullscreen, mdiCamera } from '@mdi/js'; 
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Alert, Box, InputLabel, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Grid, Card, CardContent, ImageListItem , ImageListItemBar } from "@mui/material";
+import { Alert, Box, InputLabel, Dialog, DialogContent, DialogTitle, IconButton, Grid, ImageListItem , ImageListItemBar } from "@mui/material";
 
 
 function PictureInput(props){

@@ -33,7 +33,7 @@ function Recipes(){
         }
     }));
 
-    const [expanded, setExpanded] = useState(false);
+    // const [expanded, setExpanded] = useState(false);
     const ref = useRef();
     const theme = useTheme();
     const lg = useMediaQuery((theme) => theme.breakpoints.up('lg'))
@@ -41,9 +41,9 @@ function Recipes(){
     const sm = useMediaQuery((theme) => theme.breakpoints.up('sm'))
     var column = lg ? 5 : md ? 4 : sm ? 2 : 1;
 
-    const toggleCollapse = () => {
-        setExpanded(!expanded);
-    }
+    // const toggleCollapse = () => {
+    //     setExpanded(!expanded);
+    // }
 
     const furtherItems = () => {
         setItems(items.concat(Array.from({length: 20}, () => {
