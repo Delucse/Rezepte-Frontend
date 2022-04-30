@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { submit } from "../../actions/recipeActions";
+import { checkRecipeError, submitRecipe } from "../../actions/recipeActions";
 
-import { Box, Alert } from "@mui/material";
+import { Box, Alert, Button } from "@mui/material";
 
 function Preview() {
 
@@ -12,7 +12,7 @@ function Preview() {
     const {error} = recipe;
 
     useEffect(() => {    
-        dispatch(submit());
+        dispatch(checkRecipeError());
     });
 
     return(
@@ -22,7 +22,11 @@ function Preview() {
                     <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es gibt noch Fehler.</Alert>
                     </Box>
-                : <div>Alles okay! TODO: Preview</div>
+                :   <div>Alles okay! TODO: Preview
+                        <div>
+                            <Button variant="contained" sx={{borderRadius: 0}} onClick={() => dispatch(submitRecipe())}>Submit</Button>
+                        </div>
+                    </div>
             : null}
             <div style={error.pictures ? {marginTop: '10px'} : {}}/>
         </div>

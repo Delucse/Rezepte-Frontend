@@ -35,7 +35,7 @@ function Step(props){
                 error={props.step.length === 0 && props.error}
                 label={`Schritt ${props.index+1}`}
                 start={
-                    props.index+1
+                    `${props.index+1}.`
                 }
             />
             <Button disabled={props.length === 1} onClick={() => dispatch(removeStep(props.index))} sx={{height: '56px', marginLeft: '5px', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} variant='outlined'>

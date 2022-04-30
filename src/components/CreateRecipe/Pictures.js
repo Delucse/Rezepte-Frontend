@@ -5,6 +5,9 @@ import { changePictures, removePicture, onDragEndPicture } from "../../actions/r
 
 import { ReactSortable } from "react-sortablejs";
 
+import imageCompression from 'browser-image-compression';
+
+
 import Icon from '@mdi/react';
 import { mdiDelete, mdiFullscreen, mdiCamera } from '@mdi/js'; 
 
@@ -21,7 +24,50 @@ function PictureInput(props){
     const dispatch = useDispatch();
 
     const [drag, setDrag] = useState(false);
-    const [counter, setCounter] = useState(0)
+    const [counter, setCounter] = useState(0);
+
+
+    const onHandleFileInput = async (e) => {
+
+        var targetFiles = [...e.target.files];
+    
+        if(targetFiles.length + pictures.length > 4){
+          alert('Insgesamt zu viele Bilder. Es dürfen nur maximal vier Bilder hochgeladen werden.')
+          return
+        }
+    
+        var error = false
+        var index = 0
+        while (!error && index < targetFiles.length){
+          if(!["image/jpeg","image/png"].includes(targetFiles[index].type)){
+            error = true;
+          }
+          index += 1;
+        }
+        if(error){
+          alert('Falsches Dateiformat.')
+          return;
+        }
+    
+        const options = {
+          maxSizeMB: 2,
+          maxWidthOrHeight: 600,
+          useWebWorker: true,
+          // onProgress: (percent) => {console.log(percent)}
+        }
+        const promises = targetFiles.map(file =>  {
+         return imageCompression(file, options)
+          .then(compressedBlob => {
+              // Conver the blob to file
+              return new File([compressedBlob], file.name, { type: file.type, lastModified: Date.now()})
+          })
+          .catch(e => {
+            console.log('image', e)  
+          });
+        })
+        const files = await Promise.all(promises);
+        dispatch(changePictures(files))
+      }
         
     const handleDrag = (e) => {
         e.preventDefault();
@@ -68,7 +114,7 @@ function PictureInput(props){
             <input
                 style={{display: 'none'}}
                 accept="image/*"
-                onChange={(e) => {dispatch(changePictures(e.target.files))}}
+                onChange={onHandleFileInput}
                 name="picture"
                 id="picture-button-file"
                 type="file"

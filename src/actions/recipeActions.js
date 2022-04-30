@@ -1,5 +1,7 @@
 import { SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES, SET_RECIPE_CATEGORIES} from '../actions/types';
 
+import axios from 'axios';
+
 const setError = (key, value) => (dispatch, getState) => {
   var error = getState().recipe.error;
   switch (key) {
@@ -78,20 +80,6 @@ const setError = (key, value) => (dispatch, getState) => {
     type: SET_RECIPE_ERROR,
     payload: error
   })
-}
-
-export const submit = () => (dispatch, getState) => {
-  const {title, portion, source, time, categories, keywords, ingredients, steps, pictures} = getState().recipe;
-  dispatch(setError('title', title));
-  dispatch(setError('portion', portion));
-  dispatch(setError('source', source));
-  dispatch(setError('time', time));
-  dispatch(setError('categories', categories));
-  dispatch(setError('keywords', keywords));
-  dispatch(setError('ingredients', ingredients));
-  dispatch(setError('steps', steps));
-  dispatch(setError('pictures', pictures));
-  dispatch(setError('submit'));
 }
 
 export const setRecipeTitle = (title) => (dispatch, getState) => {
@@ -358,12 +346,16 @@ export const changePictures = (files) => (dispatch, getState) => {
   for (const key of Object.keys(files)) {
     var filter = pictures.filter(pic => pic.title === files[key].name);
     if(filter.length === 0){
-      pictures.push({file: files[key], url: URL.createObjectURL(files[key]), title: files[key].name});
+      pictures.push({
+        file: files[key],
+        url: URL.createObjectURL(files[key]), 
+        title: files[key].name
+      });
     }
-    else {
-      alert('already exists');
-      // error: image already exists
-    }
+    // else {
+    //   alert('already exists');
+    //   // error: image already exists
+    // }
   }
   dispatch({
     type: SET_RECIPE_PICTURES,
@@ -371,7 +363,7 @@ export const changePictures = (files) => (dispatch, getState) => {
   });
   if(getState().recipe.error.submit){
     dispatch(setError('pictures', pictures));
-  }
+  } 
 };
 
 
@@ -385,7 +377,7 @@ export const removePicture = (url) => (dispatch, getState) => {
     payload: newPictures
   });
   if(getState().recipe.error.submit){
-    dispatch(setError('pictures', pictures));
+    dispatch(setError('pictures', newPictures));
   }
 };
 
@@ -395,4 +387,80 @@ export const onDragEndPicture = (pictures) => (dispatch) => {
     type: SET_RECIPE_PICTURES,
     payload: pictures
   });
+};
+
+
+export const checkRecipeError = () => (dispatch, getState) => {
+  const {title, portion, source, time, categories, keywords, ingredients, steps, pictures} = getState().recipe;
+  dispatch(setError('title', title));
+  dispatch(setError('portion', portion));
+  dispatch(setError('source', source));
+  dispatch(setError('time', time));
+  dispatch(setError('categories', categories));
+  dispatch(setError('keywords', keywords));
+  dispatch(setError('ingredients', ingredients));
+  dispatch(setError('steps', steps));
+  dispatch(setError('pictures', pictures));
+  dispatch(setError('submit'));
+}
+
+
+const objectToFormData = (data, formData, subkey) => {
+  Object.entries(data).forEach(([key, value]) => {
+    var newkey;
+    if(subkey){
+      newkey = `${subkey}[${key}]`;
+    } else {
+      newkey = key;
+    }
+    if(typeof(value) === 'object') {
+      formData = objectToFormData(data[key], formData, newkey);
+    }
+    else {
+      formData.append(newkey, value);
+    }
+  });
+  return formData;
+}
+
+export const submitRecipe = () => (dispatch, getState) => {
+  var {title, portion, source, time, categories, keywords, ingredients, steps, pictures} = getState().recipe;
+
+  Object.entries(categories).forEach(([key])  => {
+    if(categories[key]){
+      keywords = keywords.concat(categories[key]);
+    }
+  });
+
+  var data = {
+    title, source, portion, time, keywords, ingredients, steps
+  }
+
+  var body = new FormData();
+  body = objectToFormData(data, body);
+  
+  if(pictures.length > 0){
+    pictures.forEach((pic, i) => {
+      body.append('pictures', pic.file);
+    });
+  }
+
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data', // necessary to upload files
+    },
+    onUploadProgress: progressEvent => {
+      console.log('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
+    },
+    onDownloadProgress: progressEvent => {
+      console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
+    }
+  };
+  axios.post(`${process.env.REACT_APP_API_URL}/recipe`, body, config)
+    .then(res => {
+      console.info(res.data)
+    })
+    .catch(err => {
+      console.error(err);
+    });
 };
