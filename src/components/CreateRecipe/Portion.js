@@ -4,17 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { setRecipePortion } from "../../actions/recipeActions";
 
 import Textfield from "../Textfield";
+import Autocomplete from "../Autocomplete";
 
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { Button, MenuItem, InputLabel, Select, InputAdornment } from "@mui/material";
+import { Button } from "@mui/material";
 
 import Icon from '@mdi/react';
 import { mdiCupcake } from '@mdi/js'; 
 
+import bakeware from '../../data/bakeware.json';
 
 function Portion() {
 
@@ -38,8 +40,12 @@ function Portion() {
         } 
     }
 
-    const setVolume = (e) => {
-        dispatch(setRecipePortion(count, parseInt(e.target.value)))
+    const setVolume = (volume) => {
+        if(volume){
+            dispatch(setRecipePortion(count, volume))    
+        } else {
+            dispatch(setRecipePortion(count, 1))
+        }
     }
 
     return(
@@ -58,7 +64,7 @@ function Portion() {
             </FormControl>
             {volume >= 0 ?
                 <div style={{display: 'flex'}}>
-                    <div style={{display: 'flex', width: '110px'}}>
+                    <div style={{display: 'flex', width: '110px', marginRight: '10px'}}>
                         <Button
                             disabled={count <= 1}
                             sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '23px', padding: 0}} 
@@ -77,26 +83,18 @@ function Portion() {
                         </Button>
                     </div> 
                     { volume > 0 ?
-                        <FormControl fullWidth sx={{marginLeft: '20px'}} error={error.portion && volume === 1}>
-                            <InputLabel id="volume">Backform</InputLabel>
-                            <Select
-                                sx={{borderRadius: '0px'}}
-                                defaultOpen
-                                labelId="volume"
-                                value={volume}
-                                label='Backform'
-                                onChange={setVolume}
-                                startAdornment={
-                                    <InputAdornment sx={{maxHeight: '56px', height: '56px'}} position="start">
-                                        <Icon path={mdiCupcake} size={1}/>
-                                    </InputAdornment>
-                                }
-                            >   
-                                <MenuItem value={10}>28er-Form</MenuItem>
-                                <MenuItem value={20}>26er-Form</MenuItem>
-                                <MenuItem value={30}>Backblech</MenuItem>
-                            </Select>
-                        </FormControl> 
+                        <Autocomplete
+                            value={bakeware.filter(bake => bake.volume === volume)[0]}
+                            onChange={setVolume}
+                            options={bakeware}
+                            optionLabel={'name'}
+                            optionGroup={'group'}
+                            optionChange={'volume'}
+                            label={'Backform'}
+                            start={<Icon path={mdiCupcake} size={1}/>}
+                            error={error.portion && volume === 1}
+                            fullWidth={true}                            
+                        />
                     : null}
                 </div>
             : null}

@@ -4,11 +4,15 @@ import { useDispatch, useSelector } from "react-redux";
 import {changeIngredientsTitle, changeIngredientsPosition, addIngredients, changeAmount, changeUnit, changeAliment, addFood, removeFood, changeFoodPosition, removeIngredients } from "../../actions/recipeActions";
 
 import Textfield from "../Textfield";
+import Autocomplete from "../Autocomplete";
 
 import Icon from '@mdi/react';
-import { mdiFoodVariant, mdiDelete, mdiChevronUp, mdiChevronDown, mdiPlus, mdiTextShadow } from '@mdi/js'; 
+import { mdiFoodVariant, mdiDelete, mdiChevronUp, mdiChevronDown, mdiPlus, mdiTextShadow} from '@mdi/js'; 
 
 import { Button, Alert, Box } from "@mui/material";
+
+import units from '../../data/units.json';
+import aliments from '../../data/aliments.json';
 
 
 function Title(props){
@@ -50,6 +54,21 @@ function Food(props){
 
     const dispatch = useDispatch();
 
+    const setUnit = (unit) => {
+        if(unit){
+            dispatch(changeUnit(props.iIndex, props.fIndex, unit));
+        } else {
+            dispatch(changeUnit(props.iIndex, props.fIndex, ""));
+        }
+    }
+    const setAliment = (aliment) => {
+        if(aliment){
+            dispatch(changeAliment(props.iIndex, props.fIndex, aliment));
+        } else {
+            dispatch(changeAliment(props.iIndex, props.fIndex, ""));
+        }
+    }
+
     return (
         <div style={{display: 'flex', marginLeft: '5%', marginRight: '5%', marginBottom: props.length - 1 === props.fIndex ? 0 : '10px'}}>
             <div style={{display: 'grid', marginRight: '5px'}}>
@@ -75,17 +94,20 @@ function Food(props){
                 />
             </div>
             <div style={{width: '25%', marginRight: '5px'}}>
-                <Textfield 
+                <Autocomplete
                     value={props.unit} 
-                    onChange={(e) => dispatch(changeUnit(props.iIndex, props.fIndex, e.target.value))}
+                    options={units}
+                    optionLabel={'unit'}
+                    optionGroup={'group'}
+                    optionChange={'unit'}
+                    label='Einheit'
+                    fullWidth
+                    onChange={setUnit}
+                    freeSolo
                     error={props.unit === '' && props.error}
-                    label='Einheit' 
-                    // start={
-                    //     <Icon path={mdiWeight  } size={1}/>
-                    // }
                 />
             </div>
-            <Textfield 
+            {/* <Textfield 
                 value={props.aliment} 
                 onChange={(e) => dispatch(changeAliment(props.iIndex, props.fIndex, e.target.value))}
                 error={props.aliment === '' && props.error}
@@ -93,6 +115,19 @@ function Food(props){
                 start={
                     <Icon path={mdiFoodVariant } size={1}/>
                 }
+            /> */}
+            <Autocomplete
+                value={props.aliment} 
+                options={aliments}
+                // optionLabel={'aliment'}
+                // optionGroup={'group'}
+                // optionChange={'aliment'}
+                label='Zutat'
+                fullWidth
+                onChange={setAliment}
+                freeSolo
+                error={props.aliment === '' && props.error}
+                start={<Icon path={mdiFoodVariant } size={1}/>}
             />
             <Button disabled={props.length === 1} onClick={() => dispatch(removeFood(props.iIndex, props.fIndex))} sx={{height: '56px', marginLeft: '5px', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} variant='outlined'>
                 <Icon path={mdiDelete} size={1}/>

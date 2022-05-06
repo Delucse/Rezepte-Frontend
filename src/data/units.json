@@ -1,0 +1,12 @@
+[
+    {
+        "description": "Teelöffel",
+        "unit": "TL",
+        "group": "Volumen"
+    },
+    {
+        "description": "Esslöffel",
+        "unit": "EL",
+        "group": "Volumen"
+    }
+]

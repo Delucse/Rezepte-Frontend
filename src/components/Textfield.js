@@ -8,22 +8,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 function Textfield(props) {
 
-    // const [error, setError] = useState(false);
-
-    // const isInitialMount = useRef(true);
-
-    // useEffect(() => {
-    //     if (isInitialMount.current) {
-    //         isInitialMount.current = false;
-    //      } else {
-    //         if(props.error && props.value === ''){
-    //             setError(true)
-    //         } else {
-    //             setError(false)
-    //         }
-    //     }
-    // }, [props.value]);
-
     return (
         <FormControl
             variant="outlined"
