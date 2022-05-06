@@ -18,6 +18,7 @@ import Test2 from './pages/Test2';
 import Pictures from './pages/Pictures';
 import Layout from './components/Layout';
 import Recipes from './pages/Recipes';
+import Recipe from './pages/Recipe';
 import CreateRecipe from './pages/CreateRecipe';
 
 const addAlphaToHex = (color, opacity) => {
@@ -31,7 +32,7 @@ function App() {
     palette: {
         primary: {
             main: '#0B6623',//'#E85917',
-            light: addAlphaToHex('#E85917', 0.65)
+            light: addAlphaToHex('#0B6623', 0.5)
         }
     }
   };
@@ -49,6 +50,7 @@ function App() {
                 <Route exact path="bilder" element={<Pictures />}/>
                 <Route path="rezepte">
                   <Route exact path="erstellen" element={<CreateRecipe />}/>
+                  <Route exact path=":id" element={<Recipe />}/>
                   <Route index element={<Recipes />}/>
                 </Route>
                 <Route path="*" element={<Error />}/>

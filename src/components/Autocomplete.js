@@ -53,7 +53,7 @@ function Autocomplete(props) {
                     if (inputValue !== '' && !isExisting) {
                         filtered.push({
                             inputValue,
-                            unit: `Add "${inputValue}"`,
+                            unit: `"${inputValue}" hinzufügen`,
                         });
                     }
                     return filtered;

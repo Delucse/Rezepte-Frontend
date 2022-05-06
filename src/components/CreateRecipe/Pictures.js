@@ -30,44 +30,44 @@ function PictureInput(props){
     const onHandleFileInput = async (e) => {
 
         var targetFiles = [...e.target.files];
-    
+
         if(targetFiles.length + pictures.length > 4){
-          alert('Insgesamt zu viele Bilder. Es dürfen nur maximal vier Bilder hochgeladen werden.')
-          return
+            alert('Insgesamt zu viele Bilder. Es dürfen nur maximal vier Bilder hochgeladen werden.')
+            return
         }
-    
+
         var error = false
         var index = 0
         while (!error && index < targetFiles.length){
-          if(!["image/jpeg","image/png"].includes(targetFiles[index].type)){
+            if(!["image/jpeg","image/png"].includes(targetFiles[index].type)){
             error = true;
-          }
-          index += 1;
+            }
+            index += 1;
         }
         if(error){
-          alert('Falsches Dateiformat.')
-          return;
+            alert('Falsches Dateiformat.')
+            return;
         }
-    
+
         const options = {
-          maxSizeMB: 2,
-          maxWidthOrHeight: 600,
-          useWebWorker: true,
-          // onProgress: (percent) => {console.log(percent)}
+            maxSizeMB: 2,
+            maxWidthOrHeight: 600,
+            useWebWorker: true,
+            // onProgress: (percent) => {console.log(percent)}
         }
         const promises = targetFiles.map(file =>  {
-         return imageCompression(file, options)
-          .then(compressedBlob => {
-              // Conver the blob to file
-              return new File([compressedBlob], file.name, { type: file.type, lastModified: Date.now()})
-          })
-          .catch(e => {
+            return imageCompression(file, options)
+            .then(compressedBlob => {
+                // Conver the blob to file
+                return new File([compressedBlob], file.name, { type: file.type, lastModified: Date.now()})
+            })
+            .catch(e => {
             console.log('image', e)  
-          });
+            });
         })
         const files = await Promise.all(promises);
         dispatch(changePictures(files))
-      }
+    }
         
     const handleDrag = (e) => {
         e.preventDefault();

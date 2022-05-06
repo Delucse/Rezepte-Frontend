@@ -12,10 +12,11 @@ function Favourite(){
     return (
         <IconButton 
             title="zum Kochbuch hinzufügen" 
-            onClick={() => alert('ich liebe es!')} 
+            onClick={(e) => {e.stopPropagation(); alert('ich liebe es!');}} 
             color={mouseover ? 'primary' : 'default'}
             onMouseOver={() => setMouseover(true)}
             onMouseOut={() => setMouseover(false)}
+            sx={{padding: 0}}
         >
             <Icon 
                 path={mouseover ? mdiNotebookHeart : mdiNotebookHeartOutline } 

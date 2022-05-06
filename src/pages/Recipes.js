@@ -5,14 +5,13 @@ import { LoremIpsum } from "lorem-ipsum";
 
 import Favourite from '../components/Favourite';
 // import Rating from '../components/Rating';
+import NotePaper from '../components/NotePaper';
+
+import { useNavigate } from "react-router-dom";
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
@@ -55,7 +54,9 @@ function Recipes(){
         })))
     }
 
-    const gutter = parseInt(theme.spacing(2).replace('px', ''))
+    const gutter = parseInt(theme.spacing(3).replace('px', ''))
+
+    const navigate = useNavigate();
 
     return(
         <div style={{marginTop: '-10px'}}>
@@ -63,48 +64,51 @@ function Recipes(){
                 gridRef={() => ref}
                 style={{marginTop: '10px', marginBottom: '30px'}}
                 columnWidth={`${100/column}%`}
-                gutterHeight={gutter/2}
+                gutterHeight={gutter/1}
                 gutterWidth={gutter}
             >
                 {items.map((item, index) => {
                     return(
-                        <Card square key={index} sx={{marginBottom: '10px'}}>
-                            <CardHeader
-                                sx={{tectAlign: 'left', '.MuiCardHeader-title': {fontWeight: 'bold', fontSize: '20px'}}}
-                                // avatar={<Avatar sx={{backgroundColor: theme => theme.palette.primary.light}}>LN</Avatar>}
-                                action={<Favourite />}
-                                title={item.title + ' (' + (index+1) + ')'}
-                                // subheader={`von ${'Luc'}`}
-                            />
-                            <CardMedia
-                                sx={{height: '0px', paddingTop: '56.25%' /*16:9*/}}
-                                image="https://cheapandcheerfulcooking.com/wp-content/uploads/2020/05/vegan-feijoada-1.jpg"
-                                title="Title of dish"
-                            />
-                            <CardContent sx={{textAlign: 'justify', paddingBottom: '10px !important', paddingTop: '10px !important'}}>
-                                <div style={{display: 'flex', marginBottom: '10px'}}>
+                        <NotePaper onClick={() => {navigate(`/rezepte/626cffa2a7d82ddeddf4127f`);}} style={{cursor: 'pointer'}}>
+                            <Box sx={{display: 'flex', marginBottom: '24px'}}>
+                                <Box sx={{fontWeight: 700, fontSize: '20px', lineHeight: '24px', marginRight: '5px', flexGrow: 1}}>
+                                    {item.title + ' (' + (index+1) + ')'}
+                                </Box>
+                                <Box sx={{float: 'right', height: '24px'}}>
+                                    <Favourite/>
+                                </Box>
+                            </Box>
+                            <Box sx={{height: 'calc(24px * 10)', marginBottom: '24px', width: 'calc(100% + 24px)'}}>
+                                <img src={"https://cheapandcheerfulcooking.com/wp-content/uploads/2020/05/vegan-feijoada-1.jpg"} alt="Title of dish" style={{height: '100%', width: '100%', objectFit: 'cover'}}/>
+                            </Box>
+                            <Box>
+                                <div style={{display: 'flex'}}>
                                     {item.type === 'vegetarisch' || item.type === 'vegan' ?
-                                        <Box title="vegetarisch" sx={{'&:hover': {color: theme => theme.palette.primary.main, border: theme => `1px solid ${theme.palette.primary.main}`}, color: theme => theme.palette.primary.light, border: theme => `1px solid ${theme.palette.primary.light}`, marginRight: '10px', borderRadius: '50%', height: '30px', width: '30px', justifyContent: 'center', display: 'grid', alignContent: 'center'}}>
+                                        <Box title="vegetarisch" sx={{'&:hover': {color: theme => theme.palette.primary.light, border: theme => `1px solid ${theme.palette.primary.light}`}, color: theme => theme.palette.primary.main, border: theme => `1px solid ${theme.palette.primary.main}`, marginRight: '10px', borderRadius: '50%', height: 'calc(24px - 1px - 1px)', width: 'calc(24px - 1px - 1px)', justifyContent: 'center', display: 'grid', alignContent: 'center'}}>
                                             <Icon path={mdiFoodSteakOff} size={0.8} style={{color: 'inherit'}}/>
                                         </Box>
                                     : null}
-                                    {item.type === 'vegan' ?
-                                        <Box title="vegan" sx={{'&:hover': {color: theme => theme.palette.primary.main, border: theme => `1px solid ${theme.palette.primary.main}`}, color: theme => theme.palette.primary.light, border: theme => `1px solid ${theme.palette.primary.light}`, marginRight: '10px', borderRadius: '50%', height: '30px', width: '30px', justifyContent: 'center', display: 'grid', alignContent: 'center'}}>
+                                    {item.type ==='vegan' ?
+                                        <Box title="vegan" sx={{'&:hover': {color: theme => theme.palette.primary.light, border: theme => `1px solid ${theme.palette.primary.light}`}, color: theme => theme.palette.primary.main, border: theme => `1px solid ${theme.palette.primary.main}`, marginRight: '10px', borderRadius: '50%', height: 'calc(24px - 1px - 1px)', width: 'calc(24px - 1px - 1px)', justifyContent: 'center', display: 'grid', alignContent: 'center'}}>
                                             <Icon path={mdiEggOffOutline} size={0.8} style={{color: 'inherit'}}/>
                                         </Box>
                                     : null}
-                                    {item.type === 'glutenfrei' ?
-                                        <Box title="glutenfrei" sx={{'&:hover': {color: theme => theme.palette.primary.main, border: theme => `1px solid ${theme.palette.primary.main}`}, color: theme => theme.palette.primary.light, border: theme => `1px solid ${theme.palette.primary.light}`, marginRight: '10px', borderRadius: '50%', height: '30px', width: '30px', justifyContent: 'center', display: 'grid', alignContent: 'center'}}>
+                                    {item.type ==='glutenfrei' ?
+                                        <Box title="glutenfrei" sx={{'&:hover': {color: theme => theme.palette.primary.light, border: theme => `1px solid ${theme.palette.primary.light}`}, color: theme => theme.palette.primary.main, border: theme => `1px solid ${theme.palette.primary.main}`, marginRight: '10px', borderRadius: '50%', height: 'calc(24px - 1px - 1px)', width: 'calc(24px - 1px - 1px)', justifyContent: 'center', display: 'grid', alignContent: 'center'}}>
+                                            <Icon path={mdiBarleyOff} size={0.8} style={{color: 'inherit'}}/>
+                                        </Box>
+                                    : null}
+                                    {item.type === 'laktosefrei' ?
+                                        <Box title="laktosefrei" sx={{'&:hover': {color: theme => theme.palette.primary.light, border: theme => `1px solid ${theme.palette.primary.light}`}, color: theme => theme.palette.primary.main, border: theme => `1px solid ${theme.palette.primary.main}`, marginRight: '10px', borderRadius: '50%', height: 'calc(24px - 1px - 1px)', width: 'calc(24px - 1px - 1px)', justifyContent: 'center', display: 'grid', alignContent: 'center'}}>
                                             <Icon path={mdiBarleyOff} size={0.8} style={{color: 'inherit'}}/>
                                         </Box>
                                     : null}
                                 </div>
-                                <Typography variant="body2" color="textSecondary" component="p">
+                                <Typography variant="body2" color="textSecondary" component="p" sx={{lineHeight: '24px'}}>
                                     {item.content}
                                 </Typography>
-                                {/* <Rating /> */}
-                            </CardContent>
-                        </Card>
+                            </Box>
+                        </NotePaper>
                     );
                 })}
             </StackGrid>
