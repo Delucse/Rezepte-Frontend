@@ -22,7 +22,7 @@ function Autocomplete(props) {
                     // Create a new value from the user input
                     props.onChange(newValue.inputValue)
                 } else {
-                    props.onChange(newValue[props.optionChange])
+                    props.onChange(newValue[props.optionChange ? props.optionChange : props.optionLabel])
                 }
             }}
             inputValue={inputValue}
@@ -49,12 +49,12 @@ function Autocomplete(props) {
                     const filtered = filter(options, params);
                     const { inputValue } = params;
                     // Suggest the creation of a new value
-                    const isExisting = options.some((option) => inputValue === option.unit);
+                    if(props.optionLabel){}
+                    const isExisting = options.some((option) => inputValue === option[props.optionLabel]);
                     if (inputValue !== '' && !isExisting) {
-                        filtered.push({
-                            inputValue,
-                            unit: `"${inputValue}" hinzufügen`,
-                        });
+                        var object = {inputValue};
+                        object[props.optionLabel] = `"${inputValue}" hinzufügen`;
+                        filtered.push(object);
                     }
                     return filtered;
                 } : filter

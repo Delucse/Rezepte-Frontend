@@ -99,7 +99,6 @@ function Food(props){
                     options={units}
                     optionLabel={'unit'}
                     optionGroup={'group'}
-                    optionChange={'unit'}
                     label='Einheit'
                     fullWidth
                     onChange={setUnit}
@@ -107,21 +106,10 @@ function Food(props){
                     error={props.unit === '' && props.error}
                 />
             </div>
-            {/* <Textfield 
-                value={props.aliment} 
-                onChange={(e) => dispatch(changeAliment(props.iIndex, props.fIndex, e.target.value))}
-                error={props.aliment === '' && props.error}
-                label='Zutat' 
-                start={
-                    <Icon path={mdiFoodVariant } size={1}/>
-                }
-            /> */}
             <Autocomplete
                 value={props.aliment} 
                 options={aliments}
-                // optionLabel={'aliment'}
-                // optionGroup={'group'}
-                // optionChange={'aliment'}
+                optionLabel={'aliment'}
                 label='Zutat'
                 fullWidth
                 onChange={setAliment}

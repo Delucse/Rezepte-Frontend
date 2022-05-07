@@ -69,7 +69,7 @@ function Recipes(){
             >
                 {items.map((item, index) => {
                     return(
-                        <NotePaper onClick={() => {navigate(`/rezepte/626cffa2a7d82ddeddf4127f`);}} style={{cursor: 'pointer'}}>
+                        <NotePaper onClick={() => {navigate(`/rezepte/626cffa2a7d82ddeddf4127f`);}} style={{cursor: 'pointer'}} key={index}>
                             <Box sx={{display: 'flex', marginBottom: '24px'}}>
                                 <Box sx={{fontWeight: 700, fontSize: '20px', lineHeight: '24px', marginRight: '5px', flexGrow: 1}}>
                                     {item.title + ' (' + (index+1) + ')'}
