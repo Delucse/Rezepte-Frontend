@@ -19,7 +19,7 @@ import Pictures from './pages/Pictures';
 import Layout from './components/Layout';
 import Recipes from './pages/Recipes';
 import Recipe from './pages/Recipe';
-import CreateRecipe from './pages/CreateRecipe';
+import RecipeFormular from './pages/RecipeFormular';
 
 const addAlphaToHex = (color, opacity) => {
   opacity = Math.round(Math.min(Math.max(opacity || 1, 0), 1) * 255);
@@ -49,7 +49,7 @@ function App() {
                 <Route exact path="test2" element={<Test2 />}/>
                 <Route exact path="bilder" element={<Pictures />}/>
                 <Route path="rezepte">
-                  <Route exact path="erstellen" element={<CreateRecipe />}/>
+                  <Route exact path="formular" element={<RecipeFormular />}/>
                   <Route exact path=":id" element={<Recipe />}/>
                   <Route index element={<Recipes />}/>
                 </Route>

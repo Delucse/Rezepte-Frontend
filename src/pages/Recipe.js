@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
-import axios from 'axios'
+import { useDispatch, useSelector } from "react-redux";
+import { getRecipe, getRecipePreview, resetRecipe } from '../actions/recipeActions';
+
+import { useParams  } from "react-router-dom";
 
 import Fraction from '../components/Fraction';
 import NotePaper from '../components/NotePaper';
-
-import { useParams  } from "react-router-dom";
 
 import { Grid, Box, List, ListItem, ListItemIcon, ListItemText, Chip, Typography, IconButton } from "@mui/material";
 
@@ -14,24 +15,27 @@ import { mdiBarleyOff, mdiClockOutline, mdiEggOffOutline, mdiFoodSteakOff, mdiPe
 
 import bakeware from '../data/bakeware.json';
 
-
 function Recipe(){
 
     const {id} = useParams ();
-    const [recipe, setRecipe] = useState(null);
-    const [error, setError] = useState(false);
+
+    const dispatch = useDispatch();
+    const recipe = useSelector((state) => state.recipe);
+    const {error, loading} = useSelector((state) => state.settings);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_API_URL}/recipe/${id}`).then((response) => {
-            setRecipe(response.data)
-        })
-        .catch(err => {
-            setError(true);
-        });
-      }, [id]);
+        if(id){
+            dispatch(getRecipe(id));
+        } else {
+            dispatch(getRecipePreview());
+        }
+        return () => {      
+            dispatch(resetRecipe());
+        }; 
+    }, [id, dispatch]);
 
     return(
-        recipe && !error ? 
+        !loading && !error && recipe.title ? 
             <NotePaper>
                 {/* Titel */}
                 <div style={{fontWeight: 700, fontSize: '22px', lineHeight: '24px', marginBottom: '24px'}}>{recipe.title}</div>
@@ -39,7 +43,7 @@ function Recipe(){
                 <Grid container spacing={0} sx={{marginBottom: '24px'}}>
                     <Grid item xs={12} sm={6} sx={{height: 'calc(24px * 10)'}}>
                          <img 
-                            src={`${process.env.REACT_APP_API_URL}/media/${recipe.pictures[0].file}`}
+                            src={recipe.pictures[0].url ? recipe.pictures[0].url : `${process.env.REACT_APP_API_URL}/media/${recipe.pictures[0].file}`}
                             alt={recipe.title} 
                             style={{border: '1px solid black', height: '100%', width: '100%', objectFit: 'cover'}}
                         />
@@ -81,7 +85,7 @@ function Recipe(){
                         {/* Portion */}
                         <div style={{display: 'flex'}}>
                             <Typography style={{lineHeight: '24px'}} variant="body1">
-                                für {recipe.portion.count} {recipe.portion.volume > 0 ? bakeware.filter(bake => bake.volume === recipe.portion.volume).length > 0 ? bakeware.filter(bake => bake.volume === recipe.portion.volume)[0].volume : 'individuelle Backform' : 'Portion'}                        
+                                für {recipe.settings.count} {recipe.settings.volume > 0 ? bakeware.filter(bake => bake.volume === recipe.settings.volume).length > 0 ? bakeware.filter(bake => bake.volume === recipe.settings.volume)[0].name : 'individuelle Backform' : 'Portion'}                        
                             </Typography>
                             <IconButton sx={{height: '24px', width: '24px', marginLeft: '5px', padding: 0}} color="primary"><Icon path={mdiPencil} size={1}/></IconButton>
                         </div>
@@ -106,7 +110,7 @@ function Recipe(){
                                                     -
                                                 </ListItemIcon>
                                                 <ListItemIcon sx={{minWidth: '0px', color: 'black', marginRight: '4px'}}>
-                                                    <Typography variant="body1">{recipe.portion.volume > 0 ? <Fraction decimal={food.amount * (recipe.portion.count / recipe.portion.count) * (recipe.portion.volume / recipe.portion.volume)} /> : <Fraction decimal={food.amount * (recipe.portion.count / recipe.portion.count)} />}</Typography>
+                                                    <Typography variant="body1">{recipe.portion.volume > 0 ? <Fraction decimal={food.amount * (recipe.settings.count / recipe.portion.count) * (recipe.settings.volume / recipe.portion.volume)} /> : <Fraction decimal={food.amount * (recipe.settings.count / recipe.portion.count)} />}</Typography>
                                                 </ListItemIcon>
                                                 <ListItemText
                                                     primary={`${food.unit} ${food.aliment}`}

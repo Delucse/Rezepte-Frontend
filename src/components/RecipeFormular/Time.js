@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { setRecipeTime } from "../../actions/recipeActions";
+import { setRecipeTime } from "../../actions/recipeFormularActions";
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -101,7 +101,7 @@ function TimePicker(props) {
 
 function Time(){
 
-    const recipe = useSelector((state) => state.recipe);
+    const recipe = useSelector((state) => state.recipeFormular);
     const {error, time} = recipe;
 
     return(

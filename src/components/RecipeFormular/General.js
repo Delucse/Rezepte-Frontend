@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setRecipeTitle, setRecipeSource } from "../../actions/recipeActions";
+import { setRecipeTitle, setRecipeSource } from "../../actions/recipeFormularActions";
 
 import Textfield from "../Textfield";
 import Portion from "./Portion";
@@ -15,7 +15,7 @@ import { Alert, Box } from "@mui/material";
 function General() {
 
     const dispatch = useDispatch();
-    const recipe = useSelector((state) => state.recipe);
+    const recipe = useSelector((state) => state.recipeFormular);
     const {title, source, error} = recipe;
 
     const onChangeTitle = (e) => {

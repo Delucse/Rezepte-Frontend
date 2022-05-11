@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { setRecipePortion } from "../../actions/recipeActions";
+import { setRecipePortion } from "../../actions/recipeFormularActions";
 
 import Textfield from "../Textfield";
 import Autocomplete from "../Autocomplete";
@@ -21,7 +21,7 @@ import bakeware from '../../data/bakeware.json';
 function Portion() {
 
     const dispatch = useDispatch();
-    const {portion, error} = useSelector((state) => state.recipe);
+    const {portion, error} = useSelector((state) => state.recipeFormular);
     const { count, volume } = portion;
 
     const portionAdd = () => {

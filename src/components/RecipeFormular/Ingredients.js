@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import {changeIngredientsTitle, changeIngredientsPosition, addIngredients, changeAmount, changeUnit, changeAliment, addFood, removeFood, changeFoodPosition, removeIngredients } from "../../actions/recipeActions";
+import {changeIngredientsTitle, changeIngredientsPosition, addIngredients, changeAmount, changeUnit, changeAliment, addFood, removeFood, changeFoodPosition, removeIngredients } from "../../actions/recipeFormularActions";
 
 import Textfield from "../Textfield";
 import Autocomplete from "../Autocomplete";
@@ -126,7 +126,7 @@ function Food(props){
 
 function Ingredients() {
 
-    const recipe = useSelector((state) => state.recipe);
+    const recipe = useSelector((state) => state.recipeFormular);
     var {ingredients, error} = recipe;
 
     return(

@@ -1,4 +1,12 @@
+// Settings
+export const ERROR = 'ERROR';
+export const LOADING = 'LOADING';
+
 // Recipe
+export const GET_RECIPE = 'GET_RECIPE';
+export const SET_RECIPE_SETTINGS = 'SET_RECIPE_SETTINGS';
+
+// Recipe Formular
 export const SET_RECIPE_ERROR = 'SET_RECIPE_ERROR'
 export const SET_RECIPE_TITLE = 'SET_RECIPE_TITLE';
 export const SET_RECIPE_PORTION = 'SET_RECIPE_PORTION';
@@ -10,3 +18,4 @@ export const SET_RECIPE_STEPS = 'SET_RECIPE_STEPS';
 export const SET_RECIPE_PICTURES = 'SET_RECIPE_PICTURES';
 export const SET_RECIPE_TIME = 'SET_RECIPE_TIME';
 export const SET_RECIPE_CATEGORIES = 'SET_RECIPE_CATEGORIES';
+export const SET_RECIPE_FORMULAR = 'SET_RECIPE_FORMULAR';

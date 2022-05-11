@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { changePictures, removePicture, onDragEndPicture } from "../../actions/recipeActions";
+import { changePictures, removePicture, onDragEndPicture } from "../../actions/recipeFormularActions";
 
 import { ReactSortable } from "react-sortablejs";
 
@@ -18,7 +18,7 @@ import { Alert, Box, InputLabel, Dialog, DialogContent, DialogTitle, IconButton,
 
 function PictureInput(props){
 
-    const recipe = useSelector((state) => state.recipe);
+    const recipe = useSelector((state) => state.recipeFormular);
     var {pictures} = recipe;
 
     const dispatch = useDispatch();
@@ -150,7 +150,7 @@ function Pictures() {
 
     const dispatch = useDispatch();
 
-    const recipe = useSelector((state) => state.recipe);
+    const recipe = useSelector((state) => state.recipeFormular);
     var {pictures, error} = recipe;
 
     const [open, setOpen] = useState(false);

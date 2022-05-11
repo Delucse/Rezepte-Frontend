@@ -14,7 +14,7 @@ function NotePaper(props){
                 background: '#f6f6f6',
                 boxShadow: '0 1px 4px hsla(0,0%,0%,.25)',
                 position: "relative",
-                backgroundImage: "radial-gradient(white 21%, transparent 21%), radial-gradient(white 10%, transparent 12%), linear-gradient(to top, hsla(0,0%,0%,0) 0%, hsla(0,0%,0%,0) 95%, hsla(180,25%,50%,.2) 95%, hsla(180,25%,50%,.2) 100%)",
+                backgroundImage: "radial-gradient(white 21%, transparent 21%), radial-gradient(transparent 10%, transparent 12%), linear-gradient(to top, hsla(0,0%,0%,0) 0%, hsla(0,0%,0%,0) 95%, hsla(180,25%,50%,.2) 95%, hsla(180,25%,50%,.2) 100%)",
                 backgroundPosition: "0px 6px, 6px 5px, 50% 18px",
                 backgroundRepeat: "repeat-y, repeat-y, repeat",
                 backgroundSize: "48px 48px, 48px 48px, 24px 24px",

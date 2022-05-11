@@ -48,7 +48,7 @@ const menue = [
 
 const userMenue = [
     { text: 'Mein Kochbuch', link: "/rezepte", icon: mdiBookOpenVariant },
-    { text: 'Rezept erstellen', link: "/rezepte/erstellen", icon: mdiFoodForkDrink },
+    { text: 'Rezept erstellen', link: "/rezepte/formular", icon: mdiFoodForkDrink },
     { text: 'Konto', link: "/konto", icon: mdiFolderAccount },
     { text: 'Einstellungen', link: "/einstellungen", icon: mdiCog }
 ];

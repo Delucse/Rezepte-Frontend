@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setRecipeCategories } from "../../actions/recipeActions";
+import { setRecipeCategories } from "../../actions/recipeFormularActions";
 
 import Keywords from "./Keywords";
 
@@ -85,7 +85,7 @@ function IndeterminateCheckbox(props) {
 
 function Categories() {
 
-    const recipe = useSelector((state) => state.recipe);
+    const recipe = useSelector((state) => state.recipeFormular);
     const {error, categories} = recipe;
 
     return(

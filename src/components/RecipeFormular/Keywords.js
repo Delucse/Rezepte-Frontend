@@ -1,7 +1,7 @@
 import React, {useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addRecipeKeyword, removeRecipeKeyword } from "../../actions/recipeActions";
+import { addRecipeKeyword, removeRecipeKeyword } from "../../actions/recipeFormularActions";
 
 import Textfield from "../Textfield";
 
@@ -17,7 +17,7 @@ function Keywords() {
     const [keyword, setKeyword] = useState('');
 
     const dispatch = useDispatch();
-    const { keywords, error } = useSelector((state) => state.recipe);
+    const { keywords, error } = useSelector((state) => state.recipeFormular);
 
     const onChangeKeyword = (e) => {
         setKeyword(e.target.value);

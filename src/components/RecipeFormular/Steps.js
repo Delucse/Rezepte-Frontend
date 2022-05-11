@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import {  changeStep, addStep, removeStep, changeStepPosition } from "../../actions/recipeActions";
+import {  changeStep, addStep, removeStep, changeStepPosition } from "../../actions/recipeFormularActions";
 
 import Textfield from "../Textfield";
 
@@ -47,7 +47,7 @@ function Step(props){
 
 function Steps() {
 
-    const recipe = useSelector((state) => state.recipe);
+    const recipe = useSelector((state) => state.recipeFormular);
     var {steps, error} = recipe;
 
     return(
