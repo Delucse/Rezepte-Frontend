@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch } from "react-redux";
 import { resetRecipeFormular } from '../actions/recipeFormularActions';
+
+import {usePrompt} from '../hooks/usePrompt';
+import NavigationPrompt from "../components/NavigationPrompt";
 
 import General from '../components/RecipeFormular/General';
 import Ingredients from '../components/RecipeFormular/Ingredients';
@@ -35,19 +38,30 @@ const steps = [
 ];
 
 
-function CreateRecipe() {
+function RecipeFormular() {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {    
-        return () => {      
-            dispatch(resetRecipeFormular());
-        };  
-    });
+    const [open, setOpen] = useState(true);
+
+    const [
+        showDialogLeavingPage,
+        confirmNavigation,
+        cancelNavigation
+      ] = usePrompt(open);
     
     return (
-        <Stepper steps={steps} />        
+        <div>
+            <Stepper steps={steps} />
+            <NavigationPrompt
+                open={showDialogLeavingPage}
+                closePrompt={setOpen}
+                confirmNavigation={() => { dispatch(resetRecipeFormular()); confirmNavigation(); }}
+                cancelNavigation={cancelNavigation}
+            />
+        </div>
+               
     );
 }
 
-export default CreateRecipe;
+export default RecipeFormular;
