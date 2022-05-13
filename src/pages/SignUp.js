@@ -20,7 +20,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
   }
 }));
 
-function SignIn() {
+function SignUp() {
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -47,6 +47,12 @@ function SignIn() {
       content={
         <div>
           <div style={{paddingRight: "34px", paddingLeft: "34px", marginTop: '20px'}}>
+          <Textfield
+              label='Name'
+              name='name'
+              fullWidth
+              margin
+            />
             <Textfield
               type='email'
               label='E-Mail'
@@ -71,15 +77,12 @@ function SignIn() {
               fullWidth
             />
             <p style={{marginTop: '20px'}}>
-              <Button variant="contained" sx={{borderRadius: 0, width: '100%'}} onClick={() => navigate(-1, {replace: true})}>Anmelden</Button>
-            </p>
-            <p style={{textAlign: 'center', fontSize: '0.8rem'}}>
-              <StyledLink to="" replace state={location.state ? {background: location.state.background} : {}}>Passwort vergessen?</StyledLink>
+              <Button variant="contained" sx={{borderRadius: 0, width: '100%'}} onClick={() => navigate('/anmeldung', {state: location.state ? {background: location.state.background} : {}, replace: true})}>Registrieren</Button>
             </p>
           </div>
           <Divider variant='fullWidth'/>
           <p style={{textAlign: 'center', paddingRight: "34px", paddingLeft: "34px", marginBottom: 0}}>
-            Du hast noch kein Konto? <StyledLink to="/registrierung" state={location.state ? {background: location.state.background} : {}} replace style={{fontWeight: 'bold'}}>Registrieren</StyledLink>
+            Du hast bereits ein Konto? <StyledLink to="/anmeldung" state={location.state ? {background: location.state.background} : {}} replace style={{fontWeight: 'bold'}}>Anmelden</StyledLink>
           </p>          
         </div>
       }
@@ -87,4 +90,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUp;

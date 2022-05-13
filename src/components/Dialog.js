@@ -13,15 +13,16 @@ import { mdiClose  } from '@mdi/js';
 const DialogTitle = (props) => {
 
     return (
-        <MuiDialogTitle sx={{ margin: 0, padding: 2 }}>
-            {props.children}
+        <MuiDialogTitle sx={{ margin: 0, padding: 2, display: 'flex' }}>
+            <div style={{flexGrow: 1}}>
+                {props.children}
+            </div>
             {props.closeIcon ? (
                 <IconButton
                     onClick={props.onClose}
                     sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
+                        height: '40px',
+                        marginTop: -0.5,
                         color: (theme) => theme.palette.primary.light,
                         '&:hover': {
                             color: (theme) => theme.palette.primary.main,
@@ -46,7 +47,7 @@ function Dialog(props) {
             fullWidth={props.fullWidth}
             maxWidth={props.maxWidth}
             onClose={props.onClose}
-
+            sx={!props.closeIcon ? {zIndex: theme => theme.zIndex.modal + 2} : {}}
         >
             <DialogTitle onClose={props.onClose} closeIcon={props.closeIcon}>
                 {props.title}

@@ -21,6 +21,7 @@ import Recipes from './pages/Recipes';
 import Recipe from './pages/Recipe';
 import RecipeFormular from './pages/RecipeFormular';
 import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
 
 const addAlphaToHex = (color, opacity) => {
   opacity = Math.round(Math.min(Math.max(opacity || 1, 0), 1) * 255);
@@ -57,13 +58,14 @@ function App() {
               <Route index element={<Recipes />}/>
             </Route>
             <Route path="anmeldung" element={<SignIn />} />
+            <Route path="registrierung" element={<SignUp />}/>
             <Route path="*" element={<Error />}/>
           </Route>
         </Routes>
         {background && (
           <Routes>
             <Route path="anmeldung" element={<SignIn />}/>
-            {/* <Route path="registrierung" element={<SignUp />}/> */}
+            <Route path="registrierung" element={<SignUp />}/>
           </Routes>
         )}
       </ThemeProvider>

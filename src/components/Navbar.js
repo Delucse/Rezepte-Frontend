@@ -16,7 +16,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 
 import Icon from '@mdi/react';
-import { mdiMenu, mdiClose, mdiCog, mdiLoginVariant, mdiFolderAccount, mdiFood, mdiFoodForkDrink, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
+import { mdiMenu, mdiClose, mdiCog, mdiLoginVariant, mdiAccountPlus, mdiFolderAccount, mdiFood, mdiFoodForkDrink, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
 
 
 function Navlink(props){
@@ -54,7 +54,8 @@ const userMenue = [
     { text: 'Rezept erstellen', link: "/rezepte/formular", icon: mdiFoodForkDrink },
     { text: 'Konto', link: "/konto", icon: mdiFolderAccount },
     { text: 'Einstellungen', link: "/einstellungen", icon: mdiCog },
-    { text: 'Anmeldung', link: "/anmeldung", background: true, icon: mdiLoginVariant }
+    { text: 'Anmeldung', link: "/anmeldung", background: true, icon: mdiLoginVariant },
+    { text: 'Registrierung', link: "/registrierung", background: true, icon: mdiAccountPlus }
 ];
 
 

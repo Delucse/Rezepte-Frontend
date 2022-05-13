@@ -69,6 +69,7 @@ function TimePicker(props) {
             <Dialog 
                 open={open} 
                 onClose={cancel}
+                closeIcon
                 title={
                     `${props.label}${previewDate.getHours() === 0 && previewDate.getMinutes() === 0 ? '' : `: ${getHours(previewDate)}:${getMinutes(previewDate)} Stunden`}`    
                 }
