@@ -8,11 +8,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { ClockPicker } from '@mui/x-date-pickers/ClockPicker';
 
 import Textfield from '../Textfield';
+import Dialog from '../Dialog';
 
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight, mdiClockOutline } from '@mdi/js'; 
 
-import { Button, Dialog, DialogActions, DialogTitle, DialogContent, IconButton, Grid } from "@mui/material";
+import { Button, IconButton, Grid } from "@mui/material";
 
 function TimePicker(props) {
 
@@ -65,36 +66,44 @@ function TimePicker(props) {
                     <Icon path={mdiClockOutline} size={1}/>
                 }
             />
-            <Dialog open={open} onClose={cancel} PaperProps={{sx: {borderRadius: 0}}}>
-                <DialogTitle id="alert-dialog-title">{`${props.label}${previewDate.getHours() === 0 && previewDate.getMinutes() === 0 ? '' : `: ${getHours(previewDate)}:${getMinutes(previewDate)} Stunden`}`}</DialogTitle>
-                <DialogContent>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <ClockPicker
-                    date={previewDate}
-                    onChange={(newDate) => {
-                        setPreviewDate(newDate);
-                        setView(view === 'hours' ? 'minutes' : view);
-                    }}
-                    openTo="hours"
-                    view={view}
-                    />
-                </LocalizationProvider>
-                <div style={{justifyContent: 'center', display: 'flex'}}>
-                <IconButton onClick={() => setView('hours')} disabled={view==='hours'} sx={{'&:hover':{color: theme => theme.palette.primary.main}}} disableRipple>
-                    <Icon path={mdiChevronLeft} size={1}/>
-                </IconButton>
-                <IconButton onClick={() => setView('minutes')} disabled={view==='minutes'} sx={{'&:hover':{color: theme => theme.palette.primary.main}}} disableRipple>
-                    <Icon path={mdiChevronRight} size={1}/>
-                </IconButton>
-                </div>
-                </DialogContent>
-                <DialogActions>
-                <Button onClick={cancel} variant='outlined' sx={{borderRadius: 0}}>Abbrechen</Button>
-                <Button onClick={submit} variant='contained' sx={{borderRadius: 0}}>
-                    Bestätigen
-                </Button>
-                </DialogActions>
-            </Dialog>
+            <Dialog 
+                open={open} 
+                onClose={cancel}
+                title={
+                    `${props.label}${previewDate.getHours() === 0 && previewDate.getMinutes() === 0 ? '' : `: ${getHours(previewDate)}:${getMinutes(previewDate)} Stunden`}`    
+                }
+                content={
+                    <div>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <ClockPicker
+                            date={previewDate}
+                            onChange={(newDate) => {
+                                setPreviewDate(newDate);
+                                setView(view === 'hours' ? 'minutes' : view);
+                            }}
+                            openTo="hours"
+                            view={view}
+                            />
+                        </LocalizationProvider>
+                        <div style={{justifyContent: 'center', display: 'flex'}}>
+                        <IconButton onClick={() => setView('hours')} disabled={view==='hours'} sx={{'&:hover':{color: theme => theme.palette.primary.main}}} disableRipple>
+                            <Icon path={mdiChevronLeft} size={1}/>
+                        </IconButton>
+                        <IconButton onClick={() => setView('minutes')} disabled={view==='minutes'} sx={{'&:hover':{color: theme => theme.palette.primary.main}}} disableRipple>
+                            <Icon path={mdiChevronRight} size={1}/>
+                        </IconButton>
+                        </div>
+                    </div>
+                }
+                actions={
+                    <div>
+                        <Button onClick={cancel} variant='outlined' sx={{borderRadius: 0, mr: 1}}>Abbrechen</Button>
+                        <Button onClick={submit} variant='contained' sx={{borderRadius: 0}}>
+                            Bestätigen
+                        </Button>
+                    </div>
+                }
+            />
         </div>
     );
 }

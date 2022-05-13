@@ -27,6 +27,7 @@ const DialogTitle = (props) => {
                             color: (theme) => theme.palette.primary.main,
                         }
                     }}
+                    disableRipple
                 >
                     <Icon path={mdiClose} size={1}/>
                 </IconButton>
@@ -40,7 +41,7 @@ function Dialog(props) {
     return (
         <MuiDialog
             open={props.open}
-            sx={{'.MuiPaper-root': {borderRadius: 0}}}
+            PaperProps={{sx: {borderRadius: 0}}}
             fullScreen={props.fullScreen}
             fullWidth={props.fullWidth}
             maxWidth={props.maxWidth}

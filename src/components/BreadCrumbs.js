@@ -14,7 +14,11 @@ import { mdiHome } from '@mdi/js';
 function BreadCrumbs(){
 
     const theme = useTheme();
-    const {pathname, key} = useLocation();
+    var {pathname, key, state} = useLocation();
+    if(state && state.background){
+        pathname = state.background.pathname;
+        key = state.background.key;
+    }
     const paths = pathname.split('/').filter(path => path !== "");
 
     return (

@@ -1,9 +1,9 @@
 import React from 'react';
 
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
+  useLocation
 } from "react-router-dom";
 
 import { Provider } from 'react-redux';
@@ -20,6 +20,7 @@ import Layout from './components/Layout';
 import Recipes from './pages/Recipes';
 import Recipe from './pages/Recipe';
 import RecipeFormular from './pages/RecipeFormular';
+import SignIn from './pages/SignIn';
 
 const addAlphaToHex = (color, opacity) => {
   opacity = Math.round(Math.min(Math.max(opacity || 1, 0), 1) * 255);
@@ -38,25 +39,33 @@ function App() {
   };
   const theme = createTheme(themeConfig);
 
+  const location = useLocation();
+  const background = location.state && location.state.background;
+
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <Router>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Home />}/>
-                <Route exact path="test" element={<Test />}/>
-                <Route exact path="test2" element={<Test2 />}/>
-                <Route exact path="bilder" element={<Pictures />}/>
-                <Route path="rezepte">
-                  <Route exact path="formular" element={<RecipeFormular />}/>
-                  <Route exact path=":id" element={<Recipe />}/>
-                  <Route index element={<Recipes />}/>
-                </Route>
-                <Route path="*" element={<Error />}/>
-              </Route>
-            </Routes>
-        </Router>
+        <Routes location={background || location}>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />}/>
+            <Route exact path="test" element={<Test />}/>
+            <Route exact path="test2" element={<Test2 />}/>
+            <Route exact path="bilder" element={<Pictures />}/>
+            <Route path="rezepte">
+              <Route exact path="formular" element={<RecipeFormular />}/>
+              <Route exact path=":id" element={<Recipe />}/>
+              <Route index element={<Recipes />}/>
+            </Route>
+            <Route path="anmeldung" element={<SignIn />} />
+            <Route path="*" element={<Error />}/>
+          </Route>
+        </Routes>
+        {background && (
+          <Routes>
+            <Route path="anmeldung" element={<SignIn />}/>
+            {/* <Route path="registrierung" element={<SignUp />}/> */}
+          </Routes>
+        )}
       </ThemeProvider>
     </Provider>
   );

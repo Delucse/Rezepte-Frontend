@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import DelucseLogo from './DelucseLogo';
 
@@ -16,10 +16,12 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 
 import Icon from '@mdi/react';
-import { mdiMenu, mdiClose, mdiCog, mdiFolderAccount, mdiFood, mdiFoodForkDrink, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
+import { mdiMenu, mdiClose, mdiCog, mdiLoginVariant, mdiFolderAccount, mdiFood, mdiFoodForkDrink, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
 
 
 function Navlink(props){
+    const location = useLocation();
+
     return (
         <NavLink 
             to={props.link} 
@@ -29,6 +31,7 @@ function Navlink(props){
                 textDecoration: 'none', 
                 color: isActive ? 'black': 'rgba(0, 0, 0, 0.54)'
             })}
+            state={props.background ? { background: location } : {}}
         >
             <ListItem button onClick={props.onClick}>
                 <ListItemIcon sx={{color: 'inherit'}}><Icon path={props.icon} size={1}/></ListItemIcon>
@@ -50,7 +53,8 @@ const userMenue = [
     { text: 'Mein Kochbuch', link: "/rezepte", icon: mdiBookOpenVariant },
     { text: 'Rezept erstellen', link: "/rezepte/formular", icon: mdiFoodForkDrink },
     { text: 'Konto', link: "/konto", icon: mdiFolderAccount },
-    { text: 'Einstellungen', link: "/einstellungen", icon: mdiCog }
+    { text: 'Einstellungen', link: "/einstellungen", icon: mdiCog },
+    { text: 'Anmeldung', link: "/anmeldung", background: true, icon: mdiLoginVariant }
 ];
 
 
@@ -109,7 +113,7 @@ function Navbar(){
                 <List>
                     {userMenue.map((item, index) => {
                         return (
-                            <Navlink key={index} text={item.text} link={item.link} icon={item.icon} onClick={toggle}/>
+                            <Navlink key={index} text={item.text} link={item.link} icon={item.icon} onClick={toggle} background={item.background}/>
                         );
                     })}
                 </List>
