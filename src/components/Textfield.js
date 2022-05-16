@@ -33,6 +33,7 @@ function Textfield(props) {
                 onClick={props.onClick}
                 type={props.type ? props.type : 'text'}
                 placeholder={props.placeholder}
+                style={props.style}
                 startAdornment={props.start ? <InputAdornment sx={{maxHeight: '56px', height: '56px'}} position="start">{props.start}</InputAdornment> : null}
                 endAdornment={props.end ? <InputAdornment sx={{maxHeight: '56px', height: '56px'}} position="start">{props.end}</InputAdornment> : null}
             />

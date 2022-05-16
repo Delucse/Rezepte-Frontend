@@ -96,6 +96,7 @@ function Autocomplete(props) {
             closeText="schließen"
             openText="öffnen"
             noOptionsText="keine Ergebnisse"
+            style={props.style}
         />
     );
 }

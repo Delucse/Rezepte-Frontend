@@ -4,20 +4,10 @@ import { setError, setLoading } from '../actions/settingsActions';
 
 import axios from 'axios';
 
-export const setRecipeSettings = (key, value) => (dispatch, getState) => {
+export const setRecipeSettings = (count, volume) => (dispatch, getState) => {
   var settings = getState().recipe.settings;
-  settings[key] = value;
-  dispatch({
-    type: SET_RECIPE_SETTINGS,
-    payload: settings
-  });
-};
-
-export const resetRecipeSettings = () => (dispatch, getState) => {
-  const recipe = getState().recipe
-  var settings = recipe.settings;
-  settings.count = recipe.portion.count;
-  settings.volume = recipe.portion.volume;
+  settings.count = count;
+  settings.volume = volume;
   dispatch({
     type: SET_RECIPE_SETTINGS,
     payload: settings

@@ -7,13 +7,12 @@ import { useParams  } from "react-router-dom";
 
 import Fraction from '../components/Fraction';
 import NotePaper from '../components/NotePaper';
+import Portion from '../components/Recipe/Portion';
 
-import { Grid, Box, List, ListItem, ListItemIcon, ListItemText, Chip, Typography, IconButton } from "@mui/material";
+import { Grid, Box, List, ListItem, ListItemIcon, ListItemText, Chip, Typography } from "@mui/material";
 
 import Icon from '@mdi/react';
-import { mdiBarleyOff, mdiClockOutline, mdiEggOffOutline, mdiFoodSteakOff, mdiPencil  } from '@mdi/js';
-
-import bakeware from '../data/bakeware.json';
+import { mdiBarleyOff, mdiClockOutline, mdiEggOffOutline, mdiFoodSteakOff  } from '@mdi/js';
 
 function Recipe(){
 
@@ -83,12 +82,7 @@ function Recipe(){
                             </Box>
                         </div>
                         {/* Portion */}
-                        <div style={{display: 'flex'}}>
-                            <Typography style={{lineHeight: '24px'}} variant="body1">
-                                für {recipe.settings.count} {recipe.settings.volume > 0 ? bakeware.filter(bake => bake.volume === recipe.settings.volume).length > 0 ? bakeware.filter(bake => bake.volume === recipe.settings.volume)[0].name : 'individuelle Backform' : 'Portion'}                        
-                            </Typography>
-                            <IconButton sx={{height: '24px', width: '24px', marginLeft: '5px', padding: 0}} color="primary"><Icon path={mdiPencil} size={1}/></IconButton>
-                        </div>
+                        <Portion count={recipe.settings.count} volume={recipe.settings.volume}/>
                     </Grid>
                 </Grid>
 
