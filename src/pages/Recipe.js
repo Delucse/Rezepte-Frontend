@@ -82,7 +82,7 @@ function Recipe(){
                             </Box>
                         </div>
                         {/* Portion */}
-                        <Portion count={recipe.settings.count} volume={recipe.settings.volume}/>
+                        <Portion />
                     </Grid>
                 </Grid>
 

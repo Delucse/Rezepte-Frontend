@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { setRecipeSettings } from '../../actions/recipeActions';
@@ -21,14 +21,23 @@ const bakewares = bakeware.concat([{
     "group": "Sonstiges"
 }])
 
-function Portion(props) {
+function Portion() {
+
+    const dispatch = useDispatch();
+    const portion = useSelector((state) => state.recipe.portion);
+    const settings = useSelector((state) => state.recipe.settings);
 
     const [open, setOpen] = useState(false);
-    const [count, setCount] = useState(parseInt(props.count));
-    const [volume, setVolume] = useState(parseFloat(props.volume));
+    const [count, setCount] = useState(parseInt(settings.count));
+    const [volume, setVolume] = useState(parseFloat(settings.volume));
     const [individual, setIndividual] = useState(0);
     const [errorVolume, setErrorVolume] = useState(false);
     const [errorCount, setErrorCount] = useState(false);
+
+    useEffect(() => {
+        setCount(parseInt(settings.count));
+        setVolume(parseFloat(settings.volume));
+    }, [open, settings])
 
     const portionAdd = () => {
         if(!isNaN(count)){
@@ -37,7 +46,6 @@ function Portion(props) {
             setErrorCount(false);
             setCount(1);
         }
-        
     }
 
     const portionReduce = () => {
@@ -62,9 +70,6 @@ function Portion(props) {
         }
         setCount(portion);
     }
-
-    const dispatch = useDispatch();
-    const portion = useSelector((state) => state.recipe.portion);
 
     const reset = () => {
         setCount(parseInt(portion.count));
@@ -114,7 +119,7 @@ function Portion(props) {
         <div>
             <div style={{display: 'flex'}}>
                 <Typography style={{lineHeight: '24px'}} variant="body1">
-                    für {props.count.toLocaleString()}{props.volume > 0 ? bakeware.filter(bake => bake.volume === props.volume).length > 0 ? `x ${bakeware.filter(bake => bake.volume === props.volume)[0].name}` : 'x individuelle Backform' : ` Portion${props.count > 1 ? 'en' : ''}`}
+                    für {settings.count.toLocaleString()}{settings.volume > 0 ? bakeware.filter(bake => bake.volume === settings.volume).length > 0 ? `x ${bakeware.filter(bake => bake.volume === settings.volume)[0].name}` : 'x individuelle Backform' : ` Portion${settings.count > 1 ? 'en' : ''}`}
                 </Typography>
                 <IconButton 
                     sx={{height: 'inherit', width: '24px', marginLeft: '5px', padding: 0}} 
@@ -137,7 +142,7 @@ function Portion(props) {
                         {errorCount ? <Alert severity="error" sx={{marginBottom: '20px', borderRadius: 0}}>Gib eine positive Zahl an.</Alert> : null}
                         {errorVolume ? <Alert severity="error" sx={{marginBottom: '20px', borderRadius: 0}}>{volume !== 2 ? 'Wähle eine Backform aus.' : 'Gebe einen Flächeninhalt in cm² an (mind. 3 cm²).'}</Alert> : null}
                         <Box sx={{display: {xs: volume > 0 ? 'inherit' : 'flex', sm: 'flex'}}}>
-                            <div style={{display: 'flex', width: '125px', marginRight: '10px'}}>
+                            <div style={{display: 'flex', width: '95px', marginRight: '10px'}}>
                                 <Button
                                     disabled={count <= 1}
                                     sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '23px', padding: 0}} 
@@ -148,7 +153,7 @@ function Portion(props) {
                                 </Button>
                                 <Textfield 
                                     value={count} 
-                                    style={{width: '79px'}} 
+                                    style={{width: '49px'}} 
                                     onChange={(e) => setPortion(e.target.value)}
                                     error={errorCount}
                                 />
@@ -160,7 +165,7 @@ function Portion(props) {
                                     +
                                 </Button>
                             </div>
-                            <Box  sx={{display: 'flex',  marginTop: {xs: volume > 0 ? '20px' : 0, sm: 0}, width: {xs: '100%', sm: 'calc(100% - 125px - 10px)'}}}>
+                            <Box  sx={{display: 'flex',  marginTop: {xs: volume > 0 ? '20px' : 0, sm: 0}, width: {xs: '100%', sm: 'calc(100% - 95px - 10px)'}}}>
                                 { volume > 0 ?
                                     <Autocomplete
                                         value={bakewares.filter(bake => bake.volume === volume)[0]}
@@ -186,7 +191,7 @@ function Portion(props) {
                             </Box> 
                         </Box>
                         {volume === 2 ? 
-                            <Box sx={{ml: '135px', mt: 2}}>
+                            <Box sx={{ml: {sm: '105px'}, mt: 2}}>
                                 <Textfield 
                                     label='Flächenangabe'
                                     error={errorVolume && individual === 2} 
