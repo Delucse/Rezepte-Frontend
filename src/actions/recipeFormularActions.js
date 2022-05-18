@@ -1,6 +1,8 @@
-import { SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, SET_RECIPE_CATEGORIES, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES, SET_RECIPE_FORMULAR } from '../actions/types';
+import { SET_RECIPE_BLOCKED, SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, SET_RECIPE_CATEGORIES, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES, SET_RECIPE_FORMULAR } from '../actions/types';
 
 import axios from 'axios';
+
+import { setRecipeId } from './recipeActions';
 
 const setError = (key, value) => (dispatch, getState) => {
   var error = getState().recipeFormular.error;
@@ -458,6 +460,9 @@ export const submitRecipe = () => (dispatch, getState) => {
   };
   axios.post(`${process.env.REACT_APP_API_URL}/recipe`, body, config)
     .then(res => {
+      dispatch(setRecipeId(res.data.id));
+      dispatch(setBlocked(false));
+      dispatch(resetRecipeFormular());
       console.info(res.data)
     })
     .catch(err => {
@@ -465,7 +470,7 @@ export const submitRecipe = () => (dispatch, getState) => {
     });
 };
 
-export const resetRecipeFormular = () => (dispatch) => {
+export const resetRecipeFormular = () => (dispatch, getState) => {
   dispatch({
     type: SET_RECIPE_FORMULAR,
     payload: {
@@ -506,7 +511,15 @@ export const resetRecipeFormular = () => (dispatch) => {
         ingredients: [false, false, false],
         steps: false,
         pictures: false
-      }
+      },
+      blocked: getState().recipeFormular.blocked
     }
   })
-} 
+}
+
+export const setBlocked = (bool) => (dispatch) => {
+  dispatch({
+    type: SET_RECIPE_BLOCKED,
+    payload: bool
+  });
+};

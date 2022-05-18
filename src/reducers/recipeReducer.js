@@ -1,4 +1,4 @@
-import { GET_RECIPE, SET_RECIPE_SETTINGS } from '../actions/types';
+import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID } from '../actions/types';
 
 
 const initialState = {
@@ -27,6 +27,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         settings: action.payload
+      }
+    case SET_RECIPE_ID:
+      return {
+        ...state,
+        id: action.payload
       }
     default:
       return state;

@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, {useEffect} from 'react';
 
-import { useDispatch } from "react-redux";
-import { resetRecipeFormular } from '../actions/recipeFormularActions';
+import { useDispatch, useSelector } from "react-redux";
+import { resetRecipeFormular, setBlocked } from '../actions/recipeFormularActions';
 
 import {usePrompt} from '../hooks/usePrompt';
 import NavigationPrompt from "../components/NavigationPrompt";
@@ -41,21 +41,26 @@ const steps = [
 function RecipeFormular() {
 
     const dispatch = useDispatch();
+    const {blocked} = useSelector(state => state.recipeFormular);
 
-    const [open, setOpen] = useState(true);
+    // const [open, setOpen] = useState(true);
+    useEffect(() => {
+        console.log('recipeFormular','block auf true setzen');
+        dispatch(setBlocked(true));
+    }, [dispatch]);
 
     const [
         showDialogLeavingPage,
         confirmNavigation,
         cancelNavigation
-      ] = usePrompt(open);
+      ] = usePrompt(blocked);
     
     return (
         <div>
             <Stepper steps={steps} />
             <NavigationPrompt
                 open={showDialogLeavingPage}
-                closePrompt={setOpen}
+                closePrompt={(bool) => dispatch(setBlocked(bool))}
                 confirmNavigation={() => { dispatch(resetRecipeFormular()); confirmNavigation(); }}
                 cancelNavigation={cancelNavigation}
             />

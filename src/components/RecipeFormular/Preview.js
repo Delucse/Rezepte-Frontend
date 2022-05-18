@@ -3,18 +3,30 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkRecipeError, submitRecipe } from "../../actions/recipeFormularActions";
 
+import { useNavigate } from "react-router-dom";
+
 import { Box, Alert, Button } from "@mui/material";
 import Recipe from "../../pages/Recipe";
 
+
 function Preview() {
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const recipe = useSelector((state) => state.recipeFormular);
-    const {error} = recipe;
+    const {error, blocked} = recipe;
+    const id = useSelector((state) => state.recipe.id);
 
-    useEffect(() => {    
+    useEffect(() => {
+        console.log('recipeFormular','check error');
         dispatch(checkRecipeError());
-    });
+    }, [dispatch]);
+
+    useEffect(() => {
+        if(!blocked && id){
+            navigate(`/rezepte/${id}`)
+        }
+    }, [blocked, navigate, id])
 
     return(
         <div>
@@ -24,7 +36,9 @@ function Preview() {
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es gibt noch Fehler.</Alert>
                     </Box>
                 :   <div style={{justifyItems: 'center', display: 'grid'}}>
-                        <Recipe/>
+                        <div style={{width: '100%'}}>
+                            <Recipe/>
+                        </div>
                         <Button variant="contained" sx={{borderRadius: 0, mt: '20px'}} onClick={() => dispatch(submitRecipe())}>Rezept veröffentlichen</Button>
                     </div>
             : null}

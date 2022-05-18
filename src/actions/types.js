@@ -5,6 +5,7 @@ export const LOADING = 'LOADING';
 // Recipe
 export const GET_RECIPE = 'GET_RECIPE';
 export const SET_RECIPE_SETTINGS = 'SET_RECIPE_SETTINGS';
+export const SET_RECIPE_ID = 'SET_RECIPE_ID';
 
 // Recipe Formular
 export const SET_RECIPE_ERROR = 'SET_RECIPE_ERROR'
@@ -19,3 +20,4 @@ export const SET_RECIPE_PICTURES = 'SET_RECIPE_PICTURES';
 export const SET_RECIPE_TIME = 'SET_RECIPE_TIME';
 export const SET_RECIPE_CATEGORIES = 'SET_RECIPE_CATEGORIES';
 export const SET_RECIPE_FORMULAR = 'SET_RECIPE_FORMULAR';
+export const SET_RECIPE_BLOCKED = 'SET_RECIPE_BLOCKED';

@@ -1,4 +1,4 @@
-import { GET_RECIPE, SET_RECIPE_SETTINGS } from '../actions/types';
+import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID } from '../actions/types';
 
 import { setError, setLoading } from '../actions/settingsActions';
 
@@ -43,6 +43,13 @@ export const getRecipePreview = () => (dispatch, getState) => {
   }});
   dispatch(setError(false));
   dispatch(setLoading(false));
+}
+
+export const setRecipeId = (id) => (dispatch) => {
+  dispatch({
+    type: SET_RECIPE_ID,
+    payload: id
+  });
 }
 
 export const getRecipe = (id) => (dispatch) => {
