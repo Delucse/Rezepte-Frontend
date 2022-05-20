@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { signout } from '../actions/authActions';
 
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -16,28 +18,30 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 
 import Icon from '@mdi/react';
-import { mdiMenu, mdiClose, mdiCog, mdiLoginVariant, mdiAccountPlus, mdiFolderAccount, mdiFood, mdiFoodForkDrink, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
+import { mdiMenu, mdiClose, mdiCog, mdiLoginVariant, mdiLogoutVariant, mdiFolderAccount, mdiFood, mdiFoodForkDrink, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
+
 
 
 function Navlink(props){
     const location = useLocation();
 
-    return (
-        <NavLink 
-            to={props.link} 
-            end
-            style={({ isActive }) => ({ 
-                fontWeight: isActive ? "700" : 'inherit',
-                textDecoration: 'none', 
-                color: isActive ? 'black': 'rgba(0, 0, 0, 0.54)'
-            })}
-            state={props.background ? { background: location } : {}}
-        >
-            <ListItem button onClick={props.onClick}>
-                <ListItemIcon sx={{color: 'inherit'}}><Icon path={props.icon} size={1}/></ListItemIcon>
-                <ListItemText primary={props.text} primaryTypographyProps={{fontWeight: 'inherit', color: 'black'}}/>
-            </ListItem>
-        </NavLink>
+    return (props.auth === undefined || props.auth ?
+            <NavLink 
+                to={props.link} 
+                end
+                style={({ isActive }) => ({ 
+                    fontWeight: isActive ? "700" : 'inherit',
+                    textDecoration: 'none', 
+                    color: isActive ? 'black': 'rgba(0, 0, 0, 0.54)'
+                })}
+                state={props.background ? { background: location } : {}}
+            >
+                <ListItem button onClick={props.onClick}>
+                    <ListItemIcon sx={{color: 'inherit'}}><Icon path={props.icon} size={1}/></ListItemIcon>
+                    <ListItemText primary={props.text} primaryTypographyProps={{fontWeight: 'inherit', color: 'black'}}/>
+                </ListItem>
+            </NavLink>
+        : null
     )
 }
 
@@ -45,21 +49,24 @@ const menue = [
     { text: 'Startseite', link: "/", icon: mdiHome },
     { text: 'Rezepte', link: "/rezepte", icon: mdiFood },
     { text: 'Titel ändern', link: "/test", icon: mdiForum },
-    { text: 'Bilder', link: "/bilder", icon: mdiImageMultiple },
+    { text: 'Bilder', link: "/bilder", auth: true, icon: mdiImageMultiple },
     { text: 'Bilder hinzufügen', link: "/test2", icon: mdiForum }
 ]
 
 const userMenue = [
-    { text: 'Mein Kochbuch', link: "/rezepte", icon: mdiBookOpenVariant },
-    { text: 'Rezept erstellen', link: "/rezepte/formular", icon: mdiFoodForkDrink },
-    { text: 'Konto', link: "/konto", icon: mdiFolderAccount },
-    { text: 'Einstellungen', link: "/einstellungen", icon: mdiCog },
-    { text: 'Anmeldung', link: "/anmeldung", background: true, icon: mdiLoginVariant },
-    { text: 'Registrierung', link: "/registrierung", background: true, icon: mdiAccountPlus }
+    { text: 'Mein Kochbuch', link: "/rezepte", auth: true, icon: mdiBookOpenVariant },
+    { text: 'Rezept erstellen', link: "/rezepte/formular", auth: true, icon: mdiFoodForkDrink },
+    { text: 'Konto', link: "/konto", auth: true, icon: mdiFolderAccount },
+    { text: 'Einstellungen', link: "/einstellungen", auth: true, icon: mdiCog },
+    { text: 'Anmeldung', link: "/anmeldung", auth: false, background: true, icon: mdiLoginVariant }
 ];
 
 
 function Navbar(){
+
+    const user = useSelector(state => state.auth.user);
+    const dispatch = useDispatch();
+    const isAuthenticated = user !== null
 
     const [open, setOpen] = useState(false);
 
@@ -106,7 +113,7 @@ function Navbar(){
                 <List>
                     {menue.map((item, index) => {
                         return (
-                            <Navlink key={index} text={item.text} link={item.link} icon={item.icon} onClick={toggle}/>
+                            <Navlink key={index} text={item.text} link={item.link} icon={item.icon} auth={item.auth ? isAuthenticated === item.auth : undefined} onClick={toggle}/>
                         );
                     })}
                 </List>
@@ -114,9 +121,15 @@ function Navbar(){
                 <List>
                     {userMenue.map((item, index) => {
                         return (
-                            <Navlink key={index} text={item.text} link={item.link} icon={item.icon} onClick={toggle} background={item.background}/>
+                            <Navlink key={index} text={item.text} link={item.link} icon={item.icon} auth={item.auth !== undefined ? isAuthenticated === item.auth : undefined} onClick={toggle} background={item.background}/>
                         );
                     })}
+                    {isAuthenticated ?
+                        <ListItem button onClick={() => {dispatch(signout()); toggle();}}>
+                            <ListItemIcon><Icon path={mdiLogoutVariant} size={1}/></ListItemIcon>
+                            <ListItemText primary={'Abmelden'} primaryTypographyProps={{fontWeight: 'inherit', color: 'black'}}/>
+                        </ListItem>
+                    :   null}
                 </List>
             </SwipeableDrawer>
         </div>

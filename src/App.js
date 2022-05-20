@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Routes,
@@ -8,6 +8,7 @@ import {
 
 import { Provider } from 'react-redux';
 import store from './store';
+import { loadUser } from './actions/authActions';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
@@ -42,6 +43,10 @@ function App() {
 
   const location = useLocation();
   const background = location.state && location.state.background;
+
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, [])
 
   return (
     <Provider store={store}>

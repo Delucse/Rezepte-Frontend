@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../actions/authActions'
 
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 
@@ -24,15 +26,25 @@ function SignIn() {
 
   const location = useLocation();
   const navigate = useNavigate();
+  
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
 
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  useEffect(() => {
+    if(user){
+      navigate(-1, {replace: true});
+    }
+  }, [user, navigate]);
+  
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const 
-  handleMouseDownPassword = (e) => {
+  const handleMouseDownPassword = (e) => {
     e.preventDefault();
   };
 
@@ -48,16 +60,18 @@ function SignIn() {
         <div>
           <div style={{paddingRight: "34px", paddingLeft: "34px", marginTop: '20px'}}>
             <Textfield
-              type='email'
-              label='E-Mail'
-              name='email'
+              label='Nutzername'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               fullWidth
               margin
+              autoFocus
             />
             <Textfield
               type={showPassword ? 'text' : 'password'}
               label='Passwort'
-              name='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               end={
                 <IconButton
                   onClick={handleClickShowPassword}
@@ -71,7 +85,7 @@ function SignIn() {
               fullWidth
             />
             <p style={{marginTop: '20px'}}>
-              <Button variant="contained" sx={{borderRadius: 0, width: '100%'}} onClick={() => navigate(-1, {replace: true})}>Anmelden</Button>
+              <Button variant="contained" sx={{borderRadius: 0, width: '100%'}} onClick={() => dispatch(login(username, password))}>Anmelden</Button>
             </p>
             <p style={{textAlign: 'center', fontSize: '0.8rem'}}>
               <StyledLink to="" replace state={location.state ? {background: location.state.background} : {}}>Passwort vergessen?</StyledLink>
