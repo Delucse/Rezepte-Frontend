@@ -11,7 +11,7 @@ function Fraction(props){
     return (
         numerator !== 0 ?
             denominator === 1 ?
-                <div>{numerator}</div> 
+                <>{numerator}</> 
             :
                 int > 0 ?
                     <div style={{display: 'flex'}}>{int}<div style={{marginLeft: '4px'}}><sup style={{fontSize: '60%', top: '-0.40em', marginRight: '1px'}}>{numerator%denominator}</sup>&#8260;<sub style={{fontSize: '60%', bottom: '0em', marginLeft: '1px'}}>{denominator}</sub></div></div>

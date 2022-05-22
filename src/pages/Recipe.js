@@ -104,7 +104,7 @@ function Recipe(){
                                                     -
                                                 </ListItemIcon>
                                                 <ListItemIcon sx={{minWidth: '0px', color: 'black', marginRight: '4px'}}>
-                                                    <Typography variant="body1">{recipe.portion.volume > 0 ? <Fraction decimal={food.amount * (recipe.settings.count / recipe.portion.count) * (recipe.settings.volume / recipe.portion.volume)} /> : <Fraction decimal={food.amount * (recipe.settings.count / recipe.portion.count)} />}</Typography>
+                                                    <Typography variant="body1" component='div'>{recipe.portion.volume > 0 ? <Fraction decimal={food.amount * (recipe.settings.count / recipe.portion.count) * (recipe.settings.volume / recipe.portion.volume)} /> : <Fraction decimal={food.amount * (recipe.settings.count / recipe.portion.count)} />}</Typography>
                                                 </ListItemIcon>
                                                 <ListItemText
                                                     primary={`${food.unit} ${food.aliment}`}

@@ -55,7 +55,7 @@ function Recipes(){
                 <Grid container spacing={3}>
                     {recipes.map((recipe, index) => {
                         return(
-                            <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+                            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={index}>
                                 <NotePaper onClick={() => {navigate(`/rezepte/${recipe._id}`);}} style={{cursor: 'pointer'}} key={index}>
                                     <Box sx={{display: 'flex', marginBottom: '24px'}}>
                                         <Box sx={{fontWeight: 700, fontSize: '20px', lineHeight: '24px', marginRight: '5px', flexGrow: 1}}>

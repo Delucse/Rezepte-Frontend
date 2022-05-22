@@ -5,6 +5,7 @@ import {
   Route,
   useLocation
 } from "react-router-dom";
+import PrivateRoute from './components/PrivateRoute';
 
 import { Provider } from 'react-redux';
 import store from './store';
@@ -56,7 +57,7 @@ function App() {
             <Route index element={<Home />}/>
             <Route exact path="test" element={<Test />}/>
             <Route exact path="test2" element={<Test2 />}/>
-            <Route exact path="bilder" element={<Pictures />}/>
+            <Route exact path="bilder" element={<PrivateRoute><Pictures /></PrivateRoute>}/>
             <Route path="rezepte">
               <Route exact path="formular" element={<RecipeFormular />}/>
               <Route exact path=":id" element={<Recipe />}/>
