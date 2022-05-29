@@ -8,6 +8,7 @@ import { useParams  } from "react-router-dom";
 import Fraction from '../components/Fraction';
 import NotePaper from '../components/NotePaper';
 import Portion from '../components/Recipe/Portion';
+import Loader from '../components/Loader';
 
 import { Grid, Box, List, ListItem, ListItemIcon, ListItemText, Chip, Typography } from "@mui/material";
 
@@ -158,7 +159,7 @@ function Recipe(){
         : 
             error ? 
                 <div>Error</div>
-            :   <div>Rezept lädt ...</div>
+            :   <Loader/>
    );
 }
 

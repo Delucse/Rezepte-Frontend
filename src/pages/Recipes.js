@@ -9,6 +9,7 @@ import axios from 'axios';
 
 import Favourite from '../components/Favourite';
 import NotePaper from '../components/NotePaper';
+import Loader from '../components/Loader';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -107,7 +108,7 @@ function Recipes(){
         : 
         error ? 
             <div>Error</div>
-        :   <div>Rezepte laden ...</div>
+        :   <Loader/>
    );
 }
 
