@@ -15,13 +15,33 @@ export const setRecipeSettings = (count, volume) => (dispatch, getState) => {
 };
 
 export const getRecipePreview = () => (dispatch, getState) => {
-  
+
   const recipeFormular = getState().recipeFormular;
   var keywords = recipeFormular.keywords;
   Object.entries(recipeFormular.categories).forEach(([key])  => {
     if(recipeFormular.categories[key]){
       keywords = keywords.concat(recipeFormular.categories[key]);
     }
+  });
+
+  var ingredients = [];
+  recipeFormular.ingredients.forEach(ingredient => {
+    var i = {};
+    i.title = ingredient.title;
+    i.food = [];
+    ingredient.food.forEach(food => {
+      var f = {};
+      f.unit = food.unit;
+      f.aliment = food.aliment;
+      if(food.amount === " "){
+        f.amount = 0
+      } else {
+        const amountDecimal = food.amount.replace(',','.')
+        f.amount = Number(amountDecimal);
+      }
+      i.food.push(f);
+    });
+    ingredients.push(i);
   });
 
   dispatch({
@@ -33,7 +53,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
       source: recipeFormular.source,
       time: recipeFormular.time,
       keywords: keywords,
-      ingredients: recipeFormular.ingredients,
+      ingredients: ingredients,
       steps: recipeFormular.steps,
       pictures: recipeFormular.pictures,
       settings: {

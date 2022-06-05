@@ -28,15 +28,15 @@ function Portion() {
     const settings = useSelector((state) => state.recipe.settings);
 
     const [open, setOpen] = useState(false);
-    const [count, setCount] = useState(parseInt(settings.count));
-    const [volume, setVolume] = useState(parseFloat(settings.volume));
+    const [count, setCount] = useState(settings.count);
+    const [volume, setVolume] = useState(settings.volume);
     const [individual, setIndividual] = useState(0);
     const [errorVolume, setErrorVolume] = useState(false);
     const [errorCount, setErrorCount] = useState(false);
 
     useEffect(() => {
-        setCount(parseInt(settings.count));
-        setVolume(parseFloat(settings.volume));
+        setCount(settings.count);
+        setVolume(settings.volume);
     }, [open, settings])
 
     const portionAdd = () => {
@@ -72,8 +72,8 @@ function Portion() {
     }
 
     const reset = () => {
-        setCount(parseInt(portion.count));
-        setVolume(parseFloat(portion.volume));
+        setCount(portion.count);
+        setVolume(portion.volume);
     }
 
     const cancel = () => {
@@ -119,7 +119,7 @@ function Portion() {
         <div>
             <div style={{display: 'flex'}}>
                 <Typography style={{lineHeight: '24px'}} variant="body1">
-                    für {settings.count.toLocaleString()}{settings.volume > 0 ? bakeware.filter(bake => bake.volume === settings.volume).length > 0 ? `x ${bakeware.filter(bake => bake.volume === settings.volume)[0].name}` : 'x individuelle Backform' : ` Portion${settings.count > 1 ? 'en' : ''}`}
+                    für {settings.count.toLocaleString()}{settings.volume > 0 ? bakeware.filter(bake => bake.volume === settings.volume).length > 0 ? `x ${bakeware.filter(bake => bake.volume === settings.volume)[0].name}` : 'x individuelle Backform' : ` Portion${settings.count !== 1 ? 'en' : ''}`}
                 </Typography>
                 <IconButton 
                     sx={{height: 'inherit', width: '24px', marginLeft: '5px', padding: 0}} 
@@ -152,7 +152,7 @@ function Portion() {
                                     -
                                 </Button>
                                 <Textfield 
-                                    value={count} 
+                                    value={count.toString().replace('.',',')} 
                                     style={{width: '49px'}} 
                                     onChange={(e) => setPortion(e.target.value)}
                                     error={errorCount}
@@ -180,7 +180,7 @@ function Portion() {
                                         style={{marginRight: '10px'}}
                                         error={errorVolume && volume === 1}                        
                                     />
-                                : <div style={{marginRight: '10px', lineHeight: '56px', flexGrow: 1}}>Portion{count > 1 ? 'en' : ''}</div>}
+                                : <div style={{marginRight: '10px', lineHeight: '56px', flexGrow: 1}}>Portion{count !== 1 ? 'en' : ''}</div>}
                                 <Button
                                     sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', padding: 0}} 
                                     variant="contained" 

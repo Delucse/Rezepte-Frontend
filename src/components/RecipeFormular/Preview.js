@@ -16,11 +16,12 @@ function Preview() {
     const recipe = useSelector((state) => state.recipeFormular);
     const {error, blocked} = recipe;
     const id = useSelector((state) => state.recipe.id);
+    const preview = error.submit && (error.title || error.source || error.portion || error.time || error.keywords || error.ingredients.includes(true) || error.steps || error.pictures);
 
     useEffect(() => {
         console.log('recipeFormular','check error');
         dispatch(checkRecipeError());
-    }, [dispatch]);
+    }, [preview, dispatch]);
 
     useEffect(() => {
         if(!blocked && id){
@@ -31,7 +32,7 @@ function Preview() {
     return(
         <div>
             {error.submit ? 
-                error.title || error.source || error.portion || error.time || error.keywords || error.ingredients.includes(true) || error.steps || error.pictures ? 
+                preview ? 
                     <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es gibt noch Fehler.</Alert>
                     </Box>

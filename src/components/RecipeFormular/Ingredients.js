@@ -1,7 +1,7 @@
 import React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import {changeIngredientsTitle, changeIngredientsPosition, addIngredients, changeAmount, changeUnit, changeAliment, addFood, removeFood, changeFoodPosition, removeIngredients } from "../../actions/recipeFormularActions";
+import { isFoodAmountError, changeIngredientsTitle, changeIngredientsPosition, addIngredients, changeAmount, changeUnit, changeAliment, addFood, removeFood, changeFoodPosition, removeIngredients } from "../../actions/recipeFormularActions";
 
 import Textfield from "../Textfield";
 import Autocomplete from "../Autocomplete";
@@ -72,52 +72,74 @@ function Food(props){
     return (
         <div style={{display: 'flex', marginLeft: '5%', marginRight: '5%', marginBottom: props.length - 1 === props.fIndex ? 0 : '10px'}}>
             <div style={{display: 'grid', marginRight: '5px'}}>
-                <Button onClick={() => dispatch(changeFoodPosition(props.iIndex, props.fIndex, props.fIndex-1))} disabled={props.fIndex===0} sx={{height: 'calc(56px / 3)', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} variant="contained">
+                <Button 
+                    onClick={() => dispatch(changeFoodPosition(props.iIndex, props.fIndex, props.fIndex-1))} 
+                    disabled={props.fIndex===0} 
+                    sx={{height: {xs: 'inherit', sm: 'calc(56px/3)'}, borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} 
+                    variant="contained"
+                >
                     <Icon path={mdiChevronUp} size={1}/>
                 </Button>
-                <Button onClick={() => dispatch(addFood(props.iIndex, props.fIndex))} sx={{height: 'calc(56px / 3)', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} variant="contained">
+                <Button 
+                    onClick={() => dispatch(addFood(props.iIndex, props.fIndex))} 
+                    sx={{height: {xs: 'inherit', sm: 'calc(56px/3)'}, borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} 
+                    variant="contained"
+                >
                     <Icon path={mdiPlus} size={0.7}/>
                 </Button>
-                <Button onClick={() => dispatch(changeFoodPosition(props.iIndex, props.fIndex, props.fIndex+1))} disabled={props.length -1 === props.fIndex} sx={{height: 'calc(56px / 3)', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} variant="contained">
+                <Button 
+                    onClick={() => dispatch(changeFoodPosition(props.iIndex, props.fIndex, props.fIndex+1))} 
+                    disabled={props.length -1 === props.fIndex} 
+                    sx={{height: {xs: 'inherit', sm: 'calc(56px/3)'}, borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} 
+                    variant="contained"
+                >
                     <Icon path={mdiChevronDown} size={1}/>
                 </Button>
             </div>
-            <div style={{width: '20%', marginRight: '5px'}}>
-                <Textfield 
-                    value={props.amount} 
-                    onChange={(e) => dispatch(changeAmount(props.iIndex, props.fIndex, e.target.value))}
-                    error={parseInt(props.amount) > 0 && props.error}
-                    label='Menge' 
-                    // start={
-                    //     <Icon path={mdiWeight  } size={1}/>
-                    // }
-                />
-            </div>
-            <div style={{width: '25%', marginRight: '5px'}}>
-                <Autocomplete
-                    value={props.unit} 
-                    options={units}
-                    optionLabel={'unit'}
-                    optionGroup={'group'}
-                    label='Einheit'
-                    fullWidth
-                    onChange={setUnit}
-                    freeSolo
-                    error={props.unit === '' && props.error}
-                />
-            </div>
-            <Autocomplete
-                value={props.aliment} 
-                options={aliments}
-                optionLabel={'aliment'}
-                label='Zutat'
-                fullWidth
-                onChange={setAliment}
-                freeSolo
-                error={props.aliment === '' && props.error}
-                start={<Icon path={mdiFoodVariant } size={1}/>}
-            />
-            <Button disabled={props.length === 1} onClick={() => dispatch(removeFood(props.iIndex, props.fIndex))} sx={{height: '56px', marginLeft: '5px', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} variant='outlined'>
+            <Box sx={{width: '100%', display: {xs: 'inline', sm: 'flex'}}}>
+                <Box sx={{width: {xs: '100%', sm: '50%'}, display: 'flex'}}>
+                    <div style={{width: '40%', marginRight: '5px'}}>
+                        <Textfield 
+                            value={props.amount.toString().replace('.',',')} 
+                            onChange={(e) => dispatch(changeAmount(props.iIndex, props.fIndex, e.target.value))}
+                            error={isFoodAmountError(props.amount) && props.error}
+                            label='Menge' 
+                        />
+                    </div>
+                    <Box sx={{width: '60%', marginRight: {xs: 0, sm: '5px'}}}>
+                        <Autocomplete
+                            value={props.unit} 
+                            options={units}
+                            optionLabel={'unit'}
+                            optionGroup={'group'}
+                            label='Einheit'
+                            fullWidth
+                            onChange={setUnit}
+                            freeSolo
+                            error={props.unit === '' && props.error}
+                        />
+                    </Box>
+                </Box>
+                <Box sx={{width: {xs: '100%', sm: '50%'}, marginTop: {xs: '10px', sm: 0}}}>
+                    <Autocomplete
+                        value={props.aliment} 
+                        options={aliments}
+                        optionLabel={'aliment'}
+                        label='Zutat'
+                        fullWidth
+                        onChange={setAliment}
+                        freeSolo
+                        error={props.aliment === '' && props.error}
+                        start={<Icon path={mdiFoodVariant } size={1}/>}
+                    />
+                </Box>
+            </Box>
+            <Button 
+                disabled={props.length === 1} 
+                onClick={() => dispatch(removeFood(props.iIndex, props.fIndex))} 
+                sx={{height: {xs: 'inherit', sm: '56px'}, marginLeft: '5px', borderRadius: 0, minWidth: '23px', boxShadow: 'none', padding: '0px'}} 
+                variant='outlined'
+            >
                 <Icon path={mdiDelete} size={1}/>
             </Button>
         </div>
@@ -132,9 +154,9 @@ function Ingredients() {
     return(
         <div>
             {error.ingredients.includes(true) ?
-            <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
-                <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0,}}>Es muss mindestens eine ausgefüllte Zutatenliste geben. Überflüssige Listen und Zutaten bitte löschen.</Alert>
-            </Box>
+                <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
+                    <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0,}}>Es muss mindestens eine ausgefüllte Zutatenliste geben. Überflüssige Listen und Zutaten bitte löschen.</Alert>
+                </Box>
             : null}
             <div style={error.ingredients.includes(true) ? {marginTop: '10px'} : {}}/>
             {ingredients.map((ingredient, iIndex) => (

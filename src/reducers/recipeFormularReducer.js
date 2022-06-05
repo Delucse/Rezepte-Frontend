@@ -23,9 +23,9 @@ const initialState = {
     ingredients: [{
       title: '',
       food: [
-        {amount: -1, unit: '', aliment: ''},
-        {amount: -1, unit: '', aliment: ''},
-        {amount: -1, unit: '', aliment: ''}
+        {amount: '', unit: '', aliment: ''},
+        {amount: '', unit: '', aliment: ''},
+        {amount: '', unit: '', aliment: ''}
       ]
     }],
     steps: ['','',''],

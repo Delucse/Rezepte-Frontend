@@ -4,6 +4,20 @@ import axios from 'axios';
 
 import { setRecipeId } from './recipeActions';
 
+export const isFoodAmountError = (amount) => {
+  var amountDecimal = amount;
+  if(typeof(amountDecimal) === 'string'){
+      amountDecimal = amountDecimal.replace(',','.');
+  }
+  if(amountDecimal.length > 0 && !isNaN(amountDecimal) && amountDecimal >= 0){
+      return false
+  }
+  if(amount !== ' '){
+      return true
+  }
+  return true;
+};
+
 const setError = (key, value) => (dispatch, getState) => {
   var error = getState().recipeFormular.error;
   switch (key) {
@@ -65,7 +79,7 @@ const setError = (key, value) => (dispatch, getState) => {
         if(val.title === ''){
           return true;
         }
-        if(val.food.filter(f => (f.amount === -1 || f.unit === '' || f.aliment === '')).length > 0){
+        if(val.food.filter(f => (isFoodAmountError(f.amount) || f.unit === '' || f.aliment === '')).length > 0){
           return true;
         }
         return false;
@@ -218,9 +232,9 @@ export const addIngredients = (index) => (dispatch, getState) => {
   var ingredient = {
     title: '',
     food: [
-      {amount: -1, unit: '', aliment: ''},
-      {amount: -1, unit: '', aliment: ''},
-      {amount: -1, unit: '', aliment: ''}
+      {amount: '', unit: '', aliment: ''},
+      {amount: '', unit: '', aliment: ''},
+      {amount: '', unit: '', aliment: ''}
     ]
   };
   ingredients.splice(index+1, 0, ingredient);
@@ -258,7 +272,7 @@ export const changeIngredientsPosition = (oldIndex, newIndex) => (dispatch, getS
 
 export const addFood = (ingredientsIndex, foodIndex) => (dispatch, getState) => {
   var ingredients = getState().recipeFormular.ingredients;
-  var food = {amount: -1, unit: '', aliment: ''};
+  var food = {amount: '', unit: '', aliment: ''};
   ingredients[ingredientsIndex].food.splice(foodIndex+1, 0, food);
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
@@ -426,7 +440,7 @@ const objectToFormData = (data, formData, subkey) => {
 }
 
 export const submitRecipe = () => (dispatch, getState) => {
-  var {title, portion, source, time, categories, keywords, ingredients, steps, pictures} = getState().recipeFormular;
+  var {title, portion, source, time, categories, keywords, steps, pictures} = getState().recipeFormular;
 
   Object.entries(categories).forEach(([key])  => {
     if(categories[key]){
@@ -435,7 +449,7 @@ export const submitRecipe = () => (dispatch, getState) => {
   });
 
   var data = {
-    title, source, portion, time, keywords, ingredients, steps
+    title, source, portion, time, keywords, ingredients: getState().recipe.ingredients, steps
   }
 
   var body = new FormData();
@@ -495,9 +509,9 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
       ingredients: [{
         title: '',
         food: [
-          {amount: -1, unit: '', aliment: ''},
-          {amount: -1, unit: '', aliment: ''},
-          {amount: -1, unit: '', aliment: ''}
+          {amount: '', unit: '', aliment: ''},
+          {amount: '', unit: '', aliment: ''},
+          {amount: '', unit: '', aliment: ''}
         ]
       }],
       steps: ['','',''],
