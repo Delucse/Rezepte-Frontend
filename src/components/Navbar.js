@@ -18,7 +18,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 
 import Icon from '@mdi/react';
-import { mdiMenu, mdiClose, mdiCog, mdiLoginVariant, mdiLogoutVariant, mdiFolderAccount, mdiFood, mdiFoodForkDrink, mdiImageMultiple, mdiBookOpenVariant, mdiHome, mdiForum, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
+import { mdiNotebookEdit, mdiMenu, mdiClose, mdiCog, mdiLoginVariant, mdiLogoutVariant, mdiFolderAccount, mdiFood, mdiFoodForkDrink, mdiBookOpenVariant, mdiHome, mdiMagnify, mdiQrcodeScan } from '@mdi/js';
 
 
 
@@ -47,14 +47,12 @@ function Navlink(props){
 
 const menue = [
     { text: 'Startseite', link: "/", icon: mdiHome },
-    { text: 'Rezepte', link: "/rezepte", icon: mdiFood },
-    { text: 'Titel ändern', link: "/test", icon: mdiForum },
-    { text: 'Bilder', link: "/bilder", auth: true, icon: mdiImageMultiple },
-    { text: 'Bilder hinzufügen', link: "/test2", icon: mdiForum }
+    { text: 'Rezepte', link: "/rezepte", icon: mdiFood }
 ]
 
 const userMenue = [
-    { text: 'Mein Kochbuch', link: "/rezepte", auth: true, icon: mdiBookOpenVariant },
+    { text: 'Mein Kochbuch', link: "/rezepte/favoriten", auth: true, icon: mdiBookOpenVariant },
+    { text: 'Eigene Rezepte', link: "/rezepte/nutzer", auth: true, icon: mdiNotebookEdit },
     { text: 'Rezept erstellen', link: "/rezepte/formular", auth: true, icon: mdiFoodForkDrink },
     { text: 'Konto', link: "/konto", auth: true, icon: mdiFolderAccount },
     { text: 'Einstellungen', link: "/einstellungen", auth: true, icon: mdiCog },

@@ -14,10 +14,7 @@ import { loadUser } from './actions/authActions';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 import Home from './pages/Home';
-import Test from './pages/Test';
 import Error from './pages/Error';
-import Test2 from './pages/Test2';
-import Pictures from './pages/Pictures';
 import Layout from './components/Layout';
 import Recipes from './pages/Recipes';
 import Recipe from './pages/Recipe';
@@ -55,12 +52,11 @@ function App() {
         <Routes location={background || location}>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />}/>
-            <Route exact path="test" element={<Test />}/>
-            <Route exact path="test2" element={<Test2 />}/>
-            <Route exact path="bilder" element={<PrivateRoute><Pictures /></PrivateRoute>}/>
             <Route path="rezepte">
-              <Route exact path="formular" element={<RecipeFormular />}/>
+              <Route exact path="formular" element={<PrivateRoute><RecipeFormular /></PrivateRoute>}/>
               <Route exact path=":id" element={<Recipe />}/>
+              <Route exact path='favoriten' element={<PrivateRoute><Recipes type='favourite'/></PrivateRoute>}/>
+              <Route exact path='nutzer' element={<PrivateRoute><Recipes type='user'/></PrivateRoute>}/>
               <Route index element={<Recipes />}/>
             </Route>
             <Route path="anmeldung" element={<SignIn />} />

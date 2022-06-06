@@ -53,7 +53,7 @@ function SignIn() {
       open={true}
       title={
         <div style={{justifyItems: 'center', display: 'grid'}}>
-          <DelucseLogo color='primary' style={{height: '40px', verticalAlign: 'bottom'}}/>
+          <Link to='/'><DelucseLogo color='primary' style={{height: '40px', verticalAlign: 'bottom'}}/></Link>
         </div>
       }
       content={

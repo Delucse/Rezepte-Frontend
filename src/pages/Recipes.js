@@ -17,7 +17,7 @@ import Grid from '@mui/material/Grid';
 import Icon from '@mdi/react';
 import { mdiBarleyOff, mdiEggOffOutline, mdiFoodSteakOff } from '@mdi/js';
 
-function Recipes(){
+function Recipes({type}){
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -38,7 +38,7 @@ function Recipes(){
               console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
             }
           };
-          axios.get(`${process.env.REACT_APP_API_URL}/recipe`, config)
+          axios.get(`${process.env.REACT_APP_API_URL}/recipe${type === 'user' ? '/user' : ''}`, config)
             .then(res => {
                 setRecipes(res.data);
                 dispatch(setError(false));
@@ -48,7 +48,7 @@ function Recipes(){
               dispatch(setError(true));
               dispatch(setLoading(false));
             });
-    }, [dispatch]);
+    }, [type, dispatch]);
 
     return(
         !loading && !error && recipes ? 
