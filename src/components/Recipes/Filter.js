@@ -1,4 +1,8 @@
 import React from 'react';
+
+import { useDispatch, useSelector } from "react-redux";
+import { setOpen } from '../../actions/recipeFilterActions';
+
 import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -7,27 +11,9 @@ import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Slide from '@mui/material/Slide';
-
-import Textfield from '../Textfield';
-
 import Icon from '@mdi/react';
-import { mdiFilterMenu, mdiMagnify, mdiSwapVertical } from '@mdi/js';
+import { mdiFilterMenu } from '@mdi/js';
 
-function HideOnScroll(props) {
-    const { children } = props;
-    
-    const trigger = useScrollTrigger();
-  
-    return (
-        <Slide appear={false} direction="down" in={!trigger}>
-            {children}
-        </Slide>
-    );
-}
 
 const drawerBleeding = 40;
 
@@ -41,45 +27,27 @@ const Puller = styled(Box)(({ theme }) => ({
     left: 'calc(50% - 15px)',
 }));
 
-function SwipeableEdgeDrawer(props) {
 
-    const [open, setOpen] = React.useState(false);
+function Filter() {
+
+    const dispatch = useDispatch();
+    const { open, recipes } = useSelector(state => state.recipeFilter);
 
     const toggle = () => {
-        setOpen(!open);
+        dispatch(setOpen(!open));
     };
 
     return (
-        <div style={{marginBottom: '86px'}}> {/* Navbar: 790x + Recipe-Shadow: mind. 4, aber hier 10px */}
-            
-            <HideOnScroll {...props}>
-                <AppBar sx={{background: 'White', boxShadow: 'none', top: 'calc(55px + 54px + 24px)', padding: theme => `0 ${theme.spacing(3)}`}}>
-                    <Toolbar sx={{padding: '0px !important', display: 'initial'}}>
-                        <div style={{display: 'flex', paddingBottom: '20px'}}>
-                            <Textfield 
-                                placeholder="Suchwort ..."
-                                start={
-                                    <Icon path={mdiMagnify} size={1}/>
-                                }
-                            />
-                            <Button
-                                sx={{margin: '0 5px', height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', padding: 0}} 
-                                variant="contained"
-                                onClick={toggle} 
-                            >
-                                <Icon path={mdiFilterMenu} size={1}/>
-                            </Button>
-                            <Button
-                                sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', padding: 0}} 
-                                variant="contained" 
-                            >
-                                <Icon path={mdiSwapVertical} size={1}/>
-                            </Button>
-                        </div>
-                    </Toolbar>
-                </AppBar>
-            </HideOnScroll>
-
+        <div>
+            <Button
+                sx={{margin: '0 5px', height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', padding: 0}} 
+                variant="contained"
+                disableRipple
+                onClick={toggle} 
+            >
+                <Icon path={mdiFilterMenu} size={1}/>
+            </Button>
+                            
             
             <Global
                 styles={{
@@ -114,10 +82,11 @@ function SwipeableEdgeDrawer(props) {
                         height: `${drawerBleeding}px`,
                         background: 'white'
                     }}
-                    onClick={toggle}
                 >
                     <Puller />
-                    <Typography variant="body2" sx={{ padding: theme => `10px ${theme.spacing(3)}`, color: 'text.secondary' }}>51 Rezepte</Typography>
+                    <Typography variant="body2" sx={{ padding: theme => `10px ${theme.spacing(3)}`, color: 'text.secondary' }}>
+                        {recipes.length} Rezept{recipes.length !== 1 ? 'e': ''}
+                    </Typography>
                 </Box>
                 <Box
                     sx={{
@@ -135,5 +104,5 @@ function SwipeableEdgeDrawer(props) {
     );
 }
 
-export default SwipeableEdgeDrawer;
+export default Filter;
 

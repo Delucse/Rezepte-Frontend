@@ -9,7 +9,7 @@ function Home() {
     axios.get(`${process.env.REACT_APP_API_URL}/title`).then((response) => {
       response.data[0] ? setTitle(response.data[0].title) : setTitle('kein Titel verfügbar')
     });
-  }, [title]);
+  }, []);
 
   return (
     <div>
