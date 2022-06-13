@@ -42,7 +42,7 @@ function Sort(){
     return (
         <div>
             <Button
-                sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', padding: 0, display: {xs: 'none', sm: 'initial'}}} 
+                sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', padding: '16px', display: {xs: 'none', sm: 'initial'}}} 
                 variant="outlined"
                 onClick={handleClick}
                 disableRipple

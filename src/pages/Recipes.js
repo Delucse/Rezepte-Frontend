@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { getRecipes } from '../actions/recipeFilterActions';
@@ -19,16 +19,23 @@ import Typography from '@mui/material/Typography';
 import Icon from '@mdi/react';
 import { mdiBarleyOff, mdiEggOffOutline, mdiFoodSteakOff, mdiClockOutline, mdiCalendar } from '@mdi/js';
 
-function Recipes({type}){
+function Recipes({route}){
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {error, loading} = useSelector((state) => state.settings);
-    const {word, sort, recipes} = useSelector((state) => state.recipeFilter);
+    const {word, sort, type, categories, recipes} = useSelector((state) => state.recipeFilter);
+
+    const [oldType, setOldType] = useState(type);
 
     useEffect(() => {
-        dispatch(getRecipes(type));
-    }, [word, sort, type, dispatch]);
+        if(type !== oldType && word === ''){
+        } else {
+            dispatch(getRecipes(route));
+        }
+        setOldType(type);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [word, sort, type, categories, route, dispatch]);
 
     return(
         <div style={{marginTop: '-90px'}}>
@@ -75,7 +82,7 @@ function Recipes({type}){
                                             </Box>
                                             <Box sx={{height: 'calc(24px * 10)', marginBottom: '24px', width: 'calc(100% + 24px)'}}>
                                                 <img 
-                                                    src={recipe.pictures[0].url ? recipe.pictures[0].url : `${process.env.REACT_APP_API_URL}/media/${recipe.pictures[0].file}`}
+                                                    src={recipe.pictures ? recipe.pictures[0].url : `${process.env.REACT_APP_API_URL}/media/${recipe.picture}`}
                                                     alt={recipe.title} 
                                                     style={{height: '100%', width: '100%', objectFit: 'cover'}}
                                                 />
