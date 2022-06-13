@@ -44,7 +44,7 @@ function Recipes({route}){
 
     return(
         <div style={{marginTop: '-90px'}}>
-            <div style={{paddingTop: '80px', marginBottom: 'calc(-24px + 40px + 20px)'}}>
+            <div style={{paddingTop: '80px', marginBottom: 'calc(-24px + 50px + 20px)'}}>
                 <SearchBar />
                 {!loading && !error && recipes ?
                     recipes.length > 0 ?

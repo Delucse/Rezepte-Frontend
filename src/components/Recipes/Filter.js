@@ -1,21 +1,23 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { setOpen } from '../../actions/recipeFilterActions';
+import { removeCategory, setOpen } from '../../actions/recipeFilterActions';
+
+import Categories from './Categories';
 
 import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import Badge from '@mui/material/Badge';
+import Chip from '@mui/material/Chip';
 
 import Icon from '@mdi/react';
-import { mdiFilterMenu } from '@mdi/js';
+import { mdiFilter } from '@mdi/js';
 
-
-const drawerBleeding = 40;
+const drawerBleeding = 50;
 
 const Puller = styled(Box)(({ theme }) => ({
     width: 30,
@@ -31,7 +33,7 @@ const Puller = styled(Box)(({ theme }) => ({
 function Filter() {
 
     const dispatch = useDispatch();
-    const { open, recipes } = useSelector(state => state.recipeFilter);
+    const { open, recipes, categories } = useSelector(state => state.recipeFilter);
 
     const toggle = () => {
         dispatch(setOpen(!open));
@@ -45,7 +47,29 @@ function Filter() {
                 disableRipple
                 onClick={toggle} 
             >
-                <Icon path={mdiFilterMenu} size={1}/>
+                
+                <Badge 
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    badgeContent={categories.length}
+                    componentsProps={{
+                        badge: {
+                            sx: {
+                                    backgroundColor: 'white', 
+                                    color: theme => theme.palette.primary.main,
+                                    minWidth: '15px',
+                                    height: '15px',
+                                    padding: '0 3px',
+                                    fontSize: '10px'
+                                }
+                        }
+                    }}
+                    max={9}
+                >
+                    <Icon path={mdiFilter} size={1.1}/>
+                </Badge>
             </Button>
                             
             
@@ -84,19 +108,33 @@ function Filter() {
                     }}
                 >
                     <Puller />
-                    <Typography variant="body2" sx={{ padding: theme => `10px ${theme.spacing(3)}`, color: 'text.secondary' }}>
-                        {recipes.length} Rezept{recipes.length !== 1 ? 'e': ''}
-                    </Typography>
+                    <Box sx={{display: 'flex', paddingTop: '20px'}}>
+                        <Typography variant="body2" sx={{ padding: theme => `0 ${theme.spacing(3)}`, color: 'text.secondary' }}>
+                            {recipes.length} Rezept{recipes.length !== 1 ? 'e': ''}
+                        </Typography>
+                        <Box sx={{pointerEvents: 'auto', width: 'calc(100% - 130px)', overflowY: 'hidden'}}>
+                            <Box sx={{overflowX: 'auto', overflowY: 'hidden', display: 'flex'}}>
+                                {!open ? categories.map((category, index) => 
+                                    <Chip 
+                                        key={index} 
+                                        label={category} 
+                                        onDelete={() => dispatch(removeCategory(category))}
+                                        color='primary'
+                                        size='small'
+                                        sx={{marginRight: '5px', marginBottom: '10px'}}
+                                    />
+                                ) : null}
+                            </Box>
+                        </Box>
+                    </Box>
                 </Box>
                 <Box
                     sx={{
-                        px: 2,
-                        pb: 2,
-                        height: '100%',
-                        overflow: 'auto',
+                        padding: theme => `0 ${theme.spacing(3)}`,
+                        overflow: 'auto'
                     }}
                 >
-                    <Skeleton variant="rectangular" height="100%" />
+                    <Categories />
                 </Box>
             </SwipeableDrawer>
             <Box sx={{position: 'fixed', bottom: `${drawerBleeding}px`, left: 0, backgroundColor: 'white', height: '20px', width: '100%', zIndex: 1}}></Box>

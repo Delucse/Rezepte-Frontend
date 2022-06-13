@@ -65,21 +65,20 @@ export const setType = (type) => (dispatch) => {
   });
 }
 
-export const addCategory = (category) => (dispatch, getState) => {
-  var categories = getState().recipeFilter.categories;
-  categories.push(category);
-  dispatch({
-    type: SET_CATEGORIES,
-    payload: category
-  });
-}
 
 export const removeCategory = (category) => (dispatch, getState) => {
   var categories = getState().recipeFilter.categories;
   categories = categories.filter(cat => cat !== category);
   dispatch({
     type: SET_CATEGORIES,
-    payload: category
+    payload: categories
+  });
+}
+
+export const setCategories = (categories) => (dispatch) => {
+  dispatch({
+    type: SET_CATEGORIES,
+    payload: [...categories]
   });
 }
 
