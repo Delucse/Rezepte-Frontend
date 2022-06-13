@@ -1,4 +1,4 @@
-import { GET_RECIPES, SET_WORD, FILTER_OPEN, SET_CATEGORIES, SET_SORT, SET_TYPE } from '../actions/types';
+import { GET_RECIPES, SET_WORD, FILTER_OPEN, SET_CATEGORIES, SET_SORT, SET_TYPE, RESET_RECIPES_FILTER } from '../actions/types';
 
 
 const initialState = {
@@ -29,22 +29,26 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         type: action.payload
-      }
+      };
     case SET_CATEGORIES:
       return {
         ...state,
         categories: action.payload
-      }
+      };
     case SET_SORT:
       return {
         ...state,
         sort: action.payload
-      }
+      };
     case FILTER_OPEN:
       return {
         ...state,
         open: action.payload
-      }
+      };
+    case RESET_RECIPES_FILTER:
+      return {
+        ...action.payload
+      };
     default:
       return state;
   }

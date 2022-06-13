@@ -43,9 +43,7 @@ function RecipeFormular() {
     const dispatch = useDispatch();
     const {blocked} = useSelector(state => state.recipeFormular);
 
-    // const [open, setOpen] = useState(true);
     useEffect(() => {
-        console.log('recipeFormular','block auf true setzen');
         dispatch(setBlocked(true));
     }, [dispatch]);
 

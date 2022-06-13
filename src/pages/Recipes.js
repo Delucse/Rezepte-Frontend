@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { getRecipes } from '../actions/recipeFilterActions';
+import { getRecipes, resetFilterSettings } from '../actions/recipeFilterActions';
 
 import { useNavigate } from "react-router-dom";
 
@@ -29,13 +29,18 @@ function Recipes({route}){
     const [oldType, setOldType] = useState(type);
 
     useEffect(() => {
-        if(type !== oldType && word === ''){
-        } else {
+        if(!(type !== oldType && word === '')){
             dispatch(getRecipes(route));
         }
         setOldType(type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word, sort, type, categories, route, dispatch]);
+
+    useEffect(() => {
+        return () => {
+            dispatch(resetFilterSettings());
+        };
+    }, [dispatch])
 
     return(
         <div style={{marginTop: '-90px'}}>

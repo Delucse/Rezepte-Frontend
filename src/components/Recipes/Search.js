@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { setWord, setType } from '../../actions/recipeFilterActions';
@@ -21,6 +21,13 @@ function Search() {
     const { word, type } = useSelector(state => state.recipeFilter);
 
     const [search, setSearch] = useState(word);
+
+    useEffect(() => {
+        if(word === '' && search !== ''){
+            setSearch('');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [word])
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);

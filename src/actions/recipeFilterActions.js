@@ -1,4 +1,4 @@
-import { GET_RECIPES, FILTER_OPEN, SET_WORD, SET_SORT, SET_TYPE, SET_CATEGORIES } from '../actions/types';
+import { GET_RECIPES, FILTER_OPEN, SET_WORD, SET_SORT, SET_TYPE, SET_CATEGORIES, RESET_RECIPES_FILTER } from '../actions/types';
 
 import { setLoading, setError } from './settingsActions';
 
@@ -81,4 +81,21 @@ export const removeCategory = (category) => (dispatch, getState) => {
     type: SET_CATEGORIES,
     payload: category
   });
+}
+
+export const resetFilterSettings = () => (dispatch) => {
+  dispatch({
+    type: RESET_RECIPES_FILTER,
+    payload: {
+      word: '',
+      type: 'all',
+      sort: {
+        type: 'score',
+        ascending: true
+      },
+      open: false,
+      categories: [],
+      recipes: []
+    }
+  })
 }

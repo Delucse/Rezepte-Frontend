@@ -19,7 +19,6 @@ function Preview() {
     const preview = error.submit && (error.title || error.source || error.portion || error.time || error.keywords || error.ingredients.includes(true) || error.steps || error.pictures);
 
     useEffect(() => {
-        console.log('recipeFormular','check error');
         dispatch(checkRecipeError());
     }, [preview, dispatch]);
 
