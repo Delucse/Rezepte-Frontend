@@ -10,8 +10,18 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
 import Icon from '@mdi/react';
-import { mdiDotsVertical, mdiSwapVertical, mdiSortAlphabeticalAscending, mdiSortAlphabeticalDescending, mdiSortClockAscending, mdiSortClockDescending, mdiSortCalendarAscending, mdiSortCalendarDescending } from '@mdi/js';
+import { mdiDotsVertical, mdiSortAscending, mdiSortDescending, mdiSortAlphabeticalAscending, mdiSortAlphabeticalDescending, mdiSortClockAscending, mdiSortClockDescending, mdiSortCalendarAscending, mdiSortCalendarDescending } from '@mdi/js';
 
+const sort = [
+    {title: 'Relevanz aufsteigend', icon: mdiSortAscending, type: 'score', ascending: true },
+    {title: 'Relevanz absteigend', icon: mdiSortDescending, type: 'score', ascending: false },
+    {title: 'Alphabet aufsteigend', icon: mdiSortAlphabeticalAscending, type: 'title', ascending: true },
+    {title: 'Alphabet absteigend', icon: mdiSortAlphabeticalDescending, type: 'title', ascending: false },
+    {title: 'Gesamtzeit aufsteigend', icon: mdiSortClockAscending, type: 'time', ascending: true },
+    {title: 'Gesamtzeit absteigend', icon: mdiSortClockDescending, type: 'time', ascending: false },
+    {title: 'Datum aufsteigend', icon: mdiSortCalendarAscending, type: 'date', ascending: true },
+    {title: 'Datum absteigend', icon: mdiSortCalendarDescending, type: 'date', ascending: false },
+];
 
 function Sort(){
 
@@ -37,7 +47,7 @@ function Sort(){
                 onClick={handleClick}
                 disableRipple
             >
-                <Icon path={mdiSwapVertical} size={1}/>
+                <Icon path={sort.filter(s => type === s.type && ascending === s.ascending)[0].icon} size={1}/>
             </Button>
             <Button
                 sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '20px', padding: 0, display: {xs: 'initial', sm: 'none'}}} 
@@ -59,14 +69,7 @@ function Sort(){
                     horizontal: 'center',
                 }}
             >
-                {[
-                    {title: 'Alphabet aufsteigend', icon: mdiSortAlphabeticalAscending, type: 'title', ascending: true },
-                    {title: 'Alphabet absteigend', icon: mdiSortAlphabeticalDescending, type: 'title', ascending: false },
-                    {title: 'Gesamtzeit aufsteigend', icon: mdiSortClockAscending, type: 'time', ascending: true },
-                    {title: 'Gesamtzeit absteigend', icon: mdiSortClockDescending, type: 'time', ascending: false },
-                    {title: 'Datum aufsteigend', icon: mdiSortCalendarAscending, type: 'date', ascending: true },
-                    {title: 'Datum absteigend', icon: mdiSortCalendarDescending, type: 'date', ascending: false },
-                ].map((item, index) => 
+                {sort.map((item, index) => 
                     <MenuItem 
                         key={index}     
                         onClick={() => {dispatch(setSort(item.type, item.ascending)); handleClose();}} 

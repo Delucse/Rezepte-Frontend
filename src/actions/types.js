@@ -23,8 +23,9 @@ export const SET_RECIPE_ID = 'SET_RECIPE_ID';
 // Recipe Filter
 export const GET_RECIPES = 'GET_RECIPES';
 export const SET_WORD = 'SET_WORD';
+export const SET_TYPE = 'SET_TYPE';
 export const FILTER_OPEN = 'FILTER_OPEN';
-export const SET_FILTER = 'SET_FILTER';
+export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_SORT = 'SET_SORT';
 
 // Recipe Formular

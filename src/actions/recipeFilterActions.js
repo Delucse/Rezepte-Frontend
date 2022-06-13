@@ -1,11 +1,11 @@
-import { GET_RECIPES, FILTER_OPEN, SET_WORD, SET_SORT } from '../actions/types';
+import { GET_RECIPES, FILTER_OPEN, SET_WORD, SET_SORT, SET_TYPE, SET_CATEGORIES } from '../actions/types';
 
 import { setLoading, setError } from './settingsActions';
 
 import axios from 'axios';
 
-export const getRecipes = (type) => (dispatch, getState) => {
-  const {word, sort} = getState().recipeFilter;
+export const getRecipes = (route) => (dispatch, getState) => {
+  const {word, sort, type, categories} = getState().recipeFilter;
   dispatch(setError(false));
   dispatch(setLoading(true));
   const config = {
@@ -13,13 +13,13 @@ export const getRecipes = (type) => (dispatch, getState) => {
         'Content-Type': 'application/json'
       },
       onUploadProgress: progressEvent => {
-        console.log('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
+        // console.log('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
       },
       onDownloadProgress: progressEvent => {
-        console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
+        // console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
       }
     };
-    axios.get(`${process.env.REACT_APP_API_URL}/recipe${type === 'user' ? '/user' : ''}?search=${word}&sort=${sort.type}&ascending=${sort.ascending}`, config)
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe${route === 'user' ? '/user' : ''}?search=${word}&type=${type}&keywords=${categories.join(',')}&sort=${sort.type}&ascending=${sort.ascending}`, config)
       .then(res => {
           dispatch({
             type: GET_RECIPES,
@@ -55,5 +55,30 @@ export const setSort = (type, isAscending) => (dispatch) => {
       type: type,
       ascending: isAscending
     }
+  });
+}
+
+export const setType = (type) => (dispatch) => {
+  dispatch({
+    type: SET_TYPE,
+    payload: type
+  });
+}
+
+export const addCategory = (category) => (dispatch, getState) => {
+  var categories = getState().recipeFilter.categories;
+  categories.push(category);
+  dispatch({
+    type: SET_CATEGORIES,
+    payload: category
+  });
+}
+
+export const removeCategory = (category) => (dispatch, getState) => {
+  var categories = getState().recipeFilter.categories;
+  categories = categories.filter(cat => cat !== category);
+  dispatch({
+    type: SET_CATEGORIES,
+    payload: category
   });
 }
