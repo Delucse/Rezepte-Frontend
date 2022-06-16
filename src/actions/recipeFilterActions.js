@@ -1,11 +1,11 @@
-import { GET_RECIPES, FILTER_OPEN, SET_WORD, SET_SORT, SET_TYPE, SET_CATEGORIES, RESET_RECIPES_FILTER } from '../actions/types';
+import { GET_RECIPES, FILTER_OPEN, SET_WORD, SET_SORT, SET_TYPE, SET_CATEGORIES, RESET_RECIPES_FILTER, SET_ROUTE } from '../actions/types';
 
 import { setLoading, setError } from './settingsActions';
 
 import axios from 'axios';
 
-export const getRecipes = (route) => (dispatch, getState) => {
-  const {word, sort, type, categories} = getState().recipeFilter;
+export const getRecipes = () => (dispatch, getState) => {
+  const {word, sort, type, categories, route} = getState().recipeFilter;
   dispatch(setError(false));
   dispatch(setLoading(true));
   const config = {
@@ -96,5 +96,12 @@ export const resetFilterSettings = () => (dispatch) => {
       categories: [],
       recipes: []
     }
+  })
+}
+
+export const setRoute = (route) => (dispatch) => {
+  dispatch({
+    type: SET_ROUTE,
+    payload: route
   })
 }

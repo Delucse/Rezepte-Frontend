@@ -101,9 +101,6 @@ function Overview(props){
                     vertical: 'top',
                     horizontal: 'center',
                 }}
-                // PaperProps={{
-                //     sx: {cursor: 'copy'}
-                // }}
             >
                 {[
                     props.keywords.includes('vegan') ? {title: 'vegan', icon: mdiEggOffOutline} : {},
@@ -114,9 +111,9 @@ function Overview(props){
                     {title: `erstellt am ${moment(props.date).format('DD.MM.YYYY, HH:mm')} Uhr`, icon: mdiCalendar},
                 ].map((item, index) => 
                     item.icon ?
-                        <div>    
+                        <div key={index}>    
                             {item.icon === mdiClockOutline ? <Divider /> : null}
-                            <MenuItem key={index} sx={{cursor: 'default'}}>
+                            <MenuItem sx={{cursor: 'default'}}>
                                 <ListItemIcon>
                                     <Icon path={item.icon} size={1}/>
                                 </ListItemIcon>

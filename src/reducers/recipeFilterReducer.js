@@ -1,4 +1,4 @@
-import { GET_RECIPES, SET_WORD, FILTER_OPEN, SET_CATEGORIES, SET_SORT, SET_TYPE, RESET_RECIPES_FILTER } from '../actions/types';
+import { GET_RECIPES, SET_WORD, FILTER_OPEN, SET_CATEGORIES, SET_SORT, SET_TYPE, RESET_RECIPES_FILTER, SET_ROUTE } from '../actions/types';
 
 
 const initialState = {
@@ -10,6 +10,7 @@ const initialState = {
     },
     open: false,
     categories: [],
+    route: null,
     recipes: []
 };
 
@@ -47,8 +48,14 @@ const reducer = (state = initialState, action) => {
       };
     case RESET_RECIPES_FILTER:
       return {
+        ...state,
         ...action.payload
       };
+    case SET_ROUTE:
+      return {
+        ...state,
+        route: action.payload
+      }
     default:
       return state;
   }

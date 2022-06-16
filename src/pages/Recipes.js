@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { getRecipes, resetFilterSettings } from '../actions/recipeFilterActions';
+import { getRecipes, resetFilterSettings, setRoute } from '../actions/recipeFilterActions';
 
 import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
@@ -9,27 +9,25 @@ import Overview from '../components/Recipes/Overview';
 
 import Grid from '@mui/material/Grid';
 
-function Recipes({route}){
+function Recipes(props){
 
     const dispatch = useDispatch();
     const {error, loading} = useSelector((state) => state.settings);
-    const {word, sort, type, categories, recipes} = useSelector((state) => state.recipeFilter);
+    const {word, sort, type, categories, recipes, route} = useSelector((state) => state.recipeFilter);
 
     const [oldType, setOldType] = useState(type);
 
     useEffect(() => {
+        if(props.route !== route){
+            dispatch(resetFilterSettings());
+            dispatch(setRoute(props.route));
+        }
         if(!(type !== oldType && word === '')){
-            dispatch(getRecipes(route));
+            dispatch(getRecipes());
         }
         setOldType(type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [word, sort, type, categories, route, dispatch]);
-
-    useEffect(() => {
-        return () => {
-            dispatch(resetFilterSettings());
-        };
-    }, [dispatch])
+    }, [word, sort, type, categories, props.route, dispatch]);
 
     return(
         <div style={{marginTop: '-90px'}}>
