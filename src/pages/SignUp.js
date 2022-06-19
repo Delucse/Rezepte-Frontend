@@ -27,6 +27,8 @@ function SignUp() {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const pathname = location.state && location.state.background ? location.state.background.state && location.state.background.state.background ? location.state.background.state.background.pathname : location.state.background.pathname : '/';
+
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -39,6 +41,10 @@ function SignUp() {
   return (
     <Dialog
       open={true}
+      backIcon={location.state && location.state.auth}
+      onBack={() => navigate('/', {replace: true})}
+      closeIcon={location.state && !location.state.auth}
+      onClose={() => navigate(pathname, {replace: true})}
       title={
         <div style={{justifyItems: 'center', display: 'grid'}}>
           <Link to='/'><DelucseLogo color='primary' style={{height: '40px', verticalAlign: 'bottom'}}/></Link>
@@ -46,8 +52,16 @@ function SignUp() {
       }
       content={
         <div>
+          {location.state && location.state.auth ? 
+            <div style={{marginBottom: '20px', textAlign: 'center'}}>
+              <p style={{textAlign: 'center', paddingRight: "34px", paddingLeft: "34px", marginTop: '10px'}}>
+              Die aufgerufene Seite ist passwortgeschützt. Registriere dich bitte hier.
+              </p>              
+              <Divider variant='fullWidth'/>
+            </div> 
+          : null}
           <div style={{paddingRight: "34px", paddingLeft: "34px", marginTop: '20px'}}>
-          <Textfield
+            <Textfield
               label='Name'
               name='name'
               fullWidth
@@ -77,12 +91,12 @@ function SignUp() {
               fullWidth
             />
             <p style={{marginTop: '20px'}}>
-              <Button variant="contained" sx={{borderRadius: 0, width: '100%'}} onClick={() => navigate('/anmeldung', {state: location.state ? {background: location.state.background} : {}, replace: true})}>Registrieren</Button>
+              <Button variant="contained" sx={{borderRadius: 0, width: '100%'}} onClick={() => navigate('/anmeldung', {state: location.state ? {background: location.state.background, auth: location.state.auth} : {}, replace: true})}>Registrieren</Button>
             </p>
           </div>
           <Divider variant='fullWidth'/>
           <p style={{textAlign: 'center', paddingRight: "34px", paddingLeft: "34px", marginBottom: 0}}>
-            Du hast bereits ein Konto? <StyledLink to="/anmeldung" state={location.state ? {background: location.state.background} : {}} replace style={{fontWeight: 'bold'}}>Anmelden</StyledLink>
+            Du hast bereits ein Konto? <StyledLink to="/anmeldung" state={location.state ? {background: location.state.background, auth: location.state.auth} : {}} replace style={{fontWeight: 'bold'}}>Anmelden</StyledLink>
           </p>          
         </div>
       }

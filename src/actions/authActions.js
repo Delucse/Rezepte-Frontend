@@ -8,7 +8,8 @@ import {
   LOGOUT_FAIL,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
-  REFRESH_TOKEN_SUCCESS
+  REFRESH_TOKEN_SUCCESS,
+  LAST_SIGNIN
 } from '../actions/types';
 
 import axios from 'axios';
@@ -21,6 +22,10 @@ export const loadUser = () => (dispatch) => {
   });
   const config = {
     success: res => {
+      dispatch({
+        type: LAST_SIGNIN,
+        payload: Date.now()
+      });
       dispatch({
         type: USER_LOADED,
         payload: res.data
@@ -81,8 +86,12 @@ export const login = (username, password) => (dispatch) => {
   axios.post(`${process.env.REACT_APP_API_URL}/auth/signin`, body, config)
   .then(res => {
     // Logout automatically if refreshToken "expired"
+    dispatch({
+      type: LAST_SIGNIN,
+      payload: Date.now()
+    });
     const logoutTimer = () => setTimeout(
-      () => dispatch(signout()),
+      () => dispatch(signoutIntern()),
       timeToLogout
     );
     logoutTimerId = logoutTimer();
@@ -98,6 +107,13 @@ export const login = (username, password) => (dispatch) => {
   });
 };
 
+export const resetSignout = () => (dispatch) => {
+  dispatch({
+    type: LAST_SIGNIN,
+    payload: null
+  });
+}
+
 
 // Logout User
 export const signout = () => (dispatch, getState) => {
@@ -107,12 +123,14 @@ export const signout = () => (dispatch, getState) => {
                 type: LOGOUT_SUCCESS
             });
             clearTimeout(logoutTimerId);
+            dispatch(resetSignout());
         },
         error: err => {
             dispatch({
                 type: LOGOUT_FAIL
             });
             clearTimeout(logoutTimerId);
+            dispatch(resetSignout());
         }
     };
     axios.post(`${process.env.REACT_APP_API_URL}/auth/signout`, {"token": getState().auth.refreshToken}, config)
@@ -122,6 +140,13 @@ export const signout = () => (dispatch, getState) => {
     .catch(err => {
         err.config.error(err);
     });
+};
+
+const signoutIntern = () => (dispatch) => {
+  dispatch({
+      type: LOGOUT_SUCCESS
+  });
+  clearTimeout(logoutTimerId);
 };
 
 
@@ -161,12 +186,12 @@ export const authInterceptor = () => (dispatch, getState) => {
                   originalRequest._retry = true;
                   const refreshToken = getState().auth.refreshToken;
                   // request to refresh the token, in request-body is the refreshToken
-                  axios.post('/auth/refresh', {"token": refreshToken})
+                  axios.post(`${process.env.REACT_APP_API_URL}/auth/refresh`, {"token": refreshToken})
                       .then(res => {
                           if (res.status === 200) {
                               clearTimeout(logoutTimerId);
                               const logoutTimer = () => setTimeout(
-                                  () => dispatch(signout()),
+                                  () => dispatch(signoutIntern()),
                                   timeToLogout
                               );
                               logoutTimerId = logoutTimer();
@@ -174,8 +199,11 @@ export const authInterceptor = () => (dispatch, getState) => {
                                 type: REFRESH_TOKEN_SUCCESS,
                                 payload: res.data
                               });
-                              axios.defaults.headers.common['Authorization'] = 'Bearer ' + getState().auth.token;
+                              axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
                               // request was successfull, new request with the old parameters and the refreshed token
+                              if(originalRequest.data && originalRequest.data.includes('token')){
+                                originalRequest.data = JSON.stringify({token:res.data.refreshToken});
+                              }
                               return axios(originalRequest)
                                   .then(res => {
                                       originalRequest.success(res);

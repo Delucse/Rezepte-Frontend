@@ -63,8 +63,10 @@ function App() {
             <Route path="konto" element={<div>Konto TODO</div>}/>
             <Route path="einstellungen" element={<div>Einstellungen TODO</div>}/>
             <Route path="qr" element={<div>QR-Code TODO</div>}/>
-            <Route path="anmeldung" element={<SignIn />} />
-            <Route path="registrierung" element={<SignUp />}/>
+            {!background &&
+              <Route path="anmeldung" element={<SignIn />} />}
+            {!background &&
+              <Route path="registrierung" element={<SignUp />}/>}
             <Route path="*" element={<Error />}/>
           </Route>
         </Routes>

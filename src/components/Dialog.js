@@ -7,12 +7,29 @@ import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
 
 import Icon from '@mdi/react';
-import { mdiClose  } from '@mdi/js';
+import { mdiArrowLeft, mdiClose  } from '@mdi/js';
 
 
 const DialogTitle = (props) => {
     return (
         <MuiDialogTitle sx={{ margin: 0, padding: 2, paddingBottom: props.noPadding ? 0 : 2, display: 'flex' }}>
+            {props.backIcon ? (
+                <IconButton
+                    onClick={props.onBack}
+                    sx={{
+                        float: 'left',
+                        height: '40px',
+                        marginTop: -0.5,
+                        color: (theme) => theme.palette.primary.light,
+                        '&:hover': {
+                            color: (theme) => theme.palette.primary.main,
+                        }
+                    }}
+                    disableRipple
+                >
+                    <Icon path={mdiArrowLeft} size={1}/>
+                </IconButton>
+            ) : null}
             <div style={{flexGrow: 1}}>
                 {props.children}
             </div>
@@ -48,7 +65,7 @@ function Dialog(props) {
             onClose={props.onClose}
             sx={!props.closeIcon ? {zIndex: theme => theme.zIndex.modal + 2} : {}}
         >
-            <DialogTitle onClose={props.onClose} closeIcon={props.closeIcon}  noPadding={props.noPadding}>
+            <DialogTitle onClose={props.onClose} closeIcon={props.closeIcon} onBack={props.onBack} backIcon={props.backIcon} noPadding={props.noPadding}>
                 {props.title}
             </DialogTitle>
             {props.content ? 

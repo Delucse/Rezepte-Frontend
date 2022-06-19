@@ -1,15 +1,21 @@
-import { USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, LOGOUT_FAIL, REGISTER_FAIL, REGISTER_SUCCESS, REFRESH_TOKEN_SUCCESS } from '../actions/types';
+import { LAST_SIGNIN, USER_LOADED, USER_LOADING, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL, LOGOUT_SUCCESS, LOGOUT_FAIL, REGISTER_FAIL, REGISTER_SUCCESS, REFRESH_TOKEN_SUCCESS } from '../actions/types';
 
 
 const initialState = {
   token: localStorage.getItem('token'),
   refreshToken: localStorage.getItem('refresh-token'),
   loading: false,
-  user: null
+  user: null,
+  last: null
 };
 
 const reducer = (state = initialState, action) => {
   switch(action.type){
+    case LAST_SIGNIN:
+      return {
+        ...state,
+        last: action.payload
+      };
     case USER_LOADING:
       return {
         ...state,
@@ -40,6 +46,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         token: null,
+        refreshToken: null,
         user: null,
         loading: false
       };

@@ -128,13 +128,19 @@ function BreadCrumbs(){
 
     const { route } = useSelector(state => state.recipeFilter);
     const location = useLocation();
-    const params = Object.keys(useParams());
+    
+    var params = Object.keys(useParams());
+    if(/\/(anmeldung|registrierung)/.test(location.pathname)){
+        params = [];
+    }
+
+    const pathname = location.state && location.state.background ? location.state.background.state && location.state.background.state.background ? location.state.background.state.background.pathname : location.state.background.pathname : location.pathname;
     
     const currentRoute = routes.filter(route => {
         if(route.hasOwnProperty("params")){
-            return route.pathname.test(location.pathname) && JSON.stringify(route.params) === JSON.stringify(params);
+            return route.pathname.test(pathname) && JSON.stringify(route.params) === JSON.stringify(params);
         }
-        return route.pathname.test(location.pathname);
+        return route.pathname.test(pathname);
     })[0];
 
     var breadcrumbs = currentRoute.breadcrumbs.filter(bc => {
@@ -178,7 +184,7 @@ function BreadCrumbs(){
                 </Box>                
                 <Box sx={{height: theme => theme.spacing(3), background: 'white'/*'linear-gradient(white 0%, transparent 60%)'*/}}/>
             </div>
-        :   currentRoute.hasOwnProperty("params") || (location.state.background && location.state.background.pathname === '/') ?
+        :   currentRoute.hasOwnProperty("params") || (location.state && location.state.background && location.state.background.pathname === '/') ?
                 <Box sx={{zIndex: 1, padding: theme => `${theme.spacing(3)} ${theme.spacing(3)} 0px ${theme.spacing(3)}`, position: 'sticky', top: 'calc(55px)', background: 'white'/*'linear-gradient(white 0%, transparent 60%)'*/}}/>
             :   <Box sx={{zIndex: 1, padding: theme => `${theme.spacing(3)} ${theme.spacing(3)} 54px ${theme.spacing(3)}`, position: 'sticky', top: 'calc(55px)', background: 'white'/*'linear-gradient(white 0%, transparent 60%)'*/}}/>
     );

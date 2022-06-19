@@ -28,17 +28,19 @@ function SignIn() {
   const navigate = useNavigate();
   
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth);
+  const { user, last } = useSelector(state => state.auth);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
+  const pathname = location.state && location.state.background ? location.state.background.state && location.state.background.state.background ? location.state.background.state.background.pathname : location.state.background.pathname : '/';
+
   useEffect(() => {
     if(user){
-      navigate(-1, {replace: true});
+      navigate(pathname, {replace: true});
     }
-  }, [user, navigate]);
+  }, [user, navigate, pathname]);
   
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -50,7 +52,11 @@ function SignIn() {
 
   return (
     <Dialog
-      open={true}
+      open={!last}
+      backIcon={location.state && location.state.auth}
+      onBack={() => navigate('/', {replace: true})}
+      closeIcon={location.state && !location.state.auth}
+      onClose={() => navigate(pathname, {replace: true})}
       title={
         <div style={{justifyItems: 'center', display: 'grid'}}>
           <Link to='/'><DelucseLogo color='primary' style={{height: '40px', verticalAlign: 'bottom'}}/></Link>
@@ -58,6 +64,14 @@ function SignIn() {
       }
       content={
         <div>
+          {location.state && location.state.auth ? 
+            <div style={{marginBottom: '20px', textAlign: 'center'}}>
+              <p style={{textAlign: 'center', paddingRight: "34px", paddingLeft: "34px", marginTop: '10px'}}>
+                Die aufgerufene Seite ist passwortgeschützt. Melde dich bitte hier an.
+              </p>              
+              <Divider variant='fullWidth'/>
+            </div> 
+          : null}
           <div style={{paddingRight: "34px", paddingLeft: "34px", marginTop: '20px'}}>
             <Textfield
               label='Nutzername'
@@ -88,12 +102,12 @@ function SignIn() {
               <Button variant="contained" sx={{borderRadius: 0, width: '100%'}} onClick={() => dispatch(login(username, password))}>Anmelden</Button>
             </p>
             <p style={{textAlign: 'center', fontSize: '0.8rem'}}>
-              <StyledLink to="" replace state={location.state ? {background: location.state.background} : {}}>Passwort vergessen?</StyledLink>
+              <StyledLink to="" replace state={location.state ? {background: location.state.background, auth: location.state.auth} : {}}>Passwort vergessen?</StyledLink>
             </p>
           </div>
           <Divider variant='fullWidth'/>
           <p style={{textAlign: 'center', paddingRight: "34px", paddingLeft: "34px", marginBottom: 0}}>
-            Du hast noch kein Konto? <StyledLink to="/registrierung" state={location.state ? {background: location.state.background} : {}} replace style={{fontWeight: 'bold'}}>Registrieren</StyledLink>
+            Du hast noch kein Konto? <StyledLink to="/registrierung" state={location.state ? {background: location.state.background, auth: location.state.auth} : {}} replace style={{fontWeight: 'bold'}}>Registrieren</StyledLink>
           </p>          
         </div>
       }
