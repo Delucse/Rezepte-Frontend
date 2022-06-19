@@ -70,7 +70,7 @@ const routes = [
             {title: 'Favoriten'},
         ]
     },
-    {   pathname: /^\/rezepte\/.*$/i, 
+    {   pathname: /^\/rezepte\/.{24}$/i, 
         params: ['id'],
         breadcrumbs: [
             {title: <RecipeSearch/>, pathname: '/suche'},
@@ -117,7 +117,7 @@ const routes = [
     },
     {   
         pathname: /^.*$/i, 
-        params: ['*'],
+        // params: ['*'],
         breadcrumbs: [
             {title: 'Error'}
         ]
@@ -127,14 +127,18 @@ const routes = [
 function BreadCrumbs(){
 
     const { route } = useSelector(state => state.recipeFilter);
-    const location = useLocation();
     
+    const location = useLocation();
+    const pathname = location.state && location.state.background ? location.state.background.state && location.state.background.state.background ? location.state.background.state.background.pathname : location.state.background.pathname : location.pathname;
+
     var params = Object.keys(useParams());
     if(/\/(anmeldung|registrierung)/.test(location.pathname)){
-        params = [];
+        if(/^\/rezepte\/.{24}$/i.test(pathname)){
+            params = ['id'];
+        } else {
+            params = [];
+        }
     }
-
-    const pathname = location.state && location.state.background ? location.state.background.state && location.state.background.state.background ? location.state.background.state.background.pathname : location.state.background.pathname : location.pathname;
     
     const currentRoute = routes.filter(route => {
         if(route.hasOwnProperty("params")){

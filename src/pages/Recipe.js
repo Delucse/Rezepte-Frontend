@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
+import { setError } from '../actions/settingsActions';
 import { getRecipe, getRecipePreview, resetRecipe } from '../actions/recipeActions';
 
 import { useParams  } from "react-router-dom";
@@ -25,14 +26,19 @@ function Recipe(){
 
     useEffect(() => {
         if(id){
-            dispatch(getRecipe(id));
+            if(/^.{24}$/.test(id)){
+                dispatch(getRecipe(id));
+            } else {
+                dispatch(setError(true));
+            }
         } else {
             dispatch(getRecipePreview());
         }
         return () => {      
             dispatch(resetRecipe());
-        }; 
-    }, [id, dispatch]);
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
 
     return(
         !loading && !error && recipe.title ? 
