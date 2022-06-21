@@ -9,6 +9,7 @@ import { useParams  } from "react-router-dom";
 import Fraction from '../components/Fraction';
 import NotePaper from '../components/NotePaper';
 import Portion from '../components/Recipe/Portion';
+import Images from '../components/Recipe/Images';
 import Loader from '../components/Loader';
 
 import { Grid, Box, List, ListItem, ListItemIcon, ListItemText, Chip, Typography } from "@mui/material";
@@ -48,10 +49,9 @@ function Recipe(){
 
                 <Grid container spacing={0} sx={{marginBottom: '24px'}}>
                     <Grid item xs={12} sm={6} sx={{height: 'calc(24px * 10)'}}>
-                         <img 
-                            src={recipe.pictures[0].url ? recipe.pictures[0].url : `${process.env.REACT_APP_API_URL}/media/${recipe.pictures[0].file}`}
-                            alt={recipe.title} 
-                            style={{border: '1px solid black', height: '100%', width: '100%', objectFit: 'cover'}}
+                         <Images
+                            pictures={recipe.pictures}
+                            title={recipe.title}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6} sx={{paddingLeft: {xs: 0, sm: '20px'}, marginTop: {xs: '24px', sm: 0}}}>

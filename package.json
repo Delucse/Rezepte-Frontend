@@ -24,6 +24,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
     "react-sortablejs": "^6.1.1",
+    "react-swipeable-views": "^0.14.0",
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "serve": "^13.0.2",

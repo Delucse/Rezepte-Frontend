@@ -4,13 +4,13 @@ import { Box } from '@mui/material';
 
 // https://codepen.io/hunab/pen/DoNVPa
 
-function Tape({rotate}){
+function Tape({rotate, top, width}){
     rotate = rotate ? rotate : 0;
 
     return(
         <Box sx={{
-                paddingBottom: 'calc(3em / 2)', 
-                paddingTop: `${Math.abs(rotate)}px`,
+                paddingBottom: top ? 'calc(3em / 2)' : 0, 
+                paddingTop: top ? `${Math.abs(rotate)}px` : 0,
                 justifyContent: 'center', 
                 display: 'flex'
             }}
@@ -21,7 +21,7 @@ function Tape({rotate}){
                 height: '3em',
                 position: 'absolute',
                 transform: `rotate(${rotate}deg)`,
-                width: '9em',
+                width: width ? `${width}px` : '9em',
                 filter: 'drop-shadow(0 1px 1px hsla(0,0%,0%,.3))',
                 zIndex: 1,
 

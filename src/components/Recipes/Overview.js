@@ -35,7 +35,7 @@ function Overview(props){
 
     return(
         <div>
-            <Tape rotate={props.rotate}/>
+            <Tape rotate={props.rotate} top/>
             <Box sx={{
                     margin: '2px 0',
                     background: '#f6f6f6',
