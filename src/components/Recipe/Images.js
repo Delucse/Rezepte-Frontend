@@ -39,13 +39,16 @@ function Images({pictures, title}){
                 component="img"
                 sx={{
                     height: 240,
-                    display: 'block',
-                    overflow: 'hidden',
                     width: '100%',
                     objectFit: 'cover'
                 }}
-                src={pictures[index].url ? pictures[index].url : `${process.env.REACT_APP_API_URL}/media/${pictures[index].file}`}
+                src={pictures[index].url ? pictures[index].url : `${process.env.REACT_APP_API_URL}/medias/${pictures[index].file}`}
                 alt={title}
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
+                    currentTarget.style = "height: 240px; width: 100%; object-fit: cover; filter: grayscale(1);";
+                }}
             />
         );
     };
