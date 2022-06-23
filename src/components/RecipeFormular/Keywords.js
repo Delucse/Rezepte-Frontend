@@ -34,7 +34,7 @@ function Keywords() {
 
 
     return(
-        <div style={{marginBottom: '20px'}}>
+        <div>
             <div style={{display: 'flex'}}>
                 <Textfield 
                     error={error.keywords} 

@@ -94,7 +94,7 @@ const setError = (key, value) => (dispatch, getState) => {
   }
   dispatch({
     type: SET_RECIPE_ERROR,
-    payload: error
+    payload: {...error}
   })
 }
 
@@ -465,22 +465,28 @@ export const submitRecipe = () => (dispatch, getState) => {
     headers: {
       'Content-Type': 'multipart/form-data', // necessary to upload files
     },
-    onUploadProgress: progressEvent => {
-      console.log('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
-    },
-    onDownloadProgress: progressEvent => {
-      console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
-    }
-  };
-  axios.post(`${process.env.REACT_APP_API_URL}/recipe`, body, config)
-    .then(res => {
+    // onUploadProgress: progressEvent => {
+    //   console.log('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
+    // },
+    // onDownloadProgress: progressEvent => {
+    //   console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
+    // },
+    success: res => {
       dispatch(setRecipeId(res.data.id));
       dispatch(setBlocked(false));
       dispatch(resetRecipeFormular());
-      console.info(res.data)
+    },
+    error: err => {
+      console.error(err);
+    }
+  };
+
+  axios.post(`${process.env.REACT_APP_API_URL}/recipe`, body, config)
+    .then(res => {
+      res.config.success(res);
     })
     .catch(err => {
-      console.error(err);
+      err.config.error(err);
     });
 };
 

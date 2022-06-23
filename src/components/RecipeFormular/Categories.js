@@ -91,7 +91,7 @@ function Categories() {
     return(
         <div>
             {error.keywords || error.categories ? 
-                <Box sx={{paddingBottom: '10px', marginBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
+                <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     {error.categories ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss jeweils mindestens eine Auswahlmöglichkeit ausgewählt werden. Es fehlen</Alert>
                     : null}
@@ -99,8 +99,8 @@ function Categories() {
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Schlüsselwort hinzugefügt werden.</Alert>
                     : null}
                 </Box>
-             : null}
-             <div style={error.keywords || error.categories ? {marginTop: '10px'} : {}}/>
+            : null}
+            <div style={{marginTop: '10px'}}/>
             
             
             <Grid container spacing={4} sx={{marginBottom: '40px'}}>

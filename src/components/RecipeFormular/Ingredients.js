@@ -152,13 +152,13 @@ function Ingredients() {
     var {ingredients, error} = recipe;
 
     return(
-        <div>
+        <div style={{marginBottom: '28px'}}>
             {error.ingredients.includes(true) ?
-                <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
+                <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0,}}>Es muss mindestens eine ausgefüllte Zutatenliste geben. Überflüssige Listen und Zutaten bitte löschen.</Alert>
                 </Box>
             : null}
-            <div style={error.ingredients.includes(true) ? {marginTop: '10px'} : {}}/>
+            <div style={{marginTop: '10px'}}/>
             {ingredients.map((ingredient, iIndex) => (
                 <div key={iIndex} style={{position: 'relative', marginTop: iIndex > 0 ? '58px': 0}}>
                     {/* Eingabefelder */}

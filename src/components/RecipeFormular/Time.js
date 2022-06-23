@@ -115,7 +115,7 @@ function Time(){
     const {error, time} = recipe;
 
     return(
-        <Grid container spacing={2} sx={{marginBottom: '20px'}}>
+        <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={4} >
                 <TimePicker label="Zubereitungszeit" time={time.preparation} type='preparation' error={error.time}/>
             </Grid>

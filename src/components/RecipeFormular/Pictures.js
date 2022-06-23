@@ -177,11 +177,11 @@ function Pictures() {
     return(
         <div>
             {error.pictures ?
-                <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
+                <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Bild ausgewählt werden.</Alert>
                 </Box>
             : null}
-            <div style={error.pictures ? {marginTop: '10px'} : {}}/>
+            <div style={{marginTop: '10px'}}/>
             <Grid item xs={12}>
                 <PictureInput error={error.pictures}/>
                 {pictures.length > 0 ?

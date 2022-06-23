@@ -53,11 +53,11 @@ function Steps() {
     return(
         <div>
             {error.steps ?
-                <Box sx={{paddingBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
+                <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Arbeitsschritt geben. Überflüssige Schritte bitte löschen.</Alert>
                 </Box>
             : null}
-            <div style={error.steps ? {marginTop: '10px'} : {}}/>
+            <div style={{marginTop: '10px'}}/>
             {steps.map((step, index) => (
                 <Step key={index} index={index} step={step} length={steps.length} error={error.steps}/>
             ))}

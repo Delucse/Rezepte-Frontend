@@ -50,3 +50,7 @@ code {
     transform: rotate(360deg);
   }
 }
+
+.slideOverflow {
+  overflow: clip !important;
+}

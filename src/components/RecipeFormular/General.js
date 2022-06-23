@@ -29,7 +29,7 @@ function General() {
     return(
         <div>
             {error.title || error.source || error.portion || error.time ? 
-                <Box sx={{paddingBottom: '10px', marginBottom: '10px', marginTop: '-10px', position: 'sticky', top: theme => `calc(55px + 30px + 2 * ${theme.spacing(3)} + 20px + 10px)`, background: 'white', zIndex: 2}}>
+                <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     {error.title ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss ein Titel gewählt werden.</Alert>
                     : null}
@@ -43,8 +43,8 @@ function General() {
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens eine Zeitangabe gemacht werden.</Alert>
                     : null}
                 </Box>
-             : null}
-             <div style={error.title || error.source || error.portion || error.time ? {marginTop: '10px'} : {}}/>
+            : null}
+            <div style={{marginTop: '10px'}}/>
             
             <Textfield
                 error={error.title}
