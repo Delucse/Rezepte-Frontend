@@ -47,19 +47,19 @@ function Step(props){
 
 function Steps() {
 
-    const recipe = useSelector((state) => state.recipeFormular);
-    var {steps, error} = recipe;
+    const steps = useSelector((state) => state.recipeFormular.steps);
+    const errorSteps = useSelector((state) => state.recipeFormular.error.steps);
 
     return(
         <div>
-            {error.steps ?
+            {errorSteps ?
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Arbeitsschritt geben. Überflüssige Schritte bitte löschen.</Alert>
                 </Box>
             : null}
             <div style={{marginTop: '10px'}}/>
             {steps.map((step, index) => (
-                <Step key={index} index={index} step={step} length={steps.length} error={error.steps}/>
+                <Step key={index} index={index} step={step} length={steps.length} error={errorSteps}/>
             ))}
         </div>
     );

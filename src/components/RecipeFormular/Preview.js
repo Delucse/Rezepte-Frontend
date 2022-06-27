@@ -13,8 +13,8 @@ function Preview() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const recipe = useSelector((state) => state.recipeFormular);
-    const {error, blocked} = recipe;
+    const blocked = useSelector((state) => state.recipeFormular.blocked);
+    const error = useSelector((state) => state.recipeFormular.error);
     const id = useSelector((state) => state.recipe.id);
     const preview = error.submit && (error.title || error.source || error.portion || error.time || error.keywords || error.ingredients.includes(true) || error.steps || error.pictures);
 

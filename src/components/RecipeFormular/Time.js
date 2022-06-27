@@ -111,19 +111,21 @@ function TimePicker(props) {
 
 function Time(){
 
-    const recipe = useSelector((state) => state.recipeFormular);
-    const {error, time} = recipe;
+    const preparation = useSelector((state) => state.recipeFormular.time.preparation);
+    const resting = useSelector((state) => state.recipeFormular.time.resting);
+    const baking = useSelector((state) => state.recipeFormular.time.baking);
+    const errorTime = useSelector((state) => state.recipeFormular.error.time);
 
     return(
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={4} >
-                <TimePicker label="Zubereitungszeit" time={time.preparation} type='preparation' error={error.time}/>
+                <TimePicker label="Zubereitungszeit" time={preparation} type='preparation' error={errorTime}/>
             </Grid>
             <Grid item xs={12} sm={6} md={4} >
-                <TimePicker label="Wartezeit" time={time.resting} type='resting' error={error.time}/>
+                <TimePicker label="Wartezeit" time={resting} type='resting' error={errorTime}/>
             </Grid>
             <Grid item xs={12} sm={6} md={4} >
-                <TimePicker label="Backzeit" time={time.baking} type='baking' error={error.time}/>
+                <TimePicker label="Backzeit" time={baking} type='baking' error={errorTime}/>
             </Grid>
         </Grid>
     );

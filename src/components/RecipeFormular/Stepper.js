@@ -19,7 +19,6 @@ import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 function Content(props){
     return (
         <Box
-            id='content'
             sx={{
                 margin: '0 24px', 
                 paddingBottom: '10px', 
@@ -29,20 +28,20 @@ function Content(props){
                 },
             }}
         >
-                <Typography 
-                    variant='body1' 
-                    sx={{
-                        fontWeight: 'bold', 
-                        paddingBottom: '10px', 
-                        position: 'sticky', 
-                        top: 'calc(55px + 78px)', 
-                        background: 'white',
-                        zIndex: 2
-                    }}
-                >
-                    {props.title}
-                </Typography>
-                {props.step}
+            <Typography 
+                variant='body1' 
+                sx={{
+                    fontWeight: 'bold', 
+                    paddingBottom: '10px', 
+                    position: 'sticky', 
+                    top: 'calc(55px + 78px)', 
+                    background: 'white',
+                    zIndex: 2
+                }}
+            >
+                {props.title}
+            </Typography>
+            {props.step}
         </Box>
     );
 }
@@ -50,15 +49,27 @@ function Content(props){
 function Stepper(props) {
 
     const dispatch = useDispatch();
-    const formular = useSelector((state) => state.recipeFormular);
+    const portion = useSelector((state) => state.recipeFormular.portion.count > 0);
+    const keywordsLength = useSelector((state) => state.recipeFormular.keywords.length);
+    const ingredientsLength = useSelector(state => state.recipeFormular.ingredients.map((ingredient) => ingredient.food.length).reduce((accumulator, curr) => accumulator + curr));
+    const stepsLength = useSelector((state) => state.recipeFormular.steps.length);
+    const picturesLength = useSelector((state) => state.recipeFormular.pictures.length);
+    const errorTitle = useSelector((state) => state.recipeFormular.error.title);
+    const errorSource = useSelector((state) => state.recipeFormular.error.source);
+    const errorPortion = useSelector((state) => state.recipeFormular.error.portion);
+    const errorTime = useSelector((state) => state.recipeFormular.error.time);
+    const errorCategories = useSelector((state) => state.recipeFormular.error.categories);
+    const errorIngredients = useSelector((state) => state.recipeFormular.error.ingredients.includes(true));
+    const errorSteps = useSelector((state) => state.recipeFormular.error.steps);
+    const errorPictures = useSelector((state) => state.recipeFormular.error.pictures);
 
     const [actions, setActions] = useState();
     
     useEffect(() => {
-        if(actions){            
+        if(actions){   
             actions.updateHeight();
         }
-    }, [formular, actions]);
+    }, [portion, keywordsLength, ingredientsLength, stepsLength, picturesLength, errorTitle, errorSource, errorPortion, errorTime, errorCategories, errorIngredients, errorSteps, errorPictures, actions]);
 
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = props.steps.length - 1;
@@ -69,6 +80,10 @@ function Stepper(props) {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeStep, maxSteps]);
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [activeStep])
   
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -81,30 +96,67 @@ function Stepper(props) {
     const handleStep = (step) => {
         setActiveStep(step);
     };
-  
+      
     return (
         <div>
-            {activeStep === 0 ? 
-                <Box sx={{float: 'left', width: {xs: '0px', md: '48px'}, height: '1px', marginLeft: '-11px'}}></Box>
-            :
-                <IconButton 
-                    sx={{display: {xs: 'none', md: 'inherit'}, marginLeft: '-11px', padding: 0, position: 'sticky', top: `calc((100vh - 55px - 40px + 60px) / 2)`, float: 'left', zIndex: 1, color: theme => theme.palette.primary.light, '&:hover': {color: theme => theme.palette.primary.main}}} 
-                    onClick={handleBack}
-                >
-                    <Icon path={mdiChevronLeft} size={2} />
-                </IconButton>
-            }
-            {activeStep === maxSteps ?
-                <Box sx={{float: 'right', width: {xs: '0px', md: '48px'}, height: '1px', marginRight: '-11px'}}></Box> 
-            :
-                <IconButton
-                    sx={{display: {xs: 'none', md: 'inherit'}, marginRight: '-11px', padding: 0, position: 'sticky', top: `calc((100vh - 55px - 40px + 60px) / 2)`, float: 'right', zIndex: 1, color: theme => theme.palette.primary.light, '&:hover': {color: theme => theme.palette.primary.main}}} 
-                    onClick={handleNext} 
-                >
-                    <Icon path={mdiChevronRight} size={2}/>
-                </IconButton>
-            }
-            <Box sx={{width: 'calc(100% + 2 * 24px)', marginLeft: '-24px'}}>
+            {/* back */}
+            <Box 
+                sx={{
+                    position: 'fixed',
+                    left: 0,
+                    alignContent: 'center',
+                    display: 'flex',
+                    width: {xs: '24px', md: 'calc(48px + 15px)'}, 
+                    background: 'white', 
+                    height: {xs: 'calc(100vh - 55px - 78px - 26px)', md: 'calc(100vh - 55px - 78px - 60px)'}, 
+                    zIndex: 3
+                }}
+            >
+                {activeStep === 0 ? 
+                    null
+                :
+                    <IconButton
+                        sx={{display: {xs: 'none', md: 'inherit'}, padding: '0 5px 0 10px', color: theme => theme.palette.primary.light, '&:hover': {color: theme => theme.palette.primary.main}}} 
+                        onClick={handleBack}
+                        disableRipple
+                    >
+                        <Icon path={mdiChevronLeft} size={2} />
+                    </IconButton>
+                }
+            </Box>
+            {/* next */}
+            <Box
+                sx={{
+                    position: 'fixed',
+                    right: 0,
+                    alignContent: 'center',
+                    display: 'flex',
+                    width: {xs: '24px', md: 'calc(48px + 15px)'}, 
+                    background: 'white', 
+                    height: {xs: 'calc(100vh - 55px - 78px - 26px)', md: 'calc(100vh - 55px - 78px - 60px)'}, 
+                    zIndex: 3
+                }}
+            >
+                {activeStep === maxSteps ?
+                    null
+                :
+                    <IconButton
+                        sx={{display: {xs: 'none', md: 'inherit'}, padding: '0 10px 0 5px', color: theme => theme.palette.primary.light, '&:hover': {color: theme => theme.palette.primary.main}}} 
+                        onClick={handleNext}
+                        disableRipple
+                    >
+                        <Icon path={mdiChevronRight} size={2}/>
+                    </IconButton>
+                }
+            </Box>
+            {/* content to swipe */}
+            <Box 
+                sx={{
+                    width: {xs: 'calc(100% + 2 * 24px)', md: 'calc(100% - 2 * 15px - 1px)'}, 
+                    marginLeft: {xs: '-24px', md: '15px'},
+                    marginRight: {xs: 0, md: '1px'}
+                }}
+            >
                 <SwipeableViews
                     axis={'x'}
                     index={activeStep}
@@ -118,6 +170,7 @@ function Stepper(props) {
                     {props.steps.map((step, index) => <Content step={step.content} title={step.title} key={index}/>)}
                 </SwipeableViews>
             </Box>
+            {/* stepper */}
             <Box sx={{ position: 'sticky', width: 'calc(100% + 2 * 24px)', marginLeft: '-24px', background: 'white', height: {xs: '26px', md: '60px'}, bottom: theme => theme.spacing(3), paddingTop: '10px', zIndex: 2 }}>
                 <MuiStepper nonLinear activeStep={activeStep} alternativeLabel sx={{margin: '0 24px'}}>
                     {props.steps.map((label, index) => (

@@ -148,12 +148,12 @@ function Food(props){
 
 function Ingredients() {
 
-    const recipe = useSelector((state) => state.recipeFormular);
-    var {ingredients, error} = recipe;
+    const ingredients = useSelector((state) => state.recipeFormular.ingredients);
+    const errorIngredients = useSelector((state) => state.recipeFormular.error.ingredients);
 
     return(
         <div style={{marginBottom: '28px'}}>
-            {error.ingredients.includes(true) ?
+            {errorIngredients.includes(true) ?
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0,}}>Es muss mindestens eine ausgefüllte Zutatenliste geben. Überflüssige Listen und Zutaten bitte löschen.</Alert>
                 </Box>
@@ -164,10 +164,10 @@ function Ingredients() {
                     {/* Eingabefelder */}
                     <div style={{padding: '0px 10px'}}>
                         {/* Titel */}
-                        <Title key={iIndex} iIndex={iIndex} title={ingredient.title} length={ingredients.length} error={error.ingredients[iIndex]}/>
+                        <Title key={iIndex} iIndex={iIndex} title={ingredient.title} length={ingredients.length} error={errorIngredients[iIndex]}/>
                         {/* Zutaten */}
                         {ingredient.food.map((food, fIndex) => (
-                            <Food key={fIndex} iIndex={iIndex} fIndex={fIndex} length={ingredient.food.length} amount={food.amount} unit={food.unit} aliment={food.aliment} error={error.ingredients[iIndex]}/>
+                            <Food key={fIndex} iIndex={iIndex} fIndex={fIndex} length={ingredient.food.length} amount={food.amount} unit={food.unit} aliment={food.aliment} error={errorIngredients[iIndex]}/>
                         ))}
                     </div>
                     {/* Umrandung */}

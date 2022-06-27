@@ -23,6 +23,7 @@ function Recipe(){
 
     const dispatch = useDispatch();
     const recipe = useSelector((state) => state.recipe);
+    const recipeFormular = useSelector((state) => state.recipeFormular);
     const {error, loading} = useSelector((state) => state.settings);
 
     useEffect(() => {
@@ -39,7 +40,7 @@ function Recipe(){
             dispatch(resetRecipe());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [id]);
+    }, [id, recipeFormular]);
 
     return(
         !loading && !error && recipe.title ? 

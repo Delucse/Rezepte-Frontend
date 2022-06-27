@@ -142,10 +142,14 @@ export const setRecipeTime = (time, type) => (dispatch, getState) => {
 
 export const setRecipeCategories = (category, type) => (dispatch, getState) => {
   var categories = getState().recipeFormular.categories
-  categories[type] = category
+  if(category){
+    categories[type] = [...category]
+  } else {
+    categories[type] = category;
+  }
   dispatch({
     type: SET_RECIPE_CATEGORIES,
-    payload: categories
+    payload: {...categories}
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('categories', categories));
@@ -184,7 +188,7 @@ export const changeIngredientsTitle = (index, title) => (dispatch, getState) => 
   ingredients[index].title = title;
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('ingredients', ingredients));
@@ -196,7 +200,7 @@ export const changeAmount = (ingredientsIndex, foodIndex, amount) => (dispatch, 
   ingredients[ingredientsIndex].food[foodIndex].amount = amount;
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('ingredients', ingredients));
@@ -208,7 +212,7 @@ export const changeUnit = (ingredientsIndex, foodIndex, unit) => (dispatch, getS
   ingredients[ingredientsIndex].food[foodIndex].unit = unit;
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('ingredients', ingredients));
@@ -220,7 +224,7 @@ export const changeAliment = (ingredientsIndex, foodIndex, aliment) => (dispatch
   ingredients[ingredientsIndex].food[foodIndex].aliment = aliment;
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('ingredients', ingredients));
@@ -240,7 +244,7 @@ export const addIngredients = (index) => (dispatch, getState) => {
   ingredients.splice(index+1, 0, ingredient);
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('ingredients', ingredients));
@@ -252,7 +256,7 @@ export const removeIngredients = (index) => (dispatch, getState) => {
   ingredients.splice(index, 1);
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('ingredients', ingredients));
@@ -266,7 +270,7 @@ export const changeIngredientsPosition = (oldIndex, newIndex) => (dispatch, getS
   ingredients.splice(newIndex, 0, ingredient);
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
 };
 
@@ -276,7 +280,7 @@ export const addFood = (ingredientsIndex, foodIndex) => (dispatch, getState) => 
   ingredients[ingredientsIndex].food.splice(foodIndex+1, 0, food);
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('ingredients', ingredients));
@@ -288,7 +292,7 @@ export const removeFood = (ingredientsIndex, foodIndex) => (dispatch, getState) 
   ingredients[ingredientsIndex].food.splice(foodIndex, 1);
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('ingredients', ingredients));
@@ -302,7 +306,7 @@ export const changeFoodPosition = (ingredientsIndex, oldIndex, newIndex) => (dis
   ingredients[ingredientsIndex].food.splice(newIndex, 0, food);
   dispatch({
     type: SET_RECIPE_INGREDIENTS,
-    payload: ingredients
+    payload: [...ingredients]
   });
 };
 
@@ -312,7 +316,7 @@ export const changeStep = (index, step) => (dispatch, getState) => {
   steps[index] = step;
   dispatch({
     type: SET_RECIPE_STEPS,
-    payload: steps
+    payload: [...steps]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('steps', steps));
@@ -326,7 +330,7 @@ export const addStep = (index) => (dispatch, getState) => {
   steps.splice(index+1, 0, step);
   dispatch({
     type: SET_RECIPE_STEPS,
-    payload: steps
+    payload: [...steps]
   });
 };
 
@@ -335,7 +339,7 @@ export const removeStep = (index) => (dispatch, getState) => {
   steps.splice(index, 1);
   dispatch({
     type: SET_RECIPE_STEPS,
-    payload: steps
+    payload: [...steps]
   });
   if(getState().recipeFormular.error.submit){
     dispatch(setError('steps', steps));
@@ -349,7 +353,7 @@ export const changeStepPosition = (oldIndex, newIndex) => (dispatch, getState) =
   steps.splice(newIndex, 0, step);
   dispatch({
     type: SET_RECIPE_STEPS,
-    payload: steps
+    payload: [...steps]
   });
 };
 

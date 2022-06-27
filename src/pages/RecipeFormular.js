@@ -41,7 +41,7 @@ const steps = [
 function RecipeFormular() {
 
     const dispatch = useDispatch();
-    const {blocked} = useSelector(state => state.recipeFormular);
+    const blocked = useSelector(state => state.recipeFormular.blocked);
 
     useEffect(() => {
         dispatch(setBlocked(true));

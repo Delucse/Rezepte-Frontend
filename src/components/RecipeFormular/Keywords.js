@@ -17,7 +17,8 @@ function Keywords() {
     const [keyword, setKeyword] = useState('');
 
     const dispatch = useDispatch();
-    const { keywords, error } = useSelector((state) => state.recipeFormular);
+    const keywords = useSelector((state) => state.recipeFormular.keywords);
+    const errorKeywords = useSelector((state) => state.recipeFormular.error.keywords);
 
     const onChangeKeyword = (e) => {
         setKeyword(e.target.value);
@@ -37,7 +38,7 @@ function Keywords() {
         <div>
             <div style={{display: 'flex'}}>
                 <Textfield 
-                    error={error.keywords} 
+                    error={errorKeywords} 
                     value={keyword} 
                     onChange={onChangeKeyword} 
                     label='Schlagwörter' 

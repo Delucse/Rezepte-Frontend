@@ -85,17 +85,21 @@ function IndeterminateCheckbox(props) {
 
 function Categories() {
 
-    const recipe = useSelector((state) => state.recipeFormular);
-    const {error, categories} = recipe;
+    const ingredients = useSelector((state) => state.recipeFormular.categories.ingredients);
+    const dish = useSelector((state) => state.recipeFormular.categories.dish);
+    const season = useSelector((state) => state.recipeFormular.categories.season);
+    const heat = useSelector((state) => state.recipeFormular.categories.heat);
+    const errorCategories = useSelector((state) => state.recipeFormular.error.categories);
+    const errorKeywords = useSelector((state) => state.recipeFormular.error.keywords);
 
     return(
         <div>
-            {error.keywords || error.categories ? 
+            {errorKeywords || errorCategories ? 
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
-                    {error.categories ?
+                    {errorCategories ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss jeweils mindestens eine Auswahlmöglichkeit ausgewählt werden. Es fehlen</Alert>
                     : null}
-                    {error.keywords ?
+                    {errorKeywords ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Schlüsselwort hinzugefügt werden.</Alert>
                     : null}
                 </Box>
@@ -110,8 +114,8 @@ function Categories() {
                         title='Lebensmittel' 
                         categories={['vegan', 'vegetarisch', 'glutenfrei', 'laktosefrei']} 
                         objectKey='ingredients' 
-                        value={categories.ingredients}
-                        error={error.categories && categories.ingredients && categories.ingredients.length === 0}
+                        value={ingredients}
+                        error={errorCategories && ingredients && ingredients.length === 0}
                     />
                 </Grid>
                 {/* Gericht */}
@@ -120,8 +124,8 @@ function Categories() {
                         title='Gericht' 
                         categories={['Aperitif', 'Vorspeise', 'Hauptgang', 'Dessert', 'Frühstück', 'Kaffeetrinken']} 
                         objectKey='dish' 
-                        value={categories.dish}
-                        error={error.categories && categories.dish && categories.dish.length === 0}
+                        value={dish}
+                        error={errorCategories && dish && dish.length === 0}
                     />
                 </Grid>
                 {/* Saison */}
@@ -130,8 +134,8 @@ function Categories() {
                         title='Saison' 
                         categories={['Frühling', 'Sommer', 'Herbst', 'Winter']} 
                         objectKey='season' 
-                        value={categories.season}
-                        error={error.categories && categories.season && categories.season.length === 0}
+                        value={season}
+                        error={errorCategories && season && season.length === 0}
                     />
                 </Grid>
                 {/* Wärmegrad */}
@@ -140,8 +144,8 @@ function Categories() {
                         title='Wärmegrad' 
                         categories={['kalt', 'lauwarm', 'heiß']} 
                         objectKey='heat' 
-                        value={categories.heat}
-                        error={error.categories && categories.heat && categories.heat.length === 0}
+                        value={heat}
+                        error={errorCategories && heat && heat.length === 0}
                     />
                 </Grid>
             </Grid>

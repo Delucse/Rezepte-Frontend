@@ -21,8 +21,9 @@ import bakeware from '../../data/bakeware.json';
 function Portion() {
 
     const dispatch = useDispatch();
-    const {portion, error} = useSelector((state) => state.recipeFormular);
-    const { count, volume } = portion;
+    const count = useSelector((state) => state.recipeFormular.portion.count);
+    const volume = useSelector((state) => state.recipeFormular.portion.volume);
+    const errorPortion = useSelector((state) => state.recipeFormular.error.portion);
 
     const portionAdd = () => {
         dispatch(setRecipePortion(count + 1, volume))
@@ -58,8 +59,8 @@ function Portion() {
                     value={volume > 0 ? 1 : volume < 0 ? -1 : 0}
                     onChange={isDish}
                 >
-                    <FormControlLabel value={0} control={<Radio sx={error.portion && volume < 0 ? {color: theme => theme.palette.error.main} : {}}/>} label="Gericht" />
-                    <FormControlLabel value={1} control={<Radio sx={error.portion && volume < 0 ? {color: theme => theme.palette.error.main} : {}}/>} label="Gebäck" />
+                    <FormControlLabel value={0} control={<Radio disableRipple sx={errorPortion && volume < 0 ? {color: theme => theme.palette.error.main} : {}}/>} label="Gericht" />
+                    <FormControlLabel value={1} control={<Radio disableRipple sx={errorPortion && volume < 0 ? {color: theme => theme.palette.error.main} : {}}/>} label="Gebäck" />
                 </RadioGroup>
             </FormControl>
             {volume >= 0 ?
@@ -73,7 +74,7 @@ function Portion() {
                         >
                             -
                         </Button>
-                        <Textfield disabled value={count} error={count === 0 && error.portion}/>
+                        <Textfield disabled value={count} error={count === 0 && errorPortion}/>
                         <Button
                             sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '23px', padding: 0}} 
                             variant="contained" 
@@ -92,7 +93,7 @@ function Portion() {
                             optionChange={'volume'}
                             label={'Backform'}
                             start={<Icon path={mdiCupcake} size={1}/>}
-                            error={error.portion && volume === 1}
+                            error={errorPortion && volume === 1}
                             fullWidth={true}                            
                         />
                     : null}

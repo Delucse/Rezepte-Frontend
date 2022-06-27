@@ -150,8 +150,8 @@ function Pictures() {
 
     const dispatch = useDispatch();
 
-    const recipe = useSelector((state) => state.recipeFormular);
-    var {pictures, error} = recipe;
+    const pictures = useSelector((state) => state.recipeFormular.pictures);
+    const errorPictures = useSelector((state) => state.recipeFormular.error.pictures);
 
     const [open, setOpen] = useState(false);
     const [url, setUrl] = useState('');
@@ -176,14 +176,14 @@ function Pictures() {
 
     return(
         <div>
-            {error.pictures ?
+            {errorPictures ?
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Bild ausgewählt werden.</Alert>
                 </Box>
             : null}
             <div style={{marginTop: '10px'}}/>
             <Grid item xs={12}>
-                <PictureInput error={error.pictures}/>
+                <PictureInput error={errorPictures}/>
                 {pictures.length > 0 ?
                     <ReactSortable
                         animation={200}

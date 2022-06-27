@@ -15,8 +15,12 @@ import { Alert, Box } from "@mui/material";
 function General() {
 
     const dispatch = useDispatch();
-    const recipe = useSelector((state) => state.recipeFormular);
-    const {title, source, error} = recipe;
+    const title = useSelector((state) => state.recipeFormular.title);
+    const source = useSelector((state) => state.recipeFormular.source);
+    const errorTitle = useSelector((state) => state.recipeFormular.error.title);
+    const errorSource = useSelector((state) => state.recipeFormular.error.source);
+    const errorPortion = useSelector((state) => state.recipeFormular.error.portion);
+    const errorTime = useSelector((state) => state.recipeFormular.error.time);
 
     const onChangeTitle = (e) => {
         dispatch(setRecipeTitle(e.target.value));
@@ -28,18 +32,18 @@ function General() {
 
     return(
         <div>
-            {error.title || error.source || error.portion || error.time ? 
+            {errorTitle || errorSource || errorPortion || errorTime ? 
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
-                    {error.title ?
+                    {errorTitle ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss ein Titel gewählt werden.</Alert>
                     : null}
-                    {error.source ?
+                    {errorSource ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens eine Quelle genant werden.</Alert>
                     : null}
-                    {error.portion ?
+                    {errorPortion ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss eine Portionsangabe gemacht werden.</Alert>
                     : null}
-                    {error.time ?
+                    {errorTime ?
                         <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens eine Zeitangabe gemacht werden.</Alert>
                     : null}
                 </Box>
@@ -47,7 +51,7 @@ function General() {
             <div style={{marginTop: '10px'}}/>
             
             <Textfield
-                error={error.title}
+                error={errorTitle}
                 value={title} 
                 onChange={onChangeTitle} 
                 autoFocus 
@@ -68,7 +72,7 @@ function General() {
                 // }
             />
             <Textfield 
-                error={error.source}
+                error={errorSource}
                 value={source}
                 onChange={onChangeSource}
                 property={'source'} 
