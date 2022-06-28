@@ -469,12 +469,12 @@ export const submitRecipe = () => (dispatch, getState) => {
     headers: {
       'Content-Type': 'multipart/form-data', // necessary to upload files
     },
-    // onUploadProgress: progressEvent => {
-    //   console.log('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
-    // },
-    // onDownloadProgress: progressEvent => {
-    //   console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
-    // },
+    onUploadProgress: progressEvent => {
+      console.info('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
+    },
+    onDownloadProgress: progressEvent => {
+      console.info('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
+    },
     success: res => {
       dispatch(setRecipeId(res.data.id));
       dispatch(setBlocked(false));

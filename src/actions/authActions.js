@@ -153,26 +153,28 @@ const signoutIntern = () => (dispatch) => {
 export const authInterceptor = () => (dispatch, getState) => {
     // Add a request interceptor
     axios.interceptors.request.use(
-        config => {
-            config.headers['Content-Type'] = 'application/json';
+        async (config) => {
+            if(!config.headers['Content-Type']){
+              config.headers['Content-Type'] = 'application/json';
+            }
             const token = getState().auth.token;
             if(token){
                 config.headers['Authorization'] = `Bearer ${token}`;
             }
             return config;
         },
-        error => {
+        (error) => {
             Promise.reject(error);
         }
     );
 
     // Add a response interceptor
     axios.interceptors.response.use(
-        response => {
+        (response) => {
             // request was successfull
             return response;
         },
-      error => {
+        async (error) => {
           const originalRequest = error.config;
           const refreshToken = getState().auth.refreshToken;
           if(refreshToken){
@@ -201,7 +203,7 @@ export const authInterceptor = () => (dispatch, getState) => {
                               });
                               axios.defaults.headers.common['Authorization'] = 'Bearer ' + res.data.token;
                               // request was successfull, new request with the old parameters and the refreshed token
-                              if(originalRequest.data && originalRequest.data.includes('token')){
+                              if(originalRequest.data && originalRequest.data.includes && originalRequest.data.includes('token')){
                                 originalRequest.data = JSON.stringify({token:res.data.refreshToken});
                               }
                               return axios(originalRequest)
@@ -209,9 +211,10 @@ export const authInterceptor = () => (dispatch, getState) => {
                                       originalRequest.success(res);
                                   })
                                   .catch(err => {
+                                      console.log('error', err);
                                       originalRequest.error(err);
                                   });
-                            }
+                          }
                           return Promise.reject(error);
                       })
                       .catch(err => {
@@ -222,9 +225,9 @@ export const authInterceptor = () => (dispatch, getState) => {
                           return Promise.reject(error);
                       });
                 }
-            }
-            // request status was unequal to 401, no possibility to refresh the token
-            return Promise.reject(error);
+          }
+          // request status was unequal to 401, no possibility to refresh the token
+          return Promise.reject(error);
         }
     );
 };

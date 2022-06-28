@@ -9,28 +9,28 @@ export const getRecipes = () => (dispatch, getState) => {
   dispatch(setError(false));
   dispatch(setLoading(true));
   const config = {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      onUploadProgress: progressEvent => {
-        // console.log('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
-      },
       onDownloadProgress: progressEvent => {
-        // console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
+        console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
+      },
+      success: res => {
+        dispatch({
+          type: GET_RECIPES,
+          payload: res.data
+        });
+        dispatch(setError(false));
+        dispatch(setLoading(false));
+      },
+      error: err => {
+        dispatch(setError(true));
+        dispatch(setLoading(false));
       }
     };
     axios.get(`${process.env.REACT_APP_API_URL}/recipe${route === 'user' ? '/user' : ''}?search=${word}&type=${type}&keywords=${categories.join(',')}&sort=${sort.type}&ascending=${sort.ascending}`, config)
       .then(res => {
-          dispatch({
-            type: GET_RECIPES,
-            payload: res.data
-          });
-          dispatch(setError(false));
-          dispatch(setLoading(false));
+        res.config.success(res);
       })
       .catch(err => {
-        dispatch(setError(true));
-        dispatch(setLoading(false));
+        err.config.error(err);
       });
 };
 

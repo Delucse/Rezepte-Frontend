@@ -79,11 +79,8 @@ export const getRecipe = (id) => (dispatch) => {
     headers: {
       'Content-Type': 'application/json'
     },
-    onUploadProgress: progressEvent => {
-      console.log('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
-    },
     onDownloadProgress: progressEvent => {
-      console.log('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
+      console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
     }
   };
   axios.get(`${process.env.REACT_APP_API_URL}/recipe/${id}`, config)
