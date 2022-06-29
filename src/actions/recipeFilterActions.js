@@ -13,9 +13,13 @@ export const getRecipes = () => (dispatch, getState) => {
         console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
       },
       success: res => {
+        const recipes = res.data.map(recipe => {
+          recipe.rotate = Math.floor(Math.random() * (10 - (-10) + 1)) + (-10);
+          return recipe;
+        });
         dispatch({
           type: GET_RECIPES,
-          payload: res.data
+          payload: recipes
         });
         dispatch(setError(false));
         dispatch(setLoading(false));
@@ -78,7 +82,7 @@ export const removeCategory = (category) => (dispatch, getState) => {
 export const setCategories = (categories) => (dispatch) => {
   dispatch({
     type: SET_CATEGORIES,
-    payload: [...categories]
+    payload: categories
   });
 }
 

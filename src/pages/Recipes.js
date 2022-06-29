@@ -12,22 +12,32 @@ import Grid from '@mui/material/Grid';
 function Recipes(props){
 
     const dispatch = useDispatch();
-    const {error, loading} = useSelector((state) => state.settings);
-    const {word, sort, type, categories, recipes, route} = useSelector((state) => state.recipeFilter);
+    const loading = useSelector((state) => state.settings.loading);
+    const error = useSelector((state) => state.settings.errror);
+    const word = useSelector((state) => state.recipeFilter.word);
+    const sort = useSelector((state) => state.recipeFilter.sort);
+    const type = useSelector((state) => state.recipeFilter.type);
+    const categories = useSelector((state) => state.recipeFilter.categories);
+    const recipes = useSelector((state) => state.recipeFilter.recipes);
+    const route = useSelector((state) => state.recipeFilter.route);
 
     const [oldType, setOldType] = useState(type);
+
+    useEffect(() => {
+        if(!(type !== oldType && word === '') && props.route === route){
+            dispatch(getRecipes());
+        }
+        setOldType(type);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [word, sort, type, categories, route]);
 
     useEffect(() => {
         if(props.route !== route){
             dispatch(resetFilterSettings());
             dispatch(setRoute(props.route));
         }
-        if(!(type !== oldType && word === '')){
-            dispatch(getRecipes());
-        }
-        setOldType(type);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [word, sort, type, categories, props.route, dispatch]);
+    }, [props.route, route])
 
     return(
         <div style={{marginTop: '-90px'}}>
@@ -45,7 +55,7 @@ function Recipes(props){
                                         keywords={recipe.keywords}
                                         time={recipe.time}
                                         date={recipe.date}
-                                        rotate={Math.floor(Math.random() * (10 - (-10) + 1)) + (-10)}
+                                        rotate={recipe.rotate}
                                     />
                                 </Grid>
                             )}
