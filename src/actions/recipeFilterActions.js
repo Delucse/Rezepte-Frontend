@@ -29,7 +29,7 @@ export const getRecipes = () => (dispatch, getState) => {
         dispatch(setLoading(false));
       }
     };
-    axios.get(`${process.env.REACT_APP_API_URL}/recipe${route === 'user' ? '/user' : ''}?search=${word}&type=${type}&keywords=${categories.join(',')}&sort=${sort.type}&ascending=${sort.ascending}`, config)
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe${route === 'nutzer' ? '/user' : ''}?search=${word}&type=${type}&keywords=${categories.join(',')}&sort=${sort.type}&ascending=${sort.ascending}`, config)
       .then(res => {
         res.config.success(res);
       })
@@ -76,6 +76,15 @@ export const removeCategory = (category) => (dispatch, getState) => {
   dispatch({
     type: SET_CATEGORIES,
     payload: categories
+  });
+}
+
+export const addCategory = (category) => (dispatch, getState) => {
+  var categories = getState().recipeFilter.categories;
+  categories.push(category);
+  dispatch({
+    type: SET_CATEGORIES,
+    payload: [...categories]
   });
 }
 

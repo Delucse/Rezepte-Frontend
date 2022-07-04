@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { getRecipes, resetFilterSettings, setRoute } from '../actions/recipeFilterActions';
+import { getRecipes, setRoute } from '../actions/recipeFilterActions';
 
 import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
@@ -33,7 +33,6 @@ function Recipes(props){
 
     useEffect(() => {
         if(props.route !== route){
-            dispatch(resetFilterSettings());
             dispatch(setRoute(props.route));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

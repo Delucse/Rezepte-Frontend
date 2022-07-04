@@ -10,7 +10,7 @@ const initialState = {
     },
     open: false,
     categories: [],
-    route: null,
+    route: '',
     recipes: []
 };
 

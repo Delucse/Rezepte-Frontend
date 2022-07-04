@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { setWord, setType } from '../../actions/recipeFilterActions';
 
+import { NavLink } from 'react-router-dom';
+
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -14,11 +16,12 @@ import Textfield from '../Textfield';
 import Icon from '@mdi/react';
 import { mdiCog, mdiMagnify } from '@mdi/js';
 
-
-function Search() {
+function Search(props) {
 
     const dispatch = useDispatch();
-    const { word, type } = useSelector(state => state.recipeFilter);
+    const word = useSelector(state => state.recipeFilter.word);
+    const type = useSelector(state => state.recipeFilter.type);
+    const route = useSelector(state => state.recipeFilter.route);
 
     const [search, setSearch] = useState(word);
 
@@ -43,7 +46,7 @@ function Search() {
     return (
         <div style={{display: 'flex', width: '100%'}}>
             <Textfield
-                value={search}
+                value={props.redux ? word : search}
                 placeholder={
                     type === 'all' ? 
                         "Suche ..." 
@@ -57,7 +60,7 @@ function Search() {
                         'Arbeitsschrittsuche ...' 
                     : 'Suche ...'
                 }
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => props.redux ? dispatch(setWord(e.target.value)) : setSearch(e.target.value)}
                 start={
                     <IconButton
                         sx={{padding: 0}} 
@@ -68,14 +71,27 @@ function Search() {
                     </IconButton>
                 }
             />
-            <Button
-                sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', width: '56px', padding: 0}} 
-                variant="contained"
-                disableRipple
-                onClick={() => dispatch(setWord(search))} 
-            >
-                <Icon path={mdiMagnify} size={1.2}/>
-            </Button>
+            {props.redux ?
+                <Button
+                    component={NavLink}
+                    exact="true" 
+                    to={`/rezepte${route !== '' ? `/${route}` : ''}`}
+                    sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', width: '56px', padding: 0}} 
+                    variant="contained"
+                    disableRipple
+                >
+                    <Icon path={mdiMagnify} size={1.2}/>
+                </Button>
+            :
+                <Button
+                    sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', width: '56px', padding: 0}} 
+                    variant="contained"
+                    disableRipple
+                    onClick={() => dispatch(setWord(search))} 
+                >
+                    <Icon path={mdiMagnify} size={1.2}/>
+                </Button>
+            }
             <Menu
                 anchorEl={anchorEl}
                 open={open}

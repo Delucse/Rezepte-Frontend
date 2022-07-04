@@ -21,6 +21,7 @@ import Recipe from './pages/Recipe';
 import RecipeFormular from './pages/RecipeFormular';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
+import Search from './pages/Search';
 
 const addAlphaToHex = (color, opacity) => {
   opacity = Math.round(Math.min(Math.max(opacity || 1, 0), 1) * 255);
@@ -55,11 +56,11 @@ function App() {
             <Route path="rezepte">
               <Route exact path="formular" element={<PrivateRoute><RecipeFormular /></PrivateRoute>}/>
               <Route exact path=":id" element={<Recipe />}/>
-              <Route exact path='favoriten' element={<PrivateRoute><Recipes route='favourite'/></PrivateRoute>}/>
-              <Route exact path='nutzer' element={<PrivateRoute><Recipes route='user'/></PrivateRoute>}/>
-              <Route index element={<Recipes />}/>
+              <Route exact path='favoriten' element={<PrivateRoute><Recipes route='favoriten'/></PrivateRoute>}/>
+              <Route exact path='nutzer' element={<PrivateRoute><Recipes route='nutzer'/></PrivateRoute>}/>
+              <Route index element={<Recipes route=''/>}/>
             </Route>
-            <Route path="suche" element={<div>Suche TODO</div>}/>
+            <Route path="suche" element={<Search/>}/>
             <Route path="konto" element={<div>Konto TODO</div>}/>
             <Route path="einstellungen" element={<div>Einstellungen TODO</div>}/>
             <Route path="qr" element={<div>QR-Code TODO</div>}/>

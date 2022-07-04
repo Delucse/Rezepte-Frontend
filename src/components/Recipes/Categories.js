@@ -1,31 +1,39 @@
 import React, { useState, useEffect } from 'react';
 
 import { useSelector, useDispatch } from "react-redux";
-import { setCategories } from '../../actions/recipeFilterActions';
+import { setCategories, addCategory, removeCategory } from '../../actions/recipeFilterActions';
 
 import { Grid, Box, Typography, Checkbox, FormControlLabel } from '@mui/material';
 
-function Categories(){
+function Categories(props){
 
     const dispatch = useDispatch();
     const reduxCategories = useSelector((state) => state.recipeFilter.categories);
     const open = useSelector((state) => state.recipeFilter.open);
     const [categories, setCategoriesState] = useState(reduxCategories);
 
-    const addCategory = (category) => {
+    const addCategoryState = (category) => {
         categories.push(category);
         setCategoriesState([...categories]);
     }
 
-    const removeCategory = (category) => {
+    const removeCategoryState = (category) => {
         setCategoriesState(categories.filter(cat => cat !== category));
     }
 
-    const handleChange = (e) => {
+    const handleChangeState = (e) => {
         if(e.target.checked){
-            addCategory(e.target.value);
+            addCategoryState(e.target.value);
         } else {
-            removeCategory(e.target.value);
+            removeCategoryState(e.target.value);
+        }
+    }
+
+    const handleChangeRedux = (e) => {
+        if(e.target.checked){
+            dispatch(addCategory(e.target.value));
+        } else {
+            dispatch(removeCategory(e.target.value));
         }
     }
 
@@ -57,9 +65,10 @@ function Categories(){
                                     label={item}
                                     control={
                                         <Checkbox 
-                                            checked={categories.includes(item)} 
+                                            checked={props.redux ? reduxCategories.includes(item) : categories.includes(item)} 
                                             value={item} 
-                                            onChange={handleChange} 
+                                            onChange={props.redux ? handleChangeRedux : handleChangeState}
+                                            disableRipple
                                         />
                                     }
                                 />
