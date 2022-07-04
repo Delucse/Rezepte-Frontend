@@ -81,6 +81,15 @@ function Autocomplete(props) {
                 '.MuiAutocomplete-inputRoot': {
                     borderRadius: "0px", 
                     height: '56px'
+                },
+                '.MuiAutocomplete-popupIndicator': {
+                    '&:hover': {
+                        color: theme => theme.palette.primary.main,
+                        background: 'none'
+                    }
+                },
+                '.MuiTouchRipple-root': {
+                    display: 'none'
                 }
             }}
             componentsProps={{
@@ -88,10 +97,18 @@ function Autocomplete(props) {
                     sx: {
                         borderRadius: 0,
                     }
+                },
+                clearIndicator: {
+                    sx: {
+                        '&:hover': {
+                            color: theme => theme.palette.primary.main,
+                            background: 'none'
+                        }
+                    }
                 }
             }}
             clearIcon={<Icon path={mdiClose} size={1}/>}
-            popupIcon={<Icon path={mdiChevronDown} size={1}/>}
+            popupIcon={<Icon path={mdiChevronDown} size={1.1667}/>}
             clearText="löschen"
             closeText="schließen"
             openText="öffnen"

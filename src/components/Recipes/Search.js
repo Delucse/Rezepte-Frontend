@@ -14,7 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Textfield from '../Textfield';
 
 import Icon from '@mdi/react';
-import { mdiCog, mdiMagnify } from '@mdi/js';
+import { mdiClose, mdiCog, mdiMagnify } from '@mdi/js';
 
 function Search(props) {
 
@@ -69,6 +69,26 @@ function Search(props) {
                     >
                         <Icon path={mdiCog} size={1}/>
                     </IconButton>
+                }
+                end={props.redux ?
+                        word !== '' ?
+                            <IconButton
+                                sx={{padding: '4px', marginRight: '-8px', '&:hover': {color: theme => theme.palette.primary.main}}} 
+                                onClick={() => dispatch(setWord(''))}
+                                disableRipple
+                            >
+                                <Icon path={mdiClose} size={1}/>
+                            </IconButton>
+                        : null
+                    : search !== '' ?
+                        <IconButton
+                            sx={{padding: '4px', marginRight: '-8px', '&:hover': {color: theme => theme.palette.primary.main}}}  
+                            onClick={() => {setSearch(''); dispatch(setWord(''));}}
+                            disableRipple
+                        >
+                            <Icon path={mdiClose} size={1}/>
+                        </IconButton>
+                    : null
                 }
             />
             {props.redux ?
