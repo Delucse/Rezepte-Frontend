@@ -137,7 +137,6 @@ function Filter() {
                     <Categories />
                 </Box>
             </SwipeableDrawer>
-            <Box sx={{position: 'fixed', bottom: `${drawerBleeding}px`, left: 0, backgroundColor: 'white', height: '20px', width: '100%', zIndex: 1}}></Box>
         </div>
     );
 }

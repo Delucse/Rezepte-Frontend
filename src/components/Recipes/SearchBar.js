@@ -39,6 +39,7 @@ function SearchBar(props) {
                     </Toolbar>
                 </AppBar>
             </HideOnScroll>
+            <div style={{position: 'fixed', bottom: '50px' /* drawerBleeding*/, left: 0, backgroundColor: 'white', height: '20px', width: '100%', zIndex: 1}}/>
         </div>
     );
 }
