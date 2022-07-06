@@ -1,7 +1,11 @@
 import React, {useEffect} from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { resetRecipeFormular, setBlocked } from '../actions/recipeFormularActions';
+import { resetRecipeFormular, setBlocked, setRecipeFormular, setUploaded } from '../actions/recipeFormularActions';
+import { getRecipe } from '../actions/recipeActions';
+import { setError } from '../actions/settingsActions';
+
+import { useParams } from 'react-router-dom';
 
 import {usePrompt} from '../hooks/usePrompt';
 import NavigationPrompt from "../components/NavigationPrompt";
@@ -42,10 +46,30 @@ function RecipeFormular() {
 
     const dispatch = useDispatch();
     const blocked = useSelector(state => state.recipeFormular.blocked);
+    const recipeId = useSelector(state => state.recipe.id);
+    const uploaded = useSelector(state => state.recipeFormular.uploaded);
+    const formularFilled = useSelector(state => state.recipeFormular.portion.count > 0);
+
+    const { id } = useParams();
 
     useEffect(() => {
         dispatch(setBlocked(true));
-    }, [dispatch]);
+        dispatch(setUploaded(false));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        if(id !== recipeId){
+            if(/^.{24}$/.test(id)){
+                dispatch(getRecipe(id));
+            } else {
+                dispatch(setError(true));
+            }
+        } else {
+            dispatch(setRecipeFormular());
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [recipeId]);
 
     const [
         showDialogLeavingPage,
@@ -55,7 +79,9 @@ function RecipeFormular() {
     
     return (
         <div>
-            <Stepper steps={steps} />
+            {uploaded || !id || (id && id === recipeId && formularFilled) ? 
+                <Stepper steps={steps} /> : 'Daten werden geladen ...'
+            }
             <NavigationPrompt
                 open={showDialogLeavingPage}
                 closePrompt={(bool) => dispatch(setBlocked(bool))}

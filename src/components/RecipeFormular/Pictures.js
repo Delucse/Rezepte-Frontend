@@ -1,25 +1,21 @@
 import React, { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { changePictures, removePicture, onDragEndPicture } from "../../actions/recipeFormularActions";
-
-import { ReactSortable } from "react-sortablejs";
+import { changePicturePosition, changePictures, removePicture } from "../../actions/recipeFormularActions";
 
 import imageCompression from 'browser-image-compression';
 
-
 import Icon from '@mdi/react';
-import { mdiDelete, mdiFullscreen, mdiCamera } from '@mdi/js'; 
+import { mdiDelete, mdiFullscreen, mdiCamera, mdiMenuLeft, mdiMenuRight } from '@mdi/js'; 
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Alert, Box, InputLabel, Dialog, DialogContent, DialogTitle, IconButton, Grid, ImageListItem , ImageListItemBar } from "@mui/material";
+import { Alert, Box, InputLabel, Dialog, DialogContent, IconButton, Grid, ImageListItem , ImageListItemBar } from "@mui/material";
 
 
 function PictureInput(props){
 
-    const recipe = useSelector((state) => state.recipeFormular);
-    var {pictures} = recipe;
+    const pictures = useSelector((state) => state.recipeFormular.pictures.order);
 
     const dispatch = useDispatch();
 
@@ -62,7 +58,7 @@ function PictureInput(props){
                 return new File([compressedBlob], file.name, { type: file.type, lastModified: Date.now()})
             })
             .catch(e => {
-            console.log('image', e)  
+                console.error('image', e)  
             });
         })
         const files = await Promise.all(promises);
@@ -90,7 +86,7 @@ function PictureInput(props){
         if (counter === 0) {
           setDrag(false)
         }
-      }
+    }
     
     const handleDrop = (e) => {
         e.preventDefault();
@@ -101,9 +97,8 @@ function PictureInput(props){
           // e.dataTransfer.clearData()
           setCounter(0);
         }
-      }
+    }
     
-
     return (
         <div 
             onDragEnter={handleDragIn}
@@ -130,7 +125,6 @@ function PictureInput(props){
                         alignItems: "center",
                         display:"flex",
                         padding: "10px",
-                        // marginTop: '16px',
                         marginBottom: pictures.length > 0 ? '0.4rem' : '16px',
                         border: theme => drag ? `2px dashed ${theme.palette.primary.main}` : props.error ? `2px dashed ${theme.palette.error.main}` : "2px dashed rgba(0, 0, 0, 0.54)"
                     }}
@@ -150,15 +144,13 @@ function Pictures() {
 
     const dispatch = useDispatch();
 
-    const pictures = useSelector((state) => state.recipeFormular.pictures);
+    const pictures = useSelector((state) => state.recipeFormular.pictures.order);
     const errorPictures = useSelector((state) => state.recipeFormular.error.pictures);
 
     const [open, setOpen] = useState(false);
     const [url, setUrl] = useState('');
-    const [title, setTitle] = useState('');
     
-    const handleClickOpen = (title, url) => {
-        setTitle(title);
+    const handleClickOpen = (url) => {
         setUrl(url)
         setOpen(true);
     };
@@ -184,37 +176,63 @@ function Pictures() {
             <div style={{marginTop: '10px'}}/>
             <Grid item xs={12}>
                 <PictureInput error={errorPictures}/>
-                {pictures.length > 0 ?
-                    <ReactSortable
-                        animation={200}
-                        list={pictures}
-                        setList={newState => dispatch(onDragEndPicture(newState))}
-                        style={{width: '100%', listStyle: 'none', marginBottom: '16px', display: 'grid', gridGap: '0.4rem', gridTemplateColumns: `repeat(${col}, calc(100% / ${col} - 0.4rem * ${(-1+col)/col}))`}}
-                    >
-                        {pictures.map((picture, index) => {
-                            return(
-                                <ImageListItem key={index} sx={index===0 ? {border: theme => `4px solid ${theme.palette.primary.main}`, padding: '0px', height: '180px'} : {height: '180px'}}>
-                                    <img src={picture.url} alt={picture.title}  style={{cursor: 'pointer', height: "180px", objectFit: 'cover'}}/>
-                                    <ImageListItemBar
-                                        title={picture.title}
-                                        actionIcon={
-                                            <div>
-                                                <IconButton sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} onClick={() => handleClickOpen(picture.title, picture.url)}>
-                                                    <Icon path={mdiFullscreen} size={1} />
+                <div style={{width: '100%', listStyle: 'none', marginBottom: '16px', display: 'grid', gridGap: '0.4rem', gridTemplateColumns: `repeat(${col}, calc(100% / ${col} - 0.4rem * ${(-1+col)/col}))`}}>
+                    {pictures.map((picture, index) => {
+                        return(
+                            <ImageListItem key={index} sx={index===0 ? {border: theme => `4px solid ${theme.palette.primary.main}`, padding: '0px', height: '172px'} : {height: '180px'}}>
+                                <img src={picture.url} alt='' style={{cursor: 'pointer', height: index === 0 ? "172px" : '180px', objectFit: 'cover'}} onClick={() => handleClickOpen(picture.url)}/>
+                                <ImageListItemBar
+                                    actionPosition={'left'}
+                                    actionIcon={
+                                        <div style={{display: 'flex'}}>
+                                            <div style={{flexGrow: 1, alignContent: 'center', display: 'flex'}}>
+                                                <IconButton 
+                                                    sx={{padding: 0, color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
+                                                    onClick={() => dispatch(changePicturePosition(index, index-1))}
+                                                    disableRipple
+                                                    disabled={index === 0}
+                                                >
+                                                    <Icon path={mdiMenuLeft} size={1.4} />
                                                 </IconButton>
-                                                <IconButton sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} onClick={() => {dispatch(removePicture(picture.url))}}>
-                                                    <Icon path={mdiDelete} size={1} />
+                                                <IconButton
+                                                    sx={{padding: 0, color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
+                                                    onClick={() => dispatch(changePicturePosition(index, index+1))}
+                                                    disableRipple
+                                                    disabled={index === pictures.length - 1}
+                                                >
+                                                    <Icon path={mdiMenuRight} size={1.4} />
                                                 </IconButton>
                                             </div>
+                                            <IconButton 
+                                                sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
+                                                onClick={() => handleClickOpen(picture.url)}
+                                                disableRipple
+                                            >
+                                                <Icon path={mdiFullscreen} size={1} />
+                                            </IconButton>
+                                            <IconButton
+                                                sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
+                                                onClick={() => {dispatch(removePicture(picture.url))}}
+                                                disableRipple
+                                            >
+                                                <Icon path={mdiDelete} size={1} />
+                                            </IconButton>
+                                        </div>
+                                    }
+                                    sx={{
+                                        background: 'rgba(0, 0, 0, 0.25)',
+                                        '.MuiImageListItemBar-titleWrap': {
+                                            padding: 0
+                                        },
+                                        '.MuiImageListItemBar-actionIcon': {
+                                            width: '100%'
                                         }
-                                    />
-                                </ImageListItem>
-                            );
-                        })}
-                    </ReactSortable>
-                : 
-                    null
-                }
+                                    }}
+                                />
+                            </ImageListItem>
+                        );
+                    })}
+                </div>
                 <Dialog
                     sx={{zIndex: 1500}}
                     PaperProps={{
@@ -224,9 +242,8 @@ function Pictures() {
                     open={open}
                     onClose={handleClose}
                 >
-                    <DialogTitle style={{padding: "10px 24px"}}>{title}</DialogTitle>
                     <DialogContent style={{padding: "0px", display: 'contents'}}>
-                        <img src={url} width="100%" alt={title}/>
+                        <img src={url} alt={''} style={{maxWidth: '100%', height: 'auto'}}/>
                     </DialogContent>
                     {/* <DialogActions style={{padding: "10px 24px"}}>
                         <IconButton style={{padding: "0px"}} color="primary" aria-label='Vollbild' onClick={handleClose}>

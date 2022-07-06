@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { setError } from '../actions/settingsActions';
-import { getRecipe, getRecipePreview, resetRecipe } from '../actions/recipeActions';
+import { getRecipe, getRecipePreview } from '../actions/recipeActions';
 
-import { useParams  } from "react-router-dom";
+import { useLocation, useNavigate, useParams  } from "react-router-dom";
 
 import Fraction from '../components/Fraction';
 import NotePaper from '../components/NotePaper';
@@ -12,33 +12,39 @@ import Portion from '../components/Recipe/Portion';
 import Images from '../components/Recipe/Images';
 import Loader from '../components/Loader';
 
-import { Grid, Box, List, ListItem, ListItemIcon, ListItemText, Chip, Typography } from "@mui/material";
+import { Grid, Box, List, ListItem, ListItemIcon, ListItemText, Chip, Typography, IconButton } from "@mui/material";
 
 import Icon from '@mdi/react';
-import { mdiBarleyOff, mdiClockOutline, mdiEggOffOutline, mdiFoodSteakOff  } from '@mdi/js';
+import { mdiBarleyOff, mdiClockOutline, mdiDelete, mdiEggOffOutline, mdiFoodSteakOff, mdiPencil  } from '@mdi/js';
 
 function Recipe(){
 
     const {id} = useParams ();
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const recipe = useSelector((state) => state.recipe);
     const recipeFormular = useSelector((state) => state.recipeFormular);
+    const user = useSelector((state) => state.auth.user);
     const {error, loading} = useSelector((state) => state.settings);
+    const formular = useLocation().pathname.includes('/formular');
 
     useEffect(() => {
         if(id){
             if(/^.{24}$/.test(id)){
-                dispatch(getRecipe(id));
+                if(!formular){
+                    if(id !== recipe.id || !recipeFormular.uploaded){
+                        dispatch(getRecipe(id));
+                    }
+                } else {
+                    dispatch(getRecipePreview());
+                }
             } else {
                 dispatch(setError(true));
             }
         } else {
             dispatch(getRecipePreview());
         }
-        return () => {      
-            dispatch(resetRecipe());
-        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, recipeFormular]);
 
@@ -152,7 +158,7 @@ function Recipe(){
 
                 {/* Schlagwörter */}
                 <div style={{marginTop: '-5px'}}>
-                    {recipe.keywords.map((keyword, index) => {
+                    {recipe.keywords.concat(recipe.user ? [recipe.user.username] : []).map((keyword, index) => {
                         return (
                             <Chip
                                 sx={{marginTop: '7px', marginRight: '5px', height: '19px', marginBottom: '-2px'}}
@@ -163,6 +169,45 @@ function Recipe(){
                         );
                     })}
                 </div>
+
+                {/* Editieren */}
+                {!formular && user && recipe.user && user.username === recipe.user.username ?
+                    <Box sx={{position: 'absolute', bottom: '22px', left: 0, width: '43px', justifyContent: 'center', display: 'grid'}}>
+                        <IconButton 
+                            sx={{
+                                padding: '2px', 
+                                marginBottom: '12px',
+                                width: '24.8px',
+                                border: theme => `1px solid ${theme.palette.primary.light}`, 
+                                color: theme => theme.palette.primary.light,
+                                '&:hover': {
+                                    border: theme => `1px solid ${theme.palette.primary.main}`, 
+                                    color: theme => theme.palette.primary.main,
+                                }
+                            }} 
+                            onClick={() => navigate(`/rezepte/formular/${id}`)}
+                            disableRipple
+                        >
+                            <Icon path={mdiPencil} size={0.8}/>
+                        </IconButton>
+                        <IconButton 
+                            sx={{
+                                padding: '2px',
+                                width: '24.8px',
+                                border: theme => `1px solid ${theme.palette.error.light}`, 
+                                color: theme => theme.palette.error.light,
+                                '&:hover': {
+                                    border: theme => `1px solid ${theme.palette.error.main}`, 
+                                    color: theme => theme.palette.error.main,
+                                }
+                            }} 
+                            onClick={() => alert('löschen')}
+                            disableRipple
+                        >
+                            <Icon path={mdiDelete} size={0.8}/>
+                        </IconButton>
+                    </Box> 
+                :   null}
 
             </NotePaper>
         : 

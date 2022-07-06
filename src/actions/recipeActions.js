@@ -17,6 +17,7 @@ export const setRecipeSettings = (count, volume) => (dispatch, getState) => {
 export const getRecipePreview = () => (dispatch, getState) => {
 
   const recipeFormular = getState().recipeFormular;
+  const recipe = getState().recipe;
   var keywords = recipeFormular.keywords;
   Object.entries(recipeFormular.categories).forEach(([key])  => {
     if(recipeFormular.categories[key]){
@@ -35,9 +36,11 @@ export const getRecipePreview = () => (dispatch, getState) => {
       f.aliment = food.aliment;
       if(food.amount === " "){
         f.amount = 0
-      } else {
+      } else if(typeof(food.amount) === 'string'){
         const amountDecimal = food.amount.replace(',','.')
         f.amount = Number(amountDecimal);
+      } else {
+        f.amount = food.amount;
       }
       i.food.push(f);
     });
@@ -47,7 +50,8 @@ export const getRecipePreview = () => (dispatch, getState) => {
   dispatch({
     type: GET_RECIPE,
     payload: {
-      id: null,
+      id: recipe.id,
+      user: getState().auth.user,
       title: recipeFormular.title,
       portion: recipeFormular.portion,
       source: recipeFormular.source,
@@ -55,7 +59,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
       keywords: keywords,
       ingredients: ingredients,
       steps: recipeFormular.steps,
-      pictures: recipeFormular.pictures,
+      pictures: recipeFormular.pictures.order.map(pic => {return {url: pic.url}}),
       settings: {
         count: recipeFormular.portion.count,
         volume: recipeFormular.portion.volume
@@ -80,7 +84,7 @@ export const getRecipe = (id) => (dispatch) => {
       'Content-Type': 'application/json'
     },
     onDownloadProgress: progressEvent => {
-      console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
+      // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
     }
   };
   axios.get(`${process.env.REACT_APP_API_URL}/recipe/${id}`, config)
@@ -89,6 +93,7 @@ export const getRecipe = (id) => (dispatch) => {
         type: GET_RECIPE,
         payload: {
           id: res.data._id,
+          user: res.data.user,
           title: res.data.title,
           portion: res.data.portion,
           source: res.data.source,
@@ -104,7 +109,6 @@ export const getRecipe = (id) => (dispatch) => {
       }});
       dispatch(setError(false));
       dispatch(setLoading(false));
-      console.info(res.data)
     })
     .catch(err => {
       dispatch(setError(true));
@@ -113,7 +117,7 @@ export const getRecipe = (id) => (dispatch) => {
     });
 };
 
-export const resetRecipe = () => (dispatch, getState) => {
+export const resetRecipe = () => (dispatch) => {
   dispatch({
     type: GET_RECIPE,
     payload: {

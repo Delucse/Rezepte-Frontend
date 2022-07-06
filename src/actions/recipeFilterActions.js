@@ -10,7 +10,7 @@ export const getRecipes = () => (dispatch, getState) => {
   dispatch(setLoading(true));
   const config = {
       onDownloadProgress: progressEvent => {
-        console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
+        // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
       },
       success: res => {
         const recipes = res.data.map(recipe => {

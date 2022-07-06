@@ -11,10 +11,11 @@ import Icon from '@mdi/react';
 import { mdiHome } from '@mdi/js';
 
 
-function GetRecipeId(){
-    const { id, title } = useSelector(state => state.recipe); 
+function GetRecipeTitle(){
+    const title = useSelector(state => state.recipe.title);
+    
     return (
-        id ? 
+        title ? 
             <div>{title}</div>
         :   <div>lädt ...</div>
     )
@@ -77,13 +78,21 @@ const routes = [
             {title: 'Rezepte', pathname: '/rezepte'},
             {title: 'Nutzer', pathname: '/rezepte/nutzer', condition: 'user'},
             {title: 'Favoriten', pathname: '/rezepte/favoriten', condition: 'favourite'},
-            {title: <GetRecipeId/>},
+            {title: <GetRecipeTitle/>},
         ]
     },
     {   pathname: /^\/rezepte\/formular$/i, 
         params: [],
         breadcrumbs: [
             {title: 'Rezepte', pathname: '/rezepte'},
+            {title: 'Formular'},
+        ]
+    },
+    {   pathname: /^\/rezepte\/formular\/.{24}$/i, 
+        params: ['id'],
+        breadcrumbs: [
+            {title: 'Rezepte', pathname: '/rezepte'},
+            {title: <GetRecipeTitle/>, pathname: '/rezepte/:id', params: 'id'},
             {title: 'Formular'},
         ]
     },
@@ -131,23 +140,31 @@ function BreadCrumbs(){
     const location = useLocation();
     const pathname = location.state && location.state.background ? location.state.background.state && location.state.background.state.background ? location.state.background.state.background.pathname : location.state.background.pathname : location.pathname;
 
-    var params = Object.keys(useParams());
+    var params = useParams();
+    var keyParams = Object.keys(params);
     if(/\/(anmeldung|registrierung)/.test(location.pathname)){
         if(/^\/rezepte\/.{24}$/i.test(pathname)){
-            params = ['id'];
+            keyParams = ['id'];
         } else {
-            params = [];
+            keyParams = [];
         }
     }
     
     const currentRoute = routes.filter(route => {
         if(route.hasOwnProperty("params")){
-            return route.pathname.test(pathname) && JSON.stringify(route.params) === JSON.stringify(params);
+            return route.pathname.test(pathname) && JSON.stringify(route.params) === JSON.stringify(keyParams);
         }
         return route.pathname.test(pathname);
     })[0];
 
-    var breadcrumbs = currentRoute.breadcrumbs.filter(bc => {
+    var breadcrumbs = currentRoute.breadcrumbs.map(bc => {
+        if(bc.params){
+            bc.pathname = bc.pathname.replace(`:${bc.params}`, params[bc.params]);
+        }
+        return bc;
+    });
+
+    breadcrumbs = breadcrumbs.filter(bc => {
         return (!bc.hasOwnProperty("condition")) || (bc.hasOwnProperty("condition") && bc.condition === route);
     });
 

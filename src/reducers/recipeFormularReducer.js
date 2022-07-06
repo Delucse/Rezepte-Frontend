@@ -1,4 +1,4 @@
-import { SET_RECIPE_BLOCKED, SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, SET_RECIPE_CATEGORIES, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES, SET_RECIPE_FORMULAR } from '../actions/types';
+import { SET_RECIPE_FORMULAR_UPLOADED, SET_RECIPE_BLOCKED, SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, SET_RECIPE_CATEGORIES, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES, SET_RECIPE_FORMULAR } from '../actions/types';
 
 
 const initialState = {
@@ -29,7 +29,11 @@ const initialState = {
       ]
     }],
     steps: ['','',''],
-    pictures: [],
+    pictures: {
+      new: [],
+      removed: [],
+      order: []
+    },
     error: {
       submit: false,
       title: false,
@@ -40,7 +44,8 @@ const initialState = {
       steps: false,
       pictures: false
     },
-    blocked: true
+    blocked: true,
+    uploaded: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -102,12 +107,18 @@ const reducer = (state = initialState, action) => {
       }
     case SET_RECIPE_FORMULAR: 
       return {
+        ...state,
         ...action.payload
       }
     case SET_RECIPE_BLOCKED:
       return {
         ...state,
         blocked: action.payload
+      }
+    case SET_RECIPE_FORMULAR_UPLOADED:
+      return {
+        ...state,
+        uploaded: action.payload
       }
     default:
       return state;

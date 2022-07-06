@@ -3,6 +3,7 @@ import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID } from '../actions/types
 
 const initialState = {
     id: null,
+    user: null,
     title: null,
     portion: null,
     source: null,
@@ -21,6 +22,7 @@ const reducer = (state = initialState, action) => {
   switch(action.type){
     case GET_RECIPE:
       return {
+        ...state,
         ...action.payload
       };
     case SET_RECIPE_SETTINGS:

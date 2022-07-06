@@ -100,7 +100,7 @@ function Food(props){
                 <Box sx={{width: {xs: '100%', sm: '50%'}, display: 'flex'}}>
                     <div style={{width: '40%', marginRight: '5px'}}>
                         <Textfield 
-                            value={props.amount.toString().replace('.',',')} 
+                            value={props.amount === 0 ? " " : props.amount.toString().replace('.',',')} 
                             onChange={(e) => dispatch(changeAmount(props.iIndex, props.fIndex, e.target.value))}
                             error={isFoodAmountError(props.amount) && props.error}
                             label='Menge' 

@@ -1,4 +1,4 @@
-import { SET_RECIPE_BLOCKED, SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, SET_RECIPE_CATEGORIES, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES, SET_RECIPE_FORMULAR } from '../actions/types';
+import { SET_RECIPE_BLOCKED, SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORTION, SET_RECIPE_TIME, SET_RECIPE_CATEGORIES, ADD_RECIPE_KEYWORDS, REMOVE_RECIPE_KEYWORDS, SET_RECIPE_SOURCE, SET_RECIPE_INGREDIENTS, SET_RECIPE_STEPS, SET_RECIPE_PICTURES, SET_RECIPE_FORMULAR, SET_RECIPE_FORMULAR_UPLOADED } from '../actions/types';
 
 import axios from 'axios';
 
@@ -9,11 +9,8 @@ export const isFoodAmountError = (amount) => {
   if(typeof(amountDecimal) === 'string'){
       amountDecimal = amountDecimal.replace(',','.');
   }
-  if(amountDecimal.length > 0 && !isNaN(amountDecimal) && amountDecimal >= 0){
+  if(!isNaN(amountDecimal) && amountDecimal >= 0){
       return false
-  }
-  if(amount !== ' '){
-      return true
   }
   return true;
 };
@@ -360,49 +357,51 @@ export const changeStepPosition = (oldIndex, newIndex) => (dispatch, getState) =
 
 export const changePictures = (files) => (dispatch, getState) => {
   var pictures = getState().recipeFormular.pictures;
-  pictures = [...pictures];
+  pictures.new = [...pictures.new];
+  pictures.order = [...pictures.order];
   // files is a FileList object (similar to NodeList)
   // loop through files to prevent that an image is stored twice
   for (const key of Object.keys(files)) {
-    var filter = pictures.filter(pic => pic.title === files[key].name);
-    if(filter.length === 0){
-      pictures.push({
-        file: files[key],
-        url: URL.createObjectURL(files[key]), 
-        title: files[key].name
-      });
-    }
-    // else {
-    //   alert('already exists');
-    //   // error: image already exists
-    // }
+    var url = URL.createObjectURL(files[key])
+    pictures.new.push({file: files[key], url});
+    pictures.order.push({
+      url
+    });
   }
   dispatch({
     type: SET_RECIPE_PICTURES,
     payload: pictures
   });
   if(getState().recipeFormular.error.submit){
-    dispatch(setError('pictures', pictures));
+    dispatch(setError('pictures', pictures.order));
   } 
 };
 
 
 export const removePicture = (url) => (dispatch, getState) => {
   var pictures = getState().recipeFormular.pictures;
-  pictures = [...pictures];
-  const index = pictures.findIndex(pic => pic.url === url);
-  var newPictures = pictures.filter((el, idx) => index !== idx);
+  const index = pictures.order.findIndex(pic => pic.url === url);
+  if(pictures.order[index].id){
+    pictures.removed.push(pictures.order[index].id)
+  } else {
+    pictures.new = [...pictures.new].filter(pic => pic.url !== url);
+  }
+  pictures.order = pictures.order.filter((el, idx) => index !== idx);
   dispatch({
     type: SET_RECIPE_PICTURES,
-    payload: newPictures
+    payload: pictures
   });
   if(getState().recipeFormular.error.submit){
-    dispatch(setError('pictures', newPictures));
+    dispatch(setError('pictures', pictures.order));
   }
 };
 
-
-export const onDragEndPicture = (pictures) => (dispatch) => {
+export const changePicturePosition = (oldIndex, newIndex) => (dispatch, getState) => {
+  const pictures = getState().recipeFormular.pictures;
+  pictures.order = [...pictures.order];
+  var picture = pictures.order[oldIndex]
+  pictures.order.splice(oldIndex, 1);
+  pictures.order.splice(newIndex, 0, picture);
   dispatch({
     type: SET_RECIPE_PICTURES,
     payload: pictures
@@ -420,7 +419,7 @@ export const checkRecipeError = () => (dispatch, getState) => {
   dispatch(setError('keywords', keywords));
   dispatch(setError('ingredients', ingredients));
   dispatch(setError('steps', steps));
-  dispatch(setError('pictures', pictures));
+  dispatch(setError('pictures', pictures.order));
   dispatch(setError('submit'));
 }
 
@@ -443,7 +442,7 @@ const objectToFormData = (data, formData, subkey) => {
   return formData;
 }
 
-export const submitRecipe = () => (dispatch, getState) => {
+export const submitRecipe = (id) => (dispatch, getState) => {
   var {title, portion, source, time, categories, keywords, steps, pictures} = getState().recipeFormular;
 
   Object.entries(categories).forEach(([key])  => {
@@ -455,37 +454,45 @@ export const submitRecipe = () => (dispatch, getState) => {
   var data = {
     title, source, portion, time, keywords, ingredients: getState().recipe.ingredients, steps
   }
+  if(id){
+    data.removedPictures = pictures.removed;
+    data.picturesOrder = pictures.order.map(order => order.id);
+  }
 
   var body = new FormData();
   body = objectToFormData(data, body);
   
-  if(pictures.length > 0){
-    pictures.forEach((pic, i) => {
+  if(pictures.new.length > 0){
+    pictures.new.forEach((pic) => {
       body.append('pictures', pic.file);
     });
   }
 
   const config = {
+    method: id ? 'PUT' : 'POST',
+    url: `${process.env.REACT_APP_API_URL}/recipe${id ? `/${id}` : ''}`,
+    data: body,
     headers: {
       'Content-Type': 'multipart/form-data', // necessary to upload files
     },
     onUploadProgress: progressEvent => {
-      console.info('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
+      // console.info('Progress: ' + Math.round(progressEvent.loaded / progressEvent.total * 100/2) +' %');
     },
     onDownloadProgress: progressEvent => {
-      console.info('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
+      // console.info('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
     },
     success: res => {
       dispatch(setRecipeId(res.data.id));
       dispatch(setBlocked(false));
+      dispatch(setUploaded(true));
       dispatch(resetRecipeFormular());
     },
     error: err => {
-      console.error(err);
+      console.error(err.message);
     }
   };
 
-  axios.post(`${process.env.REACT_APP_API_URL}/recipe`, body, config)
+  axios(config)
     .then(res => {
       res.config.success(res);
     })
@@ -525,7 +532,11 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
         ]
       }],
       steps: ['','',''],
-      pictures: [],
+      pictures: {
+        new: [],
+        removed: [],
+        order: []
+      },
       error: {
         submit: false,
         title: false,
@@ -536,9 +547,8 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
         steps: false,
         pictures: false
       },
-      blocked: getState().recipeFormular.blocked
     }
-  })
+  });
 }
 
 export const setBlocked = (bool) => (dispatch) => {
@@ -547,3 +557,69 @@ export const setBlocked = (bool) => (dispatch) => {
     payload: bool
   });
 };
+
+export const setRecipeFormular = () => (dispatch, getState) => {
+  const {title, portion, source, time, keywords, ingredients, steps, pictures} = getState().recipe;
+  const categories = {
+    ingredients: [],
+    dish: [],
+    season: [],
+    heat: []
+  };
+  const otherKeywords = [];
+  keywords.forEach(word => {
+    if(['vegan', 'vegetarisch', 'glutenfrei', 'laktosefrei'].includes(word)){
+      categories.ingredients.push(word)
+    }
+    else if(['Aperitif', 'Vorspeise', 'Hauptgang', 'Dessert', 'Frühstück', 'Kaffeetrinken'].includes(word)){
+      categories.dish.push(word)
+    }
+    else if(['Frühling', 'Sommer', 'Herbst', 'Winter'].includes(word)){
+      categories.season.push(word)
+    }
+    else if(['kalt', 'lauwarm', 'heiß'].includes(word)){
+      categories.heat.push(word)
+    }
+    else{
+      otherKeywords.push(word);
+    }
+  });
+  const orderPicture = [];
+  pictures.forEach(pic => orderPicture.push({id: pic._id, url: `${process.env.REACT_APP_API_URL}/media/${pic.file}`}));
+  dispatch({
+    type: SET_RECIPE_FORMULAR,
+    payload: {
+      title,
+      portion,
+      source,
+      time,
+      categories,
+      keywords: otherKeywords,
+      ingredients,
+      steps,
+      pictures: {
+        new: [],
+        removed: [],
+        order: orderPicture
+      },
+      error: {
+        submit: false,
+        title: false,
+        portion: false,
+        source: false,
+        keywords: false,
+        ingredients: [false, false, false],
+        steps: false,
+        pictures: false
+      },
+      blocked: true,
+    }
+  });
+}
+
+export const setUploaded = (bool) => (dispatch) => {
+  dispatch({
+    type: SET_RECIPE_FORMULAR_UPLOADED,
+    payload: bool
+  })
+}

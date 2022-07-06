@@ -54,7 +54,10 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />}/>
             <Route path="rezepte">
-              <Route exact path="formular" element={<PrivateRoute><RecipeFormular /></PrivateRoute>}/>
+              <Route exact path="formular">
+                <Route index element={<PrivateRoute><RecipeFormular /></PrivateRoute>}/>
+                <Route exact path=":id" element={<PrivateRoute><RecipeFormular /></PrivateRoute>}/>
+              </Route>
               <Route exact path=":id" element={<Recipe />}/>
               <Route exact path='favoriten' element={<PrivateRoute><Recipes route='favoriten'/></PrivateRoute>}/>
               <Route exact path='nutzer' element={<PrivateRoute><Recipes route='nutzer'/></PrivateRoute>}/>

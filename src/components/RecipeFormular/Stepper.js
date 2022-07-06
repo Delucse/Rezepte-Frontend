@@ -53,7 +53,7 @@ function Stepper(props) {
     const keywordsLength = useSelector((state) => state.recipeFormular.keywords.length);
     const ingredientsLength = useSelector(state => state.recipeFormular.ingredients.map((ingredient) => ingredient.food.length).reduce((accumulator, curr) => accumulator + curr));
     const stepsLength = useSelector((state) => state.recipeFormular.steps.length);
-    const picturesLength = useSelector((state) => state.recipeFormular.pictures.length);
+    const picturesLength = useSelector((state) => state.recipeFormular.pictures.order.length);
     const errorTitle = useSelector((state) => state.recipeFormular.error.title);
     const errorSource = useSelector((state) => state.recipeFormular.error.source);
     const errorPortion = useSelector((state) => state.recipeFormular.error.portion);
