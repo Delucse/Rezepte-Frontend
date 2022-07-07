@@ -62,6 +62,7 @@ function Stepper(props) {
     const errorIngredients = useSelector((state) => state.recipeFormular.error.ingredients.includes(true));
     const errorSteps = useSelector((state) => state.recipeFormular.error.steps);
     const errorPictures = useSelector((state) => state.recipeFormular.error.pictures);
+    const recipe = useSelector((state) => state.recipe);
 
     const [actions, setActions] = useState();
     
@@ -69,7 +70,7 @@ function Stepper(props) {
         if(actions){   
             actions.updateHeight();
         }
-    }, [portion, keywordsLength, ingredientsLength, stepsLength, picturesLength, errorTitle, errorSource, errorPortion, errorTime, errorCategories, errorIngredients, errorSteps, errorPictures, actions]);
+    }, [portion, keywordsLength, ingredientsLength, stepsLength, picturesLength, errorTitle, errorSource, errorPortion, errorTime, errorCategories, errorIngredients, errorSteps, errorPictures, recipe, actions]);
 
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = props.steps.length - 1;

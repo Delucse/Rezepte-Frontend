@@ -3,6 +3,7 @@ import { SET_RECIPE_BLOCKED, SET_RECIPE_ERROR, SET_RECIPE_TITLE, SET_RECIPE_PORT
 import axios from 'axios';
 
 import { setRecipeId } from './recipeActions';
+import { setRoute } from './recipeFilterActions';
 
 export const isFoodAmountError = (amount) => {
   var amountDecimal = amount;
@@ -482,6 +483,7 @@ export const submitRecipe = (id) => (dispatch, getState) => {
       // console.info('Progress: ' + (50 + Math.round(progressEvent.loaded / progressEvent.total * 100/2)) +' %');
     },
     success: res => {
+      dispatch(setRoute('nutzer'));
       dispatch(setRecipeId(res.data.id));
       dispatch(setBlocked(false));
       dispatch(setUploaded(true));
@@ -585,7 +587,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
     }
   });
   const orderPicture = [];
-  pictures.forEach(pic => orderPicture.push({id: pic._id, url: `${process.env.REACT_APP_API_URL}/media/${pic.file}`}));
+  pictures.forEach(pic => orderPicture.push({id: pic._id, url: pic.file}));
   dispatch({
     type: SET_RECIPE_FORMULAR,
     payload: {

@@ -42,7 +42,7 @@ function Images({pictures, title}){
                     width: '100%',
                     objectFit: 'cover'
                 }}
-                src={pictures[index].url ? pictures[index].url : `${process.env.REACT_APP_API_URL}/media/${pictures[index].file}`}
+                src={!pictures[index]._id ? pictures[index].file : `${process.env.REACT_APP_API_URL}/media/${pictures[index].file}`}
                 alt={title}
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping

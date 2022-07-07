@@ -47,6 +47,7 @@ function RecipeFormular() {
     const dispatch = useDispatch();
     const blocked = useSelector(state => state.recipeFormular.blocked);
     const recipeId = useSelector(state => state.recipe.id);
+    const recipePictures = useSelector(state => state.recipe.pictures);
     const uploaded = useSelector(state => state.recipeFormular.uploaded);
     const formularFilled = useSelector(state => state.recipeFormular.portion.count > 0);
 
@@ -59,14 +60,16 @@ function RecipeFormular() {
     }, [])
 
     useEffect(() => {
-        if(id !== recipeId){
-            if(/^.{24}$/.test(id)){
-                dispatch(getRecipe(id));
+        if(id){
+            if(id !== recipeId || recipePictures.filter(pic => !pic._id).length > 0){
+                if(/^.{24}$/.test(id)){
+                    dispatch(getRecipe(id, true));
+                } else {
+                    dispatch(setError(true));
+                }
             } else {
-                dispatch(setError(true));
+                dispatch(setRecipeFormular());
             }
-        } else {
-            dispatch(setRecipeFormular());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeId]);

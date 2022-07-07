@@ -1,6 +1,7 @@
 import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID } from '../actions/types';
 
 import { setError, setLoading } from '../actions/settingsActions';
+import { setRecipeFormular } from './recipeFormularActions';
 
 import axios from 'axios';
 
@@ -59,7 +60,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
       keywords: keywords,
       ingredients: ingredients,
       steps: recipeFormular.steps,
-      pictures: recipeFormular.pictures.order.map(pic => {return {url: pic.url}}),
+      pictures: recipeFormular.pictures.order.map(pic => {return {_id: pic.id, file: pic.url}}),
       settings: {
         count: recipeFormular.portion.count,
         volume: recipeFormular.portion.volume
@@ -76,7 +77,7 @@ export const setRecipeId = (id) => (dispatch) => {
   });
 }
 
-export const getRecipe = (id) => (dispatch) => {
+export const getRecipe = (id, setFormular) => (dispatch) => {
   dispatch(setError(false));
   dispatch(setLoading(true));
   const config = {
@@ -109,6 +110,9 @@ export const getRecipe = (id) => (dispatch) => {
       }});
       dispatch(setError(false));
       dispatch(setLoading(false));
+      if(setFormular){
+        dispatch(setRecipeFormular());
+      }
     })
     .catch(err => {
       dispatch(setError(true));

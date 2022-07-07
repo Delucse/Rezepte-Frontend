@@ -180,7 +180,7 @@ function Pictures() {
                     {pictures.map((picture, index) => {
                         return(
                             <ImageListItem key={index} sx={index===0 ? {border: theme => `4px solid ${theme.palette.primary.main}`, padding: '0px', height: '172px'} : {height: '180px'}}>
-                                <img src={picture.url} alt='' style={{cursor: 'pointer', height: index === 0 ? "172px" : '180px', objectFit: 'cover'}} onClick={() => handleClickOpen(picture.url)}/>
+                                <img src={!picture.id ? picture.url : `${process.env.REACT_APP_API_URL}/media/${picture.url}`} alt='' style={{cursor: 'pointer', height: index === 0 ? "172px" : '180px', objectFit: 'cover'}} onClick={() => handleClickOpen(picture.url)}/>
                                 <ImageListItemBar
                                     actionPosition={'left'}
                                     actionIcon={

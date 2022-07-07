@@ -76,8 +76,8 @@ const routes = [
         breadcrumbs: [
             {title: <RecipeSearch/>, pathname: '/suche'},
             {title: 'Rezepte', pathname: '/rezepte'},
-            {title: 'Nutzer', pathname: '/rezepte/nutzer', condition: 'user'},
-            {title: 'Favoriten', pathname: '/rezepte/favoriten', condition: 'favourite'},
+            {title: 'Nutzer', pathname: '/rezepte/nutzer', condition: 'nutzer'},
+            {title: 'Favoriten', pathname: '/rezepte/favoriten', condition: 'favoriten'},
             {title: <GetRecipeTitle/>},
         ]
     },
