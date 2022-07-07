@@ -2,9 +2,39 @@ import React from "react";
 
 import { Box } from '@mui/material';
 
+import Icon from '@mdi/react';
+import { mdiHeart } from "@mdi/js";
+
 // https://codepen.io/hunab/pen/DoNVPa
 
-function Tape({rotate, top, width}){
+function GridBox(props){
+    return(
+        <Box sx={{
+            height: 'calc(1em - 2px)', 
+            gridTemplateColumns: `${props.displace ? `${props.displace}px ` : ''}repeat(auto-fit, 16px)`,
+            gridGap: '4px',
+            display: 'grid',
+            overflow: 'hidden'
+            }}
+        >
+            {props.children}
+        </Box>
+    );
+}
+
+function Hearts(){
+    return(
+        Array(10).fill(0).map(() => {
+            return (
+                <Box sx={{color: theme => theme.palette.primary.light, justifySelf: 'end', marginTop: '-2px'}}>
+                    <Icon path={mdiHeart} size={0.6}/>
+                </Box>
+            );
+        })
+    );
+}
+
+function Tape({rotate, top, width, favourite}){
     rotate = rotate ? rotate : 0;
 
     return(
@@ -15,38 +45,58 @@ function Tape({rotate, top, width}){
                 display: 'flex'
             }}
         >
-        <Box sx={{
-                backgroundColor: 'hsla(0,0%,100%,.2)',
-                boxShadow: 'inset 0 0 1em .5em hsla(0,0%,100%,.1)',
-                height: '3em',
-                position: 'absolute',
-                transform: `rotate(${rotate}deg)`,
-                width: width ? `${width}px` : '9em',
-                filter: 'drop-shadow(0 1px 1px hsla(0,0%,0%,.3))',
-                zIndex: 1,
-
-                '&::after, &::before': {
-                    backgroundSize: '.4em .4em',
-                    bottom: 0,
-                    content: '""',
+            <Box
+                id='tape' 
+                sx={{
+                    backgroundColor: 'hsla(0,0%,100%,.2)',
+                    boxShadow: 'inset 0 0 1em .5em hsla(0,0%,100%,.1)',
+                    height: '3em',
                     position: 'absolute',
-                    top: 0,
-                    width: '.2em',
-                },
+                    transform: `rotate(${rotate}deg)`,
+                    width: width ? `${width}px` : '9em',
+                    filter: 'drop-shadow(0 1px 1px hsla(0,0%,0%,.3))',
+                    zIndex: 1,
+                    cursor: favourite ? 'pointer' : 'default',
 
-                '&::after': {
-                    backgroundImage: 'linear-gradient(45deg, transparent 50%, hsla(0,0%,100%,.3) 50%), linear-gradient(-45deg, transparent 50%, hsla(0,0%,100%,.3) 50%)',
-                    backgroundPosition: '0 100%',
-                    left: '-.2em'
-                },
+                    '&::after, &::before': {
+                        backgroundSize: '.4em .4em',
+                        bottom: 0,
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        width: '.2em',
+                    },
 
-                '&::before': {
-                    backgroundImage: 'linear-gradient(135deg, transparent 50%, hsla(0,0%,100%,.3) 50%), linear-gradient(-135deg, transparent 50%, hsla(0,0%,100%,.3) 50%)',
-                    backgroundPosition: '100% 100%',
-                    right: '-.2em'
-                },
-            }}
-        />
+                    '&::after': {
+                        backgroundImage: 'linear-gradient(45deg, transparent 50%, hsla(0,0%,100%,.3) 50%), linear-gradient(-45deg, transparent 50%, hsla(0,0%,100%,.3) 50%)',
+                        backgroundPosition: '0 100%',
+                        left: '-.2em'
+                    },
+
+                    '&::before': {
+                        backgroundImage: 'linear-gradient(135deg, transparent 50%, hsla(0,0%,100%,.3) 50%), linear-gradient(-135deg, transparent 50%, hsla(0,0%,100%,.3) 50%)',
+                        backgroundPosition: '100% 100%',
+                        right: '-.2em'
+                    },
+                }}
+            >
+                {favourite ?
+                    <Box 
+                        id='tapeStyle'
+                        sx={{margin: '3px 0', visibility: 'hidden'}}
+                    >
+                        <GridBox>
+                            <Hearts/>
+                        </GridBox>
+                        <GridBox displace={24}>
+                            <Hearts/>
+                        </GridBox>
+                        <GridBox>
+                            <Hearts/>
+                        </GridBox>
+                    </Box>
+                : null}
+            </Box>
         </Box>
     );
 }

@@ -54,3 +54,7 @@ code {
 .slideOverflow {
   overflow: clip !important;
 }
+
+#tape:hover #tapeStyle {
+  visibility: visible;
+}
