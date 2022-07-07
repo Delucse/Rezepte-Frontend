@@ -3,8 +3,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { setError } from '../actions/settingsActions';
 import { getRecipe, getRecipePreview } from '../actions/recipeActions';
+import { setRoute } from '../actions/recipeFilterActions';
 
 import { useLocation, useNavigate, useParams  } from "react-router-dom";
+
+import axios from 'axios';
 
 import Fraction from '../components/Fraction';
 import NotePaper from '../components/NotePaper';
@@ -47,6 +50,25 @@ function Recipe(){
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, recipeFormular]);
+
+    const deleteRecipe = () => {
+        const config = {
+            success: res => {
+                dispatch(setRoute('nutzer'));
+                navigate('/rezepte/nutzer');
+            },
+            error: err => {
+                console.log(err);
+            }
+        };
+        axios.delete(`${process.env.REACT_APP_API_URL}/recipe/${recipe.id}`, config)
+        .then(res => {
+            res.config.success(res);
+        })
+        .catch(err => {
+            err.config.error(err);
+        });
+    };
 
     return(
         !loading && !error && recipe.title ? 
@@ -201,7 +223,7 @@ function Recipe(){
                                     color: theme => theme.palette.error.main,
                                 }
                             }} 
-                            onClick={() => alert('löschen')}
+                            onClick={deleteRecipe}
                             disableRipple
                         >
                             <Icon path={mdiDelete} size={0.8}/>
