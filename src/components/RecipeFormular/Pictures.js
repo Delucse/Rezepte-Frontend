@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { changePicturePosition, changePictures, removePicture } from "../../actions/recipeFormularActions";
 
 import imageCompression from 'browser-image-compression';
 
-import Icon from '@mdi/react';
-import { mdiDelete, mdiFullscreen, mdiCamera, mdiMenuLeft, mdiMenuRight } from '@mdi/js'; 
+import ImageCarousel from "../ImageCarousel";
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Alert, Box, InputLabel, Dialog, DialogContent, IconButton, Grid, ImageListItem , ImageListItemBar } from "@mui/material";
+import { Alert, Box, InputLabel,IconButton, Grid, ImageListItem , ImageListItemBar } from "@mui/material";
 
+import Icon from '@mdi/react';
+import { mdiDelete, mdiFullscreen, mdiCamera, mdiMenuLeft, mdiMenuRight } from '@mdi/js'; 
 
 function PictureInput(props){
 
@@ -145,20 +146,24 @@ function Pictures() {
     const dispatch = useDispatch();
 
     const pictures = useSelector((state) => state.recipeFormular.pictures.order);
+    const picturesUrl = pictures.map(picture => !picture.id ? picture.url : `${process.env.REACT_APP_API_URL}/media/${picture.url}`);
+    const title = useSelector((state) => state.recipeFormular.title);
     const errorPictures = useSelector((state) => state.recipeFormular.error.pictures);
 
     const [open, setOpen] = useState(false);
-    const [url, setUrl] = useState('');
-    
-    const handleClickOpen = (url) => {
-        setUrl(url)
-        setOpen(true);
-    };
+    const [index, setIndex] = useState(0);
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    useEffect(() => {
+        if(open){
+            setOpen(false);
+        }
+    }, [open])
 
+    const handleOpen = (i) => {
+        setIndex(i);
+        setOpen(true)
+    }
+        
     const theme = useTheme();
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
     const md = useMediaQuery(theme.breakpoints.up('md'));
@@ -177,10 +182,10 @@ function Pictures() {
             <Grid item xs={12}>
                 <PictureInput error={errorPictures}/>
                 <div style={{width: '100%', listStyle: 'none', marginBottom: '16px', display: 'grid', gridGap: '0.4rem', gridTemplateColumns: `repeat(${col}, calc(100% / ${col} - 0.4rem * ${(-1+col)/col}))`}}>
-                    {pictures.map((picture, index) => {
+                    {pictures.map((picture, idx) => {
                         return(
-                            <ImageListItem key={index} sx={index===0 ? {border: theme => `4px solid ${theme.palette.primary.main}`, padding: '0px', height: '172px'} : {height: '180px'}}>
-                                <img src={!picture.id ? picture.url : `${process.env.REACT_APP_API_URL}/media/${picture.url}`} alt='' style={{cursor: 'pointer', height: index === 0 ? "172px" : '180px', objectFit: 'cover'}} onClick={() => handleClickOpen(picture.url)}/>
+                            <ImageListItem key={idx} sx={idx===0 ? {border: theme => `4px solid ${theme.palette.primary.main}`, padding: '0px', height: '172px'} : {height: '180px'}}>
+                                <img src={picturesUrl[idx]} alt='' style={{cursor: 'pointer', height: idx === 0 ? "172px" : '180px', objectFit: 'cover'}} onClick={() => handleOpen(idx)}/>
                                 <ImageListItemBar
                                     actionPosition={'left'}
                                     actionIcon={
@@ -188,24 +193,24 @@ function Pictures() {
                                             <div style={{flexGrow: 1, alignContent: 'center', display: 'flex'}}>
                                                 <IconButton 
                                                     sx={{padding: 0, color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
-                                                    onClick={() => dispatch(changePicturePosition(index, index-1))}
+                                                    onClick={() => dispatch(changePicturePosition(idx, idx-1))}
                                                     disableRipple
-                                                    disabled={index === 0}
+                                                    disabled={idx === 0}
                                                 >
                                                     <Icon path={mdiMenuLeft} size={1.4} />
                                                 </IconButton>
                                                 <IconButton
                                                     sx={{padding: 0, color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
-                                                    onClick={() => dispatch(changePicturePosition(index, index+1))}
+                                                    onClick={() => dispatch(changePicturePosition(idx, idx+1))}
                                                     disableRipple
-                                                    disabled={index === pictures.length - 1}
+                                                    disabled={idx === pictures.length - 1}
                                                 >
                                                     <Icon path={mdiMenuRight} size={1.4} />
                                                 </IconButton>
                                             </div>
                                             <IconButton 
                                                 sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
-                                                onClick={() => handleClickOpen(picture.url)}
+                                                onClick={() => setOpen(true)}
                                                 disableRipple
                                             >
                                                 <Icon path={mdiFullscreen} size={1} />
@@ -232,25 +237,8 @@ function Pictures() {
                             </ImageListItem>
                         );
                     })}
+                    <ImageCarousel images={picturesUrl} title={title} open={open} index={index}/>
                 </div>
-                <Dialog
-                    sx={{zIndex: 1500}}
-                    PaperProps={{
-                        sx: {borderRadius: 0}
-                    }}
-                    fullWidth={true}
-                    open={open}
-                    onClose={handleClose}
-                >
-                    <DialogContent style={{padding: "0px", display: 'contents'}}>
-                        <img src={url} alt={''} style={{maxWidth: '100%', height: 'auto'}}/>
-                    </DialogContent>
-                    {/* <DialogActions style={{padding: "10px 24px"}}>
-                        <IconButton style={{padding: "0px"}} color="primary" aria-label='Vollbild' onClick={handleClose}>
-                            <Icon path={mdiClose} size={1}/>
-                        </IconButton>
-                    </DialogActions> */}
-                </Dialog>
             </Grid>
         </div>
     );

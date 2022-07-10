@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Tape from '../Tape';
+import ImageCarousel from "../ImageCarousel";
 
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
@@ -16,9 +17,23 @@ const CircularSwipeableViews = virtualize(SwipeableViews);
 
 function Images({pictures, title}){
 
-    const [activeStep, setActiveStep] = React.useState(0);
-    const maxSteps = pictures.length;
+    const [open, setOpen] = useState(false);
 
+    const [activeStep, setActiveStep] = useState(0);
+    const maxSteps = pictures.length;
+    pictures = pictures.map(pic => !pic._id ? pic.file : `${process.env.REACT_APP_API_URL}/media/${pic.file}`);
+
+    useEffect(() => {
+        if(open){
+            setOpen(false);
+        }
+    }, [open])
+
+    const handleOpen = (i) => {
+        setActiveStep(i);
+        setOpen(true)
+    }
+    
     const handleNext = () => {
         setActiveStep((prevActiveStep) => mod(prevActiveStep + 1, maxSteps));
     };
@@ -40,15 +55,17 @@ function Images({pictures, title}){
                 sx={{
                     height: 240,
                     width: '100%',
-                    objectFit: 'cover'
+                    objectFit: 'cover',
+                    cursor: 'pointer'
                 }}
-                src={!pictures[index]._id ? pictures[index].file : `${process.env.REACT_APP_API_URL}/media/${pictures[index].file}`}
+                src={pictures[index]}
                 alt={title}
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
                     currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
                     currentTarget.style = "height: 240px; width: 100%; object-fit: cover; filter: grayscale(1);";
                 }}
+                onClick={() => handleOpen(index)}
             />
         );
     };
@@ -112,6 +129,7 @@ function Images({pictures, title}){
             <Box sx={{position: 'absolute', left: 40, top: 190}}>
                 <Tape rotate={40} width={142}/>
             </Box>
+            <ImageCarousel images={pictures} title={title} open={open} index={activeStep} />
         </Box>
     );
 }
