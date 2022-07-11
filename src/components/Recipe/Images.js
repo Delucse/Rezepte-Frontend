@@ -123,7 +123,7 @@ function Images({pictures, title}){
                     </Box>
                 </Box>
             :   slideRenderer({index: 0, key: 0})}
-            <Box id="addImage" sx={{position: 'absolute', bottom: 0, right: 0, visibility: 'hidden', '&:hover': {visibility: 'visible'}}}>
+            <Box sx={{position: 'absolute', bottom: 0, right: 0}}>
                 <AddImage />
             </Box>
             {/* Tapes */}
