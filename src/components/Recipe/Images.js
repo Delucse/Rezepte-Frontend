@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Tape from '../Tape';
 import ImageCarousel from "../ImageCarousel";
+import AddImage from './AddImage';
 
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
@@ -73,7 +74,8 @@ function Images({pictures, title}){
     return(
         <Box sx={{position: 'relative'}}>
             {maxSteps > 1 ?
-                <Box 
+                <Box
+                    id="recipeImages"
                     sx={{
                         position: 'relative', 
                         color: 'transparent',
@@ -83,7 +85,6 @@ function Images({pictures, title}){
                             borderColor: theme => theme.palette.primary.main,
                         },
                     }}
-
                 >
                     <CircularSwipeableViews
                         axis={'x'}
@@ -122,6 +123,9 @@ function Images({pictures, title}){
                     </Box>
                 </Box>
             :   slideRenderer({index: 0, key: 0})}
+            <Box id="addImage" sx={{position: 'absolute', bottom: 0, right: 0, visibility: 'hidden', '&:hover': {visibility: 'visible'}}}>
+                <AddImage />
+            </Box>
             {/* Tapes */}
             <Box sx={{position: 'absolute', right: 30, top: -10}}>
                 <Tape rotate={50} width={100}/>

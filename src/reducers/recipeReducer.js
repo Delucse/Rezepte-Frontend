@@ -1,4 +1,4 @@
-import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID } from '../actions/types';
+import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID, ADD_RECIPE_PICTURE } from '../actions/types';
 
 
 const initialState = {
@@ -34,6 +34,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         id: action.payload
+      }
+    case ADD_RECIPE_PICTURE:
+      return {
+        ...state,
+        pictures: [...state.pictures, action.payload]
       }
     default:
       return state;

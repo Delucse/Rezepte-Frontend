@@ -58,3 +58,7 @@ code {
 #tape:hover #tapeStyle {
   visibility: visible;
 }
+
+#recipeImages:hover + #addImage {
+  visibility: visible;
+}

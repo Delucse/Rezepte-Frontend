@@ -24,9 +24,9 @@ function PictureInput(props){
     const [counter, setCounter] = useState(0);
 
 
-    const onHandleFileInput = async (e) => {
+    const onHandleFileInput = async (targetFiles) => {
 
-        var targetFiles = [...e.target.files];
+        targetFiles = [...targetFiles];
 
         if(targetFiles.length + pictures.length > 4){
             alert('Insgesamt zu viele Bilder. Es dürfen nur maximal vier Bilder hochgeladen werden.')
@@ -94,7 +94,7 @@ function PictureInput(props){
         e.stopPropagation();
         setDrag(false)
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-          dispatch(changePictures(e.dataTransfer.files));
+            onHandleFileInput(e.dataTransfer.files);
           // e.dataTransfer.clearData()
           setCounter(0);
         }
@@ -110,7 +110,7 @@ function PictureInput(props){
             <input
                 style={{display: 'none'}}
                 accept="image/*"
-                onChange={onHandleFileInput}
+                onChange={(e) => onHandleFileInput(e.target.files)}
                 name="picture"
                 id="picture-button-file"
                 type="file"
@@ -210,7 +210,7 @@ function Pictures() {
                                             </div>
                                             <IconButton 
                                                 sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
-                                                onClick={() => setOpen(true)}
+                                                onClick={() => handleOpen(idx)}
                                                 disableRipple
                                             >
                                                 <Icon path={mdiFullscreen} size={1} />

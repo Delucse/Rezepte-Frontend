@@ -1,4 +1,4 @@
-import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID } from '../actions/types';
+import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID, ADD_RECIPE_PICTURE } from '../actions/types';
 
 import { setError, setLoading } from '../actions/settingsActions';
 import { setRecipeFormular } from './recipeFormularActions';
@@ -141,4 +141,11 @@ export const resetRecipe = () => (dispatch) => {
   }});
   dispatch(setError(false));
   dispatch(setLoading(false));
+}
+
+export const addPicture = (pic) => (dispatch) => {
+  dispatch({
+    type: ADD_RECIPE_PICTURE,
+    payload: pic
+  });
 }
