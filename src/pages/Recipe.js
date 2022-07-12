@@ -13,6 +13,7 @@ import Fraction from '../components/Fraction';
 import NotePaper from '../components/NotePaper';
 import Portion from '../components/Recipe/Portion';
 import Images from '../components/Recipe/Images';
+import Favorite from '../components/Recipe/Favorite';
 import Loader from '../components/Loader';
 
 import { Grid, Box, List, ListItem, ListItemIcon, ListItemText, Chip, Typography, IconButton } from "@mui/material";
@@ -180,7 +181,7 @@ function Recipe(){
 
                 {/* Schlagwörter */}
                 <div style={{marginTop: '-5px'}}>
-                    {recipe.keywords.concat(recipe.user ? [recipe.user.username] : []).map((keyword, index) => {
+                    {recipe.keywords.concat(recipe.user ? [recipe.user] : []).map((keyword, index) => {
                         return (
                             <Chip
                                 sx={{marginTop: '7px', marginRight: '5px', height: '19px', marginBottom: '-2px'}}
@@ -192,42 +193,49 @@ function Recipe(){
                     })}
                 </div>
 
-                {/* Editieren */}
-                {!formular && user && recipe.user && user.username === recipe.user.username ?
-                    <Box sx={{position: 'absolute', bottom: '22px', left: 0, width: '43px', justifyContent: 'center', display: 'grid'}}>
-                        <IconButton 
-                            sx={{
-                                padding: '2px', 
-                                marginBottom: '12px',
-                                width: '24.8px',
-                                border: theme => `1px solid ${theme.palette.primary.light}`, 
-                                color: theme => theme.palette.primary.light,
-                                '&:hover': {
-                                    border: theme => `1px solid ${theme.palette.primary.main}`, 
-                                    color: theme => theme.palette.primary.main,
-                                }
-                            }} 
-                            onClick={() => navigate(`/rezepte/formular/${id}`)}
-                            disableRipple
-                        >
-                            <Icon path={mdiPencil} size={0.8}/>
-                        </IconButton>
-                        <IconButton 
-                            sx={{
-                                padding: '2px',
-                                width: '24.8px',
-                                border: theme => `1px solid ${theme.palette.error.light}`, 
-                                color: theme => theme.palette.error.light,
-                                '&:hover': {
-                                    border: theme => `1px solid ${theme.palette.error.main}`, 
-                                    color: theme => theme.palette.error.main,
-                                }
-                            }} 
-                            onClick={deleteRecipe}
-                            disableRipple
-                        >
-                            <Icon path={mdiDelete} size={0.8}/>
-                        </IconButton>
+                {/* Manipulieren */}
+                {!formular && user ?
+                    <Box sx={{position: 'absolute', top: '18px', left: 0, width: '43px', height: 'calc(100% - 18px)'}}>
+                        <Box sx={{justifyContent: 'center', display: 'grid'}}>
+                            <Favorite check={recipe.favorite}/>
+                        </Box>
+                        {recipe.user && user.username === recipe.user ? 
+                            <Box sx={{width: 'inherit', justifyContent: 'center', display: 'grid', bottom: '22px', position: 'absolute'}}>
+                                <IconButton 
+                                    sx={{
+                                        padding: '2px', 
+                                        marginBottom: '12px',
+                                        width: '24.8px',
+                                        border: theme => `1px solid ${theme.palette.primary.light}`, 
+                                        color: theme => theme.palette.primary.light,
+                                        '&:hover': {
+                                            border: theme => `1px solid ${theme.palette.primary.main}`, 
+                                            color: theme => theme.palette.primary.main,
+                                        }
+                                    }} 
+                                    onClick={() => navigate(`/rezepte/formular/${id}`)}
+                                    disableRipple
+                                >
+                                    <Icon path={mdiPencil} size={0.8}/>
+                                </IconButton>
+                                <IconButton 
+                                    sx={{
+                                        padding: '2px',
+                                        width: '24.8px',
+                                        border: theme => `1px solid ${theme.palette.error.light}`, 
+                                        color: theme => theme.palette.error.light,
+                                        '&:hover': {
+                                            border: theme => `1px solid ${theme.palette.error.main}`, 
+                                            color: theme => theme.palette.error.main,
+                                        }
+                                    }} 
+                                    onClick={deleteRecipe}
+                                    disableRipple
+                                >
+                                    <Icon path={mdiDelete} size={0.8}/>
+                                </IconButton>
+                            </Box>
+                        : null}
                     </Box> 
                 :   null}
 

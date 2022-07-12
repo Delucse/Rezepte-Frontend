@@ -1,4 +1,4 @@
-import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID, ADD_RECIPE_PICTURE } from '../actions/types';
+import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID, SET_RECIPE_FAVORITE, ADD_RECIPE_PICTURE } from '../actions/types';
 
 import { setError, setLoading } from '../actions/settingsActions';
 import { setRecipeFormular } from './recipeFormularActions';
@@ -52,7 +52,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
     type: GET_RECIPE,
     payload: {
       id: recipe.id,
-      user: getState().auth.user,
+      user: getState().auth.user.username,
       title: recipeFormular.title,
       portion: recipeFormular.portion,
       source: recipeFormular.source,
@@ -103,6 +103,7 @@ export const getRecipe = (id, setFormular) => (dispatch) => {
           ingredients: res.data.ingredients,
           steps: res.data.steps,
           pictures: res.data.pictures,
+          favorite: res.data.favorite,
           settings: {
             count: res.data.portion.count,
             volume: res.data.portion.volume
@@ -134,6 +135,7 @@ export const resetRecipe = () => (dispatch) => {
       ingredients: null,
       steps: null,
       pictures: null,
+      favorite: null,
       settings: {
         count: 0,
         volume: 0
@@ -148,4 +150,50 @@ export const addPicture = (pic) => (dispatch) => {
     type: ADD_RECIPE_PICTURE,
     payload: pic
   });
+}
+
+export const setRecipeFavorite = () => (dispatch, getState) => {
+  const config = {
+    method: 'POST',
+    url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${getState().recipe.id}`,
+    success: (res) => {
+      dispatch({
+        type: SET_RECIPE_FAVORITE,
+        payload: true
+      });
+    },
+    error: err => {
+      console.error(err);
+    }
+  };
+  axios(config)
+    .then(res => {
+      res.config.success(res);
+    })
+    .catch(err => {
+      err.config.error(err);
+    });
+}
+
+export const deleteRecipeFavorite = () => (dispatch, getState) => {
+  const config = {
+    method: 'DELETE',
+    url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${getState().recipe.id}`,
+    success: res => {
+      dispatch({
+        type: SET_RECIPE_FAVORITE,
+        payload: false
+      });
+    },
+    error: err => {
+      console.error(err);
+    }
+  };
+  axios(config)
+    .then(res => {
+      res.config.success(res);
+    })
+    .catch(err => {
+      err.config.error(err);
+    });
 }

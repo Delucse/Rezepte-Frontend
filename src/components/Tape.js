@@ -10,11 +10,11 @@ import { mdiHeart } from "@mdi/js";
 function GridBox(props){
     return(
         <Box sx={{
-            height: 'calc(1em - 2px)', 
-            gridTemplateColumns: `${props.displace ? `${props.displace}px ` : ''}repeat(auto-fit, 16px)`,
-            gridGap: '4px',
-            display: 'grid',
-            overflow: 'hidden'
+                height: 'calc(1em - 2px)', 
+                gridTemplateColumns: `${props.displace ? `${props.displace}px ` : ''}repeat(auto-fit, 16px)`,
+                gridGap: '4px',
+                display: 'grid',
+                overflow: 'hidden'
             }}
         >
             {props.children}
@@ -24,9 +24,9 @@ function GridBox(props){
 
 function Hearts(){
     return(
-        Array(10).fill(0).map(() => {
+        Array(10).fill(0).map((item, index) => {
             return (
-                <Box sx={{color: theme => theme.palette.primary.light, justifySelf: 'end', marginTop: '-2px'}}>
+                <Box key={index} sx={{color: theme => theme.palette.primary.light, justifySelf: 'end', marginTop: '-2px'}}>
                     <Icon path={mdiHeart} size={0.6}/>
                 </Box>
             );
@@ -34,7 +34,7 @@ function Hearts(){
     );
 }
 
-function Tape({rotate, top, width, favourite}){
+function Tape({rotate, top, width, heart, check, onClick}){
     rotate = rotate ? rotate : 0;
 
     return(
@@ -46,7 +46,8 @@ function Tape({rotate, top, width, favourite}){
             }}
         >
             <Box
-                id='tape' 
+                id='tape'
+                onClick={onClick}
                 sx={{
                     backgroundColor: 'hsla(0,0%,100%,.2)',
                     boxShadow: 'inset 0 0 1em .5em hsla(0,0%,100%,.1)',
@@ -56,7 +57,7 @@ function Tape({rotate, top, width, favourite}){
                     width: width ? `${width}px` : '9em',
                     filter: 'drop-shadow(0 1px 1px hsla(0,0%,0%,.3))',
                     zIndex: 1,
-                    cursor: favourite ? 'pointer' : 'default',
+                    cursor: heart ? 'pointer' : 'default',
 
                     '&::after, &::before': {
                         backgroundSize: '.4em .4em',
@@ -80,10 +81,10 @@ function Tape({rotate, top, width, favourite}){
                     },
                 }}
             >
-                {favourite ?
+                {heart ?
                     <Box 
-                        id='tapeStyle'
-                        sx={{margin: '3px 0', visibility: 'hidden'}}
+                        id={`tapeStyle${check ? 'Check' : ''}`}
+                        sx={{margin: '3px 0', visibility: check ? 'visible' : 'hidden'}}
                     >
                         <GridBox>
                             <Hearts/>

@@ -21,6 +21,7 @@ export const GET_RECIPE = 'GET_RECIPE';
 export const SET_RECIPE_SETTINGS = 'SET_RECIPE_SETTINGS';
 export const SET_RECIPE_ID = 'SET_RECIPE_ID';
 export const ADD_RECIPE_PICTURE = 'ADD_RECIPE_PICTURE';
+export const SET_RECIPE_FAVORITE = 'SET_RECIPE_FAVORITE';
 
 // Recipe Filter
 export const GET_RECIPES = 'GET_RECIPES';

@@ -58,3 +58,15 @@ code {
 #tape:hover #tapeStyle {
   visibility: visible;
 }
+
+#tape:hover #tapeStyleCheck {
+  visibility: hidden;
+}
+
+#favorite:hover #heart {
+  display: none
+}
+
+#favorite:hover #heartHover {
+  display: flex
+}

@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 
+import { useDispatch, useSelector } from 'react-redux';
+
 import { useNavigate } from "react-router-dom";
 
 import moment from 'moment';
@@ -17,9 +19,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import Icon from '@mdi/react';
 import { mdiDotsHorizontal, mdiClockOutline, mdiCalendar, mdiEggOffOutline, mdiFoodSteakOff, mdiBarleyOff } from '@mdi/js';
+import { deleteRecipesFavorite, setRecipesFavorite } from '../../actions/recipeFilterActions';
 
 function Overview(props){
     
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.auth.user);
+
     const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = useState(null);
@@ -35,7 +41,13 @@ function Overview(props){
 
     return(
         <div>
-            <Tape rotate={props.rotate} top favourite/>
+            <Tape 
+                rotate={props.rotate} 
+                top 
+                heart={user} 
+                check={props.favorite} 
+                onClick={user ? props.favorite ? () => dispatch(deleteRecipesFavorite(props.id)) : () => dispatch(setRecipesFavorite(props.id)) : null}
+            />
             <Box sx={{
                     margin: '2px 0',
                     background: '#f6f6f6',

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
-import { getRecipes, setRoute } from '../actions/recipeFilterActions';
+import { getRecipes, getRecipesFavorite, setRoute } from '../actions/recipeFilterActions';
 
 import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
@@ -14,6 +14,7 @@ function Recipes(props){
     const dispatch = useDispatch();
     const loading = useSelector((state) => state.settings.loading);
     const error = useSelector((state) => state.settings.errror);
+    const user = useSelector((state) => state.auth.user);
     const word = useSelector((state) => state.recipeFilter.word);
     const sort = useSelector((state) => state.recipeFilter.sort);
     const type = useSelector((state) => state.recipeFilter.type);
@@ -22,6 +23,7 @@ function Recipes(props){
     const route = useSelector((state) => state.recipeFilter.route);
 
     const [oldType, setOldType] = useState(type);
+    const [oldUser, setUser] = useState(user);
 
     useEffect(() => {
         if(!(type !== oldType && word === '') && props.route === route){
@@ -37,6 +39,14 @@ function Recipes(props){
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.route, route])
+
+    useEffect(() => {
+        if(user && user !== oldUser && route === ''){
+            dispatch(getRecipesFavorite());
+        }
+        setUser(user);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
 
     return(
         <div style={{marginTop: '-90px'}}>
@@ -55,6 +65,7 @@ function Recipes(props){
                                         time={recipe.time}
                                         date={recipe.date}
                                         rotate={recipe.rotate}
+                                        favorite={recipe.favorite}
                                     />
                                 </Grid>
                             )}

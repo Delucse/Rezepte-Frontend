@@ -19,7 +19,7 @@ export const getRecipes = () => (dispatch, getState) => {
         });
         dispatch({
           type: GET_RECIPES,
-          payload: recipes
+          payload: [...recipes]
         });
         dispatch(setError(false));
         dispatch(setLoading(false));
@@ -29,13 +29,42 @@ export const getRecipes = () => (dispatch, getState) => {
         dispatch(setLoading(false));
       }
     };
-    axios.get(`${process.env.REACT_APP_API_URL}/recipe${route === 'nutzer' ? '/user' : ''}?search=${word}&type=${type}&keywords=${categories.join(',')}&sort=${sort.type}&ascending=${sort.ascending}`, config)
+    axios.get(`${process.env.REACT_APP_API_URL}/recipe${route === 'favoriten' ? '/favorite' : route === 'nutzer' ? '/user' : ''}?search=${word}&type=${type}&keywords=${categories.join(',')}&sort=${sort.type}&ascending=${sort.ascending}`, config)
       .then(res => {
         res.config.success(res);
       })
       .catch(err => {
         err.config.error(err);
       });
+};
+
+export const getRecipesFavorite = () => (dispatch, getState) => {
+  const {word, sort, type, categories, recipes} = getState().recipeFilter;
+  dispatch(setError(false));
+  const config = {
+    success: res => {
+      var updatedRecipes = recipes.map(recipe => {
+        var index = res.data.findIndex(data => data._id === recipe._id);
+        recipe.favorite = res.data[index].favorite;
+        return recipe;
+      });
+      dispatch({
+        type: GET_RECIPES,
+        payload: [...updatedRecipes]
+      });
+      dispatch(setError(false));
+    },
+    error: err => {
+      dispatch(setError(true));
+    }
+  };
+  axios.get(`${process.env.REACT_APP_API_URL}/recipe?search=${word}&type=${type}&keywords=${categories.join(',')}&sort=${sort.type}&ascending=${sort.ascending}`, config)
+    .then(res => {
+      res.config.success(res);
+    })
+    .catch(err => {
+      err.config.error(err);
+    });
 };
 
 export const setOpen = (bool) => (dispatch) => {
@@ -117,4 +146,60 @@ export const setRoute = (route) => (dispatch) => {
     type: SET_ROUTE,
     payload: route
   })
+}
+
+export const setRecipesFavorite = (id) => (dispatch, getState) => {
+  const config = {
+    method: 'POST',
+    url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${id}`,
+    success: (res) => {
+      const recipes = getState().recipeFilter.recipes;
+      const index = recipes.findIndex(recipe => recipe._id === id);
+      recipes[index].favorite = true;
+      dispatch({
+        type: GET_RECIPES,
+        payload: [...recipes]
+      });
+    },
+    error: err => {
+      console.error(err);
+    }
+  };
+  axios(config)
+    .then(res => {
+      res.config.success(res);
+    })
+    .catch(err => {
+      err.config.error(err);
+    });
+}
+
+export const deleteRecipesFavorite = (id) => (dispatch, getState) => {
+  const config = {
+    method: 'DELETE',
+    url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${id}`,
+    success: res => {
+      var recipes = getState().recipeFilter.recipes;
+      if(getState().recipeFilter.route === 'favoriten'){
+        recipes = recipes.filter(recipe => recipe._id !== id);
+      } else {
+        const index = recipes.findIndex(recipe => recipe._id === id);
+        recipes[index].favorite = false;
+      }
+      dispatch({
+        type: GET_RECIPES,
+        payload: [...recipes]
+      });
+    },
+    error: err => {
+      console.error(err);
+    }
+  };
+  axios(config)
+    .then(res => {
+      res.config.success(res);
+    })
+    .catch(err => {
+      err.config.error(err);
+    });
 }

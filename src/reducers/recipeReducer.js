@@ -1,4 +1,4 @@
-import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID, ADD_RECIPE_PICTURE } from '../actions/types';
+import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID, SET_RECIPE_FAVORITE, ADD_RECIPE_PICTURE } from '../actions/types';
 
 
 const initialState = {
@@ -12,6 +12,7 @@ const initialState = {
     ingredients: null,
     steps: null,
     pictures: null,
+    favorite: null,
     settings: {
       count: 0,
       volume: 0
@@ -34,6 +35,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         id: action.payload
+      }
+    case SET_RECIPE_FAVORITE:
+      return {
+        ...state,
+        favorite: action.payload
       }
     case ADD_RECIPE_PICTURE:
       return {
