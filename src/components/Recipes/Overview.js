@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
+import { deleteRecipesFavorite, setRecipesFavorite } from '../../actions/recipeFilterActions';
 
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +20,6 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 
 import Icon from '@mdi/react';
 import { mdiDotsHorizontal, mdiClockOutline, mdiCalendar, mdiEggOffOutline, mdiFoodSteakOff, mdiBarleyOff } from '@mdi/js';
-import { deleteRecipesFavorite, setRecipesFavorite } from '../../actions/recipeFilterActions';
 
 function Overview(props){
     

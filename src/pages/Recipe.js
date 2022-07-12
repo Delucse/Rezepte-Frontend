@@ -199,7 +199,7 @@ function Recipe(){
                         <Box sx={{justifyContent: 'center', display: 'grid'}}>
                             <Favorite check={recipe.favorite}/>
                         </Box>
-                        {recipe.user && user.username === recipe.user ? 
+                        {recipe.user && user === recipe.user ? 
                             <Box sx={{width: 'inherit', justifyContent: 'center', display: 'grid', bottom: '22px', position: 'absolute'}}>
                                 <IconButton 
                                     sx={{

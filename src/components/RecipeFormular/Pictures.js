@@ -148,6 +148,7 @@ function Pictures() {
     const pictures = useSelector((state) => state.recipeFormular.pictures.order);
     const picturesUrl = pictures.map(picture => !picture.id ? picture.url : `${process.env.REACT_APP_API_URL}/media/${picture.url}`);
     const title = useSelector((state) => state.recipeFormular.title);
+    const user = useSelector((state) => state.auth.user);
     const errorPictures = useSelector((state) => state.recipeFormular.error.pictures);
 
     const [open, setOpen] = useState(false);
@@ -185,7 +186,17 @@ function Pictures() {
                     {pictures.map((picture, idx) => {
                         return(
                             <ImageListItem key={idx} sx={idx===0 ? {border: theme => `4px solid ${theme.palette.primary.main}`, padding: '0px', height: '172px'} : {height: '180px'}}>
-                                <img src={picturesUrl[idx]} alt='' style={{cursor: 'pointer', height: idx === 0 ? "172px" : '180px', objectFit: 'cover'}} onClick={() => handleOpen(idx)}/>
+                                <img 
+                                    src={picturesUrl[idx]} 
+                                    alt='' 
+                                    style={{cursor: 'pointer', height: idx === 0 ? "172px" : '180px', objectFit: 'cover'}} 
+                                    onClick={() => handleOpen(idx)}
+                                    onError={({ currentTarget }) => {
+                                        currentTarget.onerror = null; // prevents looping
+                                        currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
+                                        currentTarget.style = `height: ${idx === 0 ? "172px" : '180px'}; object-fit: cover; cursor: pointer; filter: grayscale(1);`;
+                                    }}
+                                />
                                 <ImageListItemBar
                                     actionPosition={'left'}
                                     actionIcon={
@@ -219,6 +230,7 @@ function Pictures() {
                                                 sx={{color: "white", '&:hover': {color: theme => theme.palette.primary.main}}} 
                                                 onClick={() => {dispatch(removePicture(picture.url))}}
                                                 disableRipple
+                                                disabled={picture.user !== user}
                                             >
                                                 <Icon path={mdiDelete} size={1} />
                                             </IconButton>

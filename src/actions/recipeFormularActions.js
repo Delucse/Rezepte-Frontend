@@ -366,7 +366,8 @@ export const changePictures = (files) => (dispatch, getState) => {
     var url = URL.createObjectURL(files[key])
     pictures.new.push({file: files[key], url});
     pictures.order.push({
-      url
+      url,
+      user: getState().auth.user
     });
   }
   dispatch({
@@ -587,7 +588,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
     }
   });
   const orderPicture = [];
-  pictures.forEach(pic => orderPicture.push({id: pic._id, url: pic.file}));
+  pictures.forEach(pic => orderPicture.push({id: pic._id, url: pic.file, user: pic.user}));
   dispatch({
     type: SET_RECIPE_FORMULAR,
     payload: {

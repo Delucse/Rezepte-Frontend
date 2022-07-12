@@ -28,7 +28,7 @@ export const loadUser = () => (dispatch) => {
       });
       dispatch({
         type: USER_LOADED,
-        payload: res.data
+        payload: res.data.username
       });
     },
     error: err => {

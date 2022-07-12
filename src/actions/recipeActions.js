@@ -52,7 +52,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
     type: GET_RECIPE,
     payload: {
       id: recipe.id,
-      user: getState().auth.user.username,
+      user: getState().auth.user,
       title: recipeFormular.title,
       portion: recipeFormular.portion,
       source: recipeFormular.source,
