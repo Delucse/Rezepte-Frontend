@@ -37,7 +37,7 @@ function Search(){
                             onChange={(e) => dispatch(setRoute(e.target.value))}
                             sx={{width: '100%', justifyContent: 'space-between'}}
                         >
-                            <FormControlLabel value={''} control={<Radio disableRipple/>} label="Rezepte" sx={{m: 0}}/>
+                            <FormControlLabel value={''} control={<Radio disableRipple sx={{marginLeft: '-9px'}}/>} label="Rezepte" sx={{m: 0}}/>
                             <FormControlLabel value={'favoriten'} control={<Radio disableRipple/>} label="Favoriten" sx={{m: 0}}/>
                             <FormControlLabel value={'nutzer'} control={<Radio disableRipple/>} label="Eigene" sx={{m: 0}}/>
                         </RadioGroup>

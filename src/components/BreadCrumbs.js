@@ -92,7 +92,7 @@ const routes = [
         params: ['id'],
         breadcrumbs: [
             {title: 'Rezepte', pathname: '/rezepte'},
-            {title: <GetRecipeTitle/>, pathname: '/rezepte/:id', params: 'id'},
+            {title: <GetRecipeTitle/>, pathname: '/rezepte/:id', params: 'id', replace: '/rezepte/'},
             {title: 'Formular'},
         ]
     },
@@ -135,15 +135,15 @@ const routes = [
 
 function BreadCrumbs(){
 
-    const { route } = useSelector(state => state.recipeFilter);
-    
+    const route = useSelector(state => state.recipeFilter.route);
+
     const location = useLocation();
     const pathname = location.state && location.state.background ? location.state.background.state && location.state.background.state.background ? location.state.background.state.background.pathname : location.state.background.pathname : location.pathname;
 
     var params = useParams();
     var keyParams = Object.keys(params);
     if(/\/(anmeldung|registrierung)/.test(location.pathname)){
-        if(/^\/rezepte\/.{24}$/i.test(pathname)){
+        if(/^\/rezepte(\/formular\/|\/).{24}$/i.test(pathname)){
             keyParams = ['id'];
         } else {
             keyParams = [];
@@ -159,7 +159,11 @@ function BreadCrumbs(){
 
     var breadcrumbs = currentRoute.breadcrumbs.map(bc => {
         if(bc.params){
-            bc.pathname = bc.pathname.replace(`:${bc.params}`, params[bc.params]);
+            if(bc.pathname.includes(`:${bc.params}`)){
+                bc.pathname = bc.pathname.replace(`:${bc.params}`, params[bc.params]);
+            } else {
+                bc.pathname = `${bc.replace}${params[bc.params]}`;
+            }   
         }
         return bc;
     });

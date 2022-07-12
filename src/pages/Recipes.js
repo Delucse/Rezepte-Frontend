@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { getRecipes, getRecipesFavorite, setRoute } from '../actions/recipeFilterActions';
+import { resetRecipe } from '../actions/recipeActions';
 
 import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
@@ -47,6 +48,11 @@ function Recipes(props){
         setUser(user);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user])
+
+    useEffect(() => {
+        dispatch(resetRecipe());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return(
         <div style={{marginTop: '-90px'}}>
