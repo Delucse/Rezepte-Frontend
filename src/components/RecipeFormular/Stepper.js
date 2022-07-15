@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { checkRecipeError } from "../../actions/recipeFormularActions";
+import { resetMessage } from '../../actions/messageActions';
 
 import SwipeableViews from 'react-swipeable-views';
 
@@ -63,6 +64,8 @@ function Stepper(props) {
     const errorSteps = useSelector((state) => state.recipeFormular.error.steps);
     const errorPictures = useSelector((state) => state.recipeFormular.error.pictures);
     const recipe = useSelector((state) => state.recipe);
+    const error = useSelector((state) => state.message.error);
+    const art = useSelector((state) => state.message.art);
 
     const [actions, setActions] = useState();
     
@@ -70,6 +73,15 @@ function Stepper(props) {
         if(actions){   
             actions.updateHeight();
         }
+        if(error){
+            dispatch(resetMessage());
+        }
+        return () => {
+            if(art === 'alert'){
+                dispatch(resetMessage());
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [portion, keywordsLength, ingredientsLength, stepsLength, picturesLength, errorTitle, errorSource, errorPortion, errorTime, errorCategories, errorIngredients, errorSteps, errorPictures, recipe, actions]);
 
     const [activeStep, setActiveStep] = useState(0);

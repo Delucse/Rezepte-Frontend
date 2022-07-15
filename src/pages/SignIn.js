@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../actions/authActions'
+import { resetMessage } from '../actions/messageActions';
 
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 
 import Dialog from '../components/Dialog';
 import DelucseLogo from '../components/DelucseLogo';
+import Alert from '../components/Alert';
 import Textfield from '../components/Textfield';
 
 import { styled } from '@mui/material/styles';
@@ -28,7 +31,10 @@ function SignIn() {
   const navigate = useNavigate();
   
   const dispatch = useDispatch();
-  const { user, last } = useSelector(state => state.auth);
+  const user = useSelector(state => state.auth.user);
+  const last = useSelector(state => state.auth.last);
+  const error = useSelector(state => state.message.error);
+  const art = useSelector(state => state.message.art);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -41,6 +47,18 @@ function SignIn() {
       navigate(pathname, {replace: true});
     }
   }, [user, navigate, pathname]);
+
+  useEffect(() => {
+    if(error){
+      dispatch(resetMessage());
+    }
+    return () => {
+      if(art === 'alert'){
+        dispatch(resetMessage());
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username, password]);
   
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -73,6 +91,7 @@ function SignIn() {
             </div> 
           : null}
           <div style={{paddingRight: "34px", paddingLeft: "34px", marginTop: '20px'}}>
+            <Alert type={'user'} style={{marginBottom: '20px'}}/>
             <Textfield
               label='Nutzername'
               value={username}

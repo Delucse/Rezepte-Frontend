@@ -2,6 +2,7 @@ import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID, SET_RECIPE_FAVORITE, AD
 
 import { setError, setLoading } from '../actions/settingsActions';
 import { setRecipeFormular } from './recipeFormularActions';
+import { snackbarMessage } from './messageActions';
 
 import axios from 'axios';
 
@@ -161,6 +162,7 @@ export const setRecipeFavorite = () => (dispatch, getState) => {
         type: SET_RECIPE_FAVORITE,
         payload: true
       });
+      dispatch(snackbarMessage(`"${getState().recipe.title}" wurde erfolgreich in dein Kochbuch aufgenommen.`, 'recipe'));
     },
     error: err => {
       console.error(err);
@@ -184,6 +186,7 @@ export const deleteRecipeFavorite = () => (dispatch, getState) => {
         type: SET_RECIPE_FAVORITE,
         payload: false
       });
+      dispatch(snackbarMessage(`"${getState().recipe.title}" wurde erfolgreich aus deinem Kochbuch entfernt.`, 'recipe'));
     },
     error: err => {
       console.error(err);

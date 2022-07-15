@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { setRecipeId } from './recipeActions';
 import { setRoute } from './recipeFilterActions';
+import { alertErrorMessage, snackbarMessage } from './messageActions';
 
 export const isFoodAmountError = (amount) => {
   var amountDecimal = amount;
@@ -489,9 +490,13 @@ export const submitRecipe = (id) => (dispatch, getState) => {
       dispatch(setBlocked(false));
       dispatch(setUploaded(true));
       dispatch(resetRecipeFormular());
+      dispatch(snackbarMessage(`Das Rezept "${title}" wurde erfolgreich ${id ? 'aktualisiert' : 'erstellt'}.`, 'recipeFormular'));
     },
     error: err => {
       console.error(err.message);
+      if(err.response.status !== 401){
+          dispatch(alertErrorMessage(`Fehler: ${err.response.data.message}`,'recipeFormular'));
+      }
     }
   };
 

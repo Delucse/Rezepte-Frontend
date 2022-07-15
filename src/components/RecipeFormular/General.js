@@ -6,11 +6,12 @@ import { setRecipeTitle, setRecipeSource } from "../../actions/recipeFormularAct
 import Textfield from "../Textfield";
 import Portion from "./Portion";
 import Time from "./Time";
+import Alert from "../Alert";
 
 import Icon from '@mdi/react';
 import { mdiCopyright, mdiTextShadow   } from '@mdi/js'; 
 
-import { Alert, Box } from "@mui/material";
+import { Box } from "@mui/material";
 
 function General() {
 
@@ -35,16 +36,16 @@ function General() {
             {errorTitle || errorSource || errorPortion || errorTime ? 
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     {errorTitle ?
-                        <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss ein Titel gewählt werden.</Alert>
+                        <Alert error message={'Es muss ein Titel gewählt werden.'}/>
                     : null}
                     {errorSource ?
-                        <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens eine Quelle genant werden.</Alert>
+                        <Alert error message={'Es muss mindestens eine Quelle genant werden.'}/>
                     : null}
                     {errorPortion ?
-                        <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss eine Portionsangabe gemacht werden.</Alert>
+                        <Alert error message={'Es muss eine Portionsangabe gemacht werden.'}/>
                     : null}
                     {errorTime ?
-                        <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens eine Zeitangabe gemacht werden.</Alert>
+                        <Alert error message={'Es muss mindestens eine Zeitangabe gemacht werden.'} />
                     : null}
                 </Box>
             : null}

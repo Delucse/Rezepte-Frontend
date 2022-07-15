@@ -70,3 +70,19 @@ code {
 #favorite:hover #heartHover {
   display: flex
 }
+
+.Toastify__toast-container {
+  padding: 0 !important;
+  max-width: calc(100% - 2 * 24px);
+}
+
+.Toastify__toast-container--bottom-left {
+  left: 24px !important;
+  bottom: calc(24px - 6px) !important;
+}
+
+.Toastify__toast {
+  border-radius: 0 !important;
+  margin-bottom: 6px !important;
+  min-height: 50px !important;
+}

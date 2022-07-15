@@ -12,6 +12,11 @@ export const REFRESH_TOKEN_FAIL = 'REFRESH_TOKEN_FAIL';
 export const REFRESH_TOKEN_SUCCESS = 'REFRESH_TOKEN_SUCCESS';
 export const LAST_SIGNIN = 'LAST_SIGNIN';
 
+// messages
+export const SUCCESS_MESSAGE = 'SUCCESS_MESSAGE';
+export const ERROR_MESSAGE = 'ERROR_MESSAGE';
+export const RESET_MESSAGE = 'RESET_MESSAGE';
+
 // Settings
 export const ERROR = 'ERROR';
 export const LOADING = 'LOADING';

@@ -5,11 +5,12 @@ import { isFoodAmountError, changeIngredientsTitle, changeIngredientsPosition, a
 
 import Textfield from "../Textfield";
 import Autocomplete from "../Autocomplete";
+import Alert from "../Alert";
 
 import Icon from '@mdi/react';
 import { mdiFoodVariant, mdiDelete, mdiChevronUp, mdiChevronDown, mdiPlus, mdiTextShadow} from '@mdi/js'; 
 
-import { Button, Alert, Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 
 import units from '../../data/units.json';
 import aliments from '../../data/aliments.json';
@@ -155,7 +156,7 @@ function Ingredients() {
         <div style={{marginBottom: '28px'}}>
             {errorIngredients.includes(true) ?
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
-                    <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0,}}>Es muss mindestens eine ausgefüllte Zutatenliste geben. Überflüssige Listen und Zutaten bitte löschen.</Alert>
+                    <Alert error message={'Es muss mindestens eine ausgefüllte Zutatenliste geben. Überflüssige Listen und Zutaten bitte löschen.'} />
                 </Box>
             : null}
             <div style={{marginTop: '10px'}}/>

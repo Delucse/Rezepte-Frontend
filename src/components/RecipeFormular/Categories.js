@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { setRecipeCategories } from "../../actions/recipeFormularActions";
 
 import Keywords from "./Keywords";
+import Alert from "../Alert";
 
-import { Alert, Box, Checkbox, FormControlLabel, Grid, Divider } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Grid, Divider } from "@mui/material";
 
 function IndeterminateCheckbox(props) {
 
@@ -97,10 +98,10 @@ function Categories() {
             {errorKeywords || errorCategories ? 
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
                     {errorCategories ?
-                        <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss jeweils mindestens eine Auswahlmöglichkeit ausgewählt werden. Es fehlen</Alert>
+                        <Alert error message={'Es muss jeweils mindestens eine Auswahlmöglichkeit ausgewählt werden.'} />
                     : null}
                     {errorKeywords ?
-                        <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Schlüsselwort hinzugefügt werden.</Alert>
+                        <Alert error message={'Es muss mindestens ein Schlüsselwort hinzugefügt werden.'}/>
                     : null}
                 </Box>
             : null}

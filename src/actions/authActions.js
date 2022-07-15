@@ -13,6 +13,7 @@ import {
 } from '../actions/types';
 
 import axios from 'axios';
+import { alertErrorMessage, alertMessage, snackbarMessage } from './messageActions';
 
 // check token & load user
 export const loadUser = () => (dispatch) => {
@@ -30,6 +31,7 @@ export const loadUser = () => (dispatch) => {
         type: USER_LOADED,
         payload: res.data.username
       });
+      dispatch(snackbarMessage(`Herzlich Willkommen, ${res.data.username}!`, 'user'));
     },
     error: err => {
       dispatch({
@@ -47,7 +49,7 @@ export const loadUser = () => (dispatch) => {
 };
 
 // register User
-export const register = (username, password) => (dispatch) => {
+export const register = (username, password, email) => (dispatch) => {
   // Headers
   const config = {
     headers: {
@@ -55,14 +57,27 @@ export const register = (username, password) => (dispatch) => {
     }
   };
   // Request Body
-  const body = {"username": username, "password": password};
+  const body = {"username": username, "password": password, "email": email};
   axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, body, config)
     .then(res => {
+      dispatch(alertMessage('Erfolgreiche Registrierung.','user'));
       dispatch({
         type: REGISTER_SUCCESS
-      })
+      });
     })
     .catch(err => {
+      if(err.response.status !== 401){
+        if(err.response.status === 500){
+          dispatch(alertErrorMessage('Interner Server-Fehler.','user'));
+        } else {
+          if(err.response.data.message === 'Email already exists'){
+
+            dispatch(alertErrorMessage('E-Mail bereits vorhanden.','user'));
+          } else if(err.response.data.message === 'Username already exists'){
+            dispatch(alertErrorMessage('Nutzername bereits vorhanden.','user'));
+          }
+        }
+      }
       dispatch({
         type: REGISTER_FAIL
       });
@@ -99,11 +114,13 @@ export const login = (username, password) => (dispatch) => {
       type: LOGIN_SUCCESS,
       payload: res.data
     });
+    dispatch(snackbarMessage(`Herzlich Willkommen, ${res.data.user}!`, 'user'));
   })
   .catch(err => {
     dispatch({
       type: LOGIN_FAIL
     });
+    dispatch(alertErrorMessage(`Benutzername oder Passwort ist nicht korrekt.`, 'user'));
   });
 };
 
@@ -123,6 +140,7 @@ export const signout = () => (dispatch, getState) => {
                 type: LOGOUT_SUCCESS
             });
             clearTimeout(logoutTimerId);
+            dispatch(snackbarMessage(`Auf Wiedersehen!`, 'user'));
             dispatch(resetSignout());
         },
         error: err => {

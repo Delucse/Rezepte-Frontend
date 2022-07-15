@@ -1,6 +1,7 @@
 import { GET_RECIPES, FILTER_OPEN, SET_WORD, SET_SORT, SET_TYPE, SET_CATEGORIES, RESET_RECIPES_FILTER, SET_ROUTE } from '../actions/types';
 
 import { setLoading, setError } from './settingsActions';
+import { snackbarMessage } from './messageActions';
 
 import axios from 'axios';
 
@@ -160,6 +161,7 @@ export const setRecipesFavorite = (id) => (dispatch, getState) => {
         type: GET_RECIPES,
         payload: [...recipes]
       });
+      dispatch(snackbarMessage(`"${recipes[index].title}" wurde erfolgreich in dein Kochbuch aufgenommen.`, 'recipe'));
     },
     error: err => {
       console.error(err);
@@ -180,16 +182,18 @@ export const deleteRecipesFavorite = (id) => (dispatch, getState) => {
     url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${id}`,
     success: res => {
       var recipes = getState().recipeFilter.recipes;
+      const index = recipes.findIndex(recipe => recipe._id === id);
+      const title = recipes[index].title;
       if(getState().recipeFilter.route === 'favoriten'){
         recipes = recipes.filter(recipe => recipe._id !== id);
       } else {
-        const index = recipes.findIndex(recipe => recipe._id === id);
         recipes[index].favorite = false;
       }
       dispatch({
         type: GET_RECIPES,
         payload: [...recipes]
       });
+      dispatch(snackbarMessage(`"${title}" wurde erfolgreich aus deinem Kochbuch entfernt.`, 'recipe'));
     },
     error: err => {
       console.error(err);

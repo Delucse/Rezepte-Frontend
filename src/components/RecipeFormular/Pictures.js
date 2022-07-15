@@ -6,10 +6,11 @@ import { changePicturePosition, changePictures, removePicture } from "../../acti
 import imageCompression from 'browser-image-compression';
 
 import ImageCarousel from "../ImageCarousel";
+import Alert from "../Alert";
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Alert, Box, InputLabel,IconButton, Grid, ImageListItem , ImageListItemBar } from "@mui/material";
+import { Box, InputLabel,IconButton, Grid, ImageListItem , ImageListItemBar } from "@mui/material";
 
 import Icon from '@mdi/react';
 import { mdiDelete, mdiFullscreen, mdiCamera, mdiMenuLeft, mdiMenuRight } from '@mdi/js'; 
@@ -176,7 +177,7 @@ function Pictures() {
         <div>
             {errorPictures ?
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
-                    <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Bild ausgewählt werden.</Alert>
+                    <Alert error message={'Es muss mindestens ein Bild ausgewählt werden.'}/>
                 </Box>
             : null}
             <div style={{marginTop: '10px'}}/>

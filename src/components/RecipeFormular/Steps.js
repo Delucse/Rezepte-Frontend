@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import {  changeStep, addStep, removeStep, changeStepPosition } from "../../actions/recipeFormularActions";
 
 import Textfield from "../Textfield";
+import Alert from "../Alert";
 
 import Icon from '@mdi/react';
 import { mdiDelete, mdiChevronUp, mdiChevronDown, mdiPlus } from '@mdi/js'; 
 
-import { Button, Alert, Box } from "@mui/material";
+import { Button, Box } from "@mui/material";
 
 
 
@@ -54,7 +55,7 @@ function Steps() {
         <div>
             {errorSteps ?
                 <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
-                    <Alert severity="error" sx={{marginBottom: '10px', borderRadius: 0}}>Es muss mindestens ein Arbeitsschritt geben. Überflüssige Schritte bitte löschen.</Alert>
+                    <Alert error message={'Es muss mindestens ein Arbeitsschritt geben. Überflüssige Schritte bitte löschen.'}/>
                 </Box>
             : null}
             <div style={{marginTop: '10px'}}/>
