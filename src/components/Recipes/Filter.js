@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { removeCategory, setOpen } from '../../actions/recipeFilterActions';
 
 import Categories from './Categories';
@@ -29,11 +29,11 @@ const Puller = styled(Box)(({ theme }) => ({
     left: 'calc(50% - 15px)',
 }));
 
-
 function Filter() {
-
     const dispatch = useDispatch();
-    const { open, recipes, categories } = useSelector(state => state.recipeFilter);
+    const { open, recipes, categories } = useSelector(
+        (state) => state.recipeFilter
+    );
 
     const toggle = () => {
         dispatch(setOpen(!open));
@@ -42,13 +42,19 @@ function Filter() {
     return (
         <div>
             <Button
-                sx={{margin: '0 5px', height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', padding: 0}} 
+                sx={{
+                    margin: '0 5px',
+                    height: '56px',
+                    borderRadius: 0,
+                    boxShadow: 'none',
+                    minWidth: '56px',
+                    padding: 0,
+                }}
                 variant="contained"
                 disableRipple
-                onClick={toggle} 
+                onClick={toggle}
             >
-                
-                <Badge 
+                <Badge
                     anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'right',
@@ -57,22 +63,21 @@ function Filter() {
                     componentsProps={{
                         badge: {
                             sx: {
-                                    backgroundColor: 'white', 
-                                    color: theme => theme.palette.primary.main,
-                                    minWidth: '15px',
-                                    height: '15px',
-                                    padding: '0 3px',
-                                    fontSize: '10px'
-                                }
-                        }
+                                backgroundColor: 'white',
+                                color: (theme) => theme.palette.primary.main,
+                                minWidth: '15px',
+                                height: '15px',
+                                padding: '0 3px',
+                                fontSize: '10px',
+                            },
+                        },
                     }}
                     max={9}
                 >
-                    <Icon path={mdiFilter} size={1.1}/>
+                    <Icon path={mdiFilter} size={1.1} />
                 </Badge>
             </Button>
-                            
-            
+
             <Global
                 styles={{
                     '.MuiDrawer-root > .MuiPaper-root': {
@@ -91,7 +96,7 @@ function Filter() {
                 ModalProps={{
                     keepMounted: true,
                 }}
-                sx={{zIndex: 1}}
+                sx={{ zIndex: 1 }}
             >
                 <Box
                     sx={{
@@ -102,36 +107,65 @@ function Filter() {
                         visibility: 'visible',
                         right: 0,
                         left: 0,
-                        borderTop: theme => `1px solid ${theme.palette.primary.light}`,
+                        borderTop: (theme) =>
+                            `1px solid ${theme.palette.primary.light}`,
                         height: `${drawerBleeding}px`,
-                        background: 'white'
+                        background: 'white',
                     }}
                 >
                     <Puller />
-                    <Box sx={{display: 'flex', paddingTop: '20px'}}>
-                        <Typography variant="body2" sx={{ padding: theme => `0 ${theme.spacing(3)}`, color: 'text.secondary' }}>
-                            {recipes.length} Rezept{recipes.length !== 1 ? 'e': ''}
+                    <Box sx={{ display: 'flex', paddingTop: '20px' }}>
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                padding: (theme) => `0 ${theme.spacing(3)}`,
+                                color: 'text.secondary',
+                            }}
+                        >
+                            {recipes.length} Rezept
+                            {recipes.length !== 1 ? 'e' : ''}
                         </Typography>
-                        <Box sx={{pointerEvents: 'auto', width: 'calc(100% - 130px)', overflowY: 'hidden'}}>
-                            <Box sx={{overflowX: 'auto', overflowY: 'hidden', display: 'flex'}}>
-                                {!open ? categories.map((category, index) => 
-                                    <Chip 
-                                        key={index} 
-                                        label={category} 
-                                        onDelete={() => dispatch(removeCategory(category))}
-                                        color='primary'
-                                        size='small'
-                                        sx={{marginRight: '5px', marginBottom: '10px'}}
-                                    />
-                                ) : null}
+                        <Box
+                            sx={{
+                                pointerEvents: 'auto',
+                                width: 'calc(100% - 130px)',
+                                overflowY: 'hidden',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    overflowX: 'auto',
+                                    overflowY: 'hidden',
+                                    display: 'flex',
+                                }}
+                            >
+                                {!open
+                                    ? categories.map((category, index) => (
+                                          <Chip
+                                              key={index}
+                                              label={category}
+                                              onDelete={() =>
+                                                  dispatch(
+                                                      removeCategory(category)
+                                                  )
+                                              }
+                                              color="primary"
+                                              size="small"
+                                              sx={{
+                                                  marginRight: '5px',
+                                                  marginBottom: '10px',
+                                              }}
+                                          />
+                                      ))
+                                    : null}
                             </Box>
                         </Box>
                     </Box>
                 </Box>
                 <Box
                     sx={{
-                        padding: theme => `0 ${theme.spacing(3)}`,
-                        overflow: 'auto'
+                        padding: (theme) => `0 ${theme.spacing(3)}`,
+                        overflow: 'auto',
                     }}
                 >
                     <Categories />
@@ -142,4 +176,3 @@ function Filter() {
 }
 
 export default Filter;
-

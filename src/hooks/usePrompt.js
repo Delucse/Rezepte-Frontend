@@ -2,12 +2,11 @@
 
 // https://codesandbox.io/s/navigating-prompt-forked-eqi9ff?file=/src/Components/DialogLeavingPage.js
 
-import { useCallback, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
-import { useBlocker } from "./useBlocker";
+import { useCallback, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router';
+import { useBlocker } from './useBlocker';
 
 export function usePrompt(canShowDialogPrompt) {
-
     const navigate = useNavigate();
 
     const currentLocation = useLocation();
@@ -18,7 +17,11 @@ export function usePrompt(canShowDialogPrompt) {
 
     const handleNavigationBlocking = useCallback(
         (locationToNavigateTo) => {
-            if (!isNavigationConfirmed && locationToNavigateTo.location.pathname !== currentLocation.pathname) {
+            if (
+                !isNavigationConfirmed &&
+                locationToNavigateTo.location.pathname !==
+                    currentLocation.pathname
+            ) {
                 setShowDialogPrompt(true);
                 setWantToNavigateTo(locationToNavigateTo);
                 return false;

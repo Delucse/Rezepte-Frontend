@@ -1,7 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useDispatch, useSelector } from "react-redux";
-import { getRecipes, getRecipesFavorite, setRoute } from '../actions/recipeFilterActions';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    getRecipes,
+    getRecipesFavorite,
+    setRoute,
+} from '../actions/recipeFilterActions';
 import { resetRecipe } from '../actions/recipeActions';
 
 import Loader from '../components/Loader';
@@ -10,8 +14,7 @@ import Overview from '../components/Recipes/Overview';
 
 import Grid from '@mui/material/Grid';
 
-function Recipes(props){
-
+function Recipes(props) {
     const dispatch = useDispatch();
     const loading = useSelector((state) => state.settings.loading);
     const error = useSelector((state) => state.settings.errror);
@@ -27,7 +30,7 @@ function Recipes(props){
     const [oldUser, setUser] = useState(user);
 
     useEffect(() => {
-        if(!(type !== oldType && word === '') && props.route === route){
+        if (!(type !== oldType && word === '') && props.route === route) {
             dispatch(getRecipes());
         }
         setOldType(type);
@@ -35,35 +38,48 @@ function Recipes(props){
     }, [word, sort, type, categories, route]);
 
     useEffect(() => {
-        if(props.route !== route){
+        if (props.route !== route) {
             dispatch(setRoute(props.route));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.route, route])
+    }, [props.route, route]);
 
     useEffect(() => {
-        if(user && user !== oldUser && route === ''){
+        if (user && user !== oldUser && route === '') {
             dispatch(getRecipesFavorite());
         }
         setUser(user);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user])
+    }, [user]);
 
     useEffect(() => {
         dispatch(resetRecipe());
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, []);
 
-    return(
-        <div style={{marginTop: '-90px'}}>
-            <div style={{paddingTop: '80px', marginBottom: 'calc(-24px + 50px + 20px)'}}>
+    return (
+        <div style={{ marginTop: '-90px' }}>
+            <div
+                style={{
+                    paddingTop: '80px',
+                    marginBottom: 'calc(-24px + 50px + 20px)',
+                }}
+            >
                 <SearchBar />
-                {!loading && !error && recipes ?
-                    recipes.length > 0 ?
+                {!loading && !error && recipes ? (
+                    recipes.length > 0 ? (
                         <Grid container spacing={3}>
-                            {recipes.map((recipe, index) => 
-                                <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={index}>
-                                    <Overview 
+                            {recipes.map((recipe, index) => (
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={6}
+                                    md={4}
+                                    lg={3}
+                                    xl={2}
+                                    key={index}
+                                >
+                                    <Overview
                                         id={recipe._id}
                                         title={recipe.title}
                                         picture={`${process.env.REACT_APP_API_URL}/media/${recipe.picture}`}
@@ -74,16 +90,31 @@ function Recipes(props){
                                         favorite={recipe.favorite}
                                     />
                                 </Grid>
-                            )}
+                            ))}
                         </Grid>
-                    : `Es konnten keine Rezepte mit ${word !== '' ? `dem angegebenen Suchwort "${word}"` : ''} ${word !== '' && categories.length > 0 ? 'und' : ''} ${categories.length > 0 ? `den angegebenen Filtern "${categories.join('", "')}"` : ''} gefunden werden.`
-                : 
-                error ? 
+                    ) : (
+                        `Es konnten keine Rezepte mit ${
+                            word !== ''
+                                ? `dem angegebenen Suchwort "${word}"`
+                                : ''
+                        } ${
+                            word !== '' && categories.length > 0 ? 'und' : ''
+                        } ${
+                            categories.length > 0
+                                ? `den angegebenen Filtern "${categories.join(
+                                      '", "'
+                                  )}"`
+                                : ''
+                        } gefunden werden.`
+                    )
+                ) : error ? (
                     <div>Error</div>
-                :   <Loader top={189}/>}
+                ) : (
+                    <Loader top={189} />
+                )}
             </div>
         </div>
-   );
+    );
 }
 
 export default Recipes;

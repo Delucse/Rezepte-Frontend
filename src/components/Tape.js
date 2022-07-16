@@ -1,20 +1,23 @@
-import React from "react";
+import React from 'react';
 
 import { Box } from '@mui/material';
 
 import Icon from '@mdi/react';
-import { mdiHeart } from "@mdi/js";
+import { mdiHeart } from '@mdi/js';
 
 // https://codepen.io/hunab/pen/DoNVPa
 
-function GridBox(props){
-    return(
-        <Box sx={{
-                height: 'calc(1em - 2px)', 
-                gridTemplateColumns: `${props.displace ? `${props.displace}px ` : ''}repeat(auto-fit, 16px)`,
+function GridBox(props) {
+    return (
+        <Box
+            sx={{
+                height: 'calc(1em - 2px)',
+                gridTemplateColumns: `${
+                    props.displace ? `${props.displace}px ` : ''
+                }repeat(auto-fit, 16px)`,
                 gridGap: '4px',
                 display: 'grid',
-                overflow: 'hidden'
+                overflow: 'hidden',
             }}
         >
             {props.children}
@@ -22,31 +25,39 @@ function GridBox(props){
     );
 }
 
-function Hearts(){
-    return(
-        Array(10).fill(0).map((item, index) => {
+function Hearts() {
+    return Array(10)
+        .fill(0)
+        .map((item, index) => {
             return (
-                <Box key={index} sx={{color: theme => theme.palette.primary.light, justifySelf: 'end', marginTop: '-2px'}}>
-                    <Icon path={mdiHeart} size={0.6}/>
+                <Box
+                    key={index}
+                    sx={{
+                        color: (theme) => theme.palette.primary.light,
+                        justifySelf: 'end',
+                        marginTop: '-2px',
+                    }}
+                >
+                    <Icon path={mdiHeart} size={0.6} />
                 </Box>
             );
-        })
-    );
+        });
 }
 
-function Tape({rotate, top, width, heart, check, onClick}){
+function Tape({ rotate, top, width, heart, check, onClick }) {
     rotate = rotate ? rotate : 0;
 
-    return(
-        <Box sx={{
-                paddingBottom: top ? 'calc(3em / 2)' : 0, 
+    return (
+        <Box
+            sx={{
+                paddingBottom: top ? 'calc(3em / 2)' : 0,
                 paddingTop: top ? `${Math.abs(rotate)}px` : 0,
-                justifyContent: 'center', 
-                display: 'flex'
+                justifyContent: 'center',
+                display: 'flex',
             }}
         >
             <Box
-                id='tape'
+                id="tape"
                 onClick={onClick}
                 sx={{
                     backgroundColor: 'hsla(0,0%,100%,.2)',
@@ -69,34 +80,39 @@ function Tape({rotate, top, width, heart, check, onClick}){
                     },
 
                     '&::after': {
-                        backgroundImage: 'linear-gradient(45deg, transparent 50%, hsla(0,0%,100%,.3) 50%), linear-gradient(-45deg, transparent 50%, hsla(0,0%,100%,.3) 50%)',
+                        backgroundImage:
+                            'linear-gradient(45deg, transparent 50%, hsla(0,0%,100%,.3) 50%), linear-gradient(-45deg, transparent 50%, hsla(0,0%,100%,.3) 50%)',
                         backgroundPosition: '0 100%',
-                        left: '-.2em'
+                        left: '-.2em',
                     },
 
                     '&::before': {
-                        backgroundImage: 'linear-gradient(135deg, transparent 50%, hsla(0,0%,100%,.3) 50%), linear-gradient(-135deg, transparent 50%, hsla(0,0%,100%,.3) 50%)',
+                        backgroundImage:
+                            'linear-gradient(135deg, transparent 50%, hsla(0,0%,100%,.3) 50%), linear-gradient(-135deg, transparent 50%, hsla(0,0%,100%,.3) 50%)',
                         backgroundPosition: '100% 100%',
-                        right: '-.2em'
+                        right: '-.2em',
                     },
                 }}
             >
-                {heart ?
-                    <Box 
+                {heart ? (
+                    <Box
                         id={`tapeStyle${check ? 'Check' : ''}`}
-                        sx={{margin: '3px 0', visibility: check ? 'visible' : 'hidden'}}
+                        sx={{
+                            margin: '3px 0',
+                            visibility: check ? 'visible' : 'hidden',
+                        }}
                     >
                         <GridBox>
-                            <Hearts/>
+                            <Hearts />
                         </GridBox>
                         <GridBox displace={24}>
-                            <Hearts/>
+                            <Hearts />
                         </GridBox>
                         <GridBox>
-                            <Hearts/>
+                            <Hearts />
                         </GridBox>
                     </Box>
-                : null}
+                ) : null}
             </Box>
         </Box>
     );

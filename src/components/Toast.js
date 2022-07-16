@@ -11,23 +11,21 @@ import Icon from '@mdi/react';
 import { mdiClose } from '@mdi/js';
 
 function CloseButton({ close }) {
-  
     return (
-        <IconButton onClick={close} disableRipple sx={{color: 'white'}}>
+        <IconButton onClick={close} disableRipple sx={{ color: 'white' }}>
             <Icon path={mdiClose} size={0.7} />
         </IconButton>
     );
 }
 
-function Toast(){
-
-    const art = useSelector(state => state.message.art);
-    const message = useSelector(state => state.message.message);
+function Toast() {
+    const art = useSelector((state) => state.message.art);
+    const message = useSelector((state) => state.message.message);
 
     const theme = useTheme();
 
     useEffect(() => {
-        if(art === 'snackbar'){
+        if (art === 'snackbar') {
             toast(message);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,7 +47,8 @@ function Toast(){
             style={{
                 '--toastify-z-index': 1199,
                 '--toastify-color-light': theme.palette.primary.main,
-                '--toastify-text-color-light': theme.palette.primary.contrastText,
+                '--toastify-text-color-light':
+                    theme.palette.primary.contrastText,
                 '--toastify-color-progress-light': theme.palette.primary.light,
             }}
         />

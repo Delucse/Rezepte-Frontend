@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 
 import './index.css';
 
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import App from './App';
 
@@ -14,7 +14,7 @@ const container = document.getElementById('delucse');
 const root = createRoot(container);
 root.render(
     <Router>
-        <App/>
+        <App />
     </Router>
 );
 

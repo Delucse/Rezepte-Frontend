@@ -1,14 +1,19 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 
-import { useDispatch, useSelector } from "react-redux";
-import { resetRecipeFormular, setBlocked, setRecipeFormular, setUploaded } from '../actions/recipeFormularActions';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    resetRecipeFormular,
+    setBlocked,
+    setRecipeFormular,
+    setUploaded,
+} from '../actions/recipeFormularActions';
 import { getRecipe } from '../actions/recipeActions';
 import { setError } from '../actions/settingsActions';
 
 import { useParams } from 'react-router-dom';
 
-import {usePrompt} from '../hooks/usePrompt';
-import NavigationPrompt from "../components/NavigationPrompt";
+import { usePrompt } from '../hooks/usePrompt';
+import NavigationPrompt from '../components/NavigationPrompt';
 
 import General from '../components/RecipeFormular/General';
 import Ingredients from '../components/RecipeFormular/Ingredients';
@@ -18,38 +23,42 @@ import Pictures from '../components/RecipeFormular/Pictures';
 import Stepper from '../components/RecipeFormular/Stepper';
 import Categories from '../components/RecipeFormular/Categories';
 
-
 const steps = [
     {
         title: 'Allgemein',
-        content: <General/>
-    },{
+        content: <General />,
+    },
+    {
         title: 'Kategorien',
-        content: <Categories />
-    },{
+        content: <Categories />,
+    },
+    {
         title: 'Zutaten',
-        content: <Ingredients />
-    },{
+        content: <Ingredients />,
+    },
+    {
         title: 'Arbeitsschritte',
-        content: <Steps />
-    },{
+        content: <Steps />,
+    },
+    {
         title: 'Bilder',
-        content: <Pictures />
-    },{
+        content: <Pictures />,
+    },
+    {
         title: 'Zusammenfassung',
-        content: <Preview />
-    }
+        content: <Preview />,
+    },
 ];
 
-
 function RecipeFormular() {
-
     const dispatch = useDispatch();
-    const blocked = useSelector(state => state.recipeFormular.blocked);
-    const recipeId = useSelector(state => state.recipe.id);
-    const recipePictures = useSelector(state => state.recipe.pictures);
-    const uploaded = useSelector(state => state.recipeFormular.uploaded);
-    const formularFilled = useSelector(state => state.recipeFormular.portion.count > 0);
+    const blocked = useSelector((state) => state.recipeFormular.blocked);
+    const recipeId = useSelector((state) => state.recipe.id);
+    const recipePictures = useSelector((state) => state.recipe.pictures);
+    const uploaded = useSelector((state) => state.recipeFormular.uploaded);
+    const formularFilled = useSelector(
+        (state) => state.recipeFormular.portion.count > 0
+    );
 
     const { id } = useParams();
 
@@ -57,12 +66,15 @@ function RecipeFormular() {
         dispatch(setBlocked(true));
         dispatch(setUploaded(false));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, []);
 
     useEffect(() => {
-        if(id){
-            if(id !== recipeId || recipePictures.filter(pic => !pic._id).length > 0){
-                if(/^.{24}$/.test(id)){
+        if (id) {
+            if (
+                id !== recipeId ||
+                recipePictures.filter((pic) => !pic._id).length > 0
+            ) {
+                if (/^.{24}$/.test(id)) {
                     dispatch(getRecipe(id, true));
                 } else {
                     dispatch(setError(true));
@@ -74,25 +86,26 @@ function RecipeFormular() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeId]);
 
-    const [
-        showDialogLeavingPage,
-        confirmNavigation,
-        cancelNavigation
-      ] = usePrompt(blocked);
-    
+    const [showDialogLeavingPage, confirmNavigation, cancelNavigation] =
+        usePrompt(blocked);
+
     return (
         <div>
-            {uploaded || !id || (id && id === recipeId && formularFilled) ? 
-                <Stepper steps={steps} /> : 'Daten werden geladen ...'
-            }
+            {uploaded || !id || (id && id === recipeId && formularFilled) ? (
+                <Stepper steps={steps} />
+            ) : (
+                'Daten werden geladen ...'
+            )}
             <NavigationPrompt
                 open={showDialogLeavingPage}
                 closePrompt={(bool) => dispatch(setBlocked(bool))}
-                confirmNavigation={() => { dispatch(resetRecipeFormular()); confirmNavigation(); }}
+                confirmNavigation={() => {
+                    dispatch(resetRecipeFormular());
+                    confirmNavigation();
+                }}
                 cancelNavigation={cancelNavigation}
             />
         </div>
-               
     );
 }
 

@@ -1,5 +1,10 @@
-import { GET_RECIPE, SET_RECIPE_SETTINGS, SET_RECIPE_ID, SET_RECIPE_FAVORITE, ADD_RECIPE_PICTURE } from '../actions/types';
-
+import {
+    GET_RECIPE,
+    SET_RECIPE_SETTINGS,
+    SET_RECIPE_ID,
+    SET_RECIPE_FAVORITE,
+    ADD_RECIPE_PICTURE,
+} from '../actions/types';
 
 const initialState = {
     id: null,
@@ -14,41 +19,41 @@ const initialState = {
     pictures: null,
     favorite: null,
     settings: {
-      count: 0,
-      volume: 0
+        count: 0,
+        volume: 0,
     },
 };
 
 const reducer = (state = initialState, action) => {
-  switch(action.type){
-    case GET_RECIPE:
-      return {
-        ...state,
-        ...action.payload
-      };
-    case SET_RECIPE_SETTINGS:
-      return {
-        ...state,
-        settings: action.payload
-      }
-    case SET_RECIPE_ID:
-      return {
-        ...state,
-        id: action.payload
-      }
-    case SET_RECIPE_FAVORITE:
-      return {
-        ...state,
-        favorite: action.payload
-      }
-    case ADD_RECIPE_PICTURE:
-      return {
-        ...state,
-        pictures: [...state.pictures, action.payload]
-      }
-    default:
-      return state;
-  }
-}
+    switch (action.type) {
+        case GET_RECIPE:
+            return {
+                ...state,
+                ...action.payload,
+            };
+        case SET_RECIPE_SETTINGS:
+            return {
+                ...state,
+                settings: action.payload,
+            };
+        case SET_RECIPE_ID:
+            return {
+                ...state,
+                id: action.payload,
+            };
+        case SET_RECIPE_FAVORITE:
+            return {
+                ...state,
+                favorite: action.payload,
+            };
+        case ADD_RECIPE_PICTURE:
+            return {
+                ...state,
+                pictures: [...state.pictures, action.payload],
+            };
+        default:
+            return state;
+    }
+};
 
-export default reducer; 
+export default reducer;

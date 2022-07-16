@@ -1,6 +1,6 @@
 [
-    {"aliment": "Mehl"},
-    {"aliment": "Zucker"},
-    {"aliment": "Gurke"},
-    {"aliment": "Apfel"}
+    { "aliment": "Mehl" },
+    { "aliment": "Zucker" },
+    { "aliment": "Gurke" },
+    { "aliment": "Apfel" }
 ]

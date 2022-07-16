@@ -10,18 +10,13 @@ var composeMiddleware;
 if (process.env.NODE_ENV !== 'production') {
     composeMiddleware = compose(
         applyMiddleware(...middleware),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        window.__REDUX_DEVTOOLS_EXTENSION__ &&
+            window.__REDUX_DEVTOOLS_EXTENSION__()
     );
 } else {
-    composeMiddleware = compose(
-        applyMiddleware(...middleware)
-    );
+    composeMiddleware = compose(applyMiddleware(...middleware));
 }
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composeMiddleware
-);
+const store = createStore(rootReducer, initialState, composeMiddleware);
 
 export default store;

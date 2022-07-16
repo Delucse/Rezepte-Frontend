@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import Tape from '../Tape';
-import ImageCarousel from "../ImageCarousel";
+import ImageCarousel from '../ImageCarousel';
 import AddImage from './AddImage';
 
 import SwipeableViews from 'react-swipeable-views';
@@ -16,25 +16,28 @@ import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 
 const CircularSwipeableViews = virtualize(SwipeableViews);
 
-function Images({pictures, title}){
-
+function Images({ pictures, title }) {
     const [open, setOpen] = useState(false);
 
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = pictures.length;
-    pictures = pictures.map(pic => !pic._id ? pic.file : `${process.env.REACT_APP_API_URL}/media/${pic.file}`);
+    pictures = pictures.map((pic) =>
+        !pic._id
+            ? pic.file
+            : `${process.env.REACT_APP_API_URL}/media/${pic.file}`
+    );
 
     useEffect(() => {
-        if(open){
+        if (open) {
             setOpen(false);
         }
-    }, [open])
+    }, [open]);
 
     const handleOpen = (i) => {
         setActiveStep(i);
-        setOpen(true)
-    }
-    
+        setOpen(true);
+    };
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => mod(prevActiveStep + 1, maxSteps));
     };
@@ -49,7 +52,7 @@ function Images({pictures, title}){
 
     const slideRenderer = ({ index, key }) => {
         index = mod(index, maxSteps);
-        return(
+        return (
             <Box
                 key={key}
                 component="img"
@@ -57,32 +60,33 @@ function Images({pictures, title}){
                     height: 240,
                     width: '100%',
                     objectFit: 'cover',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
                 }}
                 src={pictures[index]}
                 alt={title}
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
                     currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
-                    currentTarget.style = "height: 240px; width: 100%; object-fit: cover; filter: grayscale(1);";
+                    currentTarget.style =
+                        'height: 240px; width: 100%; object-fit: cover; filter: grayscale(1);';
                 }}
                 onClick={() => handleOpen(index)}
             />
         );
     };
 
-    return(
-        <Box sx={{position: 'relative'}}>
-            {maxSteps > 1 ?
+    return (
+        <Box sx={{ position: 'relative' }}>
+            {maxSteps > 1 ? (
                 <Box
                     id="recipeImages"
                     sx={{
-                        position: 'relative', 
+                        position: 'relative',
                         color: 'transparent',
                         borderColor: 'transparent',
                         '&:hover': {
-                            color: theme => theme.palette.primary.main,
-                            borderColor: theme => theme.palette.primary.main,
+                            color: (theme) => theme.palette.primary.main,
+                            borderColor: (theme) => theme.palette.primary.main,
                         },
                     }}
                 >
@@ -95,16 +99,43 @@ function Images({pictures, title}){
                         overscanSlideAfter={1}
                         overscanSlideBefore={1}
                     />
-                    <Box sx={{position: 'absolute', top: 0, width: '100%'}}>
+                    <Box sx={{ position: 'absolute', top: 0, width: '100%' }}>
                         <MobileStepper
                             steps={maxSteps}
                             position="static"
                             activeStep={activeStep}
                             nextButton={
-                                    <Icon path={mdiChevronRight} size={1} onClick={handleNext} style={{cursor: 'pointer', padding: '1px', borderRadius: '50%', border: `1px solid`, borderColor: 'inherit', position: 'absolute', top: '108px', right: '8px'}}/>
+                                <Icon
+                                    path={mdiChevronRight}
+                                    size={1}
+                                    onClick={handleNext}
+                                    style={{
+                                        cursor: 'pointer',
+                                        padding: '1px',
+                                        borderRadius: '50%',
+                                        border: `1px solid`,
+                                        borderColor: 'inherit',
+                                        position: 'absolute',
+                                        top: '108px',
+                                        right: '8px',
+                                    }}
+                                />
                             }
                             backButton={
-                                    <Icon path={mdiChevronLeft} size={1} onClick={handleBack} style={{cursor: 'pointer', padding: '1px', borderRadius: '50%', border: `1px solid`, borderColor: 'inherit', position: 'absolute', top: '108px'}}/>
+                                <Icon
+                                    path={mdiChevronLeft}
+                                    size={1}
+                                    onClick={handleBack}
+                                    style={{
+                                        cursor: 'pointer',
+                                        padding: '1px',
+                                        borderRadius: '50%',
+                                        border: `1px solid`,
+                                        borderColor: 'inherit',
+                                        position: 'absolute',
+                                        top: '108px',
+                                    }}
+                                />
                             }
                             sx={{
                                 position: 'relative',
@@ -117,23 +148,30 @@ function Images({pictures, title}){
                                     bottom: -216,
                                     width: 'calc(100% - 2 * 8px)',
                                     justifyContent: 'center',
-                                }
+                                },
                             }}
                         />
                     </Box>
                 </Box>
-            :   slideRenderer({index: 0, key: 0})}
-            <Box sx={{position: 'absolute', bottom: 0, right: 0}}>
+            ) : (
+                slideRenderer({ index: 0, key: 0 })
+            )}
+            <Box sx={{ position: 'absolute', bottom: 0, right: 0 }}>
                 <AddImage />
             </Box>
             {/* Tapes */}
-            <Box sx={{position: 'absolute', right: 30, top: -10}}>
-                <Tape rotate={50} width={100}/>
+            <Box sx={{ position: 'absolute', right: 30, top: -10 }}>
+                <Tape rotate={50} width={100} />
             </Box>
-            <Box sx={{position: 'absolute', left: 40, top: 190}}>
-                <Tape rotate={40} width={142}/>
+            <Box sx={{ position: 'absolute', left: 40, top: 190 }}>
+                <Tape rotate={40} width={142} />
             </Box>
-            <ImageCarousel images={pictures} title={title} open={open} index={activeStep} />
+            <ImageCarousel
+                images={pictures}
+                title={title}
+                open={open}
+                index={activeStep}
+            />
         </Box>
     );
 }

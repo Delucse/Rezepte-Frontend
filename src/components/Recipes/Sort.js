@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { setSort } from '../../actions/recipeFilterActions';
 
 import Button from '@mui/material/Button';
@@ -10,23 +10,72 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 
 import Icon from '@mdi/react';
-import { mdiDotsVertical, mdiSortAscending, mdiSortDescending, mdiSortAlphabeticalAscending, mdiSortAlphabeticalDescending, mdiSortClockAscending, mdiSortClockDescending, mdiSortCalendarAscending, mdiSortCalendarDescending } from '@mdi/js';
+import {
+    mdiDotsVertical,
+    mdiSortAscending,
+    mdiSortDescending,
+    mdiSortAlphabeticalAscending,
+    mdiSortAlphabeticalDescending,
+    mdiSortClockAscending,
+    mdiSortClockDescending,
+    mdiSortCalendarAscending,
+    mdiSortCalendarDescending,
+} from '@mdi/js';
 
 const sort = [
-    {title: 'Relevanz aufsteigend', icon: mdiSortAscending, type: 'score', ascending: true },
-    {title: 'Relevanz absteigend', icon: mdiSortDescending, type: 'score', ascending: false },
-    {title: 'Alphabet aufsteigend', icon: mdiSortAlphabeticalAscending, type: 'title', ascending: true },
-    {title: 'Alphabet absteigend', icon: mdiSortAlphabeticalDescending, type: 'title', ascending: false },
-    {title: 'Gesamtzeit aufsteigend', icon: mdiSortClockAscending, type: 'time', ascending: true },
-    {title: 'Gesamtzeit absteigend', icon: mdiSortClockDescending, type: 'time', ascending: false },
-    {title: 'Datum aufsteigend', icon: mdiSortCalendarAscending, type: 'date', ascending: true },
-    {title: 'Datum absteigend', icon: mdiSortCalendarDescending, type: 'date', ascending: false },
+    {
+        title: 'Relevanz aufsteigend',
+        icon: mdiSortAscending,
+        type: 'score',
+        ascending: true,
+    },
+    {
+        title: 'Relevanz absteigend',
+        icon: mdiSortDescending,
+        type: 'score',
+        ascending: false,
+    },
+    {
+        title: 'Alphabet aufsteigend',
+        icon: mdiSortAlphabeticalAscending,
+        type: 'title',
+        ascending: true,
+    },
+    {
+        title: 'Alphabet absteigend',
+        icon: mdiSortAlphabeticalDescending,
+        type: 'title',
+        ascending: false,
+    },
+    {
+        title: 'Gesamtzeit aufsteigend',
+        icon: mdiSortClockAscending,
+        type: 'time',
+        ascending: true,
+    },
+    {
+        title: 'Gesamtzeit absteigend',
+        icon: mdiSortClockDescending,
+        type: 'time',
+        ascending: false,
+    },
+    {
+        title: 'Datum aufsteigend',
+        icon: mdiSortCalendarAscending,
+        type: 'date',
+        ascending: true,
+    },
+    {
+        title: 'Datum absteigend',
+        icon: mdiSortCalendarDescending,
+        type: 'date',
+        ascending: false,
+    },
 ];
 
-function Sort(){
-
+function Sort() {
     const dispatch = useDispatch();
-    const { type, ascending } = useSelector(state => state.recipeFilter.sort);
+    const { type, ascending } = useSelector((state) => state.recipeFilter.sort);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -42,19 +91,40 @@ function Sort(){
     return (
         <div>
             <Button
-                sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '56px', padding: '16px', display: {xs: 'none', sm: 'initial'}}} 
+                sx={{
+                    height: '56px',
+                    borderRadius: 0,
+                    boxShadow: 'none',
+                    minWidth: '56px',
+                    padding: '16px',
+                    display: { xs: 'none', sm: 'initial' },
+                }}
                 variant="outlined"
                 onClick={handleClick}
                 disableRipple
             >
-                <Icon path={sort.filter(s => type === s.type && ascending === s.ascending)[0].icon} size={1}/>
+                <Icon
+                    path={
+                        sort.filter(
+                            (s) => type === s.type && ascending === s.ascending
+                        )[0].icon
+                    }
+                    size={1}
+                />
             </Button>
             <Button
-                sx={{height: '56px', borderRadius: 0, boxShadow: 'none', minWidth: '20px', padding: 0, display: {xs: 'initial', sm: 'none'}}} 
+                sx={{
+                    height: '56px',
+                    borderRadius: 0,
+                    boxShadow: 'none',
+                    minWidth: '20px',
+                    padding: 0,
+                    display: { xs: 'initial', sm: 'none' },
+                }}
                 onClick={handleClick}
                 disableRipple
             >
-                <Icon path={mdiDotsVertical} size={1}/>
+                <Icon path={mdiDotsVertical} size={1} />
             </Button>
             <Menu
                 anchorEl={anchorEl}
@@ -69,18 +139,28 @@ function Sort(){
                     horizontal: 'center',
                 }}
             >
-                {sort.map((item, index) => 
-                    <MenuItem 
-                        key={index}     
-                        onClick={() => {dispatch(setSort(item.type, item.ascending)); handleClose();}} 
-                        sx={type === item.type && ascending === item.ascending ? {background: theme =>  theme.palette.primary.light} : {}}
+                {sort.map((item, index) => (
+                    <MenuItem
+                        key={index}
+                        onClick={() => {
+                            dispatch(setSort(item.type, item.ascending));
+                            handleClose();
+                        }}
+                        sx={
+                            type === item.type && ascending === item.ascending
+                                ? {
+                                      background: (theme) =>
+                                          theme.palette.primary.light,
+                                  }
+                                : {}
+                        }
                     >
                         <ListItemIcon>
-                            <Icon path={item.icon} size={1}/>
+                            <Icon path={item.icon} size={1} />
                         </ListItemIcon>
                         <ListItemText>{item.title}</ListItemText>
                     </MenuItem>
-                )}
+                ))}
             </Menu>
         </div>
     );

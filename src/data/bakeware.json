@@ -1,86 +1,86 @@
 [
     {
-        "volume": 113.097, 
+        "volume": 113.097,
         "name": "Springform Ø 12 cm",
         "group": "Springform"
     },
     {
-        "volume": 201.062, 
+        "volume": 201.062,
         "name": "Springform Ø 16 cm",
         "group": "Springform"
     },
     {
-        "volume": 254.469, 
+        "volume": 254.469,
         "name": "Springform Ø 18 cm",
         "group": "Springform"
     },
     {
-        "volume": 314.159, 
+        "volume": 314.159,
         "name": "Springform Ø 20 cm",
         "group": "Springform"
     },
     {
-        "volume": 380.133, 
+        "volume": 380.133,
         "name": "Springform Ø 22 cm",
         "group": "Springform"
     },
     {
-        "volume": 452.389, 
+        "volume": 452.389,
         "name": "Springform Ø 24 cm",
         "group": "Springform"
     },
     {
-        "volume": 530.929, 
+        "volume": 530.929,
         "name": "Springform Ø 26 cm",
         "group": "Springform"
     },
     {
-        "volume": 615.752, 
+        "volume": 615.752,
         "name": "Springform Ø 28 cm",
         "group": "Springform"
     },
     {
-        "volume": 706.858, 
+        "volume": 706.858,
         "name": "Springform Ø 30 cm",
         "group": "Springform"
     },
     {
-        "volume": 804.248, 
+        "volume": 804.248,
         "name": "Springform Ø 32 cm",
         "group": "Springform"
     },
     {
-        "volume": 275, 
+        "volume": 275,
         "name": "Kastenform 25 cm x 11 cm",
         "group": "Kastenform"
     },
     {
-        "volume": 330, 
+        "volume": 330,
         "name": "Kastenform 30 cm x 11 cm",
         "group": "Kastenform"
     },
     {
-        "volume": 385, 
+        "volume": 385,
         "name": "Kastenform 35 cm x 11 cm",
         "group": "Kastenform"
     },
     {
-        "volume": 884, 
+        "volume": 884,
         "name": "Backlech 34 cm x 26 cm",
         "group": "Backblech"
     },
     {
-        "volume": 988, 
+        "volume": 988,
         "name": "Backlech 38 cm x 26 cm",
         "group": "Backblech"
     },
     {
-        "volume": 1152, 
+        "volume": 1152,
         "name": "Backlech 36 cm x 32 cm",
         "group": "Backblech"
     },
     {
-        "volume": 1292, 
+        "volume": 1292,
         "name": "Backlech 38 cm x 34 cm",
         "group": "Backblech"
     }

@@ -7,10 +7,10 @@ import recipeFilterReducer from './recipeFilterReducer';
 import recipeFormularReducer from './recipeFormularReducer';
 
 export default combineReducers({
-  auth: authReducer,
-  message: messageReducer,
-  settings: settingsReducer,
-  recipe: recipeReducer,
-  recipeFilter: recipeFilterReducer,
-  recipeFormular: recipeFormularReducer
+    auth: authReducer,
+    message: messageReducer,
+    settings: settingsReducer,
+    recipe: recipeReducer,
+    recipeFilter: recipeFilterReducer,
+    recipeFormular: recipeFormularReducer,
 });

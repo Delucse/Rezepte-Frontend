@@ -1,26 +1,32 @@
-import React from "react";
+import React from 'react';
 
-import { useDispatch, useSelector } from "react-redux";
-import { setRecipeTitle, setRecipeSource } from "../../actions/recipeFormularActions";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+    setRecipeTitle,
+    setRecipeSource,
+} from '../../actions/recipeFormularActions';
 
-import Textfield from "../Textfield";
-import Portion from "./Portion";
-import Time from "./Time";
-import Alert from "../Alert";
+import Textfield from '../Textfield';
+import Portion from './Portion';
+import Time from './Time';
+import Alert from '../Alert';
 
 import Icon from '@mdi/react';
-import { mdiCopyright, mdiTextShadow   } from '@mdi/js'; 
+import { mdiCopyright, mdiTextShadow } from '@mdi/js';
 
-import { Box } from "@mui/material";
+import { Box } from '@mui/material';
 
 function General() {
-
     const dispatch = useDispatch();
     const title = useSelector((state) => state.recipeFormular.title);
     const source = useSelector((state) => state.recipeFormular.source);
     const errorTitle = useSelector((state) => state.recipeFormular.error.title);
-    const errorSource = useSelector((state) => state.recipeFormular.error.source);
-    const errorPortion = useSelector((state) => state.recipeFormular.error.portion);
+    const errorSource = useSelector(
+        (state) => state.recipeFormular.error.source
+    );
+    const errorPortion = useSelector(
+        (state) => state.recipeFormular.error.portion
+    );
     const errorTime = useSelector((state) => state.recipeFormular.error.time);
 
     const onChangeTitle = (e) => {
@@ -31,59 +37,83 @@ function General() {
         dispatch(setRecipeSource(e.target.value));
     };
 
-    return(
+    return (
         <div>
-            {errorTitle || errorSource || errorPortion || errorTime ? 
-                <Box sx={{paddingBottom: '10px', position: 'sticky', top: 'calc(55px + 78px + 34px)', background: 'white', zIndex: 2}}>
-                    {errorTitle ?
-                        <Alert error message={'Es muss ein Titel gewählt werden.'}/>
-                    : null}
-                    {errorSource ?
-                        <Alert error message={'Es muss mindestens eine Quelle genant werden.'}/>
-                    : null}
-                    {errorPortion ?
-                        <Alert error message={'Es muss eine Portionsangabe gemacht werden.'}/>
-                    : null}
-                    {errorTime ?
-                        <Alert error message={'Es muss mindestens eine Zeitangabe gemacht werden.'} />
-                    : null}
+            {errorTitle || errorSource || errorPortion || errorTime ? (
+                <Box
+                    sx={{
+                        paddingBottom: '10px',
+                        position: 'sticky',
+                        top: 'calc(55px + 78px + 34px)',
+                        background: 'white',
+                        zIndex: 2,
+                    }}
+                >
+                    {errorTitle ? (
+                        <Alert
+                            error
+                            message={'Es muss ein Titel gewählt werden.'}
+                        />
+                    ) : null}
+                    {errorSource ? (
+                        <Alert
+                            error
+                            message={
+                                'Es muss mindestens eine Quelle genant werden.'
+                            }
+                        />
+                    ) : null}
+                    {errorPortion ? (
+                        <Alert
+                            error
+                            message={
+                                'Es muss eine Portionsangabe gemacht werden.'
+                            }
+                        />
+                    ) : null}
+                    {errorTime ? (
+                        <Alert
+                            error
+                            message={
+                                'Es muss mindestens eine Zeitangabe gemacht werden.'
+                            }
+                        />
+                    ) : null}
                 </Box>
-            : null}
-            <div style={{marginTop: '10px'}}/>
-            
+            ) : null}
+            <div style={{ marginTop: '10px' }} />
+
             <Textfield
                 error={errorTitle}
-                value={title} 
-                onChange={onChangeTitle} 
-                autoFocus 
-                property={'title'} 
+                value={title}
+                onChange={onChangeTitle}
+                autoFocus
+                property={'title'}
                 label={'Titel'}
                 margin
-                start={
-                    <Icon path={mdiTextShadow } size={1}/>
-                } 
+                start={<Icon path={mdiTextShadow} size={1} />}
                 // end={
-                //     <Button 
-                //         sx={{height: '100%', marginRight: '-22px', borderRadius: 0, boxShadow: 'none'}} 
-                //         variant="contained" 
+                //     <Button
+                //         sx={{height: '100%', marginRight: '-22px', borderRadius: 0, boxShadow: 'none'}}
+                //         variant="contained"
                 //         onClick={updateTitle}
                 //     >
                 //         Test
                 //     </Button>
                 // }
             />
-            <Textfield 
+            <Textfield
                 error={errorSource}
                 value={source}
                 onChange={onChangeSource}
-                property={'source'} 
+                property={'source'}
                 label={'Quelle'}
                 margin
-                start={<Icon path={mdiCopyright} size={1}/>} 
+                start={<Icon path={mdiCopyright} size={1} />}
             />
 
             {/* Portionen */}
-            <Portion/>
+            <Portion />
 
             <Time />
         </div>
