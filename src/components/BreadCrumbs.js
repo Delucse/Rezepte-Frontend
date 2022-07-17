@@ -191,7 +191,7 @@ function BreadCrumbs() {
             <Box
                 sx={{
                     height: '30px',
-                    background: 'white',
+                    background: (theme) => theme.palette.background.default,
                     padding: (theme) =>
                         `${theme.spacing(3)} ${theme.spacing(
                             3
@@ -270,8 +270,9 @@ function BreadCrumbs() {
             <Box
                 sx={{
                     height: (theme) => theme.spacing(3),
-                    background:
-                        'white' /*'linear-gradient(white 0%, transparent 60%)'*/,
+                    background: (theme) =>
+                        theme.palette.background
+                            .default /*'linear-gradient(white 0%, transparent 60%)'*/,
                 }}
             />
         </div>
@@ -288,8 +289,9 @@ function BreadCrumbs() {
                     )} 0px ${theme.spacing(3)}`,
                 position: 'sticky',
                 top: 'calc(55px)',
-                background:
-                    'white' /*'linear-gradient(white 0%, transparent 60%)'*/,
+                background: (theme) =>
+                    theme.palette.background
+                        .default /*'linear-gradient(white 0%, transparent 60%)'*/,
             }}
         />
     ) : (
@@ -302,8 +304,9 @@ function BreadCrumbs() {
                     )} 54px ${theme.spacing(3)}`,
                 position: 'sticky',
                 top: 'calc(55px)',
-                background:
-                    'white' /*'linear-gradient(white 0%, transparent 60%)'*/,
+                background: (theme) =>
+                    theme.palette.background
+                        .default /*'linear-gradient(white 0%, transparent 60%)'*/,
             }}
         />
     );

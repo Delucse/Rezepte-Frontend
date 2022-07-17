@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setError } from '../actions/settingsActions';
 import { getRecipe, getRecipePreview } from '../actions/recipeActions';
 import { setRoute } from '../actions/recipeFilterActions';
+import { snackbarMessage } from '../actions/messageActions';
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
@@ -73,6 +74,12 @@ function Recipe() {
             success: (res) => {
                 dispatch(setRoute('nutzer'));
                 navigate('/rezepte/nutzer');
+                dispatch(
+                    snackbarMessage(
+                        `Das Rezept wurde erfolgreich gelöscht.`,
+                        'recipe'
+                    )
+                );
             },
             error: (err) => {
                 console.log(err);
@@ -94,16 +101,17 @@ function Recipe() {
     return !loading && !error && recipe.title ? (
         <NotePaper>
             {/* Titel */}
-            <div
-                style={{
+            <Box
+                sx={{
                     fontWeight: 700,
                     fontSize: '22px',
                     lineHeight: '24px',
                     marginBottom: '24px',
+                    color: (theme) => theme.palette.text.primary,
                 }}
             >
                 {recipe.title}
-            </div>
+            </Box>
 
             <Grid container spacing={0} sx={{ marginBottom: '24px' }}>
                 <Grid item xs={12} sm={6} sx={{ height: 'calc(24px * 10)' }}>
@@ -341,7 +349,11 @@ function Recipe() {
                                 <ListItem disablePadding>
                                     <Typography
                                         variant="body1"
-                                        sx={{ fontWeight: 700 }}
+                                        sx={{
+                                            fontWeight: 700,
+                                            color: (theme) =>
+                                                theme.palette.text.primary,
+                                        }}
                                     >
                                         {`Zutaten für ${ingredient.title}`}
                                     </Typography>
@@ -350,7 +362,12 @@ function Recipe() {
                                     return (
                                         <ListItem disablePadding key={index}>
                                             <ListItemIcon
-                                                sx={{ minWidth: '25px' }}
+                                                sx={{
+                                                    minWidth: '25px',
+                                                    color: (theme) =>
+                                                        theme.palette.text
+                                                            .primary,
+                                                }}
                                             >
                                                 -
                                             </ListItemIcon>
@@ -358,7 +375,9 @@ function Recipe() {
                                                 <ListItemIcon
                                                     sx={{
                                                         minWidth: '0px',
-                                                        color: 'black',
+                                                        color: (theme) =>
+                                                            theme.palette.text
+                                                                .primary,
                                                         marginRight: '4px',
                                                     }}
                                                 >
@@ -403,7 +422,12 @@ function Recipe() {
                                             ) : null}
                                             <ListItemText
                                                 primary={`${food.unit} ${food.aliment}`}
-                                                sx={{ margin: 0 }}
+                                                sx={{
+                                                    margin: 0,
+                                                    color: (theme) =>
+                                                        theme.palette.text
+                                                            .primary,
+                                                }}
                                             />
                                         </ListItem>
                                     );
@@ -416,17 +440,36 @@ function Recipe() {
 
             <List sx={{ lineHeight: '24px', padding: 0, marginBottom: '24px' }}>
                 <ListItem disablePadding>
-                    <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                    <Typography
+                        variant="body1"
+                        sx={{
+                            fontWeight: 700,
+                            color: (theme) => theme.palette.text.primary,
+                        }}
+                    >
                         Arbeitsschritte
                     </Typography>
                 </ListItem>
                 {recipe.steps.map((step, index) => {
                     return (
                         <ListItem disablePadding key={index}>
-                            <ListItemIcon sx={{ minWidth: '25px' }}>
+                            <ListItemIcon
+                                sx={{
+                                    minWidth: '25px',
+                                    color: (theme) =>
+                                        theme.palette.text.primary,
+                                }}
+                            >
                                 {`${index + 1}.`}
                             </ListItemIcon>
-                            <ListItemText sx={{ margin: 0 }} primary={step} />
+                            <ListItemText
+                                sx={{
+                                    margin: 0,
+                                    color: (theme) =>
+                                        theme.palette.text.primary,
+                                }}
+                                primary={step}
+                            />
                         </ListItem>
                     );
                 })}
@@ -458,7 +501,7 @@ function Recipe() {
                 <Box
                     sx={{
                         position: 'absolute',
-                        top: '18px',
+                        top: '19px',
                         left: 0,
                         width: '43px',
                         height: 'calc(100% - 18px)',
@@ -480,8 +523,11 @@ function Recipe() {
                             <IconButton
                                 sx={{
                                     padding: '2px',
-                                    marginBottom: '12px',
-                                    width: '24.8px',
+                                    marginBottom: '25px',
+                                    width: '23px',
+                                    height: '23px',
+                                    background: (theme) =>
+                                        theme.palette.action.hover,
                                     border: (theme) =>
                                         `1px solid ${theme.palette.primary.light}`,
                                     color: (theme) =>
@@ -498,12 +544,15 @@ function Recipe() {
                                 }
                                 disableRipple
                             >
-                                <Icon path={mdiPencil} size={0.8} />
+                                <Icon path={mdiPencil} size={0.7} />
                             </IconButton>
                             <IconButton
                                 sx={{
                                     padding: '2px',
-                                    width: '24.8px',
+                                    width: '23px',
+                                    height: '23px',
+                                    background: (theme) =>
+                                        theme.palette.action.hover,
                                     border: (theme) =>
                                         `1px solid ${theme.palette.error.light}`,
                                     color: (theme) => theme.palette.error.light,
@@ -517,7 +566,7 @@ function Recipe() {
                                 onClick={deleteRecipe}
                                 disableRipple
                             >
-                                <Icon path={mdiDelete} size={0.8} />
+                                <Icon path={mdiDelete} size={0.7} />
                             </IconButton>
                         </Box>
                     ) : null}

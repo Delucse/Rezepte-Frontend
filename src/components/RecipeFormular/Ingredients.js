@@ -311,7 +311,7 @@ function Ingredients() {
                         paddingBottom: '10px',
                         position: 'sticky',
                         top: 'calc(55px + 78px + 34px)',
-                        background: 'white',
+                        background: (theme) => theme.palette.background.default,
                         zIndex: 2,
                     }}
                 >

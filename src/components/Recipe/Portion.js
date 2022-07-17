@@ -118,7 +118,13 @@ function Portion() {
     return (
         <div>
             <div style={{ display: 'flex' }}>
-                <Typography style={{ lineHeight: '24px' }} variant="body1">
+                <Typography
+                    sx={{
+                        lineHeight: '24px',
+                        color: (theme) => theme.palette.text.primary,
+                    }}
+                    variant="body1"
+                >
                     für {settings.count.toLocaleString()}
                     {settings.volume > 0
                         ? bakeware.filter(

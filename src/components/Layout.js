@@ -19,7 +19,12 @@ function Layout() {
     return loading ? (
         <Loader />
     ) : (
-        <div style={{ minHeight: '100vh' }}>
+        <Box
+            sx={{
+                minHeight: '100vh',
+                background: (theme) => theme.palette.background.default,
+            }}
+        >
             <SignOut />
             <Navbar />
             <BreadCrumbs />
@@ -33,7 +38,7 @@ function Layout() {
                         )} ${theme.spacing(3)}`,
                     minHeight: (theme) =>
                         `calc(100vh - 55px - ${theme.spacing(3)} - 78px)`,
-                    background: 'white',
+                    background: (theme) => theme.palette.background.default,
                 }}
             >
                 <Outlet />
@@ -48,13 +53,14 @@ function Layout() {
                         )} 0px ${theme.spacing(3)}`,
                     position: 'sticky',
                     bottom: 0,
-                    background:
-                        'white' /*'linear-gradient(transparent 0%, white 40%)'*/,
+                    background: (theme) =>
+                        theme.palette.background
+                            .default /*'linear-gradient(transparent 0%, white 40%)'*/,
                 }}
             />
             {/* Impressum */}
             {/* <div style={{height: '30px', background: 'lightgrey'}}>Impressum</div> */}
-        </div>
+        </Box>
     );
 }
 

@@ -4,6 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
+import Box from '@mui/material/Box';
 
 import Sort from './Sort';
 import Filter from './Filter';
@@ -29,7 +30,7 @@ function SearchBar(props) {
             <HideOnScroll {...props}>
                 <AppBar
                     sx={{
-                        background: 'White',
+                        background: (theme) => theme.palette.background.default,
                         boxShadow: 'none',
                         top: 'calc(55px + 54px + 24px)',
                         padding: (theme) => `0 ${theme.spacing(3)}`,
@@ -46,12 +47,13 @@ function SearchBar(props) {
                     </Toolbar>
                 </AppBar>
             </HideOnScroll>
-            <div
+            <Box
                 style={{
                     position: 'fixed',
                     bottom: '48px' /* drawerBleeding - 2px */,
                     left: 0,
-                    backgroundColor: 'white',
+                    backgroundColor: (theme) =>
+                        theme.palette.background.default,
                     height: '22px',
                     width: '100%',
                     zIndex: 2,

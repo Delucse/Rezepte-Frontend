@@ -36,7 +36,8 @@ function Content(props) {
                     paddingBottom: '10px',
                     position: 'sticky',
                     top: 'calc(55px + 78px)',
-                    background: 'white',
+                    background: (theme) => theme.palette.background.default,
+                    color: (theme) => theme.palette.text.primary,
                     zIndex: 2,
                 }}
             >
@@ -157,7 +158,7 @@ function Stepper(props) {
                     alignContent: 'center',
                     display: 'flex',
                     width: { xs: '24px', md: 'calc(48px + 15px)' },
-                    background: 'white',
+                    background: (theme) => theme.palette.background.default,
                     height: {
                         xs: 'calc(100vh - 55px - 78px - 26px)',
                         md: 'calc(100vh - 55px - 78px - 60px)',
@@ -190,7 +191,7 @@ function Stepper(props) {
                     alignContent: 'center',
                     display: 'flex',
                     width: { xs: '24px', md: 'calc(48px + 15px)' },
-                    background: 'white',
+                    background: (theme) => theme.palette.background.default,
                     height: {
                         xs: 'calc(100vh - 55px - 78px - 26px)',
                         md: 'calc(100vh - 55px - 78px - 60px)',
@@ -251,7 +252,7 @@ function Stepper(props) {
                     position: 'sticky',
                     width: 'calc(100% + 2 * 24px)',
                     marginLeft: '-24px',
-                    background: 'white',
+                    background: (theme) => theme.palette.background.default,
                     height: { xs: '26px', md: '60px' },
                     bottom: (theme) => theme.spacing(3),
                     paddingTop: '10px',

@@ -12,6 +12,7 @@ import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
 import Overview from '../components/Recipes/Overview';
 
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
 function Recipes(props) {
@@ -93,19 +94,27 @@ function Recipes(props) {
                             ))}
                         </Grid>
                     ) : (
-                        `Es konnten keine Rezepte mit ${
-                            word !== ''
-                                ? `dem angegebenen Suchwort "${word}"`
-                                : ''
-                        } ${
-                            word !== '' && categories.length > 0 ? 'und' : ''
-                        } ${
-                            categories.length > 0
-                                ? `den angegebenen Filtern "${categories.join(
-                                      '", "'
-                                  )}"`
-                                : ''
-                        } gefunden werden.`
+                        <Box
+                            sx={{
+                                color: (theme) => theme.palette.text.primary,
+                            }}
+                        >
+                            {`Es konnten keine Rezepte mit ${
+                                word !== ''
+                                    ? `dem angegebenen Suchwort "${word}"`
+                                    : ''
+                            } ${
+                                word !== '' && categories.length > 0
+                                    ? 'und'
+                                    : ''
+                            } ${
+                                categories.length > 0
+                                    ? `den angegebenen Filtern "${categories.join(
+                                          '", "'
+                                      )}"`
+                                    : ''
+                            } gefunden werden.`}
+                        </Box>
                     )
                 ) : error ? (
                     <div>Error</div>

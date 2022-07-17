@@ -61,7 +61,12 @@ function Dialog(props) {
     return (
         <MuiDialog
             open={props.open}
-            PaperProps={{ sx: { borderRadius: 0 } }}
+            PaperProps={{
+                sx: {
+                    borderRadius: 0,
+                    color: (theme) => theme.palette.text.primary,
+                },
+            }}
             fullScreen={props.fullScreen}
             fullWidth={props.fullWidth}
             maxWidth={props.maxWidth}

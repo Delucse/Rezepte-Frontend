@@ -36,7 +36,11 @@ import {
     mdiQrcodeScan,
 } from '@mdi/js';
 
+import { useTheme } from '@mui/material';
+
 function Navlink(props) {
+    const theme = useTheme();
+
     const location = useLocation();
     const dispatch = useDispatch();
 
@@ -54,7 +58,9 @@ function Navlink(props) {
             style={({ isActive }) => ({
                 fontWeight: isActive ? '700' : 'inherit',
                 textDecoration: 'none',
-                color: isActive ? 'black' : 'rgba(0, 0, 0, 0.54)',
+                color: isActive
+                    ? theme.palette.text.primary
+                    : theme.palette.text.secondary,
             })}
             state={{
                 background: props.background ? location : null,
@@ -69,7 +75,7 @@ function Navlink(props) {
                     primary={props.text}
                     primaryTypographyProps={{
                         fontWeight: 'inherit',
-                        color: 'black',
+                        color: 'inherit',
                     }}
                 />
             </ListItem>
@@ -115,7 +121,7 @@ const userMenue = [
         icon: mdiFoodForkDrink,
     },
     { text: 'Konto', link: '/konto', auth: true, icon: mdiFolderAccount },
-    { text: 'Einstellungen', link: '/einstellungen', auth: true, icon: mdiCog },
+    { text: 'Einstellungen', link: '/einstellungen', icon: mdiCog },
     {
         text: 'Anmeldung',
         link: '/anmeldung',
@@ -304,14 +310,20 @@ function Navbar() {
                                 toggle();
                             }}
                         >
-                            <ListItemIcon>
+                            <ListItemIcon
+                                sx={{
+                                    color: (theme) =>
+                                        theme.palette.text.secondary,
+                                }}
+                            >
                                 <Icon path={mdiLogoutVariant} size={1} />
                             </ListItemIcon>
                             <ListItemText
                                 primary={'Abmelden'}
                                 primaryTypographyProps={{
                                     fontWeight: 'inherit',
-                                    color: 'black',
+                                    color: (theme) =>
+                                        theme.palette.text.secondary,
                                 }}
                             />
                         </ListItem>

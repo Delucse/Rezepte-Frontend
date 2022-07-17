@@ -59,6 +59,7 @@ function Portion() {
                     name="Portionen"
                     value={volume > 0 ? 1 : volume < 0 ? -1 : 0}
                     onChange={isDish}
+                    sx={{ color: (theme) => theme.palette.text.primary }}
                 >
                     <FormControlLabel
                         value={0}

@@ -23,6 +23,8 @@ function Favorite(props) {
                     padding: '0px',
                     marginBottom: '12px',
                     width: '24.8px',
+                    height: '23px',
+                    background: (theme) => theme.palette.action.hover,
                     color: (theme) => theme.palette.primary.light,
                     '&:hover': {
                         color: (theme) => theme.palette.primary.main,

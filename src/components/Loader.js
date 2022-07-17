@@ -8,7 +8,7 @@ function Loader(props) {
     return (
         <Backdrop
             sx={{
-                backgroundColor: '#fff',
+                backgroundColor: (theme) => theme.palette.background.default,
                 zIndex: (theme) => theme.zIndex.drawer + 1,
                 top: props.top ? `${props.top}px` : 0,
             }}

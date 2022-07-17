@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Typography } from '@mui/material';
 
 function Home() {
     const [title, setTitle] = useState('...');
@@ -14,8 +15,15 @@ function Home() {
 
     return (
         <div>
-            Home
-            <h1>{title}</h1>
+            <Typography sx={{ color: (theme) => theme.palette.text.primary }}>
+                Home
+            </Typography>
+            <Typography
+                variant="h4"
+                sx={{ color: (theme) => theme.palette.text.primary }}
+            >
+                {title}
+            </Typography>
         </div>
     );
 }

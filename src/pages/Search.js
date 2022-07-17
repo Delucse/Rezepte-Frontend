@@ -43,6 +43,7 @@ function Search() {
                             sx={{
                                 width: '100%',
                                 justifyContent: 'space-between',
+                                color: (theme) => theme.palette.text.primary,
                             }}
                         >
                             <FormControlLabel
@@ -73,7 +74,12 @@ function Search() {
                 </Box>
             ) : null}
 
-            <Box sx={{ marginTop: '20px' }}>
+            <Box
+                sx={{
+                    marginTop: '20px',
+                    color: (theme) => theme.palette.text.primary,
+                }}
+            >
                 <Categories redux />
             </Box>
         </div>

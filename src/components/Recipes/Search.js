@@ -66,7 +66,10 @@ function Search(props) {
                 }
                 start={
                     <IconButton
-                        sx={{ padding: 0 }}
+                        sx={{
+                            padding: 0,
+                            color: (theme) => theme.palette.text.secondary,
+                        }}
                         onClick={handleClick}
                         disableRipple
                     >
@@ -84,6 +87,8 @@ function Search(props) {
                                         color: (theme) =>
                                             theme.palette.primary.main,
                                     },
+                                    color: (theme) =>
+                                        theme.palette.text.secondary,
                                 }}
                                 onClick={() => dispatch(setWord(''))}
                                 disableRipple
@@ -124,6 +129,7 @@ function Search(props) {
                         minWidth: '56px',
                         width: '56px',
                         padding: 0,
+                        color: (theme) => theme.palette.background.default,
                     }}
                     variant="contained"
                     disableRipple
@@ -139,6 +145,7 @@ function Search(props) {
                         minWidth: '56px',
                         width: '56px',
                         padding: 0,
+                        color: (theme) => theme.palette.background.default,
                     }}
                     variant="contained"
                     disableRipple

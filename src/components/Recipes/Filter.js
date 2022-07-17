@@ -49,6 +49,7 @@ function Filter() {
                     boxShadow: 'none',
                     minWidth: '56px',
                     padding: 0,
+                    color: (theme) => theme.palette.background.default,
                 }}
                 variant="contained"
                 disableRipple
@@ -63,7 +64,8 @@ function Filter() {
                     componentsProps={{
                         badge: {
                             sx: {
-                                backgroundColor: 'white',
+                                backgroundColor: (theme) =>
+                                    theme.palette.background.default,
                                 color: (theme) => theme.palette.primary.main,
                                 minWidth: '15px',
                                 height: '15px',
@@ -110,7 +112,9 @@ function Filter() {
                         borderTop: (theme) =>
                             `1px solid ${theme.palette.primary.light}`,
                         height: `${drawerBleeding}px`,
-                        background: 'white',
+                        background: (theme) => theme.palette.background.default,
+                        backgroundImage:
+                            'linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))',
                     }}
                 >
                     <Puller />

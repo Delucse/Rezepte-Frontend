@@ -192,7 +192,7 @@ function AddImage(props) {
                                         color: (theme) =>
                                             props.error
                                                 ? theme.palette.error.main
-                                                : 'rgba(0, 0, 0, 0.54)',
+                                                : theme.palette.action.active,
                                         '&:hover': {
                                             color: (theme) =>
                                                 theme.palette.primary.main,
@@ -213,7 +213,7 @@ function AddImage(props) {
                                                     ? `2px dashed ${theme.palette.primary.main}`
                                                     : props.error
                                                     ? `2px dashed ${theme.palette.error.main}`
-                                                    : '2px dashed rgba(0, 0, 0, 0.54)',
+                                                    : `2px dashed ${theme.palette.action.active}`,
                                         }}
                                     >
                                         <div style={{ textAlign: 'center' }}>

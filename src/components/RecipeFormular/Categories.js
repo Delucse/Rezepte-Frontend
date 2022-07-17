@@ -41,6 +41,7 @@ function IndeterminateCheckbox(props) {
         <div>
             <FormControlLabel
                 label={props.title}
+                sx={{ color: (theme) => theme.palette.text.primary }}
                 control={
                     <Checkbox
                         sx={
@@ -65,6 +66,9 @@ function IndeterminateCheckbox(props) {
                         <FormControlLabel
                             key={index}
                             label={category}
+                            sx={{
+                                color: (theme) => theme.palette.text.primary,
+                            }}
                             control={
                                 <Checkbox
                                     sx={
@@ -89,6 +93,7 @@ function IndeterminateCheckbox(props) {
                 <Divider sx={{ borderBottomWidth: 'medium' }} />
                 <FormControlLabel
                     label={'nichts zutreffend'}
+                    sx={{ color: (theme) => theme.palette.text.primary }}
                     control={
                         <Checkbox
                             sx={
@@ -133,7 +138,7 @@ function Categories() {
                         paddingBottom: '10px',
                         position: 'sticky',
                         top: 'calc(55px + 78px + 34px)',
-                        background: 'white',
+                        background: (theme) => theme.palette.background.default,
                         zIndex: 2,
                     }}
                 >

@@ -21,6 +21,7 @@ function CloseButton({ close }) {
 function Toast() {
     const art = useSelector((state) => state.message.art);
     const message = useSelector((state) => state.message.message);
+    const type = useSelector((state) => state.message.type);
 
     const theme = useTheme();
 
@@ -29,7 +30,7 @@ function Toast() {
             toast(message);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [art, message]);
+    }, [art, message, type]);
 
     return (
         <ToastContainer
