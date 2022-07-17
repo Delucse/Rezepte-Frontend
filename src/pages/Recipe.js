@@ -15,6 +15,7 @@ import NotePaper from '../components/NotePaper';
 import Portion from '../components/Recipe/Portion';
 import Images from '../components/Recipe/Images';
 import Favorite from '../components/Recipe/Favorite';
+import WakeLock from '../components/Recipe/WakeLock';
 import Loader from '../components/Loader';
 
 import {
@@ -497,7 +498,7 @@ function Recipe() {
             </div>
 
             {/* Manipulieren */}
-            {!formular && user ? (
+            {!formular ? (
                 <Box
                     sx={{
                         position: 'absolute',
@@ -508,7 +509,8 @@ function Recipe() {
                     }}
                 >
                     <Box sx={{ justifyContent: 'center', display: 'grid' }}>
-                        <Favorite check={recipe.favorite} />
+                        {user ? <Favorite check={recipe.favorite} /> : null}
+                        <WakeLock />
                     </Box>
                     {recipe.user && user === recipe.user ? (
                         <Box

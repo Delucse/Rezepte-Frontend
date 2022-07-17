@@ -16,41 +16,39 @@ function Favorite(props) {
     const dispatch = useDispatch();
 
     return (
-        <Box>
-            <IconButton
-                id="favorite"
-                sx={{
-                    padding: '0px',
-                    marginBottom: '12px',
-                    width: '24.8px',
-                    height: '23px',
-                    background: (theme) => theme.palette.action.hover,
-                    color: (theme) => theme.palette.primary.light,
-                    '&:hover': {
-                        color: (theme) => theme.palette.primary.main,
-                    },
-                }}
-                onClick={
-                    props.check
-                        ? () => dispatch(deleteRecipeFavorite())
-                        : () => dispatch(setRecipeFavorite())
-                }
-                disableRipple
-            >
-                <Box id="heart" sx={{ display: 'flex' }}>
-                    <Icon
-                        path={props.check ? mdiHeart : mdiHeartOutline}
-                        size={1}
-                    />
-                </Box>
-                <Box id="heartHover" sx={{ display: 'none' }}>
-                    <Icon
-                        path={props.check ? mdiHeartOutline : mdiHeart}
-                        size={1}
-                    />
-                </Box>
-            </IconButton>
-        </Box>
+        <IconButton
+            id="favorite"
+            sx={{
+                padding: '0px',
+                marginBottom: '25px',
+                width: '24.8px',
+                height: '23px',
+                background: (theme) => theme.palette.action.hover,
+                color: (theme) => theme.palette.primary.light,
+                '&:hover': {
+                    color: (theme) => theme.palette.primary.main,
+                },
+            }}
+            onClick={
+                props.check
+                    ? () => dispatch(deleteRecipeFavorite())
+                    : () => dispatch(setRecipeFavorite())
+            }
+            disableRipple
+        >
+            <Box id="heart" sx={{ display: 'flex' }}>
+                <Icon
+                    path={props.check ? mdiHeart : mdiHeartOutline}
+                    size={1}
+                />
+            </Box>
+            <Box id="heartHover" sx={{ display: 'none' }}>
+                <Icon
+                    path={props.check ? mdiHeartOutline : mdiHeart}
+                    size={1}
+                />
+            </Box>
+        </IconButton>
     );
 }
 

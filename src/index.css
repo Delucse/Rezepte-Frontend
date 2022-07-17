@@ -71,6 +71,14 @@ code {
     display: flex;
 }
 
+#wakeLock:hover #eye {
+    display: none;
+}
+
+#wakeLock:hover #eyeHover {
+    display: flex;
+}
+
 .Toastify__toast-container {
     padding: 0 !important;
     max-width: calc(100% - 2 * 24px);
