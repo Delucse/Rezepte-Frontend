@@ -45,9 +45,6 @@ function Overview(props) {
         background = background
             .slice(background.indexOf('(') + 1, background.indexOf(')'))
             .split(', ');
-        console.log(rgb);
-        console.log(background);
-        console.log((1 - alpha) * background[0] + alpha * rgb[0]);
         return `rgb(${(1 - alpha) * background[0] + alpha * rgb[0]}, ${
             (1 - alpha) * background[1] + alpha * rgb[1]
         }, ${(1 - alpha) * background[2] + alpha * rgb[2]})`;

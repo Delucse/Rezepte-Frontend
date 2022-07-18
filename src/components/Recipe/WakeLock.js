@@ -25,10 +25,10 @@ function WakeLock() {
 
     useEffect(() => {
         return () => {
-            wake && releaseWakeLock();
+            wake && wake.release();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    });
 
     const requestWakeLock = async () => {
         try {

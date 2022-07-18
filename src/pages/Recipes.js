@@ -70,7 +70,7 @@ function Recipes(props) {
                 {!loading && !error && recipes ? (
                     recipes.length > 0 ? (
                         <Grid container spacing={3}>
-                            {recipes.map((recipe, index) => (
+                            {recipes.map((recipe) => (
                                 <Grid
                                     item
                                     xs={12}
@@ -78,7 +78,7 @@ function Recipes(props) {
                                     md={4}
                                     lg={3}
                                     xl={2}
-                                    key={index}
+                                    key={recipe._id}
                                 >
                                     <Overview
                                         id={recipe._id}

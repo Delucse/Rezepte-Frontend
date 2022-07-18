@@ -255,7 +255,7 @@ function Pictures() {
                     {pictures.map((picture, idx) => {
                         return (
                             <ImageListItem
-                                key={idx}
+                                key={picturesUrl[idx]}
                                 sx={
                                     idx === 0
                                         ? {
