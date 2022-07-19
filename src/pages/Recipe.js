@@ -6,6 +6,8 @@ import { getRecipe, getRecipePreview } from '../actions/recipeActions';
 import { setRoute } from '../actions/recipeFilterActions';
 import { snackbarMessage } from '../actions/messageActions';
 
+import { Helmet } from 'react-helmet';
+
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import axios from 'axios';
@@ -15,6 +17,7 @@ import NotePaper from '../components/NotePaper';
 import Portion from '../components/Recipe/Portion';
 import Images from '../components/Recipe/Images';
 import Favorite from '../components/Recipe/Favorite';
+import Share from '../components/Recipe/Share';
 import WakeLock from '../components/Recipe/WakeLock';
 import Loader from '../components/Loader';
 
@@ -101,6 +104,23 @@ function Recipe() {
 
     return !loading && !error && recipe.title ? (
         <NotePaper>
+            <Helmet>
+                <title>{recipe.title} | Delucse</title>
+                <meta
+                    property="og:title"
+                    content={`${recipe.title} | Delucse`}
+                />
+                <meta
+                    property="og:url"
+                    content={`${process.env.PUBLIC_URL}/rezepte${recipe.id}`}
+                />
+                <meta property="og:description" content={recipe.title} />
+                <meta
+                    property="og:image"
+                    content={`${process.env.REACT_APP_API_URL}/media/${recipe.pictures[0].file}`}
+                />
+            </Helmet>
+
             {/* Titel */}
             <Box
                 sx={{
@@ -511,6 +531,7 @@ function Recipe() {
                     <Box sx={{ justifyContent: 'center', display: 'grid' }}>
                         {user ? <Favorite check={recipe.favorite} /> : null}
                         <WakeLock />
+                        <Share title={recipe.title} id={recipe.id} />
                     </Box>
                     {recipe.user && user === recipe.user ? (
                         <Box

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
+import { useDispatch } from 'react-redux';
+import { resetMessage, snackbarMessage } from '../../actions/messageActions';
+
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 
 import Icon from '@mdi/react';
-import { mdiEye, mdiEyeOff } from '@mdi/js';
+import { mdiPot, mdiPotSteam } from '@mdi/js';
 
 function WakeLock() {
+    const dispatch = useDispatch();
+
     const [wake, setWake] = useState(null);
 
     useEffect(() => {
@@ -26,17 +31,23 @@ function WakeLock() {
     useEffect(() => {
         return () => {
             wake && wake.release();
+            dispatch(resetMessage());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     });
 
-    const requestWakeLock = async () => {
+    const requestWakeLock = async (initial) => {
         try {
             const wakeLock = await navigator.wakeLock.request('screen');
             wakeLock.addEventListener('release', (e) => {
                 // console.info('Wake Lock was released');
             });
             setWake(wakeLock);
+            if (initial) {
+                dispatch(
+                    snackbarMessage('Der Kochmodus wurde aktiviert.', 'wake')
+                );
+            }
             // console.info('Wake Lock is active');
         } catch (e) {
             setWake(null);
@@ -47,6 +58,9 @@ function WakeLock() {
     const releaseWakeLock = () => {
         wake.release().then(() => {
             setWake(null);
+            dispatch(
+                snackbarMessage('Der Kochmodus wurde deaktiviert.', 'wake')
+            );
         });
     };
 
@@ -62,6 +76,7 @@ function WakeLock() {
             sx={{
                 padding: '0px',
                 width: '24.8px',
+                marginBottom: '25px',
                 height: '23px',
                 background: (theme) => theme.palette.action.hover,
                 color: (theme) => theme.palette.primary.light,
@@ -69,14 +84,14 @@ function WakeLock() {
                     color: (theme) => theme.palette.primary.main,
                 },
             }}
-            onClick={wake ? releaseWakeLock : requestWakeLock}
+            onClick={wake ? releaseWakeLock : () => requestWakeLock(true)}
             disableRipple
         >
             <Box id="eye" sx={{ display: 'flex' }}>
-                <Icon path={wake ? mdiEye : mdiEyeOff} size={1} />
+                <Icon path={wake ? mdiPotSteam : mdiPot} size={1} />
             </Box>
             <Box id="eyeHover" sx={{ display: 'none' }}>
-                <Icon path={wake ? mdiEyeOff : mdiEye} size={1} />
+                <Icon path={wake ? mdiPot : mdiPotSteam} size={1} />
             </Box>
         </IconButton>
     ) : null;
