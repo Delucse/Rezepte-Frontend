@@ -153,15 +153,9 @@ function Share(props) {
                     onClick={
                         action.onClick
                             ? () =>
-                                  action.onClick(
-                                      props.title,
-                                      `${process.env.PUBLIC_URL}/rezepte/${props.id}`,
-                                      (text) => {
-                                          dispatch(
-                                              snackbarMessage(text, 'share')
-                                          );
-                                      }
-                                  )
+                                  action.onClick(props.title, url, (text) => {
+                                      dispatch(snackbarMessage(text, 'share'));
+                                  })
                             : null
                     }
                 />

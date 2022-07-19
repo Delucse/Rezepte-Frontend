@@ -6,8 +6,6 @@ import { getRecipe, getRecipePreview } from '../actions/recipeActions';
 import { setRoute } from '../actions/recipeFilterActions';
 import { snackbarMessage } from '../actions/messageActions';
 
-import { Helmet } from 'react-helmet';
-
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import axios from 'axios';
@@ -104,23 +102,6 @@ function Recipe() {
 
     return !loading && !error && recipe.title ? (
         <NotePaper>
-            <Helmet>
-                <title>{recipe.title} | Delucse</title>
-                <meta
-                    property="og:title"
-                    content={`${recipe.title} | Delucse`}
-                />
-                <meta
-                    property="og:url"
-                    content={`${process.env.PUBLIC_URL}/rezepte${recipe.id}`}
-                />
-                <meta property="og:description" content={recipe.title} />
-                <meta
-                    property="og:image"
-                    content={`${process.env.REACT_APP_API_URL}/media/${recipe.pictures[0].file}`}
-                />
-            </Helmet>
-
             {/* Titel */}
             <Box
                 sx={{

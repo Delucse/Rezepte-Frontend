@@ -69,11 +69,12 @@ function Settings() {
                                 : 'inherit',
                         color: (theme) =>
                             mode === 'light'
-                                ? theme.palette.text.primary
+                                ? theme.palette.primary.contrastText
                                 : theme.palette.primary.main,
                         '&:hover': {
                             background: (theme) => theme.palette.primary.main,
-                            color: (theme) => theme.palette.text.primary,
+                            color: (theme) =>
+                                theme.palette.primary.contrastText,
                         },
                     }}
                 >
@@ -88,11 +89,12 @@ function Settings() {
                                 : 'inherit',
                         color: (theme) =>
                             mode === 'system'
-                                ? theme.palette.text.primary
+                                ? theme.palette.primary.contrastText
                                 : theme.palette.primary.main,
                         '&:hover': {
                             background: (theme) => theme.palette.primary.main,
-                            color: (theme) => theme.palette.text.primary,
+                            color: (theme) =>
+                                theme.palette.primary.contrastText,
                         },
                     }}
                 >
@@ -108,11 +110,12 @@ function Settings() {
                                 : 'inherit',
                         color: (theme) =>
                             mode === 'dark'
-                                ? theme.palette.text.primary
+                                ? theme.palette.primary.contrastText
                                 : theme.palette.primary.main,
                         '&:hover': {
                             background: (theme) => theme.palette.primary.main,
-                            color: (theme) => theme.palette.text.primary,
+                            color: (theme) =>
+                                theme.palette.primary.contrastText,
                         },
                     }}
                 >

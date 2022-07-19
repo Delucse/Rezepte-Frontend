@@ -2,6 +2,8 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
+import { Helmet } from 'react-helmet';
+
 import { Link, useLocation, useParams } from 'react-router-dom';
 
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -10,29 +12,41 @@ import Box from '@mui/material/Box';
 import Icon from '@mdi/react';
 import { mdiHome } from '@mdi/js';
 
-function GetRecipeTitle() {
+function GetRecipeTitle({ pageTitle }) {
     const title = useSelector((state) => state.recipe.title);
+    const result = title ? title : 'lädt ...';
 
-    return title ? <div>{title}</div> : <div>lädt ...</div>;
+    return pageTitle ? (
+        <Helmet>
+            <title>{result} | Delucse</title>
+        </Helmet>
+    ) : (
+        result
+    );
 }
 
-function RecipeSearch() {
+function RecipeSearch({ pageTitle }) {
     const { word, type } = useSelector((state) => state.recipeFilter);
-    return (
-        <div>
-            {type === 'all'
-                ? 'Suche'
-                : type === 'title'
-                ? 'Titelsuche'
-                : type === 'ingredients'
-                ? 'Zutatensuche'
-                : type === 'keywords'
-                ? 'Schlüsselwortsuche'
-                : type === 'steps'
-                ? 'Arbeitsschrittsuche'
-                : 'Suche'}
-            {word !== '' ? ` von "${word}"` : ''}
-        </div>
+    const result = `${
+        type === 'all'
+            ? 'Suche'
+            : type === 'title'
+            ? 'Titelsuche'
+            : type === 'ingredients'
+            ? 'Zutatensuche'
+            : type === 'keywords'
+            ? 'Schlüsselwortsuche'
+            : type === 'steps'
+            ? 'Arbeitsschrittsuche'
+            : 'Suche'
+    }${' '}${word !== '' ? ` von "${word}"` : ''}`;
+
+    return pageTitle ? (
+        <Helmet>
+            <title>{result} | Delucse</title>
+        </Helmet>
+    ) : (
+        result
     );
 }
 
@@ -133,6 +147,27 @@ const routes = [
     },
 ];
 
+function DocumentTitle({ breadcrumbs }) {
+    const Title =
+        breadcrumbs.length > 0 &&
+        breadcrumbs[breadcrumbs.length - 1].title.type;
+    return breadcrumbs.length > 0 ? (
+        typeof breadcrumbs[breadcrumbs.length - 1].title === 'string' ? (
+            <Helmet>
+                <title>
+                    {breadcrumbs[breadcrumbs.length - 1].title} | Delucse
+                </title>
+            </Helmet>
+        ) : (
+            <Title pageTitle />
+        )
+    ) : (
+        <Helmet>
+            <title>Delucse</title>
+        </Helmet>
+    );
+}
+
 function BreadCrumbs() {
     const route = useSelector((state) => state.recipeFilter.route);
 
@@ -186,129 +221,146 @@ function BreadCrumbs() {
         );
     });
 
-    return breadcrumbs.length > 0 ? (
-        <div style={{ zIndex: 1, position: 'sticky', top: 'calc(55px)' }}>
-            <Box
-                sx={{
-                    height: '30px',
-                    background: (theme) => theme.palette.background.default,
-                    padding: (theme) =>
-                        `${theme.spacing(3)} ${theme.spacing(
-                            3
-                        )} 0px ${theme.spacing(3)}`,
-                    width: (theme) => `calc(100% - 2 * ${theme.spacing(3)})`,
-                    overflowY: 'hidden',
-                }}
-            >
-                <Box
-                    sx={{
-                        overflowX: 'auto',
-                        overflowY: 'hidden',
-                        display: 'flex',
-                    }}
+    return (
+        <div>
+            <DocumentTitle breadcrumbs={breadcrumbs} />
+            {breadcrumbs.length > 0 ? (
+                <div
+                    style={{ zIndex: 1, position: 'sticky', top: 'calc(55px)' }}
                 >
-                    <Breadcrumbs
-                        separator="›"
+                    <Box
                         sx={{
-                            marginBottom: '10px',
-                            '.MuiBreadcrumbs-ol': {
-                                flexWrap: 'nowrap',
-                            },
-                            '.MuiBreadcrumbs-li': {
-                                width: 'max-content',
-                            },
+                            height: '30px',
+                            background: (theme) =>
+                                theme.palette.background.default,
+                            padding: (theme) =>
+                                `${theme.spacing(3)} ${theme.spacing(
+                                    3
+                                )} 0px ${theme.spacing(3)}`,
+                            width: (theme) =>
+                                `calc(100% - 2 * ${theme.spacing(3)})`,
+                            overflowY: 'hidden',
                         }}
                     >
-                        <Link to={'/'} style={{ textDecoration: 'none' }}>
-                            <Box
+                        <Box
+                            sx={{
+                                overflowX: 'auto',
+                                overflowY: 'hidden',
+                                display: 'flex',
+                            }}
+                        >
+                            <Breadcrumbs
+                                separator="›"
                                 sx={{
-                                    color: (theme) =>
-                                        theme.palette.primary.light,
-                                    '&:hover': {
-                                        color: (theme) =>
-                                            theme.palette.primary.main,
+                                    marginBottom: '10px',
+                                    '.MuiBreadcrumbs-ol': {
+                                        flexWrap: 'nowrap',
+                                    },
+                                    '.MuiBreadcrumbs-li': {
+                                        width: 'max-content',
                                     },
                                 }}
                             >
-                                <Icon
-                                    path={mdiHome}
-                                    size={1}
-                                    style={{ color: 'inherit' }}
-                                />
-                            </Box>
-                        </Link>
-                        {breadcrumbs.map(({ pathname, title }, index) => {
-                            return index !== breadcrumbs.length - 1 ? (
-                                <Box
-                                    sx={{
-                                        color: (theme) =>
-                                            theme.palette.primary.light,
-                                        '&:hover': {
-                                            color: (theme) =>
-                                                theme.palette.primary.main,
-                                        },
-                                    }}
-                                    key={index}
+                                <Link
+                                    to={'/'}
+                                    style={{ textDecoration: 'none' }}
                                 >
-                                    <Link
-                                        to={pathname}
-                                        style={{
-                                            textDecoration: 'none',
-                                            color: 'inherit',
+                                    <Box
+                                        sx={{
+                                            color: (theme) =>
+                                                theme.palette.primary.light,
+                                            '&:hover': {
+                                                color: (theme) =>
+                                                    theme.palette.primary.main,
+                                            },
                                         }}
                                     >
-                                        {title}
-                                    </Link>
-                                </Box>
-                            ) : (
-                                <div key={index}>{title}</div>
-                            );
-                        })}
-                    </Breadcrumbs>
-                </Box>
-            </Box>
-            <Box
-                sx={{
-                    height: (theme) => theme.spacing(3),
-                    background: (theme) =>
-                        theme.palette.background
-                            .default /*'linear-gradient(white 0%, transparent 60%)'*/,
-                }}
-            />
+                                        <Icon
+                                            path={mdiHome}
+                                            size={1}
+                                            style={{ color: 'inherit' }}
+                                        />
+                                    </Box>
+                                </Link>
+                                {breadcrumbs.map(
+                                    ({ pathname, title }, index) => {
+                                        return index !==
+                                            breadcrumbs.length - 1 ? (
+                                            <Box
+                                                sx={{
+                                                    color: (theme) =>
+                                                        theme.palette.primary
+                                                            .light,
+                                                    '&:hover': {
+                                                        color: (theme) =>
+                                                            theme.palette
+                                                                .primary.main,
+                                                    },
+                                                }}
+                                                key={index}
+                                            >
+                                                <Link
+                                                    to={pathname}
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                        color: 'inherit',
+                                                    }}
+                                                >
+                                                    {title}
+                                                </Link>
+                                            </Box>
+                                        ) : (
+                                            <div key={index}>{title}</div>
+                                        );
+                                    }
+                                )}
+                            </Breadcrumbs>
+                        </Box>
+                    </Box>
+                    <Box
+                        sx={{
+                            height: (theme) => theme.spacing(3),
+                            background: (theme) =>
+                                theme.palette.background
+                                    .default /*'linear-gradient(white 0%, transparent 60%)'*/,
+                        }}
+                    />
+                </div>
+            ) : currentRoute.hasOwnProperty('params') ||
+              (location.state &&
+                  location.state.background &&
+                  location.state.background.pathname === '/') ? (
+                <Box
+                    sx={{
+                        zIndex: 1,
+                        padding: (theme) =>
+                            `${theme.spacing(3)} ${theme.spacing(
+                                3
+                            )} 0px ${theme.spacing(3)}`,
+                        position: 'sticky',
+                        top: 'calc(55px)',
+                        background: (theme) =>
+                            theme.palette.background
+                                .default /*'linear-gradient(white 0%, transparent 60%)'*/,
+                    }}
+                />
+            ) : (
+                <Box
+                    sx={{
+                        zIndex: 1,
+                        padding: (theme) =>
+                            `${theme.spacing(3)} ${theme.spacing(
+                                3
+                            )} 54px ${theme.spacing(3)}`,
+                        position: 'sticky',
+                        top: 'calc(55px)',
+                        background: (theme) =>
+                            theme.palette.background
+                                .default /*'linear-gradient(white 0%, transparent 60%)'*/,
+                    }}
+                />
+            )}
         </div>
-    ) : currentRoute.hasOwnProperty('params') ||
-      (location.state &&
-          location.state.background &&
-          location.state.background.pathname === '/') ? (
-        <Box
-            sx={{
-                zIndex: 1,
-                padding: (theme) =>
-                    `${theme.spacing(3)} ${theme.spacing(
-                        3
-                    )} 0px ${theme.spacing(3)}`,
-                position: 'sticky',
-                top: 'calc(55px)',
-                background: (theme) =>
-                    theme.palette.background
-                        .default /*'linear-gradient(white 0%, transparent 60%)'*/,
-            }}
-        />
-    ) : (
-        <Box
-            sx={{
-                zIndex: 1,
-                padding: (theme) =>
-                    `${theme.spacing(3)} ${theme.spacing(
-                        3
-                    )} 54px ${theme.spacing(3)}`,
-                position: 'sticky',
-                top: 'calc(55px)',
-                background: (theme) =>
-                    theme.palette.background
-                        .default /*'linear-gradient(white 0%, transparent 60%)'*/,
-            }}
-        />
     );
 }
 
