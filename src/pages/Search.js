@@ -1,10 +1,18 @@
 import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setRoute } from '../actions/recipeFilterActions';
+import {
+    setCategories,
+    setRoute,
+    setType,
+} from '../actions/recipeFilterActions';
+
+import { useSearchParams } from 'react-router-dom';
 
 import SearchBar from '../components/Recipes/Search';
 import Categories from '../components/Recipes/Categories';
+
+import params from '../data/params.json';
 
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -23,6 +31,28 @@ function Search() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
+
+    const [searchParams /*, setSearchParams*/] = useSearchParams();
+
+    // read url params
+    useEffect(() => {
+        console.log('Render Search');
+        const route = searchParams.get('route');
+        const type = searchParams.get('typ');
+        var filter = searchParams.get('filter');
+        if (route) {
+            dispatch(setRoute(params.route[route.toLowerCase()]));
+        }
+        if (type) {
+            dispatch(setType(params.typ[type.toLowerCase()]));
+        }
+        if (filter) {
+            filter = filter.toLowerCase().split(',');
+            filter = filter.map((f) => f.trim());
+            dispatch(setCategories(filter));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <div>

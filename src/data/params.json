@@ -1,0 +1,24 @@
+{
+    "route": {
+        "alle": "",
+        "favoriten": "favoriten",
+        "nutzer": "nutzer"
+    },
+    "typ": {
+        "alle": "all",
+        "titel": "title",
+        "zutaten": "ingredients",
+        "kategorien": "keywords",
+        "arbteitsschritte": "steps"
+    },
+    "sortierung": {
+        "relevanz": "score",
+        "alphabet": "title",
+        "gesamtzeit": "time",
+        "datum": "date"
+    },
+    "reihenfolge": {
+        "aufsteigend": true,
+        "absteigend": false
+    }
+}

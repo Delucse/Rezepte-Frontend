@@ -4,13 +4,21 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     getRecipes,
     getRecipesFavorite,
+    setCategories,
     setRoute,
+    setSort,
+    setType,
+    setWord,
 } from '../actions/recipeFilterActions';
 import { resetRecipe } from '../actions/recipeActions';
+
+import { useSearchParams } from 'react-router-dom';
 
 import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
 import Overview from '../components/Recipes/Overview';
+
+import params from '../data/params.json';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -53,8 +61,41 @@ function Recipes(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
+    const [searchParams /*, setSearchParams*/] = useSearchParams();
+
     useEffect(() => {
         dispatch(resetRecipe());
+
+        // read url params
+        const route = searchParams.get('route');
+        const type = searchParams.get('typ');
+        const word = searchParams.get('wort');
+        const sort = searchParams.get('sortierung');
+        const ascending = searchParams.get('reihenfolge');
+        var filter = searchParams.get('filter');
+
+        if (route) {
+            dispatch(setRoute(params.route[route.toLowerCase()]));
+        }
+        if (type) {
+            dispatch(setType(params.typ[type.toLowerCase()]));
+        }
+        if (word) {
+            dispatch(setWord(word));
+        }
+        if (sort && ascending) {
+            dispatch(
+                setSort(
+                    params.sortierung[sort.toLowerCase()],
+                    params.reihenfolge[ascending.toLowerCase()]
+                )
+            );
+        }
+        if (filter) {
+            filter = filter.toLowerCase().split(',');
+            filter = filter.map((f) => f.trim());
+            dispatch(setCategories(filter));
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
