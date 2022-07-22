@@ -6,6 +6,8 @@ import { setRecipeCategories } from '../../actions/recipeFormularActions';
 import Keywords from './Keywords';
 import Alert from '../Alert';
 
+import params from '../../data/params.json';
+
 import { Box, Checkbox, FormControlLabel, Grid, Divider } from '@mui/material';
 
 function IndeterminateCheckbox(props) {
@@ -167,12 +169,7 @@ function Categories() {
                 <Grid item xs={12} sm={6} md={4}>
                     <IndeterminateCheckbox
                         title="Lebensmittel"
-                        categories={[
-                            'vegan',
-                            'vegetarisch',
-                            'glutenfrei',
-                            'laktosefrei',
-                        ]}
+                        categories={params.filter['Lebensmittel']}
                         objectKey="ingredients"
                         value={ingredients}
                         error={
@@ -186,14 +183,7 @@ function Categories() {
                 <Grid item xs={12} sm={6} md={4}>
                     <IndeterminateCheckbox
                         title="Gericht"
-                        categories={[
-                            'Aperitif',
-                            'Vorspeise',
-                            'Hauptgang',
-                            'Dessert',
-                            'Frühstück',
-                            'Kaffeetrinken',
-                        ]}
+                        categories={params.filter['Gericht']}
                         objectKey="dish"
                         value={dish}
                         error={errorCategories && dish && dish.length === 0}
@@ -203,7 +193,7 @@ function Categories() {
                 <Grid item xs={12} sm={6} md={4}>
                     <IndeterminateCheckbox
                         title="Saison"
-                        categories={['Frühling', 'Sommer', 'Herbst', 'Winter']}
+                        categories={params.filter['Saison']}
                         objectKey="season"
                         value={season}
                         error={errorCategories && season && season.length === 0}
@@ -213,7 +203,7 @@ function Categories() {
                 <Grid item xs={12} sm={6} md={4}>
                     <IndeterminateCheckbox
                         title="Wärmegrad"
-                        categories={['kalt', 'lauwarm', 'heiß']}
+                        categories={params.filter['Wärmegrad']}
                         objectKey="heat"
                         value={heat}
                         error={errorCategories && heat && heat.length === 0}

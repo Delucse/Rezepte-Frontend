@@ -222,12 +222,10 @@ function BreadCrumbs() {
     });
 
     return (
-        <div>
+        <div style={{ zIndex: 1, position: 'sticky', top: 'calc(55px)' }}>
             <DocumentTitle breadcrumbs={breadcrumbs} />
             {breadcrumbs.length > 0 ? (
-                <div
-                    style={{ zIndex: 1, position: 'sticky', top: 'calc(55px)' }}
-                >
+                <div>
                     <Box
                         sx={{
                             height: '30px',
@@ -332,13 +330,10 @@ function BreadCrumbs() {
                   location.state.background.pathname === '/') ? (
                 <Box
                     sx={{
-                        zIndex: 1,
                         padding: (theme) =>
                             `${theme.spacing(3)} ${theme.spacing(
                                 3
                             )} 0px ${theme.spacing(3)}`,
-                        position: 'sticky',
-                        top: 'calc(55px)',
                         background: (theme) =>
                             theme.palette.background
                                 .default /*'linear-gradient(white 0%, transparent 60%)'*/,
@@ -347,13 +342,10 @@ function BreadCrumbs() {
             ) : (
                 <Box
                     sx={{
-                        zIndex: 1,
                         padding: (theme) =>
                             `${theme.spacing(3)} ${theme.spacing(
                                 3
                             )} 54px ${theme.spacing(3)}`,
-                        position: 'sticky',
-                        top: 'calc(55px)',
                         background: (theme) =>
                             theme.palette.background
                                 .default /*'linear-gradient(white 0%, transparent 60%)'*/,

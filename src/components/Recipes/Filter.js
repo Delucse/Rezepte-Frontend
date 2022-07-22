@@ -31,9 +31,9 @@ const Puller = styled(Box)(({ theme }) => ({
 
 function Filter() {
     const dispatch = useDispatch();
-    const { open, recipes, categories } = useSelector(
-        (state) => state.recipeFilter
-    );
+    const open = useSelector((state) => state.recipeFilter.open);
+    const recipes = useSelector((state) => state.recipeFilter.recipes);
+    const categories = useSelector((state) => state.recipeFilter.categories);
 
     const toggle = () => {
         dispatch(setOpen(!open));
@@ -126,8 +126,11 @@ function Filter() {
                                 color: 'text.secondary',
                             }}
                         >
-                            {recipes.length} Rezept
-                            {recipes.length !== 1 ? 'e' : ''}
+                            {recipes
+                                ? `${recipes.length} Rezept${
+                                      recipes.length !== 1 ? 'e' : ''
+                                  }`
+                                : 'lädt ...'}
                         </Typography>
                         <Box
                             sx={{

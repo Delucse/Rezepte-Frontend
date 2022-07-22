@@ -7,6 +7,8 @@ import {
     removeCategory,
 } from '../../actions/recipeFilterActions';
 
+import params from '../../data/params.json';
+
 import {
     Grid,
     Box,
@@ -66,39 +68,11 @@ function Categories(props) {
                 Filter
             </Typography>
             <Grid container spacing={3}>
-                {[
-                    {
-                        title: 'Lebensmittel',
-                        items: [
-                            'vegan',
-                            'vegetarisch',
-                            'glutenfrei',
-                            'laktosefrei',
-                        ],
-                    },
-                    {
-                        title: 'Gericht',
-                        items: [
-                            'Aperitif',
-                            'Vorspeise',
-                            'Hauptgang',
-                            'Dessert',
-                            'Frühstück',
-                            'Kaffeetrinken',
-                        ],
-                    },
-                    {
-                        title: 'Saison',
-                        items: ['Frühling', 'Sommer', 'Herbst', 'Winter'],
-                    },
-                    { title: 'Wärmegrad', items: ['kalt', 'lauwarm', 'heiß'] },
-                ].map((category, index) => (
+                {Object.keys(params.filter).map((key, index) => (
                     <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                        <Typography variant="body1">
-                            {category.title}
-                        </Typography>
+                        <Typography variant="body1">{key}</Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                            {category.items.map((item, index) => (
+                            {params.filter[key].map((item, index) => (
                                 <FormControlLabel
                                     key={index}
                                     label={item}

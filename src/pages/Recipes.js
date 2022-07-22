@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     getRecipes,
     getRecipesFavorite,
+    resetFilterSettings,
+    resetRecipes,
     setCategories,
     setRoute,
     setSort,
@@ -86,6 +88,9 @@ function Recipes(props) {
         const ascending = searchParams.get('reihenfolge');
         var filter = searchParams.get('filter');
 
+        if (search !== '') {
+            dispatch(resetFilterSettings());
+        }
         if (route) {
             dispatch(setRoute(params.route[route.toLowerCase()]));
         }
@@ -109,6 +114,10 @@ function Recipes(props) {
             dispatch(setCategories(filter));
         }
         setSearchParams();
+
+        return () => {
+            dispatch(resetRecipes());
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

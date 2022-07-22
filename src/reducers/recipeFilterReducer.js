@@ -19,7 +19,7 @@ const initialState = {
     open: false,
     categories: [],
     route: '',
-    recipes: [],
+    recipes: null,
 };
 
 const reducer = (state = initialState, action) => {

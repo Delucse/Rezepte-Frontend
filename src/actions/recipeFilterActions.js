@@ -169,7 +169,7 @@ export const resetFilterSettings = () => (dispatch) => {
             },
             open: false,
             categories: [],
-            recipes: [],
+            recipes: null,
         },
     });
 };
@@ -248,4 +248,8 @@ export const deleteRecipesFavorite = (id) => (dispatch, getState) => {
         .catch((err) => {
             err.config.error(err);
         });
+};
+
+export const resetRecipes = () => (dispatch) => {
+    dispatch({ type: GET_RECIPES, payload: null });
 };

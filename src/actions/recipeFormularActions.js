@@ -15,6 +15,8 @@ import {
     SET_RECIPE_FORMULAR_UPLOADED,
 } from '../actions/types';
 
+import params from '../data/params.json';
+
 import axios from 'axios';
 
 import { setRecipeId } from './recipeActions';
@@ -648,24 +650,13 @@ export const setRecipeFormular = () => (dispatch, getState) => {
     };
     const otherKeywords = [];
     keywords.forEach((word) => {
-        if (
-            ['vegan', 'vegetarisch', 'glutenfrei', 'laktosefrei'].includes(word)
-        ) {
+        if (params.filter['Lebensmittel'].includes(word)) {
             categories.ingredients.push(word);
-        } else if (
-            [
-                'Aperitif',
-                'Vorspeise',
-                'Hauptgang',
-                'Dessert',
-                'Frühstück',
-                'Kaffeetrinken',
-            ].includes(word)
-        ) {
+        } else if (params.filter['Gericht'].includes(word)) {
             categories.dish.push(word);
-        } else if (['Frühling', 'Sommer', 'Herbst', 'Winter'].includes(word)) {
+        } else if (params.filter['Saison'].includes(word)) {
             categories.season.push(word);
-        } else if (['kalt', 'lauwarm', 'heiß'].includes(word)) {
+        } else if (params.filter['Wärmegrad'].includes(word)) {
             categories.heat.push(word);
         } else {
             otherKeywords.push(word);

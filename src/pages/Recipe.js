@@ -19,6 +19,8 @@ import Share from '../components/Recipe/Share';
 import WakeLock from '../components/Recipe/WakeLock';
 import Loader from '../components/Loader';
 
+import params from '../data/params.json';
+
 import {
     Grid,
     Box,
@@ -40,6 +42,13 @@ import {
     mdiFoodSteakOff,
     mdiPencil,
 } from '@mdi/js';
+
+var filterParams = [];
+Object.keys(params.filter).forEach((key) => {
+    filterParams = filterParams.concat(params.filter[key]);
+});
+
+console.log(filterParams);
 
 function Recipe() {
     const { id } = useParams();
@@ -485,7 +494,7 @@ function Recipe() {
             {/* Schlagwörter */}
             <div style={{ marginTop: '-5px' }}>
                 {recipe.keywords
-                    .concat(recipe.user ? [recipe.user] : [])
+                    // .concat(recipe.user ? [recipe.user] : [])
                     .map((keyword, index) => {
                         return (
                             <Chip
@@ -494,10 +503,33 @@ function Recipe() {
                                     marginRight: '5px',
                                     height: '19px',
                                     marginBottom: '-2px',
+                                    cursor: 'pointer',
+                                    background: (theme) =>
+                                        theme.palette.primary.light,
+                                    color: (theme) =>
+                                        theme.palette.getContrastText(
+                                            theme.palette.primary.light
+                                        ),
+                                    '&:hover': {
+                                        background: (theme) =>
+                                            theme.palette.primary.main,
+                                        color: (theme) =>
+                                            theme.palette.getContrastText(
+                                                theme.palette.primary.main
+                                            ),
+                                    },
                                 }}
                                 key={index}
                                 label={keyword}
-                                color="primary"
+                                onClick={() =>
+                                    navigate(
+                                        `/rezepte?${
+                                            filterParams.includes(keyword)
+                                                ? `filter=${keyword}`
+                                                : `wort=${keyword}&typ=schlüsselwort`
+                                        }`
+                                    )
+                                }
                             />
                         );
                     })}
