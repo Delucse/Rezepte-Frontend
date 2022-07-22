@@ -6,9 +6,13 @@ import {
     ADD_RECIPE_PICTURE,
 } from '../actions/types';
 
-import { setError, setLoading } from '../actions/settingsActions';
 import { setRecipeFormular } from './recipeFormularActions';
 import { snackbarMessage } from './messageActions';
+import {
+    setProgress,
+    setProgressSuccess,
+    setProgressError,
+} from './progressActions';
 
 import axios from 'axios';
 
@@ -75,8 +79,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
             },
         },
     });
-    dispatch(setError(false));
-    dispatch(setLoading(false));
+    dispatch(setProgressSuccess('recipe'));
 };
 
 export const setRecipeId = (id) => (dispatch) => {
@@ -87,8 +90,7 @@ export const setRecipeId = (id) => (dispatch) => {
 };
 
 export const getRecipe = (id, setFormular) => (dispatch) => {
-    dispatch(setError(false));
-    dispatch(setLoading(true));
+    dispatch(setProgress('recipe'));
     const config = {
         headers: {
             'Content-Type': 'application/json',
@@ -120,15 +122,13 @@ export const getRecipe = (id, setFormular) => (dispatch) => {
                     },
                 },
             });
-            dispatch(setError(false));
-            dispatch(setLoading(false));
+            dispatch(setProgressSuccess('recipe'));
             if (setFormular) {
                 dispatch(setRecipeFormular());
             }
         })
         .catch((err) => {
-            dispatch(setError(true));
-            dispatch(setLoading(false));
+            dispatch(setProgressError('recipe'));
             console.error(err);
         });
 };
@@ -153,8 +153,7 @@ export const resetRecipe = () => (dispatch) => {
             },
         },
     });
-    dispatch(setError(false));
-    dispatch(setLoading(false));
+    dispatch(setProgressSuccess('recipe'));
 };
 
 export const addPicture = (pic) => (dispatch) => {

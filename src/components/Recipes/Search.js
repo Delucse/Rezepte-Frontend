@@ -27,6 +27,8 @@ function Search(props) {
     useEffect(() => {
         if (word === '' && search !== '') {
             setSearch('');
+        } else if (word !== '' && search === '') {
+            setSearch(word);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [word]);

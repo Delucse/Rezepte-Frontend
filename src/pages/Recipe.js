@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setError } from '../actions/settingsActions';
 import { getRecipe, getRecipePreview } from '../actions/recipeActions';
+import { setProgressError } from '../actions/progressActions';
 import { setRoute } from '../actions/recipeFilterActions';
 import { snackbarMessage } from '../actions/messageActions';
 
@@ -49,7 +49,12 @@ function Recipe() {
     const recipe = useSelector((state) => state.recipe);
     const recipeFormular = useSelector((state) => state.recipeFormular);
     const user = useSelector((state) => state.auth.user);
-    const { error, loading } = useSelector((state) => state.settings);
+    const loading = useSelector(
+        (state) => state.progress.loading && state.progress.type === 'recipe'
+    );
+    const error = useSelector(
+        (state) => state.progress.error && state.progress.type === 'recipe'
+    );
     const formular = useLocation().pathname.includes('/formular');
 
     useEffect(() => {
@@ -63,7 +68,7 @@ function Recipe() {
                     dispatch(getRecipePreview());
                 }
             } else {
-                dispatch(setError(true));
+                dispatch(setProgressError('recipe'));
             }
         } else {
             dispatch(getRecipePreview());

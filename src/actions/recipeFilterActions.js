@@ -9,15 +9,18 @@ import {
     SET_ROUTE,
 } from '../actions/types';
 
-import { setLoading, setError } from './settingsActions';
 import { snackbarMessage } from './messageActions';
+import {
+    setProgress,
+    setProgressError,
+    setProgressSuccess,
+} from './progressActions';
 
 import axios from 'axios';
 
 export const getRecipes = () => (dispatch, getState) => {
     const { word, sort, type, categories, route } = getState().recipeFilter;
-    dispatch(setError(false));
-    dispatch(setLoading(true));
+    dispatch(setProgress('recipeFilter'));
     const config = {
         onDownloadProgress: (progressEvent) => {
             // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
@@ -32,12 +35,10 @@ export const getRecipes = () => (dispatch, getState) => {
                 type: GET_RECIPES,
                 payload: [...recipes],
             });
-            dispatch(setError(false));
-            dispatch(setLoading(false));
+            dispatch(setProgressSuccess('recipeFilter'));
         },
         error: (err) => {
-            dispatch(setError(true));
-            dispatch(setLoading(false));
+            dispatch(setProgressError('recipeFilter'));
         },
     };
     axios
@@ -63,7 +64,7 @@ export const getRecipes = () => (dispatch, getState) => {
 
 export const getRecipesFavorite = () => (dispatch, getState) => {
     const { word, sort, type, categories, recipes } = getState().recipeFilter;
-    dispatch(setError(false));
+    dispatch(setProgressSuccess('recipeFilter'));
     const config = {
         success: (res) => {
             var updatedRecipes = recipes.map((recipe) => {
@@ -77,10 +78,10 @@ export const getRecipesFavorite = () => (dispatch, getState) => {
                 type: GET_RECIPES,
                 payload: [...updatedRecipes],
             });
-            dispatch(setError(false));
+            dispatch(setProgressSuccess('recipeFilter'));
         },
         error: (err) => {
-            dispatch(setError(true));
+            dispatch(setProgressError('recipeFilter'));
         },
     };
     axios

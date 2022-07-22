@@ -1,6 +1,5 @@
 import {
     USER_LOADED,
-    USER_LOADING,
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -12,19 +11,23 @@ import {
     LAST_SIGNIN,
 } from '../actions/types';
 
-import axios from 'axios';
+import {
+    setProgress,
+    setProgressError,
+    setProgressSuccess,
+} from './progressActions';
 import {
     alertErrorMessage,
     alertMessage,
     snackbarMessage,
 } from './messageActions';
 
+import axios from 'axios';
+
 // check token & load user
 export const loadUser = () => (dispatch) => {
     // user loading
-    dispatch({
-        type: USER_LOADING,
-    });
+    dispatch(setProgress('user'));
     const config = {
         success: (res) => {
             dispatch({
@@ -35,6 +38,7 @@ export const loadUser = () => (dispatch) => {
                 type: USER_LOADED,
                 payload: res.data.username,
             });
+            dispatch(setProgressSuccess('user'));
             dispatch(
                 snackbarMessage(
                     `Herzlich Willkommen, ${res.data.username}!`,
@@ -46,6 +50,7 @@ export const loadUser = () => (dispatch) => {
             dispatch({
                 type: AUTH_ERROR,
             });
+            dispatch(setProgressError('user'));
         },
     };
     axios
@@ -79,6 +84,7 @@ export const register = (username, password, email) => (dispatch) => {
             dispatch({
                 type: REGISTER_SUCCESS,
             });
+            dispatch(setProgressSuccess('auth'));
         })
         .catch((err) => {
             if (err.response.status !== 401) {
@@ -109,6 +115,7 @@ export const register = (username, password, email) => (dispatch) => {
             dispatch({
                 type: REGISTER_FAIL,
             });
+            dispatch(setProgressError('auth'));
         });
 };
 
@@ -141,6 +148,7 @@ export const login = (username, password) => (dispatch) => {
                 type: LOGIN_SUCCESS,
                 payload: res.data,
             });
+            dispatch(setProgressSuccess('auth'));
             dispatch(
                 snackbarMessage(
                     `Herzlich Willkommen, ${res.data.user}!`,
@@ -152,6 +160,7 @@ export const login = (username, password) => (dispatch) => {
             dispatch({
                 type: LOGIN_FAIL,
             });
+            dispatch(setProgressError('auth'));
             dispatch(
                 alertErrorMessage(
                     `Benutzername oder Passwort ist nicht korrekt.`,
@@ -175,6 +184,7 @@ export const signout = () => (dispatch, getState) => {
             dispatch({
                 type: LOGOUT_SUCCESS,
             });
+            dispatch(setProgressSuccess('auth'));
             clearTimeout(logoutTimerId);
             dispatch(snackbarMessage(`Auf Wiedersehen!`, 'user'));
             dispatch(resetSignout());
@@ -183,6 +193,7 @@ export const signout = () => (dispatch, getState) => {
             dispatch({
                 type: LOGOUT_FAIL,
             });
+            dispatch(setProgressError('auth'));
             clearTimeout(logoutTimerId);
             dispatch(resetSignout());
         },
@@ -263,6 +274,7 @@ export const authInterceptor = () => (dispatch, getState) => {
                                     type: REFRESH_TOKEN_SUCCESS,
                                     payload: res.data,
                                 });
+                                dispatch(setProgressSuccess('auth'));
                                 axios.defaults.headers.common['Authorization'] =
                                     'Bearer ' + res.data.token;
                                 // request was successfull, new request with the old parameters and the refreshed token
@@ -291,6 +303,7 @@ export const authInterceptor = () => (dispatch, getState) => {
                             dispatch({
                                 type: AUTH_ERROR,
                             });
+                            dispatch(setProgressError('auth'));
                             return Promise.reject(error);
                         });
                 }

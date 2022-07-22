@@ -5,6 +5,7 @@ import {
     setCategories,
     setRoute,
     setType,
+    setWord,
 } from '../actions/recipeFilterActions';
 
 import { useSearchParams } from 'react-router-dom';
@@ -36,15 +37,18 @@ function Search() {
 
     // read url params
     useEffect(() => {
-        console.log('Render Search');
         const route = searchParams.get('route');
         const type = searchParams.get('typ');
+        const word = searchParams.get('wort');
         var filter = searchParams.get('filter');
         if (route) {
             dispatch(setRoute(params.route[route.toLowerCase()]));
         }
         if (type) {
             dispatch(setType(params.typ[type.toLowerCase()]));
+        }
+        if (word) {
+            dispatch(setWord(word));
         }
         if (filter) {
             filter = filter.toLowerCase().split(',');

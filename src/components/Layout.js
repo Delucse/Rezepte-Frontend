@@ -13,8 +13,9 @@ import SignOut from '../pages/SignOut';
 import Box from '@mui/material/Box';
 
 function Layout() {
-    const { loading } = useSelector((state) => state.auth);
-    // const loaded = true;
+    const loading = useSelector(
+        (state) => state.progress.loading && state.progress.type === 'user'
+    );
 
     return loading ? (
         <Loader />

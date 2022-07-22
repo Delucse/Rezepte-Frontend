@@ -12,7 +12,7 @@ import {
 } from '../actions/recipeFilterActions';
 import { resetRecipe } from '../actions/recipeActions';
 
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 
 import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
@@ -25,8 +25,14 @@ import Grid from '@mui/material/Grid';
 
 function Recipes(props) {
     const dispatch = useDispatch();
-    const loading = useSelector((state) => state.settings.loading);
-    const error = useSelector((state) => state.settings.errror);
+    const loading = useSelector(
+        (state) =>
+            state.progress.loading && state.progress.type === 'recipeFilter'
+    );
+    const error = useSelector(
+        (state) =>
+            state.progress.error && state.progress.type === 'recipeFilter'
+    );
     const user = useSelector((state) => state.auth.user);
     const word = useSelector((state) => state.recipeFilter.word);
     const sort = useSelector((state) => state.recipeFilter.sort);
@@ -38,8 +44,14 @@ function Recipes(props) {
     const [oldType, setOldType] = useState(type);
     const [oldUser, setUser] = useState(user);
 
+    const search = useLocation().search;
+
     useEffect(() => {
-        if (!(type !== oldType && word === '') && props.route === route) {
+        if (
+            search === '' &&
+            !(type !== oldType && word === '') &&
+            props.route === route
+        ) {
             dispatch(getRecipes());
         }
         setOldType(type);
@@ -61,7 +73,7 @@ function Recipes(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
-    const [searchParams /*, setSearchParams*/] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         dispatch(resetRecipe());
@@ -96,6 +108,7 @@ function Recipes(props) {
             filter = filter.map((f) => f.trim());
             dispatch(setCategories(filter));
         }
+        setSearchParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

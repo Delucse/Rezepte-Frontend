@@ -1,7 +1,6 @@
 import {
     LAST_SIGNIN,
     USER_LOADED,
-    USER_LOADING,
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -15,7 +14,6 @@ import {
 const initialState = {
     token: localStorage.getItem('token'),
     refreshToken: localStorage.getItem('refresh-token'),
-    loading: false,
     user: null,
     last: null,
 };
@@ -27,15 +25,9 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 last: action.payload,
             };
-        case USER_LOADING:
-            return {
-                ...state,
-                loading: true,
-            };
         case USER_LOADED:
             return {
                 ...state,
-                loading: false,
                 user: action.payload,
             };
         case LOGIN_SUCCESS:
@@ -45,7 +37,6 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.payload,
-                loading: false,
             };
         case AUTH_ERROR:
         case LOGIN_FAIL:
@@ -59,7 +50,6 @@ const reducer = (state = initialState, action) => {
                 token: null,
                 refreshToken: null,
                 user: null,
-                loading: false,
             };
         case REGISTER_SUCCESS:
             return {

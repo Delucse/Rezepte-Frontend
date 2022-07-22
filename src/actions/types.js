@@ -1,5 +1,4 @@
 // authentication
-export const USER_LOADING = 'USER_LOADING';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -17,9 +16,12 @@ export const SUCCESS_MESSAGE = 'SUCCESS_MESSAGE';
 export const ERROR_MESSAGE = 'ERROR_MESSAGE';
 export const RESET_MESSAGE = 'RESET_MESSAGE';
 
-// Settings
-export const ERROR = 'ERROR';
+// progress
 export const LOADING = 'LOADING';
+export const LOADING_SUCCESS = 'LOADING_SUCCESS';
+export const LOADING_ERROR = 'LOADING_ERROR';
+
+// Settings
 export const SET_COLOR = 'SET_COLOR';
 
 // Recipe

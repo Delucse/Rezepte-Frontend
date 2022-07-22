@@ -1,8 +1,6 @@
-import { ERROR, LOADING, SET_COLOR } from '../actions/types';
+import { SET_COLOR } from '../actions/types';
 
 const initialState = {
-    error: false,
-    loading: false,
     color: {
         main:
             localStorage.getItem('palette.primary.main') || 'rgb(11, 102, 35)',
@@ -15,16 +13,6 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case ERROR:
-            return {
-                ...state,
-                error: action.payload,
-            };
-        case LOADING:
-            return {
-                ...state,
-                loading: action.payload,
-            };
         case SET_COLOR:
             localStorage.setItem('palette.primary.main', action.payload.main);
             localStorage.setItem('palette.primary.light', action.payload.light);

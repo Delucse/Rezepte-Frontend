@@ -8,7 +8,7 @@ import {
     setUploaded,
 } from '../actions/recipeFormularActions';
 import { getRecipe } from '../actions/recipeActions';
-import { setError } from '../actions/settingsActions';
+import { setProgressError } from '../actions/progressActions';
 
 import { useParams } from 'react-router-dom';
 
@@ -77,7 +77,7 @@ function RecipeFormular() {
                 if (/^.{24}$/.test(id)) {
                     dispatch(getRecipe(id, true));
                 } else {
-                    dispatch(setError(true));
+                    dispatch(setProgressError('recipeFormular'));
                 }
             } else {
                 dispatch(setRecipeFormular());
