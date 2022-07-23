@@ -10,10 +10,10 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import axios from 'axios';
 
-import Fraction from '../components/Fraction';
 import NotePaper from '../components/NotePaper';
 import Portion from '../components/Recipe/Portion';
 import Images from '../components/Recipe/Images';
+import Ingredients from '../components/Recipe/Ingredients';
 import Favorite from '../components/Recipe/Favorite';
 import Share from '../components/Recipe/Share';
 import WakeLock from '../components/Recipe/WakeLock';
@@ -350,109 +350,7 @@ function Recipe() {
             </Grid>
 
             {/* Zutaten */}
-            <Grid container spacing={0}>
-                {recipe.ingredients.map((ingredient, index) => {
-                    return (
-                        <Grid
-                            item
-                            xs={12}
-                            sm={6}
-                            md={4}
-                            key={index}
-                            sx={{ marginBottom: '24px' }}
-                        >
-                            <List sx={{ lineHeight: '24px', padding: 0 }}>
-                                <ListItem disablePadding>
-                                    <Typography
-                                        variant="body1"
-                                        sx={{
-                                            fontWeight: 700,
-                                            color: (theme) =>
-                                                theme.palette.text.primary,
-                                        }}
-                                    >
-                                        {`Zutaten für ${ingredient.title}`}
-                                    </Typography>
-                                </ListItem>
-                                {ingredient.food.map((food, index) => {
-                                    return (
-                                        <ListItem disablePadding key={index}>
-                                            <ListItemIcon
-                                                sx={{
-                                                    minWidth: '25px',
-                                                    color: (theme) =>
-                                                        theme.palette.text
-                                                            .primary,
-                                                }}
-                                            >
-                                                -
-                                            </ListItemIcon>
-                                            {food.amount > 0 ? (
-                                                <ListItemIcon
-                                                    sx={{
-                                                        minWidth: '0px',
-                                                        color: (theme) =>
-                                                            theme.palette.text
-                                                                .primary,
-                                                        marginRight: '4px',
-                                                    }}
-                                                >
-                                                    <Typography
-                                                        variant="body1"
-                                                        component="div"
-                                                    >
-                                                        {recipe.portion.volume >
-                                                        0 ? (
-                                                            <Fraction
-                                                                decimal={
-                                                                    food.amount *
-                                                                    (recipe
-                                                                        .settings
-                                                                        .count /
-                                                                        recipe
-                                                                            .portion
-                                                                            .count) *
-                                                                    (recipe
-                                                                        .settings
-                                                                        .volume /
-                                                                        recipe
-                                                                            .portion
-                                                                            .volume)
-                                                                }
-                                                            />
-                                                        ) : (
-                                                            <Fraction
-                                                                decimal={
-                                                                    food.amount *
-                                                                    (recipe
-                                                                        .settings
-                                                                        .count /
-                                                                        recipe
-                                                                            .portion
-                                                                            .count)
-                                                                }
-                                                            />
-                                                        )}
-                                                    </Typography>
-                                                </ListItemIcon>
-                                            ) : null}
-                                            <ListItemText
-                                                primary={`${food.unit} ${food.aliment}`}
-                                                sx={{
-                                                    margin: 0,
-                                                    color: (theme) =>
-                                                        theme.palette.text
-                                                            .primary,
-                                                }}
-                                            />
-                                        </ListItem>
-                                    );
-                                })}
-                            </List>
-                        </Grid>
-                    );
-                })}
-            </Grid>
+            <Ingredients />
 
             <List sx={{ lineHeight: '24px', padding: 0, marginBottom: '24px' }}>
                 <ListItem disablePadding>

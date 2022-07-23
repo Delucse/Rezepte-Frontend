@@ -5,6 +5,7 @@ import { snackbarMessage, resetMessage } from '../../actions/messageActions';
 
 import IconButton from '@mui/material/IconButton';
 import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 
 import Icon from '@mdi/react';
@@ -100,7 +101,11 @@ function Share(props) {
             ariaLabel="SpeedDial basic example"
             direction="down"
             disableRipple
-            sx={{ marginBottom: '25px', height: '23px' }}
+            sx={{
+                marginBottom: '25px',
+                height: '23px',
+                background: (theme) => theme.palette.action.hover,
+            }}
             FabProps={{
                 sx: {
                     marginBottom: '9px',

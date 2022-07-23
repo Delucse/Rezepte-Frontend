@@ -71,11 +71,9 @@ function Dialog(props) {
             fullWidth={props.fullWidth}
             maxWidth={props.maxWidth}
             onClose={props.onClose}
-            sx={
-                !props.closeIcon
-                    ? { zIndex: (theme) => theme.zIndex.modal + 2 }
-                    : {}
-            }
+            sx={{
+                zIndex: (theme) => theme.zIndex.modal + 2,
+            }}
         >
             <DialogTitle
                 onClose={props.onClose}

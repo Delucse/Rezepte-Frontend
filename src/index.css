@@ -94,3 +94,7 @@ code {
     margin-bottom: 6px !important;
     min-height: 50px !important;
 }
+
+#aliment:hover #wikipedia {
+    visibility: visible !important;
+}

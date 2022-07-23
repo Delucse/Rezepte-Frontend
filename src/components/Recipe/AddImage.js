@@ -165,6 +165,7 @@ function AddImage(props) {
             <Dialog
                 open={open}
                 onClose={() => setOpen(false)}
+                closeIcon
                 title={'Bild hinzufügen'}
                 fullWidth
                 content={
