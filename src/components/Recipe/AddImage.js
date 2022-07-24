@@ -122,7 +122,7 @@ function AddImage(props) {
 
         const config = {
             method: 'POST',
-            url: `${process.env.REACT_APP_API_URL}/recipe/${id}/image`,
+            url: `${process.env.REACT_APP_API_URL}/recipe/image/${id}`,
             data: body,
             headers: {
                 'Content-Type': 'multipart/form-data', // necessary to upload files

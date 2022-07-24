@@ -34,6 +34,7 @@ import {
     mdiHome,
     mdiMagnify,
     mdiQrcodeScan,
+    mdiImageMultipleOutline,
 } from '@mdi/js';
 
 import { useTheme } from '@mui/material';
@@ -119,6 +120,12 @@ const userMenue = [
         link: '/rezepte/formular',
         auth: true,
         icon: mdiFoodForkDrink,
+    },
+    {
+        text: 'Meine Bilder',
+        link: '/bilder',
+        auth: true,
+        icon: mdiImageMultipleOutline,
     },
     { text: 'Konto', link: '/konto', auth: true, icon: mdiFolderAccount },
     { text: 'Einstellungen', link: '/einstellungen', icon: mdiCog },

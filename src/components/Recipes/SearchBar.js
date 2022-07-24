@@ -48,7 +48,7 @@ function SearchBar(props) {
                 </AppBar>
             </HideOnScroll>
             <Box
-                style={{
+                sx={{
                     position: 'fixed',
                     bottom: '48px' /* drawerBleeding - 2px */,
                     left: 0,

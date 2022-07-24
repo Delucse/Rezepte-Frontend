@@ -5,7 +5,6 @@ import { snackbarMessage, resetMessage } from '../../actions/messageActions';
 
 import IconButton from '@mui/material/IconButton';
 import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 
 import Icon from '@mdi/react';

@@ -126,6 +126,11 @@ const routes = [
         breadcrumbs: [{ title: <RecipeSearch /> }],
     },
     {
+        pathname: /^\/bilder$/i,
+        params: [],
+        breadcrumbs: [{ title: 'Meine Bilder' }],
+    },
+    {
         pathname: /^\/konto$/i,
         params: [],
         breadcrumbs: [{ title: 'Konto' }],

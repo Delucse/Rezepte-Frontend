@@ -1,20 +1,10 @@
 import React from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import Fraction from '../../components/Fraction';
 
-import {
-    Grid,
-    Box,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Chip,
-    Typography,
-    IconButton,
-} from '@mui/material';
+import { Grid, List, ListItem, ListItemIcon, Typography } from '@mui/material';
 import Wikipedia from './Wikipedia';
 
 function Ingredients() {

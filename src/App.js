@@ -19,6 +19,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Search from './pages/Search';
 import Settings from './pages/Settings';
+import Images from './pages/Images';
 
 function App() {
     const dispatch = useDispatch();
@@ -106,7 +107,16 @@ function App() {
                         />
                         <Route index element={<Recipes route="" />} />
                     </Route>
-                    <Route path="suche" element={<Search />} />
+                    <Route exact path="suche" element={<Search />} />
+                    <Route
+                        exact
+                        path="bilder"
+                        element={
+                            <PrivateRoute>
+                                <Images />
+                            </PrivateRoute>
+                        }
+                    />
                     <Route path="konto" element={<div>Konto TODO</div>} />
                     <Route path="einstellungen" element={<Settings />} />
                     <Route path="qr" element={<div>QR-Code TODO</div>} />
