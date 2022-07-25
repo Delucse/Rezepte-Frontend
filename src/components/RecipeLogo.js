@@ -6,7 +6,7 @@ function RecipeLogo(props) {
     const theme = useTheme();
     const main = theme.palette.primary.main;
     const light = theme.palette.primary.light;
-    const grey = '#595959';
+    const grey = theme.palette.action.disabled;
 
     return (
         <div style={props.style}>

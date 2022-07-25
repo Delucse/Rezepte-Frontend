@@ -48,8 +48,6 @@ Object.keys(params.filter).forEach((key) => {
     filterParams = filterParams.concat(params.filter[key]);
 });
 
-console.log(filterParams);
-
 function Recipe() {
     const { id } = useParams();
     const navigate = useNavigate();

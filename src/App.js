@@ -124,6 +124,7 @@ function App() {
                     />
                     <Route path="konto" element={<div>Konto TODO</div>} />
                     <Route path="einstellungen" element={<Settings />} />
+                    <Route path="faq" element={<div>FAQ TODO</div>} />
                     <Route path="qr" element={<div>QR-Code TODO</div>} />
                     {!background && (
                         <Route path="anmeldung" element={<SignIn />} />

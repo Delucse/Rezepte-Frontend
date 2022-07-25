@@ -155,6 +155,11 @@ const routes = [
         breadcrumbs: [{ title: 'Einstellungen' }],
     },
     {
+        pathname: /^\/faq$/i,
+        params: [],
+        breadcrumbs: [{ title: 'FAQ' }],
+    },
+    {
         pathname: /^\/qr$/i,
         params: [],
         breadcrumbs: [{ title: 'QR-Code auslesen' }],

@@ -36,6 +36,7 @@ import {
     mdiQrcodeScan,
     mdiImageMultipleOutline,
     mdiChefHat,
+    mdiFrequentlyAskedQuestions,
 } from '@mdi/js';
 
 import { useTheme } from '@mui/material';
@@ -143,6 +144,7 @@ const userMenue = [
         background: true,
         icon: mdiLoginVariant,
     },
+    { text: 'FAQ', link: '/faq', icon: mdiFrequentlyAskedQuestions },
 ];
 
 function Navbar() {
