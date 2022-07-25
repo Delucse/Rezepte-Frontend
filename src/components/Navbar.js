@@ -35,6 +35,7 @@ import {
     mdiMagnify,
     mdiQrcodeScan,
     mdiImageMultipleOutline,
+    mdiChefHat,
 } from '@mdi/js';
 
 import { useTheme } from '@mui/material';
@@ -98,6 +99,12 @@ const menue = [
         onClickDispatch: resetFilterSettings,
         icon: mdiFood,
     },
+    {
+        text: 'Grundrezepte',
+        link: '/rezepte/basis',
+        onClickDispatch: resetFilterSettings,
+        icon: mdiChefHat,
+    },
 ];
 
 const userMenue = [
@@ -154,6 +161,7 @@ function Navbar() {
             <AppBar
                 position="fixed"
                 sx={{ zIndex: (theme) => theme.zIndex.modal + 1 }}
+                enableColorOnDark
             >
                 <Toolbar
                     sx={{

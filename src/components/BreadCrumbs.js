@@ -80,6 +80,15 @@ const routes = [
         ],
     },
     {
+        pathname: /^\/rezepte\/basis$/i,
+        params: [],
+        breadcrumbs: [
+            { title: <RecipeSearch />, pathname: '/suche' },
+            { title: 'Rezepte', pathname: '/rezepte' },
+            { title: 'Grundrezepte' },
+        ],
+    },
+    {
         pathname: /^\/rezepte\/.{24}$/i,
         params: ['id'],
         breadcrumbs: [
@@ -94,6 +103,11 @@ const routes = [
                 title: 'Favoriten',
                 pathname: '/rezepte/favoriten',
                 condition: 'favoriten',
+            },
+            {
+                title: 'Grundrezepte',
+                pathname: '/rezepte/basis',
+                condition: 'basis',
             },
             { title: <GetRecipeTitle /> },
         ],

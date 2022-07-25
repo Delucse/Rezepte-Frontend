@@ -48,6 +48,8 @@ export const getRecipes = () => (dispatch, getState) => {
                     ? '/favorite'
                     : route === 'nutzer'
                     ? '/user'
+                    : route === 'basis'
+                    ? '/basic'
                     : ''
             }?search=${word}&type=${type}&keywords=${categories.join(
                 ','

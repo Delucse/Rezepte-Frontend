@@ -105,6 +105,11 @@ function App() {
                                 </PrivateRoute>
                             }
                         />
+                        <Route
+                            exact
+                            path="basis"
+                            element={<Recipes route="basis" />}
+                        />
                         <Route index element={<Recipes route="" />} />
                     </Route>
                     <Route exact path="suche" element={<Search />} />
