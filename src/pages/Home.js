@@ -6,7 +6,7 @@ import HowTo from '../components/Home/HowTo';
 import RecipeLogo from '../components/RecipeLogo';
 
 import { Grid, Box } from '@mui/material';
-import Statistics from '../components/Home/Statistics';
+// import Statistics from '../components/Home/Statistics';
 
 import Icon from '@mdi/react';
 import { mdiFrequentlyAskedQuestions } from '@mdi/js';
