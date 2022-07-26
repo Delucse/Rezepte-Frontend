@@ -136,7 +136,6 @@ const userMenue = [
         icon: mdiImageMultipleOutline,
     },
     { text: 'Konto', link: '/konto', auth: true, icon: mdiFolderAccount },
-    { text: 'Einstellungen', link: '/einstellungen', icon: mdiCog },
     {
         text: 'Anmeldung',
         link: '/anmeldung',
@@ -144,6 +143,8 @@ const userMenue = [
         background: true,
         icon: mdiLoginVariant,
     },
+    { text: 'Einstellungen', link: '/einstellungen', icon: mdiCog },
+
     { text: 'FAQ', link: '/faq', icon: mdiFrequentlyAskedQuestions },
 ];
 

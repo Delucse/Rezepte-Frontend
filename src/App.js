@@ -20,6 +20,7 @@ import SignUp from './pages/SignUp';
 import Search from './pages/Search';
 import Settings from './pages/Settings';
 import Images from './pages/Images';
+import Faq from './pages/Faq';
 
 function App() {
     const dispatch = useDispatch();
@@ -124,7 +125,7 @@ function App() {
                     />
                     <Route path="konto" element={<div>Konto TODO</div>} />
                     <Route path="einstellungen" element={<Settings />} />
-                    <Route path="faq" element={<div>FAQ TODO</div>} />
+                    <Route path="faq" element={<Faq />} />
                     <Route path="qr" element={<div>QR-Code TODO</div>} />
                     {!background && (
                         <Route path="anmeldung" element={<SignIn />} />
