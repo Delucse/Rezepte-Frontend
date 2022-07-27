@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import MuiAutocomplete, {
     createFilterOptions,
 } from '@mui/material/Autocomplete';
-import { TextField, InputAdornment } from '@mui/material';
+import { TextField, InputAdornment, Popper } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiChevronDown, mdiClose } from '@mdi/js';
@@ -135,6 +135,15 @@ function Autocomplete(props) {
                     },
                 },
             }}
+            PopperComponent={({ style, ...props }) => (
+                <Popper
+                    {...props}
+                    style={{
+                        ...style,
+                        zIndex: 99999,
+                    }}
+                />
+            )}
             clearIcon={<Icon path={mdiClose} size={1} />}
             popupIcon={<Icon path={mdiChevronDown} size={1.1667} />}
             clearText="löschen"

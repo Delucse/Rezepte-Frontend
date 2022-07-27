@@ -9,7 +9,7 @@ import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 
 import Box from '@mui/material/Box';
-import MobileStepper from '@mui/material/MobileStepper';
+import IconButton from '@mui/material/IconButton';
 
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
@@ -76,20 +76,38 @@ function Images({ pictures, title }) {
     };
 
     return (
-        <Box sx={{ position: 'relative' }}>
+        <Box id="slider" sx={{ position: 'relative' }}>
             {maxSteps > 1 ? (
-                <Box
-                    id="recipeImages"
-                    sx={{
-                        position: 'relative',
-                        color: 'transparent',
-                        borderColor: 'transparent',
-                        '&:hover': {
+                <Box>
+                    <IconButton
+                        id="sliderBack"
+                        sx={{
+                            visibility: 'hidden',
+                            padding: '1px',
+                            borderRadius: '50%',
+                            border: `1px solid`,
                             color: (theme) => theme.palette.primary.main,
                             borderColor: (theme) => theme.palette.primary.main,
-                        },
-                    }}
-                >
+                            background: (theme) =>
+                                theme.palette.background.default,
+                            position: 'absolute',
+                            top: 'calc(50% - 12px)',
+                            left: '8px',
+                            zIndex: 1,
+                            '&:hover': {
+                                color: (theme) =>
+                                    theme.palette.background.default,
+                                borderColor: (theme) =>
+                                    theme.palette.background.default,
+                                background: (theme) =>
+                                    theme.palette.primary.main,
+                            },
+                        }}
+                        disableRipple
+                        onClick={handleBack}
+                    >
+                        <Icon path={mdiChevronLeft} size={1} />
+                    </IconButton>
                     <CircularSwipeableViews
                         axis={'x'}
                         index={activeStep}
@@ -99,58 +117,76 @@ function Images({ pictures, title }) {
                         overscanSlideAfter={1}
                         overscanSlideBefore={1}
                     />
-                    <Box sx={{ position: 'absolute', top: 0, width: '100%' }}>
-                        <MobileStepper
-                            steps={maxSteps}
-                            position="static"
-                            activeStep={activeStep}
-                            nextButton={
-                                <Icon
-                                    path={mdiChevronRight}
-                                    size={1}
-                                    onClick={handleNext}
-                                    style={{
-                                        cursor: 'pointer',
-                                        padding: '1px',
-                                        borderRadius: '50%',
-                                        border: `1px solid`,
-                                        borderColor: 'inherit',
-                                        position: 'absolute',
-                                        top: '108px',
-                                        right: '8px',
-                                    }}
-                                />
-                            }
-                            backButton={
-                                <Icon
-                                    path={mdiChevronLeft}
-                                    size={1}
-                                    onClick={handleBack}
-                                    style={{
-                                        cursor: 'pointer',
-                                        padding: '1px',
-                                        borderRadius: '50%',
-                                        border: `1px solid`,
-                                        borderColor: 'inherit',
-                                        position: 'absolute',
-                                        top: '108px',
-                                    }}
-                                />
-                            }
-                            sx={{
-                                position: 'relative',
-                                height: 0,
-                                color: 'inherit',
-                                borderColor: 'inherit',
-                                background: 'transparent',
-                                '.MuiMobileStepper-dots': {
-                                    position: 'absolute',
-                                    bottom: -216,
-                                    width: 'calc(100% - 2 * 8px)',
-                                    justifyContent: 'center',
-                                },
-                            }}
-                        />
+
+                    <IconButton
+                        id="sliderNext"
+                        sx={{
+                            visibility: 'hidden',
+                            padding: '1px',
+                            borderRadius: '50%',
+                            border: `1px solid`,
+                            color: (theme) => theme.palette.primary.main,
+                            borderColor: (theme) => theme.palette.primary.main,
+                            background: (theme) =>
+                                theme.palette.background.default,
+                            position: 'absolute',
+                            top: 'calc(50% - 12px)',
+                            right: '8px',
+                            zIndex: 1,
+                            '&:hover': {
+                                color: (theme) =>
+                                    theme.palette.background.default,
+                                borderColor: (theme) =>
+                                    theme.palette.background.default,
+                                background: (theme) =>
+                                    theme.palette.primary.main,
+                            },
+                        }}
+                        disableRipple
+                        onClick={handleNext}
+                    >
+                        <Icon path={mdiChevronRight} size={1} />
+                    </IconButton>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            bottom: '8px',
+                            height: '7px',
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        {pictures.map((picture, idx) => (
+                            <Box
+                                key={idx}
+                                sx={{
+                                    backgroundColor:
+                                        activeStep === idx
+                                            ? (theme) =>
+                                                  theme.palette.primary.main
+                                            : 'none',
+                                    borderColor: (theme) =>
+                                        theme.palette.primary.main,
+                                    width: '7px',
+                                    height: '7px',
+                                    borderWidth: '1px',
+                                    borderStyle: 'solid',
+                                    borderRadius: '50%',
+                                    marginLeft: idx === 0 ? 0 : '6px',
+                                    cursor:
+                                        activeStep !== idx
+                                            ? 'pointer'
+                                            : 'default',
+                                }}
+                                onClick={
+                                    activeStep !== idx
+                                        ? () => setActiveStep(idx)
+                                        : null
+                                }
+                            />
+                        ))}
                     </Box>
                 </Box>
             ) : (

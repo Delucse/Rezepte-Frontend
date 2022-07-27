@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import HowTo from '../components/Home/HowTo';
 import RecipeLogo from '../components/RecipeLogo';
+import LastRecipes from '../components/Home/LastRecipes';
 
 import { Grid, Box } from '@mui/material';
 // import Statistics from '../components/Home/Statistics';
@@ -21,8 +22,8 @@ function Square(props) {
                             aspectRatio: '1',
                             border: (theme) =>
                                 `1px solid ${theme.palette.primary.light}`,
-                            width: '94%',
-                            padding: '3%',
+                            width: props.noPadding ? '100%' : '94%',
+                            padding: props.noPadding ? 0 : '3%',
                             '&:hover': {
                                 borderColor: (theme) =>
                                     theme.palette.primary.main,
@@ -38,8 +39,8 @@ function Square(props) {
                         aspectRatio: '1',
                         border: (theme) =>
                             `1px solid ${theme.palette.primary.light}`,
-                        width: '94%',
-                        padding: '3%',
+                        width: props.noPadding ? '100%' : '94%',
+                        padding: props.noPadding ? 0 : '3%',
                         '&:hover': {
                             borderColor: (theme) => theme.palette.primary.main,
                         },
@@ -57,6 +58,7 @@ const themes = [
         link: '/rezepte',
         component: <RecipeLogo style={{ height: '100%', width: '100%' }} />,
     },
+    { component: <LastRecipes />, noPadding: true },
     // { component: <Statistics /> },
     { link: '/rezepte/basis', component: <HowTo /> },
     {
@@ -90,7 +92,11 @@ function Home() {
             >
                 {themes.map((theme, index) => {
                     return (
-                        <Square key={index} link={theme.link}>
+                        <Square
+                            key={index}
+                            link={theme.link}
+                            noPadding={theme.noPadding}
+                        >
                             {theme.component}
                         </Square>
                     );

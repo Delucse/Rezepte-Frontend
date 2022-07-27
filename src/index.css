@@ -98,3 +98,13 @@ code {
 #aliment:hover #wikipedia {
     visibility: visible !important;
 }
+
+#slider:hover #sliderNext {
+    visibility: visible !important;
+}
+#slider:hover #sliderBack {
+    visibility: visible !important;
+}
+#slider:hover #sliderCount {
+    visibility: visible !important;
+}

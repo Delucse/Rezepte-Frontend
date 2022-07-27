@@ -51,6 +51,7 @@ function Overview(props) {
     };
 
     const handleClick = (event) => {
+        event.stopPropagation();
         setAnchorEl(event.currentTarget);
     };
 
@@ -59,25 +60,31 @@ function Overview(props) {
     };
 
     return (
-        <div>
-            <Tape
-                rotate={props.rotate}
-                top
-                heart={user}
-                check={props.favorite}
-                onClick={
-                    user
-                        ? props.favorite
-                            ? () => dispatch(deleteRecipesFavorite(props.id))
-                            : () => dispatch(setRecipesFavorite(props.id))
-                        : null
-                }
-            />
+        <div style={{ height: props.fullscreen ? '100%' : 'inherit' }}>
+            {props.fullscreen ? null : (
+                <Tape
+                    rotate={props.rotate}
+                    top
+                    heart={user}
+                    check={props.favorite}
+                    onClick={
+                        user
+                            ? props.favorite
+                                ? () =>
+                                      dispatch(deleteRecipesFavorite(props.id))
+                                : () => dispatch(setRecipesFavorite(props.id))
+                            : null
+                    }
+                />
+            )}
             <Box
                 sx={{
-                    margin: '2px 0',
+                    height: 'inherit',
+                    margin: !props.fullscreen ? '2px 0' : 0,
                     background: (theme) => theme.palette.action.hover,
-                    boxShadow: '0 1px 4px hsla(0,0%,0%,.25)',
+                    boxShadow: props.fullscreen
+                        ? 'none'
+                        : '0 1px 4px hsla(0,0%,0%,.25)',
                     position: 'relative',
                     backgroundImage: (theme) =>
                         `radial-gradient(transparent 21%, transparent 21%), radial-gradient(transparent 10%, transparent 12%), linear-gradient(to top, hsla(0,0%,0%,0) 0%, hsla(0,0%,0%,0) 95%, ${rgbaToRgb(
@@ -92,31 +99,31 @@ function Overview(props) {
                     backgroundPosition: '0px 6px, 6px 5px, 50% 18px',
                     backgroundRepeat: 'repeat-y, repeat-y, repeat',
                     backgroundSize: '48px 48px, 48px 48px, 24px 24px',
+                    cursor: 'pointer',
                 }}
+                onClick={() => navigate(`/rezepte/${props.id}`)}
             >
                 <Box
                     sx={{
-                        height: 'calc(24px * 10)',
+                        height: !props.fullscreen
+                            ? 'calc(24px * 10)'
+                            : 'calc(100% - 64px)',
                         width: 'calc(100%)',
-                        background: (theme) => theme.palette.background.default,
                         position: 'relative',
-                        cursor: 'pointer',
+                        backgroundImage: `url(${props.picture})`,
+                        backgroundSize: 'cover',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'center center',
                     }}
-                    onClick={() => navigate(`/rezepte/${props.id}`)}
                 >
                     <img
+                        style={{ display: 'none' }}
+                        alt=""
                         src={props.picture}
-                        alt={props.title}
-                        style={{
-                            height: '100%',
-                            width: '100%',
-                            objectFit: 'cover',
-                        }}
-                        onError={({ currentTarget }) => {
-                            currentTarget.onerror = null; // prevents looping
-                            currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
-                            currentTarget.style =
-                                'height: 100%; width: 100%; object-fit: cover; filter: grayscale(1);';
+                        onError={(e) => {
+                            e.currentTarget.parentNode.style.backgroundImage = `url(${process.env.PUBLIC_URL}/logo512.png)`;
+                            e.currentTarget.parentNode.style.filter =
+                                'grayscale(1)';
                         }}
                     />
                     <Ripped />
@@ -129,26 +136,35 @@ function Overview(props) {
                             fontSize: '20px',
                             lineHeight: '24px',
                             flexGrow: 1,
-                            marginRight: '5px',
+                            marginRight: !props.fullscreen ? '5px' : 0,
                             color: (theme) => theme.palette.text.primary,
+                            overflow: !props.fullscreen ? 'inherit' : 'hidden',
+                            textOverflow: !props.fullscreen
+                                ? 'inherit'
+                                : 'ellipsis',
+                            whiteSpace: !props.fullscreen
+                                ? 'inherit'
+                                : 'nowrap',
                         }}
                     >
                         {props.title}
                     </Box>
-                    <Button
-                        sx={{
-                            float: 'right',
-                            height: '24px',
-                            borderRadius: 0,
-                            boxShadow: 'none',
-                            minWidth: '20px',
-                            padding: 0,
-                        }}
-                        onClick={handleClick}
-                        disableRipple
-                    >
-                        <Icon path={mdiDotsHorizontal} size={1} />
-                    </Button>
+                    {!props.fullscreen ? (
+                        <Button
+                            sx={{
+                                float: 'right',
+                                height: '24px',
+                                borderRadius: 0,
+                                boxShadow: 'none',
+                                minWidth: '20px',
+                                padding: 0,
+                            }}
+                            onClick={handleClick}
+                            disableRipple
+                        >
+                            <Icon path={mdiDotsHorizontal} size={1} />
+                        </Button>
+                    ) : null}
                 </Box>
             </Box>
             <Menu
