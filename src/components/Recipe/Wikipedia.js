@@ -26,10 +26,10 @@ function Wikipedia(props) {
             )
                 .then((response) => response.json())
                 .then((data) => {
-                    if (data.extract && data.thumbnail) {
+                    if (data.extract) {
                         setContent({
                             text: data.extract,
-                            image: data.thumbnail.source,
+                            image: data.thumbnail && data.thumbnail.source,
                             date: data.timestamp,
                             url: data.content_urls.desktop.page,
                             loading: false,

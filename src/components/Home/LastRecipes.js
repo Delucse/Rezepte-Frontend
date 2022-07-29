@@ -81,13 +81,13 @@ function LastRecipes() {
                     border: `1px solid`,
                     color: (theme) => theme.palette.primary.main,
                     borderColor: (theme) => theme.palette.primary.main,
-                    background: (theme) => theme.palette.background.default,
+                    background: (theme) => theme.palette.action.hover,
                     position: 'absolute',
                     top: 'calc(50% - 24px)',
                     left: '8px',
                     zIndex: 1,
                     '&:hover': {
-                        color: (theme) => theme.palette.background.default,
+                        color: (theme) => theme.palette.action.hover,
                         borderColor: (theme) =>
                             theme.palette.background.default,
                         background: (theme) => theme.palette.primary.main,
@@ -120,15 +120,14 @@ function LastRecipes() {
                     border: `1px solid`,
                     color: (theme) => theme.palette.primary.main,
                     borderColor: (theme) => theme.palette.primary.main,
-                    background: (theme) => theme.palette.background.default,
+                    background: (theme) => theme.palette.action.hover,
                     position: 'absolute',
                     top: 'calc(50% - 24px)',
                     right: '8px',
                     zIndex: 1,
                     '&:hover': {
-                        color: (theme) => theme.palette.background.default,
-                        borderColor: (theme) =>
-                            theme.palette.background.default,
+                        color: (theme) => theme.palette.action.hover,
+                        borderColor: (theme) => theme.palette.action.hover,
                         background: (theme) => theme.palette.primary.main,
                     },
                 }}

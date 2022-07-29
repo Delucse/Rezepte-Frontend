@@ -16,6 +16,7 @@ import Images from '../components/Recipe/Images';
 import Ingredients from '../components/Recipe/Ingredients';
 import Favorite from '../components/Recipe/Favorite';
 import Share from '../components/Recipe/Share';
+import Pdf from '../components/Recipe/Pdf';
 import WakeLock from '../components/Recipe/WakeLock';
 import Loader from '../components/Loader';
 
@@ -47,6 +48,15 @@ var filterParams = [];
 Object.keys(params.filter).forEach((key) => {
     filterParams = filterParams.concat(params.filter[key]);
 });
+
+const msToHoursAndMinutes = (time) => {
+    var t = time / 1000 / 60 / 60;
+    var hour = Math.trunc(t);
+    var minute = Math.trunc((t - hour) * 60);
+    return `${hour > 0 ? `${hour} Stunde${hour === 1 ? '' : 'n'} ` : ''}${
+        minute > 0 ? `${minute} Minute${minute === 1 ? '' : 'n'}` : ''
+    }`;
+};
 
 function Recipe() {
     const { id } = useParams();
@@ -264,83 +274,93 @@ function Recipe() {
                         ) : null}
                     </div>
                     <div style={{ marginBottom: '24px' }}>
-                        <Box
-                            title="Zubereitungzeit"
-                            sx={{
-                                '&:hover': {
+                        {recipe.time.preparation > 0 ? (
+                            <Box
+                                title="Zubereitungzeit"
+                                sx={{
+                                    '&:hover': {
+                                        color: (theme) =>
+                                            theme.palette.primary.light,
+                                    },
                                     color: (theme) =>
-                                        theme.palette.primary.light,
-                                },
-                                color: (theme) => theme.palette.primary.main,
-                                marginRight: '10px',
-                                display: 'flex',
-                            }}
-                        >
-                            <Icon
-                                path={mdiClockOutline}
-                                size={1}
-                                style={{
-                                    color: 'inherit',
+                                        theme.palette.primary.main,
                                     marginRight: '10px',
-                                    width: '24px',
+                                    display: 'flex',
                                 }}
-                            />
-                            <Typography variant="body1">
-                                Zubereitungzeit:{' '}
-                                {recipe.time.preparation / 1000 / 60 / 60}{' '}
-                                Stunden
-                            </Typography>
-                        </Box>
-                        <Box
-                            title="Wartezeit"
-                            sx={{
-                                '&:hover': {
+                            >
+                                <Icon
+                                    path={mdiClockOutline}
+                                    size={1}
+                                    style={{
+                                        color: 'inherit',
+                                        marginRight: '10px',
+                                        width: '24px',
+                                    }}
+                                />
+                                <Typography variant="body1">
+                                    Zubereitungzeit:{' '}
+                                    {msToHoursAndMinutes(
+                                        recipe.time.preparation
+                                    )}
+                                </Typography>
+                            </Box>
+                        ) : null}
+                        {recipe.time.resting > 0 ? (
+                            <Box
+                                title="Wartezeit"
+                                sx={{
+                                    '&:hover': {
+                                        color: (theme) =>
+                                            theme.palette.primary.light,
+                                    },
                                     color: (theme) =>
-                                        theme.palette.primary.light,
-                                },
-                                color: (theme) => theme.palette.primary.main,
-                                marginRight: '10px',
-                                display: 'flex',
-                            }}
-                        >
-                            <Icon
-                                path={mdiClockOutline}
-                                size={1}
-                                style={{
-                                    color: 'inherit',
+                                        theme.palette.primary.main,
                                     marginRight: '10px',
+                                    display: 'flex',
                                 }}
-                            />
-                            <Typography variant="body1">
-                                Wartezeit:{' '}
-                                {recipe.time.resting / 1000 / 60 / 60} Stunden
-                            </Typography>
-                        </Box>
-                        <Box
-                            title="Koch-/Backzeit"
-                            sx={{
-                                '&:hover': {
+                            >
+                                <Icon
+                                    path={mdiClockOutline}
+                                    size={1}
+                                    style={{
+                                        color: 'inherit',
+                                        marginRight: '10px',
+                                    }}
+                                />
+                                <Typography variant="body1">
+                                    Wartezeit:{' '}
+                                    {msToHoursAndMinutes(recipe.time.resting)}
+                                </Typography>
+                            </Box>
+                        ) : null}
+                        {recipe.time.baking > 0 ? (
+                            <Box
+                                title="Koch-/Backzeit"
+                                sx={{
+                                    '&:hover': {
+                                        color: (theme) =>
+                                            theme.palette.primary.light,
+                                    },
                                     color: (theme) =>
-                                        theme.palette.primary.light,
-                                },
-                                color: (theme) => theme.palette.primary.main,
-                                marginRight: '10px',
-                                display: 'flex',
-                            }}
-                        >
-                            <Icon
-                                path={mdiClockOutline}
-                                size={1}
-                                style={{
-                                    color: 'inherit',
+                                        theme.palette.primary.main,
                                     marginRight: '10px',
+                                    display: 'flex',
                                 }}
-                            />
-                            <Typography variant="body1">
-                                Koch-/Backzeit:{' '}
-                                {recipe.time.baking / 1000 / 60 / 60} Stunden
-                            </Typography>
-                        </Box>
+                            >
+                                <Icon
+                                    path={mdiClockOutline}
+                                    size={1}
+                                    style={{
+                                        color: 'inherit',
+                                        marginRight: '10px',
+                                    }}
+                                />
+                                <Typography variant="body1">
+                                    Backzeit:{' '}
+                                    {msToHoursAndMinutes(recipe.time.baking)}
+                                </Typography>
+                            </Box>
+                        ) : null}
                     </div>
                     {/* Portion */}
                     <Portion />
@@ -446,6 +466,7 @@ function Recipe() {
                         {user ? <Favorite check={recipe.favorite} /> : null}
                         <WakeLock />
                         <Share title={recipe.title} id={recipe.id} />
+                        <Pdf />
                     </Box>
                     {recipe.user && user === recipe.user ? (
                         <Box
