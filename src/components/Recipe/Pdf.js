@@ -66,7 +66,30 @@ function Steps({ steps, style }) {
     );
 }
 
-function Ingredients({ theme, ingredients, factor, style }) {
+function Ingredients({ theme, ingredients, settings, portion, style }) {
+    const getAmount = (amount) => {
+        var calculatedAmount = amount * (settings.count / portion.count);
+        if (portion.volume > 0) {
+            calculatedAmount =
+                calculatedAmount * (settings.volume / portion.volume);
+        }
+        if (settings.rounded) {
+            var int = amount.toString().split('.')[0];
+            var decimal = amount.toString().split('.')[1];
+            var intDigits =
+                int && int.length === 1 ? 2 : int.length === 2 ? 1 : 0;
+            var decimalDigits = decimal ? decimal.length + 1 : 0;
+            return calculatedAmount.toLocaleString('de-De', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: Math.max(intDigits, decimalDigits),
+            });
+        }
+        return calculatedAmount.toLocaleString('de-De', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 20,
+        });
+    };
+
     return (
         <View style={[style, { flexDirection: 'column' }]}>
             {ingredients.map((ingredient, index) => (
@@ -107,7 +130,7 @@ function Ingredients({ theme, ingredients, factor, style }) {
                             <Text style={{ flex: 1 }}>
                                 {food.amount === 0
                                     ? ''
-                                    : `${food.amount * factor} `}
+                                    : `${getAmount(food.amount)} `}
                                 {food.unit === ' ' ? '' : `${food.unit} `}
                                 {food.aliment}
                             </Text>
@@ -309,14 +332,8 @@ function PdfDocument({ theme, qr, recipe }) {
                     <Ingredients
                         theme={theme}
                         ingredients={recipe.ingredients}
-                        factor={
-                            recipe.portion.volume > 0
-                                ? (recipe.settings.count /
-                                      recipe.portion.count) *
-                                  (recipe.settings.volume /
-                                      recipe.portion.volume)
-                                : recipe.settings.count / recipe.portion.count
-                        }
+                        portion={recipe.portion}
+                        settings={recipe.settings}
                         style={{
                             width: '35%',
                             paddingRight: '10px',

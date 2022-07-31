@@ -21,6 +21,7 @@ const initialState = {
     settings: {
         count: 0,
         volume: 0,
+        rounded: true,
     },
 };
 

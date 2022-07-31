@@ -2,9 +2,16 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
-import Fraction from '../../components/Fraction';
+// import Fraction from '../../components/Fraction';
 
-import { Grid, List, ListItem, ListItemIcon, Typography } from '@mui/material';
+import {
+    Grid,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Typography,
+} from '@mui/material';
 import Wikipedia from './Wikipedia';
 
 function Ingredients() {
@@ -12,18 +19,34 @@ function Ingredients() {
     const portion = useSelector((state) => state.recipe.portion);
     const settings = useSelector((state) => state.recipe.settings);
 
+    const getAmount = (amount) => {
+        var calculatedAmount = amount * (settings.count / portion.count);
+        if (portion.volume > 0) {
+            calculatedAmount =
+                calculatedAmount * (settings.volume / portion.volume);
+        }
+        if (settings.rounded) {
+            var int = amount.toString().split('.')[0];
+            var decimal = amount.toString().split('.')[1];
+            var intDigits =
+                int && int.length === 1 ? 2 : int.length === 2 ? 1 : 0;
+            var decimalDigits = decimal ? decimal.length + 1 : 0;
+            return calculatedAmount.toLocaleString('de-De', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: Math.max(intDigits, decimalDigits),
+            });
+        }
+        return calculatedAmount.toLocaleString('de-De', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 20,
+        });
+    };
+
     return (
-        <Grid container spacing={0}>
+        <Grid container spacing={3}>
             {ingredients.map((ingredient, index) => {
                 return (
-                    <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        key={index}
-                        sx={{ marginBottom: '24px' }}
-                    >
+                    <Grid item xs={12} sm={6} md={4} key={index}>
                         <List sx={{ lineHeight: '24px', padding: 0 }}>
                             <ListItem disablePadding>
                                 <Typography
@@ -39,7 +62,11 @@ function Ingredients() {
                             </ListItem>
                             {ingredient.food.map((food, index) => {
                                 return (
-                                    <ListItem disablePadding key={index}>
+                                    <ListItem
+                                        disablePadding
+                                        key={index}
+                                        sx={{ alignItems: 'start' }}
+                                    >
                                         <ListItemIcon
                                             sx={{
                                                 minWidth: '25px',
@@ -49,70 +76,38 @@ function Ingredients() {
                                         >
                                             -
                                         </ListItemIcon>
-                                        {food.amount > 0 ? (
-                                            <ListItemIcon
-                                                id="amount"
-                                                sx={{
-                                                    minWidth: '0px',
-                                                    color: (theme) =>
-                                                        theme.palette.text
-                                                            .primary,
-                                                    marginRight: '4px',
-                                                }}
-                                            >
-                                                <Typography
-                                                    variant="body1"
-                                                    component="div"
-                                                >
-                                                    {portion.volume > 0 ? (
-                                                        <Fraction
-                                                            decimal={
-                                                                food.amount *
-                                                                (settings.count /
-                                                                    portion.count) *
-                                                                (settings.volume /
-                                                                    portion.volume)
-                                                            }
-                                                        />
-                                                    ) : (
-                                                        <Fraction
-                                                            decimal={
-                                                                food.amount *
-                                                                (settings.count /
-                                                                    portion.count)
-                                                            }
-                                                        />
-                                                    )}
-                                                </Typography>
-                                            </ListItemIcon>
-                                        ) : null}
-                                        {food.unit !== ' ' ? (
-                                            <ListItemIcon
-                                                id="unit"
-                                                sx={{
-                                                    minWidth: '0px',
-                                                    color: (theme) =>
-                                                        theme.palette.text
-                                                            .primary,
-                                                    marginRight: '4px',
-                                                }}
-                                            >
-                                                <Typography
-                                                    variant="body1"
-                                                    component="div"
-                                                >
-                                                    {food.unit}
-                                                </Typography>
-                                            </ListItemIcon>
-                                        ) : null}
-                                        <ListItemIcon
+                                        <ListItemText
                                             id="aliment"
                                             sx={{
-                                                minWidth: '0px',
+                                                margin: 0,
                                                 color: (theme) =>
                                                     theme.palette.text.primary,
                                             }}
+                                            primaryTypographyProps={{
+                                                sx: {
+                                                    display: 'flex',
+                                                    flexWrap: 'wrap',
+                                                },
+                                            }}
                                         >
+                                            {food.amount > 0 ? (
+                                                <Typography
+                                                    variant="body1"
+                                                    component="div"
+                                                    sx={{ marginRight: '4px' }}
+                                                >
+                                                    {getAmount(food.amount)}
+                                                </Typography>
+                                            ) : null}
+                                            {food.unit !== ' ' ? (
+                                                <Typography
+                                                    variant="body1"
+                                                    component="div"
+                                                    sx={{ marginRight: '4px' }}
+                                                >
+                                                    {food.unit}
+                                                </Typography>
+                                            ) : null}
                                             <Typography
                                                 variant="body1"
                                                 component="div"
@@ -120,7 +115,7 @@ function Ingredients() {
                                                 {food.aliment}
                                             </Typography>
                                             <Wikipedia info={food.aliment} />
-                                        </ListItemIcon>
+                                        </ListItemText>
                                     </ListItem>
                                 );
                             })}

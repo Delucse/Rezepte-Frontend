@@ -67,8 +67,7 @@ function Wikipedia(props) {
                 marginLeft: '4px',
                 height: '24px',
                 alignItems: 'center',
-                display: 'flex',
-                visibility: 'hidden',
+                display: 'none',
             }}
         >
             <IconButton

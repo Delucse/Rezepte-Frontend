@@ -96,7 +96,7 @@ code {
 }
 
 #aliment:hover #wikipedia {
-    visibility: visible !important;
+    display: flex !important;
 }
 
 #slider:hover #sliderNext {

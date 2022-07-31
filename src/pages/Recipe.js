@@ -370,7 +370,14 @@ function Recipe() {
             {/* Zutaten */}
             <Ingredients />
 
-            <List sx={{ lineHeight: '24px', padding: 0, marginBottom: '24px' }}>
+            <List
+                sx={{
+                    lineHeight: '24px',
+                    padding: 0,
+                    marginBottom: '24px',
+                    marginTop: '24px',
+                }}
+            >
                 <ListItem disablePadding>
                     <Typography
                         variant="body1"
@@ -384,10 +391,15 @@ function Recipe() {
                 </ListItem>
                 {recipe.steps.map((step, index) => {
                     return (
-                        <ListItem disablePadding key={index}>
+                        <ListItem
+                            disablePadding
+                            key={index}
+                            sx={{ alignItems: 'start' }}
+                        >
                             <ListItemIcon
                                 sx={{
                                     minWidth: '25px',
+                                    lineHeight: 'initial',
                                     color: (theme) =>
                                         theme.palette.text.primary,
                                 }}

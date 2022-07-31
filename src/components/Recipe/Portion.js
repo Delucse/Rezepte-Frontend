@@ -7,7 +7,15 @@ import Dialog from '../Dialog';
 import Autocomplete from '../Autocomplete';
 import Textfield from '../Textfield';
 
-import { Typography, IconButton, Button, Box, Alert } from '@mui/material';
+import {
+    Typography,
+    IconButton,
+    Button,
+    Box,
+    Alert,
+    FormControlLabel,
+    Checkbox,
+} from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiPencil, mdiCupcake, mdiRotateLeft } from '@mdi/js';
@@ -30,6 +38,7 @@ function Portion() {
     const [open, setOpen] = useState(false);
     const [count, setCount] = useState(settings.count);
     const [volume, setVolume] = useState(settings.volume);
+    const [rounded, setRounded] = useState(settings.rounded);
     const [individual, setIndividual] = useState(0);
     const [errorVolume, setErrorVolume] = useState(false);
     const [errorCount, setErrorCount] = useState(false);
@@ -37,6 +46,7 @@ function Portion() {
     useEffect(() => {
         setCount(settings.count);
         setVolume(settings.volume);
+        setRounded(settings.rounded);
     }, [open, settings]);
 
     const portionAdd = () => {
@@ -86,9 +96,11 @@ function Portion() {
             countDecimal = countDecimal.replace(',', '.');
         }
         if (volume === 2) {
-            dispatch(setRecipeSettings(Number(countDecimal), individual));
+            dispatch(
+                setRecipeSettings(Number(countDecimal), individual, rounded)
+            );
         } else {
-            dispatch(setRecipeSettings(Number(countDecimal), volume));
+            dispatch(setRecipeSettings(Number(countDecimal), volume, rounded));
         }
         setOpen(false);
     };
@@ -299,6 +311,18 @@ function Portion() {
                                 />
                             </Box>
                         ) : null}
+                        <FormControlLabel
+                            label={'Mengenangaben runden?'}
+                            control={
+                                <Checkbox
+                                    checked={rounded}
+                                    onChange={(e) =>
+                                        setRounded(e.target.checked)
+                                    }
+                                    disableRipple
+                                />
+                            }
+                        />
                     </Box>
                 }
                 actions={
