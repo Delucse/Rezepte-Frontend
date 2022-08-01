@@ -34,6 +34,7 @@
         "react-color": "^2.19.3",
         "react-dom": "^18.0.0",
         "react-helmet": "^6.1.0",
+        "react-qr-reader": "^2.2.1",
         "react-redux": "^7.2.8",
         "react-router-dom": "^6.3.0",
         "react-scripts": "5.0.0",
