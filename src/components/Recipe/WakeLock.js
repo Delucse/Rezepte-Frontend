@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { resetMessage, snackbarMessage } from '../../actions/messageActions';
 
+import IconButton from '../IconButton';
+
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 
 import Icon from '@mdi/react';
 import { mdiPot, mdiPotSteam } from '@mdi/js';
@@ -72,9 +73,12 @@ function WakeLock() {
 
     return 'wakeLock' in navigator && 'request' in navigator.wakeLock ? (
         <IconButton
+            tooltipProps={{
+                title: `Kochmodus ${wake ? 'deaktivieren' : 'aktivieren'}`,
+                placement: 'right',
+            }}
             id="wakeLock"
             sx={{
-                padding: '0px',
                 width: '24.8px',
                 marginBottom: '25px',
                 height: '23px',
@@ -85,7 +89,6 @@ function WakeLock() {
                 },
             }}
             onClick={wake ? releaseWakeLock : () => requestWakeLock(true)}
-            disableRipple
         >
             <Box id="eye" sx={{ display: 'flex' }}>
                 <Icon path={wake ? mdiPotSteam : mdiPot} size={1} />

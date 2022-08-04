@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
 import Dialog from '../Dialog';
+import IconButton from '../IconButton';
 
-import { Box, IconButton, Link } from '@mui/material';
+import { Box, Link } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiWikipedia } from '@mdi/js';
@@ -72,7 +73,6 @@ function Wikipedia(props) {
         >
             <IconButton
                 sx={{
-                    padding: '2px',
                     width: '22px',
                     height: '22px',
                     background: (theme) => theme.palette.action.hover,
@@ -86,7 +86,6 @@ function Wikipedia(props) {
                     },
                 }}
                 onClick={() => setOpen(true)}
-                disableRipple
             >
                 <Icon path={mdiWikipedia} size={0.7} />
             </IconButton>

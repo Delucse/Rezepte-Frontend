@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { removeCategory, setOpen } from '../../actions/recipeFilterActions';
 
 import Categories from './Categories';
+import Button from '../Button';
 
 import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -42,17 +42,15 @@ function Filter() {
     return (
         <div>
             <Button
+                tooltipProps={{ title: 'Filter öffnen' }}
                 sx={{
                     margin: '0 5px',
                     height: '56px',
-                    borderRadius: 0,
-                    boxShadow: 'none',
                     minWidth: '56px',
                     padding: 0,
                     color: (theme) => theme.palette.background.default,
                 }}
                 variant="contained"
-                disableRipple
                 onClick={toggle}
             >
                 <Badge
@@ -176,6 +174,17 @@ function Filter() {
                     }}
                 >
                     <Categories />
+                    <Box
+                        sx={{
+                            background: (theme) =>
+                                theme.palette.background.default,
+                            position: 'absolute',
+                            bottom: 0,
+                            height: (theme) => theme.spacing(3),
+                            width: (theme) =>
+                                `calc(100% - 2 * ${theme.spacing(3)})`,
+                        }}
+                    />
                 </Box>
             </SwipeableDrawer>
         </div>

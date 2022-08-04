@@ -1,10 +1,11 @@
 import React from 'react';
 
+import IconButton from './IconButton';
+
 import MuiDialog from '@mui/material/Dialog';
 import MuiDialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
 
 import Icon from '@mdi/react';
 import { mdiArrowLeft, mdiClose } from '@mdi/js';
@@ -21,6 +22,7 @@ const DialogTitle = (props) => {
         >
             {props.backIcon ? (
                 <IconButton
+                    tooltipProps={{ title: 'zurück zur Startseite' }}
                     onClick={props.onBack}
                     sx={{
                         float: 'left',
@@ -31,7 +33,6 @@ const DialogTitle = (props) => {
                             color: (theme) => theme.palette.primary.main,
                         },
                     }}
-                    disableRipple
                 >
                     <Icon path={mdiArrowLeft} size={1} />
                 </IconButton>
@@ -48,7 +49,6 @@ const DialogTitle = (props) => {
                             color: (theme) => theme.palette.primary.main,
                         },
                     }}
-                    disableRipple
                 >
                     <Icon path={mdiClose} size={1} />
                 </IconButton>

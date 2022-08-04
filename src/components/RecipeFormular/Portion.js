@@ -5,13 +5,13 @@ import { setRecipePortion } from '../../actions/recipeFormularActions';
 
 import Textfield from '../Textfield';
 import Autocomplete from '../Autocomplete';
+import Button from '../Button';
 
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { Button } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiCupcake } from '@mdi/js';
@@ -110,8 +110,6 @@ function Portion() {
                             disabled={count <= 1}
                             sx={{
                                 height: '56px',
-                                borderRadius: 0,
-                                boxShadow: 'none',
                                 minWidth: '23px',
                                 padding: 0,
                             }}
@@ -128,8 +126,6 @@ function Portion() {
                         <Button
                             sx={{
                                 height: '56px',
-                                borderRadius: 0,
-                                boxShadow: 'none',
                                 minWidth: '23px',
                                 padding: 0,
                             }}

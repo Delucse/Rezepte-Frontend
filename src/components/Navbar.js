@@ -7,9 +7,9 @@ import { resetFilterSettings } from '../actions/recipeFilterActions';
 import { NavLink, useLocation } from 'react-router-dom';
 
 import DelucseLogo from './DelucseLogo';
+import IconButton from './IconButton';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -40,6 +40,7 @@ import {
 } from '@mdi/js';
 
 import { useTheme } from '@mui/material';
+import Tooltip from './Tooltip';
 
 function Navlink(props) {
     const theme = useTheme();
@@ -182,11 +183,13 @@ function Navbar() {
                         }}
                     >
                         <IconButton
+                            tooltipProps={{
+                                title: `Menü ${open ? 'schließen' : 'öffnen'}`,
+                            }}
                             edge="start"
                             color="inherit"
                             onClick={toggle}
-                            disableRipple
-                            sx={{ padding: 0, height: '39px', margin: '8px' }}
+                            sx={{ margin: '11.9px 8px' }}
                         >
                             <Icon path={open ? mdiClose : mdiMenu} size={1.3} />
                         </IconButton>
@@ -214,48 +217,51 @@ function Navbar() {
                             display: 'flex',
                         }}
                     >
-                        <NavLink
-                            exact="true"
-                            to={'/suche'}
-                            style={{
-                                height: '39px',
-                                margin: '8px',
-                                alignItems: 'center',
-                                display: 'flex',
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    color: (theme) =>
-                                        theme.palette.primary.contrastText,
+                        <Tooltip title="Suche">
+                            <NavLink
+                                exact="true"
+                                to={'/suche'}
+                                style={{
+                                    margin: '11.9px 8px',
                                     alignItems: 'center',
                                     display: 'flex',
                                 }}
                             >
-                                <Icon path={mdiMagnify} size={1.3} />
-                            </Box>
-                        </NavLink>
-                        <NavLink
-                            exact="true"
-                            to={'/qr'}
-                            style={{
-                                height: '39px',
-                                margin: '8px',
-                                alignItems: 'center',
-                                display: 'flex',
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    color: (theme) =>
-                                        theme.palette.primary.contrastText,
+                                <Box
+                                    sx={{
+                                        color: (theme) =>
+                                            theme.palette.primary.contrastText,
+                                        alignItems: 'center',
+                                        display: 'flex',
+                                    }}
+                                >
+                                    <Icon path={mdiMagnify} size={1.3} />
+                                </Box>
+                            </NavLink>
+                        </Tooltip>
+                        <Tooltip title="QR-Code auslesen" arrow>
+                            <NavLink
+                                exact="true"
+                                to={'/qr'}
+                                style={{
+                                    // height: '39px',
+                                    margin: '11.9px 8px',
                                     alignItems: 'center',
                                     display: 'flex',
                                 }}
                             >
-                                <Icon path={mdiQrcodeScan} size={1} />
-                            </Box>
-                        </NavLink>
+                                <Box
+                                    sx={{
+                                        color: (theme) =>
+                                            theme.palette.primary.contrastText,
+                                        alignItems: 'center',
+                                        display: 'flex',
+                                    }}
+                                >
+                                    <Icon path={mdiQrcodeScan} size={1} />
+                                </Box>
+                            </NavLink>
+                        </Tooltip>
                     </Box>
                 </Toolbar>
             </AppBar>

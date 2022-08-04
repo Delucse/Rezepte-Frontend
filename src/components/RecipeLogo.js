@@ -11,7 +11,7 @@ function RecipeLogo(props) {
     return (
         <div style={props.style}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 250">
-                <title>Rezept-Logo</title>
+                {/* <title>Rezept-Logo</title> */}
                 <g style={props.loader ? { transformOrigin: 'center' } : {}}>
                     <path
                         fill={main}

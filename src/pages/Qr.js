@@ -9,8 +9,9 @@ import QrReader from 'react-qr-reader';
 
 import Dialog from '../components/Dialog';
 import Alert from '../components/Alert';
+import Button from '../components/Button';
 
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 
 function Qr() {
     const dispatch = useDispatch();
@@ -78,7 +79,7 @@ function Qr() {
     const stopStream = () => {
         setProgress(true);
         var video = document.querySelector('video');
-        if (video) {
+        if (video && video.srcObject) {
             video.srcObject.getTracks().forEach((track) => {
                 track.stop();
             });
@@ -146,6 +147,12 @@ function Qr() {
     return 'mediaDevices' in navigator &&
         'getUserMedia' in navigator.mediaDevices ? (
         <div>
+            {!progress && !stream ? (
+                <Alert
+                    error
+                    message="Der QR-Scanner wird leider nicht auf deinem Endgerät unterstützt oder du hast die Berechtigung zur Nutzung der Kamera untersagt."
+                />
+            ) : null}
             <Box
                 sx={{
                     justifyContent: 'center',
@@ -167,12 +174,6 @@ function Qr() {
                     className="qrImageWrapper"
                 />
             </Box>
-            {!progress && !stream ? (
-                <Alert
-                    error
-                    message="Der QR-Scanner wird leider nicht auf deinem Endgerät unterstützt oder du hast die Berechtigung zur Nutzung der Kamera untersagt."
-                />
-            ) : null}
             <Dialog
                 open={open}
                 onClose={cancel}
@@ -190,7 +191,7 @@ function Qr() {
                         <Button
                             onClick={cancel}
                             variant="outlined"
-                            sx={{ borderRadius: 0, mr: 1 }}
+                            sx={{ mr: 1 }}
                         >
                             Abbrechen
                         </Button>
@@ -201,16 +202,11 @@ function Qr() {
                                 href={url}
                                 target="_blank"
                                 variant="contained"
-                                sx={{ borderRadius: 0 }}
                             >
                                 Bestätigen
                             </Button>
                         ) : (
-                            <Button
-                                onClick={copy}
-                                variant="contained"
-                                sx={{ borderRadius: 0 }}
-                            >
+                            <Button onClick={copy} variant="contained">
                                 Bestätigen
                             </Button>
                         )}

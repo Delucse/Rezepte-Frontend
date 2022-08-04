@@ -11,13 +11,13 @@ import imageCompression from 'browser-image-compression';
 
 import ImageCarousel from '../ImageCarousel';
 import Alert from '../Alert';
+import IconButton from '../IconButton';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
     Box,
     InputLabel,
-    IconButton,
     Grid,
     ImageListItem,
     ImageListItemBar,
@@ -297,7 +297,6 @@ function Pictures() {
                                             >
                                                 <IconButton
                                                     sx={{
-                                                        padding: 0,
                                                         color: 'white',
                                                         '&:hover': {
                                                             color: (theme) =>
@@ -314,7 +313,6 @@ function Pictures() {
                                                             )
                                                         )
                                                     }
-                                                    disableRipple
                                                     disabled={idx === 0}
                                                 >
                                                     <Icon
@@ -324,7 +322,6 @@ function Pictures() {
                                                 </IconButton>
                                                 <IconButton
                                                     sx={{
-                                                        padding: 0,
                                                         color: 'white',
                                                         '&:hover': {
                                                             color: (theme) =>
@@ -341,7 +338,6 @@ function Pictures() {
                                                             )
                                                         )
                                                     }
-                                                    disableRipple
                                                     disabled={
                                                         idx ===
                                                         pictures.length - 1
@@ -355,6 +351,7 @@ function Pictures() {
                                             </div>
                                             <IconButton
                                                 sx={{
+                                                    padding: '8px',
                                                     color: 'white',
                                                     '&:hover': {
                                                         color: (theme) =>
@@ -363,7 +360,6 @@ function Pictures() {
                                                     },
                                                 }}
                                                 onClick={() => handleOpen(idx)}
-                                                disableRipple
                                             >
                                                 <Icon
                                                     path={mdiFullscreen}
@@ -372,6 +368,7 @@ function Pictures() {
                                             </IconButton>
                                             <IconButton
                                                 sx={{
+                                                    padding: '8px',
                                                     color: 'white',
                                                     '&:hover': {
                                                         color: (theme) =>
@@ -386,7 +383,6 @@ function Pictures() {
                                                         )
                                                     );
                                                 }}
-                                                disableRipple
                                                 disabled={picture.user !== user}
                                             >
                                                 <Icon

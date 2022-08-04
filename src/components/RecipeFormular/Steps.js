@@ -10,11 +10,12 @@ import {
 
 import Textfield from '../Textfield';
 import Alert from '../Alert';
+import Button from '../Button';
+
+import { Box } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiDelete, mdiChevronUp, mdiChevronDown, mdiPlus } from '@mdi/js';
-
-import { Button, Box } from '@mui/material';
 
 function Step(props) {
     const dispatch = useDispatch();
@@ -36,9 +37,7 @@ function Step(props) {
                     disabled={props.index === 0}
                     sx={{
                         height: 'calc(56px / 3)',
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -49,9 +48,7 @@ function Step(props) {
                     onClick={() => dispatch(addStep(props.index))}
                     sx={{
                         height: 'calc(56px / 3)',
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -67,9 +64,7 @@ function Step(props) {
                     disabled={props.length - 1 === props.index}
                     sx={{
                         height: 'calc(56px / 3)',
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -92,9 +87,7 @@ function Step(props) {
                 sx={{
                     height: '56px',
                     marginLeft: '5px',
-                    borderRadius: 0,
                     minWidth: '23px',
-                    boxShadow: 'none',
                     padding: '0px',
                 }}
                 variant="outlined"

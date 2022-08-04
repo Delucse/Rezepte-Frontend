@@ -5,8 +5,9 @@ import { setWord, setType } from '../../actions/recipeFilterActions';
 
 import { NavLink } from 'react-router-dom';
 
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+import Button from '../Button';
+import IconButton from '../IconButton';
+
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -68,12 +69,11 @@ function Search(props) {
                 }
                 start={
                     <IconButton
+                        tooltipProps={{ title: 'Sucheinstellungen' }}
                         sx={{
-                            padding: 0,
                             color: (theme) => theme.palette.text.secondary,
                         }}
                         onClick={handleClick}
-                        disableRipple
                     >
                         <Icon path={mdiCog} size={1} />
                     </IconButton>
@@ -82,6 +82,7 @@ function Search(props) {
                     props.redux ? (
                         word !== '' ? (
                             <IconButton
+                                tooltipProps={{ title: 'löschen' }}
                                 sx={{
                                     padding: '4px',
                                     marginRight: '-8px',
@@ -93,13 +94,13 @@ function Search(props) {
                                         theme.palette.text.secondary,
                                 }}
                                 onClick={() => dispatch(setWord(''))}
-                                disableRipple
                             >
                                 <Icon path={mdiClose} size={1} />
                             </IconButton>
                         ) : null
                     ) : search !== '' ? (
                         <IconButton
+                            tooltipProps={{ title: 'löschen' }}
                             sx={{
                                 padding: '4px',
                                 marginRight: '-8px',
@@ -112,7 +113,6 @@ function Search(props) {
                                 setSearch('');
                                 dispatch(setWord(''));
                             }}
-                            disableRipple
                         >
                             <Icon path={mdiClose} size={1} />
                         </IconButton>
@@ -121,36 +121,32 @@ function Search(props) {
             />
             {props.redux ? (
                 <Button
+                    tooltipProps={{ title: 'Rezepte durchsuchen' }}
                     component={NavLink}
                     exact="true"
                     to={`/rezepte${route !== '' ? `/${route}` : ''}`}
                     sx={{
                         height: '56px',
-                        borderRadius: 0,
-                        boxShadow: 'none',
                         minWidth: '56px',
                         width: '56px',
                         padding: 0,
                         color: (theme) => theme.palette.background.default,
                     }}
                     variant="contained"
-                    disableRipple
                 >
                     <Icon path={mdiMagnify} size={1.2} />
                 </Button>
             ) : (
                 <Button
+                    tooltipProps={{ title: 'Rezepte durchsuchen' }}
                     sx={{
                         height: '56px',
-                        borderRadius: 0,
-                        boxShadow: 'none',
                         minWidth: '56px',
                         width: '56px',
                         padding: 0,
                         color: (theme) => theme.palette.background.default,
                     }}
                     variant="contained"
-                    disableRipple
                     onClick={() => dispatch(setWord(search))}
                 >
                     <Icon path={mdiMagnify} size={1.2} />

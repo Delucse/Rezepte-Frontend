@@ -19,6 +19,7 @@ import Share from '../components/Recipe/Share';
 import Pdf from '../components/Recipe/Pdf';
 import WakeLock from '../components/Recipe/WakeLock';
 import Loader from '../components/Loader';
+import IconButton from '../components/IconButton';
 
 import params from '../data/params.json';
 
@@ -31,7 +32,6 @@ import {
     ListItemText,
     Chip,
     Typography,
-    IconButton,
 } from '@mui/material';
 
 import Icon from '@mdi/react';
@@ -43,6 +43,7 @@ import {
     mdiFoodSteakOff,
     mdiPencil,
 } from '@mdi/js';
+import Tooltip from '../components/Tooltip';
 
 var filterParams = [];
 Object.keys(params.filter).forEach((key) => {
@@ -153,130 +154,134 @@ function Recipe() {
                     <div style={{ display: 'flex', marginBottom: '24px' }}>
                         {recipe.keywords.includes('vegetarisch') ||
                         recipe.keywords.includes('vegan') ? (
-                            <Box
-                                title="vegetarisch"
-                                sx={{
-                                    '&:hover': {
+                            <Tooltip title="vegetarisch">
+                                <Box
+                                    sx={{
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.light,
+                                            border: (theme) =>
+                                                `1px solid ${theme.palette.primary.light}`,
+                                        },
                                         color: (theme) =>
-                                            theme.palette.primary.light,
+                                            theme.palette.primary.main,
                                         border: (theme) =>
-                                            `1px solid ${theme.palette.primary.light}`,
-                                    },
-                                    color: (theme) =>
-                                        theme.palette.primary.main,
-                                    border: (theme) =>
-                                        `1px solid ${theme.palette.primary.main}`,
-                                    marginRight: '10px',
-                                    borderRadius: '50%',
-                                    height: 'calc(24px - 1px - 1px)',
-                                    width: 'calc(24px - 1px - 1px)',
-                                    justifyContent: 'center',
-                                    display: 'grid',
-                                    alignContent: 'center',
-                                }}
-                            >
-                                <Icon
-                                    path={mdiFoodSteakOff}
-                                    size={0.8}
-                                    style={{ color: 'inherit' }}
-                                />
-                            </Box>
+                                            `1px solid ${theme.palette.primary.main}`,
+                                        marginRight: '10px',
+                                        borderRadius: '50%',
+                                        height: 'calc(24px - 1px - 1px)',
+                                        width: 'calc(24px - 1px - 1px)',
+                                        justifyContent: 'center',
+                                        display: 'grid',
+                                        alignContent: 'center',
+                                    }}
+                                >
+                                    <Icon
+                                        path={mdiFoodSteakOff}
+                                        size={0.8}
+                                        style={{ color: 'inherit' }}
+                                    />
+                                </Box>
+                            </Tooltip>
                         ) : null}
                         {recipe.keywords.includes('vegan') ? (
-                            <Box
-                                title="vegan"
-                                sx={{
-                                    '&:hover': {
+                            <Tooltip title="vegan">
+                                <Box
+                                    title="vegan"
+                                    sx={{
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.light,
+                                            border: (theme) =>
+                                                `1px solid ${theme.palette.primary.light}`,
+                                        },
                                         color: (theme) =>
-                                            theme.palette.primary.light,
+                                            theme.palette.primary.main,
                                         border: (theme) =>
-                                            `1px solid ${theme.palette.primary.light}`,
-                                    },
-                                    color: (theme) =>
-                                        theme.palette.primary.main,
-                                    border: (theme) =>
-                                        `1px solid ${theme.palette.primary.main}`,
-                                    marginRight: '10px',
-                                    borderRadius: '50%',
-                                    height: 'calc(24px - 1px - 1px)',
-                                    width: 'calc(24px - 1px - 1px)',
-                                    justifyContent: 'center',
-                                    display: 'grid',
-                                    alignContent: 'center',
-                                }}
-                            >
-                                <Icon
-                                    path={mdiEggOffOutline}
-                                    size={0.8}
-                                    style={{ color: 'inherit' }}
-                                />
-                            </Box>
+                                            `1px solid ${theme.palette.primary.main}`,
+                                        marginRight: '10px',
+                                        borderRadius: '50%',
+                                        height: 'calc(24px - 1px - 1px)',
+                                        width: 'calc(24px - 1px - 1px)',
+                                        justifyContent: 'center',
+                                        display: 'grid',
+                                        alignContent: 'center',
+                                    }}
+                                >
+                                    <Icon
+                                        path={mdiEggOffOutline}
+                                        size={0.8}
+                                        style={{ color: 'inherit' }}
+                                    />
+                                </Box>
+                            </Tooltip>
                         ) : null}
                         {recipe.keywords.includes('glutenfrei') ? (
-                            <Box
-                                title="glutenfrei"
-                                sx={{
-                                    '&:hover': {
+                            <Tooltip title="glutenfrei">
+                                <Box
+                                    sx={{
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.light,
+                                            border: (theme) =>
+                                                `1px solid ${theme.palette.primary.light}`,
+                                        },
                                         color: (theme) =>
-                                            theme.palette.primary.light,
+                                            theme.palette.primary.main,
                                         border: (theme) =>
-                                            `1px solid ${theme.palette.primary.light}`,
-                                    },
-                                    color: (theme) =>
-                                        theme.palette.primary.main,
-                                    border: (theme) =>
-                                        `1px solid ${theme.palette.primary.main}`,
-                                    marginRight: '10px',
-                                    borderRadius: '50%',
-                                    height: 'calc(24px - 1px - 1px)',
-                                    width: 'calc(24px - 1px - 1px)',
-                                    justifyContent: 'center',
-                                    display: 'grid',
-                                    alignContent: 'center',
-                                }}
-                            >
-                                <Icon
-                                    path={mdiBarleyOff}
-                                    size={0.8}
-                                    style={{ color: 'inherit' }}
-                                />
-                            </Box>
+                                            `1px solid ${theme.palette.primary.main}`,
+                                        marginRight: '10px',
+                                        borderRadius: '50%',
+                                        height: 'calc(24px - 1px - 1px)',
+                                        width: 'calc(24px - 1px - 1px)',
+                                        justifyContent: 'center',
+                                        display: 'grid',
+                                        alignContent: 'center',
+                                    }}
+                                >
+                                    <Icon
+                                        path={mdiBarleyOff}
+                                        size={0.8}
+                                        style={{ color: 'inherit' }}
+                                    />
+                                </Box>
+                            </Tooltip>
                         ) : null}
                         {recipe.keywords.includes('laktosefrei') ? (
-                            <Box
-                                title="laktosefrei"
-                                sx={{
-                                    '&:hover': {
+                            <Tooltip title="laktosefrei">
+                                <Box
+                                    sx={{
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.light,
+                                            border: (theme) =>
+                                                `1px solid ${theme.palette.primary.light}`,
+                                        },
                                         color: (theme) =>
-                                            theme.palette.primary.light,
+                                            theme.palette.primary.main,
                                         border: (theme) =>
-                                            `1px solid ${theme.palette.primary.light}`,
-                                    },
-                                    color: (theme) =>
-                                        theme.palette.primary.main,
-                                    border: (theme) =>
-                                        `1px solid ${theme.palette.primary.main}`,
-                                    marginRight: '10px',
-                                    borderRadius: '50%',
-                                    height: 'calc(24px - 1px - 1px)',
-                                    width: 'calc(24px - 1px - 1px)',
-                                    justifyContent: 'center',
-                                    display: 'grid',
-                                    alignContent: 'center',
-                                }}
-                            >
-                                <Icon
-                                    path={mdiBarleyOff}
-                                    size={0.8}
-                                    style={{ color: 'inherit' }}
-                                />
-                            </Box>
+                                            `1px solid ${theme.palette.primary.main}`,
+                                        marginRight: '10px',
+                                        borderRadius: '50%',
+                                        height: 'calc(24px - 1px - 1px)',
+                                        width: 'calc(24px - 1px - 1px)',
+                                        justifyContent: 'center',
+                                        display: 'grid',
+                                        alignContent: 'center',
+                                    }}
+                                >
+                                    <Icon
+                                        path={mdiBarleyOff}
+                                        size={0.8}
+                                        style={{ color: 'inherit' }}
+                                    />
+                                </Box>
+                            </Tooltip>
                         ) : null}
                     </div>
                     <div style={{ marginBottom: '24px' }}>
                         {recipe.time.preparation > 0 ? (
                             <Box
-                                title="Zubereitungzeit"
                                 sx={{
                                     '&:hover': {
                                         color: (theme) =>
@@ -307,7 +312,6 @@ function Recipe() {
                         ) : null}
                         {recipe.time.resting > 0 ? (
                             <Box
-                                title="Wartezeit"
                                 sx={{
                                     '&:hover': {
                                         color: (theme) =>
@@ -335,7 +339,6 @@ function Recipe() {
                         ) : null}
                         {recipe.time.baking > 0 ? (
                             <Box
-                                title="Koch-/Backzeit"
                                 sx={{
                                     '&:hover': {
                                         color: (theme) =>
@@ -491,8 +494,11 @@ function Recipe() {
                             }}
                         >
                             <IconButton
+                                tooltipProps={{
+                                    title: 'Rezept bearbeiten',
+                                    placement: 'right',
+                                }}
                                 sx={{
-                                    padding: '2px',
                                     marginBottom: '25px',
                                     width: '23px',
                                     height: '23px',
@@ -512,13 +518,15 @@ function Recipe() {
                                 onClick={() =>
                                     navigate(`/rezepte/formular/${id}`)
                                 }
-                                disableRipple
                             >
                                 <Icon path={mdiPencil} size={0.7} />
                             </IconButton>
                             <IconButton
+                                tooltipProps={{
+                                    title: 'Rezept löschen',
+                                    placement: 'right',
+                                }}
                                 sx={{
-                                    padding: '2px',
                                     width: '23px',
                                     height: '23px',
                                     background: (theme) =>
@@ -534,7 +542,6 @@ function Recipe() {
                                     },
                                 }}
                                 onClick={deleteRecipe}
-                                disableRipple
                             >
                                 <Icon path={mdiDelete} size={0.7} />
                             </IconButton>

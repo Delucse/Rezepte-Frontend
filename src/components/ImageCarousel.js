@@ -4,6 +4,8 @@ import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 
+import IconButton from './IconButton';
+
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
@@ -11,7 +13,6 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
-    IconButton,
     Typography,
 } from '@mui/material';
 
@@ -111,11 +112,7 @@ function ImageCarousel(props) {
                 >
                     {props.title}
                 </Typography>
-                <IconButton
-                    style={{ padding: '0px', color: 'white' }}
-                    disableRipple
-                    onClick={handleClose}
-                >
+                <IconButton style={{ color: 'white' }} onClick={handleClose}>
                     <Icon path={mdiClose} size={1.7} />
                 </IconButton>
             </DialogTitle>
@@ -134,12 +131,10 @@ function ImageCarousel(props) {
                             >
                                 <IconButton
                                     sx={{
-                                        padding: '0px',
                                         color: 'white',
                                         display: { xs: 'none', sm: 'inherit' },
                                         marginLeft: '7px',
                                     }}
-                                    disableRipple
                                     onClick={back}
                                 >
                                     <Icon path={mdiChevronLeft} size={2} />
@@ -171,12 +166,10 @@ function ImageCarousel(props) {
                             >
                                 <IconButton
                                     sx={{
-                                        padding: '0px',
                                         color: 'white',
                                         display: { xs: 'none', sm: 'inherit' },
                                         marginRight: '7px',
                                     }}
-                                    disableRipple
                                     onClick={next}
                                 >
                                     <Icon path={mdiChevronRight} size={2} />

@@ -15,7 +15,7 @@ function DelucseLogo(props) {
             viewBox="0 0 190.262 51.884"
             style={props.style}
         >
-            <title id="delucseLogo">Delucse-Logo</title>
+            {/* <title id="delucseLogo">Delucse-Logo</title> */}
             <g>
                 <path
                     fill={color}

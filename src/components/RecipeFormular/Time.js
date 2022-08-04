@@ -9,11 +9,13 @@ import { ClockPicker } from '@mui/x-date-pickers/ClockPicker';
 
 import Textfield from '../Textfield';
 import Dialog from '../Dialog';
+import Button from '../Button';
+import IconButton from '../IconButton';
+
+import { Grid } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight, mdiClockOutline } from '@mdi/js';
-
-import { Button, IconButton, Grid } from '@mui/material';
 
 function TimePicker(props) {
     const dispatch = useDispatch();
@@ -111,12 +113,12 @@ function TimePicker(props) {
                                 onClick={() => setView('hours')}
                                 disabled={view === 'hours'}
                                 sx={{
+                                    padding: '8px',
                                     '&:hover': {
                                         color: (theme) =>
                                             theme.palette.primary.main,
                                     },
                                 }}
-                                disableRipple
                             >
                                 <Icon path={mdiChevronLeft} size={1} />
                             </IconButton>
@@ -124,12 +126,12 @@ function TimePicker(props) {
                                 onClick={() => setView('minutes')}
                                 disabled={view === 'minutes'}
                                 sx={{
+                                    padding: '8px',
                                     '&:hover': {
                                         color: (theme) =>
                                             theme.palette.primary.main,
                                     },
                                 }}
-                                disableRipple
                             >
                                 <Icon path={mdiChevronRight} size={1} />
                             </IconButton>
@@ -141,15 +143,11 @@ function TimePicker(props) {
                         <Button
                             onClick={cancel}
                             variant="outlined"
-                            sx={{ borderRadius: 0, mr: 1 }}
+                            sx={{ mr: 1 }}
                         >
                             Abbrechen
                         </Button>
-                        <Button
-                            onClick={submit}
-                            variant="contained"
-                            sx={{ borderRadius: 0 }}
-                        >
+                        <Button onClick={submit} variant="contained">
                             Bestätigen
                         </Button>
                     </div>

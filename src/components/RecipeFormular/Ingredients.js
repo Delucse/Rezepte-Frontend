@@ -18,6 +18,9 @@ import {
 import Textfield from '../Textfield';
 import Autocomplete from '../Autocomplete';
 import Alert from '../Alert';
+import Button from '../Button';
+
+import { Box } from '@mui/material';
 
 import Icon from '@mdi/react';
 import {
@@ -28,8 +31,6 @@ import {
     mdiPlus,
     mdiTextShadow,
 } from '@mdi/js';
-
-import { Button, Box } from '@mui/material';
 
 import units from '../../data/units.json';
 import aliments from '../../data/aliments.json';
@@ -54,9 +55,7 @@ function Title(props) {
                     disabled={props.iIndex === 0}
                     sx={{
                         height: 'calc(56px / 3)',
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -67,9 +66,7 @@ function Title(props) {
                     onClick={() => dispatch(addIngredients(props.iIndex))}
                     sx={{
                         height: 'calc(56px / 3)',
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -88,9 +85,7 @@ function Title(props) {
                     disabled={props.length - 1 === props.iIndex}
                     sx={{
                         height: 'calc(56px / 3)',
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -116,9 +111,7 @@ function Title(props) {
                 sx={{
                     height: '56px',
                     marginLeft: '5px',
-                    borderRadius: 0,
                     minWidth: '23px',
-                    boxShadow: 'none',
                     padding: '0px',
                 }}
                 variant="outlined"
@@ -170,9 +163,7 @@ function Food(props) {
                     disabled={props.fIndex === 0}
                     sx={{
                         height: { xs: 'inherit', sm: 'calc(56px/3)' },
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -185,9 +176,7 @@ function Food(props) {
                     }
                     sx={{
                         height: { xs: 'inherit', sm: 'calc(56px/3)' },
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -207,9 +196,7 @@ function Food(props) {
                     disabled={props.length - 1 === props.fIndex}
                     sx={{
                         height: { xs: 'inherit', sm: 'calc(56px/3)' },
-                        borderRadius: 0,
                         minWidth: '23px',
-                        boxShadow: 'none',
                         padding: '0px',
                     }}
                     variant="contained"
@@ -282,9 +269,7 @@ function Food(props) {
                 sx={{
                     height: { xs: 'inherit', sm: '56px' },
                     marginLeft: '5px',
-                    borderRadius: 0,
                     minWidth: '23px',
-                    boxShadow: 'none',
                     padding: '0px',
                 }}
                 variant="outlined"

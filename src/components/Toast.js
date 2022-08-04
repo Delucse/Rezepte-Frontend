@@ -2,7 +2,9 @@ import { useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 
-import { IconButton, useTheme } from '@mui/material';
+import IconButton from './IconButton';
+
+import { useTheme } from '@mui/material';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,7 +14,10 @@ import { mdiClose } from '@mdi/js';
 
 function CloseButton({ close }) {
     return (
-        <IconButton onClick={close} disableRipple sx={{ color: 'white' }}>
+        <IconButton
+            onClick={close}
+            sx={{ paddingRight: '6px', color: 'white' }}
+        >
             <Icon path={mdiClose} size={0.7} />
         </IconButton>
     );

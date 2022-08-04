@@ -10,9 +10,11 @@ import Dialog from '../components/Dialog';
 import DelucseLogo from '../components/DelucseLogo';
 import Alert from '../components/Alert';
 import Textfield from '../components/Textfield';
+import Button from '../components/Button';
+import IconButton from '../components/IconButton';
 
 import { styled } from '@mui/material/styles';
-import { Button, IconButton, Divider } from '@mui/material';
+import { Divider } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
@@ -155,7 +157,6 @@ function SignUp() {
                                 <IconButton
                                     onClick={handleClickShowPassword}
                                     onMouseDown={handleMouseDownPassword}
-                                    disableRipple
                                     sx={{
                                         '&:hover': {
                                             color: (theme) =>
@@ -174,7 +175,7 @@ function SignUp() {
                         <p style={{ marginTop: '20px' }}>
                             <Button
                                 variant="contained"
-                                sx={{ borderRadius: 0, width: '100%' }}
+                                sx={{ width: '100%' }}
                                 onClick={() =>
                                     dispatch(
                                         register(username, password, email)

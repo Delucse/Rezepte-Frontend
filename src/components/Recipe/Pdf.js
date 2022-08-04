@@ -20,7 +20,9 @@ import QRCode from 'qrcode';
 
 import { saveAs } from 'file-saver';
 
-import { IconButton, useTheme } from '@mui/material';
+import IconButton from '../IconButton';
+
+import { useTheme } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiPrinter } from '@mdi/js';
@@ -384,8 +386,11 @@ function Pdf() {
 
     return (
         <IconButton
+            tooltipProps={{
+                title: 'PDF erstellen',
+                placement: 'right',
+            }}
             sx={{
-                padding: '0px',
                 marginBottom: '25px',
                 width: '24.8px',
                 height: '23px',
@@ -395,7 +400,6 @@ function Pdf() {
                     color: (theme) => theme.palette.primary.main,
                 },
             }}
-            disableRipple
             onClick={async () => {
                 const qr = await generateQR();
                 const generatedPdf = pdf(

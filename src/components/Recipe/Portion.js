@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRecipeSettings } from '../../actions/recipeActions';
 
+import Button from '../Button';
 import Dialog from '../Dialog';
 import Autocomplete from '../Autocomplete';
 import Textfield from '../Textfield';
+import IconButton from '../IconButton';
 
 import {
     Typography,
-    IconButton,
-    Button,
     Box,
     Alert,
     FormControlLabel,
@@ -151,15 +151,14 @@ function Portion() {
                         : ` Portion${settings.count !== 1 ? 'en' : ''}`}
                 </Typography>
                 <IconButton
+                    tooltipProps={{ title: 'Portionsangabe ändern' }}
                     sx={{
                         height: 'inherit',
                         width: '24px',
                         marginLeft: '5px',
-                        padding: 0,
                     }}
                     color="primary"
                     onClick={() => setOpen(true)}
-                    disableRipple
                 >
                     <Icon path={mdiPencil} size={1} />
                 </IconButton>
@@ -210,8 +209,6 @@ function Portion() {
                                     disabled={count <= 1}
                                     sx={{
                                         height: '56px',
-                                        borderRadius: 0,
-                                        boxShadow: 'none',
                                         minWidth: '23px',
                                         padding: 0,
                                     }}
@@ -229,8 +226,6 @@ function Portion() {
                                 <Button
                                     sx={{
                                         height: '56px',
-                                        borderRadius: 0,
-                                        boxShadow: 'none',
                                         minWidth: '23px',
                                         padding: 0,
                                     }}
@@ -284,19 +279,23 @@ function Portion() {
                                         Portion{count !== 1 ? 'en' : ''}
                                     </div>
                                 )}
-                                <Button
-                                    sx={{
-                                        height: '56px',
-                                        borderRadius: 0,
-                                        boxShadow: 'none',
-                                        minWidth: '56px',
-                                        padding: 0,
-                                    }}
-                                    variant="contained"
-                                    onClick={reset}
-                                >
-                                    <Icon path={mdiRotateLeft} size={1} />
-                                </Button>
+                                {count === portion.count &&
+                                volume === portion.volume ? null : (
+                                    <Button
+                                        tooltipProps={{
+                                            title: 'Portionsangabe zurücksetzen',
+                                        }}
+                                        sx={{
+                                            height: '56px',
+                                            minWidth: '56px',
+                                            padding: 0,
+                                        }}
+                                        variant="contained"
+                                        onClick={reset}
+                                    >
+                                        <Icon path={mdiRotateLeft} size={1} />
+                                    </Button>
+                                )}
                             </Box>
                         </Box>
                         {volume === 2 ? (
@@ -330,14 +329,13 @@ function Portion() {
                         <Button
                             variant="outlined"
                             onClick={cancel}
-                            sx={{ borderRadius: 0, mr: 1 }}
+                            sx={{ mr: 1 }}
                         >
                             Abbrechen
                         </Button>
                         <Button
                             variant="contained"
                             onClick={confirm}
-                            sx={{ borderRadius: 0 }}
                             disabled={errorCount || errorVolume}
                         >
                             Bestätigen

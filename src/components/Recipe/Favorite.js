@@ -6,8 +6,9 @@ import {
     setRecipeFavorite,
 } from '../../actions/recipeActions';
 
+import IconButton from '../IconButton';
+
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 
 import Icon from '@mdi/react';
 import { mdiHeart, mdiHeartOutline } from '@mdi/js';
@@ -17,9 +18,14 @@ function Favorite(props) {
 
     return (
         <IconButton
+            tooltipProps={{
+                title: props.check
+                    ? 'aus meinem Kochbuch entfernen'
+                    : 'zu meinem Kochbuch hinzufügen',
+                placement: 'right',
+            }}
             id="favorite"
             sx={{
-                padding: '0px',
                 marginBottom: '25px',
                 width: '24.8px',
                 height: '23px',
@@ -34,7 +40,6 @@ function Favorite(props) {
                     ? () => dispatch(deleteRecipeFavorite())
                     : () => dispatch(setRecipeFavorite())
             }
-            disableRipple
         >
             <Box id="heart" sx={{ display: 'flex' }}>
                 <Icon

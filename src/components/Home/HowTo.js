@@ -18,7 +18,7 @@ function HowTo() {
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 247.602 250.5"
             >
-                <title id="howTo">How To Basic</title>
+                {/* <title id="howTo">How To Basic</title> */}
                 <g>
                     <path
                         fill={grey}

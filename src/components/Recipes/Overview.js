@@ -12,10 +12,10 @@ import moment from 'moment';
 
 import Ripped from './Ripped';
 import Tape from '../Tape';
+import Button from '../Button';
 
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -151,16 +151,14 @@ function Overview(props) {
                     </Box>
                     {!props.fullscreen ? (
                         <Button
+                            tooltipProps={{ title: 'weitere Informationen' }}
                             sx={{
                                 float: 'right',
                                 height: '24px',
-                                borderRadius: 0,
-                                boxShadow: 'none',
                                 minWidth: '20px',
                                 padding: 0,
                             }}
                             onClick={handleClick}
-                            disableRipple
                         >
                             <Icon path={mdiDotsHorizontal} size={1} />
                         </Button>

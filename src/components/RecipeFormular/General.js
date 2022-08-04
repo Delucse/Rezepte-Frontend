@@ -92,15 +92,6 @@ function General() {
                 label={'Titel'}
                 margin
                 start={<Icon path={mdiTextShadow} size={1} />}
-                // end={
-                //     <Button
-                //         sx={{height: '100%', marginRight: '-22px', borderRadius: 0, boxShadow: 'none'}}
-                //         variant="contained"
-                //         onClick={updateTitle}
-                //     >
-                //         Test
-                //     </Button>
-                // }
             />
             <Textfield
                 error={errorSource}

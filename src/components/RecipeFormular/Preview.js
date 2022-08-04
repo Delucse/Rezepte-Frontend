@@ -6,8 +6,9 @@ import { submitRecipe } from '../../actions/recipeFormularActions';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '../Alert';
+import Button from '../Button';
 
-import { Box, Button } from '@mui/material';
+import { Box } from '@mui/material';
 import Recipe from '../../pages/Recipe';
 
 function Preview() {
@@ -79,7 +80,7 @@ function Preview() {
                             </div>
                             <Button
                                 variant="contained"
-                                sx={{ borderRadius: 0, mt: '20px' }}
+                                sx={{ mt: '20px' }}
                                 onClick={() => dispatch(submitRecipe(id))}
                             >
                                 Rezept{' '}

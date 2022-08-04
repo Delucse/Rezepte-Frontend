@@ -6,10 +6,10 @@ import imageCompression from 'browser-image-compression';
 import axios from 'axios';
 
 import Dialog from '../Dialog';
+import Button from '../Button';
+import IconButton from '../IconButton';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
@@ -17,6 +17,7 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 import Icon from '@mdi/react';
 import { mdiCameraPlus, mdiCamera, mdiDelete } from '@mdi/js';
 import { addPicture } from '../../actions/recipeActions';
+import Tooltip from '../Tooltip';
 
 function AddImage(props) {
     const dispatch = useDispatch();
@@ -154,14 +155,16 @@ function AddImage(props) {
 
     return user ? (
         <div>
-            <Box sx={{ color: (theme) => theme.palette.primary.main }}>
-                <Icon
-                    path={mdiCameraPlus}
-                    size={1}
-                    onClick={() => setOpen(true)}
-                    style={{ cursor: 'pointer', padding: 8 }}
-                />
-            </Box>
+            <Tooltip title="Bild hinzufügen" placement="left">
+                <Box sx={{ color: (theme) => theme.palette.primary.main }}>
+                    <Icon
+                        path={mdiCameraPlus}
+                        size={1}
+                        onClick={() => setOpen(true)}
+                        style={{ cursor: 'pointer', padding: 8 }}
+                    />
+                </Box>
+            </Tooltip>
             <Dialog
                 open={open}
                 onClose={() => setOpen(false)}
@@ -241,6 +244,7 @@ function AddImage(props) {
                                     actionIcon={
                                         <IconButton
                                             sx={{
+                                                padding: '8px',
                                                 color: 'white',
                                                 '&:hover': {
                                                     color: (theme) =>
@@ -251,7 +255,6 @@ function AddImage(props) {
                                             onClick={() => {
                                                 setImage(null);
                                             }}
-                                            disableRipple
                                         >
                                             <Icon path={mdiDelete} size={1} />
                                         </IconButton>
@@ -275,7 +278,7 @@ function AddImage(props) {
                                 setOpen(false);
                                 setImage(null);
                             }}
-                            sx={{ borderRadius: 0, mr: 1 }}
+                            sx={{ mr: 1 }}
                         >
                             Abbrechen
                         </Button>
@@ -283,7 +286,6 @@ function AddImage(props) {
                             disabled={image === null}
                             variant="contained"
                             onClick={submit}
-                            sx={{ borderRadius: 0 }}
                         >
                             Bestätigen
                         </Button>

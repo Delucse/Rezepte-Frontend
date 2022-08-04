@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 import Tape from '../Tape';
 import ImageCarousel from '../ImageCarousel';
 import AddImage from './AddImage';
+import IconButton from '../IconButton';
 
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
@@ -83,7 +83,6 @@ function Images({ pictures, title }) {
                         id="sliderBack"
                         sx={{
                             visibility: 'hidden',
-                            padding: '1px',
                             borderRadius: '50%',
                             border: `1px solid`,
                             color: (theme) => theme.palette.primary.main,
@@ -101,7 +100,6 @@ function Images({ pictures, title }) {
                                     theme.palette.primary.main,
                             },
                         }}
-                        disableRipple
                         onClick={handleBack}
                     >
                         <Icon path={mdiChevronLeft} size={1} />
@@ -120,7 +118,6 @@ function Images({ pictures, title }) {
                         id="sliderNext"
                         sx={{
                             visibility: 'hidden',
-                            padding: '1px',
                             borderRadius: '50%',
                             border: `1px solid`,
                             color: (theme) => theme.palette.primary.main,
@@ -138,7 +135,6 @@ function Images({ pictures, title }) {
                                     theme.palette.primary.main,
                             },
                         }}
-                        disableRipple
                         onClick={handleNext}
                     >
                         <Icon path={mdiChevronRight} size={1} />

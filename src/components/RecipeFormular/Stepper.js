@@ -6,12 +6,13 @@ import { resetMessage } from '../../actions/messageActions';
 
 import SwipeableViews from 'react-swipeable-views';
 
+import IconButton from '../IconButton';
+
 import Box from '@mui/material/Box';
 import MuiStepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import StepLabel from '@mui/material/StepLabel';
-import IconButton from '@mui/material/IconButton';
 import { Typography } from '@mui/material';
 
 import Icon from '@mdi/react';
@@ -177,7 +178,6 @@ function Stepper(props) {
                             },
                         }}
                         onClick={handleBack}
-                        disableRipple
                     >
                         <Icon path={mdiChevronLeft} size={2} />
                     </IconButton>
@@ -210,7 +210,6 @@ function Stepper(props) {
                             },
                         }}
                         onClick={handleNext}
-                        disableRipple
                     >
                         <Icon path={mdiChevronRight} size={2} />
                     </IconButton>

@@ -1,8 +1,7 @@
 import React from 'react';
 
-import Dialog from '../components/Dialog';
-
-import Button from '@mui/material/Button';
+import Dialog from './Dialog';
+import Button from './Button';
 
 function NavigationPrompt(props) {
     const handleDialogClose = () => {
@@ -28,14 +27,13 @@ function NavigationPrompt(props) {
                     <Button
                         variant="outlined"
                         onClick={props.cancelNavigation}
-                        sx={{ borderRadius: 0, mr: 1 }}
+                        sx={{ mr: 1 }}
                     >
                         Abbrechen
                     </Button>
                     <Button
                         variant="contained"
                         onClick={props.confirmNavigation}
-                        sx={{ borderRadius: 0 }}
                     >
                         Bestätigen
                     </Button>

@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import Overview from '../Recipes/Overview';
+import IconButton from '../IconButton';
 
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 
+import { Box } from '@mui/material';
+
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
-import { IconButton, Box } from '@mui/material';
 
 const CircularSwipeableViews = virtualize(SwipeableViews);
 
@@ -76,7 +78,6 @@ function LastRecipes() {
                 id="sliderBack"
                 sx={{
                     visibility: 'hidden',
-                    padding: '1px',
                     borderRadius: '50%',
                     border: `1px solid`,
                     color: (theme) => theme.palette.primary.main,
@@ -93,7 +94,6 @@ function LastRecipes() {
                         background: (theme) => theme.palette.primary.main,
                     },
                 }}
-                disableRipple
                 onClick={back}
             >
                 <Icon path={mdiChevronLeft} size={1} />
@@ -115,7 +115,6 @@ function LastRecipes() {
                 id="sliderNext"
                 sx={{
                     visibility: 'hidden',
-                    padding: '1px',
                     borderRadius: '50%',
                     border: `1px solid`,
                     color: (theme) => theme.palette.primary.main,
@@ -131,7 +130,6 @@ function LastRecipes() {
                         background: (theme) => theme.palette.primary.main,
                     },
                 }}
-                disableRipple
                 onClick={next}
             >
                 <Icon path={mdiChevronRight} size={1} />

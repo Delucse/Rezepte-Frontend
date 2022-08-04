@@ -7,12 +7,12 @@ import {
 } from '../../actions/recipeFormularActions';
 
 import Textfield from '../Textfield';
+import Button from '../Button';
+
+import Chip from '@mui/material/Chip';
 
 import Icon from '@mdi/react';
 import { mdiKeyChain } from '@mdi/js';
-
-import { Button } from '@mui/material';
-import Chip from '@mui/material/Chip';
 
 function Keywords() {
     const [keyword, setKeyword] = useState('');
@@ -47,7 +47,7 @@ function Keywords() {
                     start={<Icon path={mdiKeyChain} size={1} />}
                 />
                 <Button
-                    sx={{ height: '56px', borderRadius: 0, boxShadow: 'none' }}
+                    sx={{ height: '56px' }}
                     variant="contained"
                     onClick={addKeyword}
                     disabled={keyword.length === 0}

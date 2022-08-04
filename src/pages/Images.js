@@ -9,12 +9,12 @@ import { useNavigate } from 'react-router-dom';
 
 import ImageCarousel from '../components/ImageCarousel';
 import Loader from '../components/Loader';
+import IconButton from '../components/IconButton';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
     Box,
-    IconButton,
     ImageListItem,
     ImageListItemBar,
     Typography,
@@ -171,6 +171,7 @@ function Images() {
                                         </div>
                                         <IconButton
                                             sx={{
+                                                padding: '8px',
                                                 color: 'white',
                                                 '&:hover': {
                                                     color: (theme) =>
@@ -179,7 +180,6 @@ function Images() {
                                                 },
                                             }}
                                             onClick={() => handleOpen(idx)}
-                                            disableRipple
                                         >
                                             <Icon
                                                 path={mdiFullscreen}
@@ -188,6 +188,7 @@ function Images() {
                                         </IconButton>
                                         <IconButton
                                             sx={{
+                                                padding: '8px',
                                                 color: 'white',
                                                 '&:hover': {
                                                     color: (theme) =>
@@ -198,7 +199,6 @@ function Images() {
                                             onClick={() => {
                                                 deleteImage(image._id);
                                             }}
-                                            disableRipple
                                         >
                                             <Icon path={mdiDelete} size={1} />
                                         </IconButton>

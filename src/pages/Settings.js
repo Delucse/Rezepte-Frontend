@@ -5,10 +5,11 @@ import { setColors } from '../actions/settingsActions';
 
 import { ChromePicker } from 'react-color';
 
+import Button from '../components/Button';
+
 import {
     Popover,
     ButtonGroup,
-    Button,
     Box,
     useTheme,
     useMediaQuery,
@@ -62,7 +63,6 @@ function Settings() {
                 <Button
                     onClick={() => setMode('light')}
                     sx={{
-                        borderRadius: 0,
                         background: (theme) =>
                             mode === 'light'
                                 ? theme.palette.primary.main
@@ -103,7 +103,6 @@ function Settings() {
                 <Button
                     onClick={() => setMode('dark')}
                     sx={{
-                        borderRadius: 0,
                         background: (theme) =>
                             mode === 'dark'
                                 ? theme.palette.primary.main
@@ -248,7 +247,7 @@ function Settings() {
 
             <Button
                 variant="contained"
-                sx={{ borderRadius: 0, marginTop: '20px' }}
+                sx={{ marginTop: '20px' }}
                 onClick={submit}
                 disabled={
                     mainColor === theme.palette.primary.main &&

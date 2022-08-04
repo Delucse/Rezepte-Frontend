@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSort } from '../../actions/recipeFilterActions';
 
-import Button from '@mui/material/Button';
+import Button from '../Button';
+
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -91,17 +92,15 @@ function Sort() {
     return (
         <div>
             <Button
+                tooltipProps={{ title: 'Reihenfolge' }}
                 sx={{
                     height: '56px',
-                    borderRadius: 0,
-                    boxShadow: 'none',
                     minWidth: '56px',
                     padding: '16px',
                     display: { xs: 'none', sm: 'initial' },
                 }}
                 variant="outlined"
                 onClick={handleClick}
-                disableRipple
             >
                 <Icon
                     path={
@@ -115,14 +114,11 @@ function Sort() {
             <Button
                 sx={{
                     height: '56px',
-                    borderRadius: 0,
-                    boxShadow: 'none',
                     minWidth: '20px',
                     padding: 0,
                     display: { xs: 'initial', sm: 'none' },
                 }}
                 onClick={handleClick}
-                disableRipple
             >
                 <Icon path={mdiDotsVertical} size={1} />
             </Button>
