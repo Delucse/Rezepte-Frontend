@@ -118,7 +118,7 @@ function Images() {
                     return (
                         <ImageListItem key={image._id} sx={{ height: '180px' }}>
                             <img
-                                src={`${process.env.REACT_APP_API_URL}/media/${image.file}`}
+                                src={`${process.env.REACT_APP_IMAGE_URL}/${image.file}`}
                                 alt=""
                                 style={{
                                     cursor: 'pointer',
@@ -220,7 +220,7 @@ function Images() {
                 <ImageCarousel
                     images={images.map(
                         (img) =>
-                            `${process.env.REACT_APP_API_URL}/media/${img.file}`
+                            `${process.env.REACT_APP_IMAGE_URL}/${img.file}`
                     )}
                     title={'Meine Bilder'}
                     open={open}

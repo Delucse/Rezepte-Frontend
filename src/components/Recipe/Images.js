@@ -22,9 +22,7 @@ function Images({ pictures, title }) {
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = pictures.length;
     pictures = pictures.map((pic) =>
-        !pic._id
-            ? pic.file
-            : `${process.env.REACT_APP_API_URL}/media/${pic.file}`
+        !pic._id ? pic.file : `${process.env.REACT_APP_IMAGE_URL}/${pic.file}`
     );
 
     useEffect(() => {
@@ -60,9 +58,14 @@ function Images({ pictures, title }) {
                     height: 240,
                     width: '100%',
                     objectFit: 'cover',
-                    cursor: 'pointer',
+                    cursor: maxSteps > 0 ? 'pointer' : 'default',
+                    filter: maxSteps > 0 ? 'none' : 'grayscale(1)',
                 }}
-                src={pictures[index]}
+                src={
+                    maxSteps > 0
+                        ? pictures[index]
+                        : `${process.env.PUBLIC_URL}/logo512.png`
+                }
                 alt={title}
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
@@ -70,7 +73,7 @@ function Images({ pictures, title }) {
                     currentTarget.style =
                         'height: 240px; width: 100%; object-fit: cover; filter: grayscale(1);';
                 }}
-                onClick={() => handleOpen(index)}
+                onClick={maxSteps > 0 ? () => handleOpen(index) : null}
             />
         );
     };

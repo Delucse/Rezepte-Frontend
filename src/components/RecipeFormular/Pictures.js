@@ -188,7 +188,7 @@ function Pictures() {
     const picturesUrl = pictures.map((picture) =>
         !picture.id
             ? picture.url
-            : `${process.env.REACT_APP_API_URL}/media/${picture.url}`
+            : `${process.env.REACT_APP_IMAGE_URL}/${picture.url}`
     );
     const title = useSelector((state) => state.recipeFormular.title);
     const user = useSelector((state) => state.auth.user);

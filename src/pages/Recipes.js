@@ -146,7 +146,11 @@ function Recipes(props) {
                                     <Overview
                                         id={recipe._id}
                                         title={recipe.title}
-                                        picture={`${process.env.REACT_APP_API_URL}/media/${recipe.picture}`}
+                                        picture={
+                                            recipe.picture
+                                                ? `${process.env.REACT_APP_IMAGE_URL}/${recipe.picture}`
+                                                : null
+                                        }
                                         keywords={recipe.keywords}
                                         time={recipe.time}
                                         date={recipe.date}

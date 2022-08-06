@@ -64,7 +64,7 @@ function LastRecipes() {
                 fullscreen
                 id={recipes[index]._id}
                 title={recipes[index].title}
-                picture={`${process.env.REACT_APP_API_URL}/media/${recipes[index].picture}`}
+                picture={`${process.env.REACT_APP_IMAGE_URL}/${recipes[index].picture}`}
                 keywords={recipes[index].keywords}
                 time={recipes[index].time}
                 date={recipes[index].date}

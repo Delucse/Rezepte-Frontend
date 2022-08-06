@@ -110,10 +110,15 @@ function Overview(props) {
                             : 'calc(100% - 64px)',
                         width: 'calc(100%)',
                         position: 'relative',
-                        backgroundImage: `url(${props.picture})`,
+                        backgroundImage: `url(${
+                            props.picture
+                                ? props.picture
+                                : `${process.env.PUBLIC_URL}/logo512.png`
+                        })`,
                         backgroundSize: 'cover',
                         backgroundRepeat: 'no-repeat',
                         backgroundPosition: 'center center',
+                        filter: props.picture ? 'none' : 'grayscale(1)',
                     }}
                 >
                     <img
