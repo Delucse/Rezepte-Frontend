@@ -4,9 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { snackbarMessage, resetMessage } from '../../actions/messageActions';
 
 import IconButton from '../IconButton';
+import Tooltip from '../Tooltip';
 
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
+import { SpeedDial, SpeedDialAction, useTheme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 import Icon from '@mdi/react';
 import {
@@ -15,7 +16,17 @@ import {
     mdiShareVariant,
     mdiWhatsapp,
 } from '@mdi/js';
-import Tooltip from '../Tooltip';
+
+const useStyles = makeStyles({
+    tooltip: {
+        fontSize: '12px',
+        border: (theme) => `1px solid ${theme.palette.primary.light}`,
+        borderRadius: 0,
+        boxShadow: (theme) => theme.shadows[1],
+        background: (theme) => theme.palette.background.default,
+        color: (theme) => theme.palette.text.primary,
+    },
+});
 
 const actions = [
     {
@@ -66,6 +77,8 @@ function Share(props) {
     const url = window.location.href;
     const type = useSelector((state) => state.message.type);
 
+    const classes = useStyles(useTheme());
+
     useEffect(() => {
         if (type === 'share') {
             dispatch(resetMessage());
@@ -100,13 +113,13 @@ function Share(props) {
             <SpeedDial
                 ariaLabel="SpeedDial basic example"
                 direction="down"
-                disableRipple
                 sx={{
                     marginBottom: '25px',
                     height: '23px',
                     background: (theme) => theme.palette.action.hover,
                 }}
                 FabProps={{
+                    disableRipple: true,
                     sx: {
                         marginBottom: '9px',
                         padding: '0px',
@@ -155,6 +168,7 @@ function Share(props) {
                         }}
                         icon={action.icon}
                         tooltipTitle={action.name}
+                        TooltipClasses={classes}
                         href={
                             action.href ? action.href(props.title, url) : null
                         }

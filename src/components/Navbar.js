@@ -8,6 +8,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 
 import DelucseLogo from './DelucseLogo';
 import IconButton from './IconButton';
+import Tooltip from './Tooltip';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -18,6 +19,7 @@ import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
+import { useTheme } from '@mui/material';
 
 import Icon from '@mdi/react';
 import {
@@ -38,9 +40,6 @@ import {
     mdiChefHat,
     mdiFrequentlyAskedQuestions,
 } from '@mdi/js';
-
-import { useTheme } from '@mui/material';
-import Tooltip from './Tooltip';
 
 function Navlink(props) {
     const theme = useTheme();
@@ -183,9 +182,6 @@ function Navbar() {
                         }}
                     >
                         <IconButton
-                            tooltipProps={{
-                                title: `Menü ${open ? 'schließen' : 'öffnen'}`,
-                            }}
                             edge="start"
                             color="inherit"
                             onClick={toggle}

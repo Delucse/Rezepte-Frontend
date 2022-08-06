@@ -82,7 +82,7 @@ function Search(props) {
                     props.redux ? (
                         word !== '' ? (
                             <IconButton
-                                tooltipProps={{ title: 'löschen' }}
+                                tooltipProps={{ title: 'Löschen' }}
                                 sx={{
                                     padding: '4px',
                                     marginRight: '-8px',
@@ -100,7 +100,7 @@ function Search(props) {
                         ) : null
                     ) : search !== '' ? (
                         <IconButton
-                            tooltipProps={{ title: 'löschen' }}
+                            tooltipProps={{ title: 'Löschen' }}
                             sx={{
                                 padding: '4px',
                                 marginRight: '-8px',

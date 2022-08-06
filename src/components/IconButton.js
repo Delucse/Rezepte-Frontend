@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { IconButton as MuiIconButton } from '@mui/material';
 import Tooltip from './Tooltip';
+
+import { IconButton as MuiIconButton } from '@mui/material';
 
 function IconButton({ onClick, sx, tooltipProps, children, ...rest }) {
     const button = (

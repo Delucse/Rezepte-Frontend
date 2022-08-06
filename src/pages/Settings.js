@@ -6,6 +6,7 @@ import { setColors } from '../actions/settingsActions';
 import { ChromePicker } from 'react-color';
 
 import Button from '../components/Button';
+import Help from '../components/Help';
 
 import {
     Popover,
@@ -13,6 +14,7 @@ import {
     Box,
     useTheme,
     useMediaQuery,
+    Typography,
 } from '@mui/material';
 
 function rgbaToRgb(rgb, alpha) {
@@ -51,14 +53,32 @@ function Settings() {
 
     return (
         <div>
-            <Box
+            <Typography
+                variant="body1"
                 sx={{
+                    display: 'flex',
                     marginBottom: '10px',
+                    fontWeight: 'bold',
                     color: (theme) => theme.palette.text.primary,
                 }}
             >
                 Modus
-            </Box>
+                <Help
+                    explanation={
+                        <div>
+                            "Light" beschreibt ein helles Thema mit weißem
+                            Hintergrund.
+                            <br />
+                            "Dark" meint ein dunkles Thema mit dunkelgrauem
+                            Hintergrund.
+                            <br />
+                            "System" bezieht sich auf die Einstellung des gerade
+                            genutzen Gerätes und kann daher sowohl "Light" als
+                            auch "Dark" sein.
+                        </div>
+                    }
+                />
+            </Typography>
             <ButtonGroup variant="outlined" sx={{ marginBottom: '20px' }}>
                 <Button
                     onClick={() => setMode('light')}
@@ -121,14 +141,18 @@ function Settings() {
                     Dark
                 </Button>
             </ButtonGroup>
-            <Box
+            <Typography
+                variant="body1"
                 sx={{
+                    display: 'flex',
                     marginBottom: '10px',
+                    fontWeight: 'bold',
                     color: (theme) => theme.palette.text.primary,
                 }}
             >
                 Farbschema
-            </Box>
+                <Help explanation="Mit einem Klick auf die unteren Farbkachel lässt sich die Hauptfarbe der Anwendung anpassen. Auf Grundlage der gewählten Hauptfarbe wird automatisch eine stimmige hellere Farbe berechnet." />
+            </Typography>
             <Box
                 sx={{
                     display: 'flex',

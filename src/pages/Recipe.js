@@ -20,8 +20,7 @@ import Pdf from '../components/Recipe/Pdf';
 import WakeLock from '../components/Recipe/WakeLock';
 import Loader from '../components/Loader';
 import IconButton from '../components/IconButton';
-
-import params from '../data/params.json';
+import Tooltip from '../components/Tooltip';
 
 import {
     Grid,
@@ -43,7 +42,8 @@ import {
     mdiFoodSteakOff,
     mdiPencil,
 } from '@mdi/js';
-import Tooltip from '../components/Tooltip';
+
+import params from '../data/params.json';
 
 var filterParams = [];
 Object.keys(params.filter).forEach((key) => {
@@ -187,7 +187,6 @@ function Recipe() {
                         {recipe.keywords.includes('vegan') ? (
                             <Tooltip title="vegan">
                                 <Box
-                                    title="vegan"
                                     sx={{
                                         '&:hover': {
                                             color: (theme) =>
@@ -453,13 +452,15 @@ function Recipe() {
                                 key={index}
                                 label={keyword}
                                 onClick={() =>
-                                    navigate(
-                                        `/rezepte?${
-                                            filterParams.includes(keyword)
-                                                ? `filter=${keyword}`
-                                                : `wort=${keyword}&typ=schlüsselwort`
-                                        }`
-                                    )
+                                    keyword === 'Basic'
+                                        ? navigate('/rezepte/basis')
+                                        : navigate(
+                                              `/rezepte?${
+                                                  filterParams.includes(keyword)
+                                                      ? `filter=${keyword}`
+                                                      : `wort=${keyword}&typ=schlüsselwort`
+                                              }`
+                                          )
                                 }
                             />
                         );
@@ -495,7 +496,7 @@ function Recipe() {
                         >
                             <IconButton
                                 tooltipProps={{
-                                    title: 'Rezept bearbeiten',
+                                    title: 'Editier-Modus starten',
                                     placement: 'right',
                                 }}
                                 sx={{
@@ -523,7 +524,7 @@ function Recipe() {
                             </IconButton>
                             <IconButton
                                 tooltipProps={{
-                                    title: 'Rezept löschen',
+                                    title: 'Löschen',
                                     placement: 'right',
                                 }}
                                 sx={{

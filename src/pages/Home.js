@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import HowTo from '../components/Home/HowTo';
 import RecipeLogo from '../components/RecipeLogo';
 import LastRecipes from '../components/Home/LastRecipes';
-import Tooltip from '../components/Tooltip';
 
 import { Grid, Box } from '@mui/material';
 // import Statistics from '../components/Home/Statistics';
@@ -15,22 +14,19 @@ import { mdiFrequentlyAskedQuestions } from '@mdi/js';
 
 function Square(props) {
     const boxSquare = (
-        <Tooltip title={props.title} followCursor>
-            <Box
-                sx={{
-                    aspectRatio: '1',
-                    border: (theme) =>
-                        `1px solid ${theme.palette.primary.light}`,
-                    width: props.noPadding ? '100%' : '94%',
-                    padding: props.noPadding ? 0 : '3%',
-                    '&:hover': {
-                        borderColor: (theme) => theme.palette.primary.main,
-                    },
-                }}
-            >
-                {props.children}
-            </Box>
-        </Tooltip>
+        <Box
+            sx={{
+                aspectRatio: '1',
+                border: (theme) => `1px solid ${theme.palette.primary.light}`,
+                width: props.noPadding ? '100%' : '94%',
+                padding: props.noPadding ? 0 : '3%',
+                '&:hover': {
+                    borderColor: (theme) => theme.palette.primary.main,
+                },
+            }}
+        >
+            {props.children}
+        </Box>
     );
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -41,15 +37,13 @@ function Square(props) {
 
 const themes = [
     {
-        title: 'alle Rezepte',
         link: '/rezepte',
         component: <RecipeLogo style={{ height: '100%', width: '100%' }} />,
     },
-    { title: 'neueste Rezepte', component: <LastRecipes />, noPadding: true },
+    { component: <LastRecipes />, noPadding: true },
     // { component: <Statistics /> },
-    { title: 'Grundrezepte', link: '/rezepte/basis', component: <HowTo /> },
+    { link: '/rezepte/basis', component: <HowTo /> },
     {
-        title: 'FAQ',
         link: '/faq',
         component: (
             <Box

@@ -26,26 +26,32 @@ import Categories from '../components/RecipeFormular/Categories';
 const steps = [
     {
         title: 'Allgemein',
+        help: 'Angabe von generischen Informationen wie Titel, Portionsangaben und benötigte Zeit.',
         content: <General />,
     },
     {
         title: 'Kategorien',
+        help: 'Die Angabe von Kategorien dient einer besseren Such-und Filtermöglichkeit. Es muss mindestens eine Kategorie hinzugefügt werden.',
         content: <Categories />,
     },
     {
         title: 'Zutaten',
+        help: 'Die Angaben von Zutaten können in thematischen Blöcken erfolgen (z.B. Unterscheidung von Teig und Belag). Jeder Zutatenblock enthält einen Titel und mindestens eine Zutatenangabe.',
         content: <Ingredients />,
     },
     {
         title: 'Arbeitsschritte',
+        help: 'Arbeitschritte meint eine Beschreibung des Ablaufs von Anfang bis Ende. Es muss mindestens ein Arbeitsschritt vorhanden sein.',
         content: <Steps />,
     },
     {
         title: 'Bilder',
+        help: 'Jedes Rezept muss mindesten ein Bild enthalten. Gültige Bildformate sind ".png", ".jpg" und ".jpeg".',
         content: <Pictures />,
     },
     {
         title: 'Zusammenfassung',
+        help: 'Anzeige einer Rezept-Vorschau, sobald alle verpflichtenden Angaben korrekt gemacht worden sind.',
         content: <Preview />,
     },
 ];

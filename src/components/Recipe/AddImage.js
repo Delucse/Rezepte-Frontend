@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
+import { addPicture } from '../../actions/recipeActions';
 
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
@@ -8,6 +9,7 @@ import axios from 'axios';
 import Dialog from '../Dialog';
 import Button from '../Button';
 import IconButton from '../IconButton';
+import Tooltip from '../Tooltip';
 
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -16,8 +18,6 @@ import ImageListItemBar from '@mui/material/ImageListItemBar';
 
 import Icon from '@mdi/react';
 import { mdiCameraPlus, mdiCamera, mdiDelete } from '@mdi/js';
-import { addPicture } from '../../actions/recipeActions';
-import Tooltip from '../Tooltip';
 
 function AddImage(props) {
     const dispatch = useDispatch();

@@ -8,6 +8,7 @@ import Dialog from '../Dialog';
 import Autocomplete from '../Autocomplete';
 import Textfield from '../Textfield';
 import IconButton from '../IconButton';
+import Help from '../Help';
 
 import {
     Typography,
@@ -310,18 +311,22 @@ function Portion() {
                                 />
                             </Box>
                         ) : null}
-                        <FormControlLabel
-                            label={'Mengenangaben runden?'}
-                            control={
-                                <Checkbox
-                                    checked={rounded}
-                                    onChange={(e) =>
-                                        setRounded(e.target.checked)
-                                    }
-                                    disableRipple
-                                />
-                            }
-                        />
+                        <Box sx={{ display: 'flex' }}>
+                            <FormControlLabel
+                                label={'Mengenangaben runden'}
+                                control={
+                                    <Checkbox
+                                        checked={rounded}
+                                        onChange={(e) =>
+                                            setRounded(e.target.checked)
+                                        }
+                                        disableRipple
+                                    />
+                                }
+                                sx={{ marginRight: '0px' }}
+                            />
+                            <Help explanation="Findet ausschließlich Anwendung, sofern mindestens eine Portionsangabe vom Original abweicht." />
+                        </Box>
                     </Box>
                 }
                 actions={

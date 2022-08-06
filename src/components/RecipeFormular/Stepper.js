@@ -7,6 +7,7 @@ import { resetMessage } from '../../actions/messageActions';
 import SwipeableViews from 'react-swipeable-views';
 
 import IconButton from '../IconButton';
+import Help from '../Help';
 
 import Box from '@mui/material/Box';
 import MuiStepper from '@mui/material/Stepper';
@@ -33,6 +34,7 @@ function Content(props) {
             <Typography
                 variant="body1"
                 sx={{
+                    display: 'flex',
                     fontWeight: 'bold',
                     paddingBottom: '10px',
                     position: 'sticky',
@@ -43,6 +45,7 @@ function Content(props) {
                 }}
             >
                 {props.title}
+                <Help explanation={props.help} />
             </Typography>
             {props.step}
         </Box>
@@ -240,6 +243,7 @@ function Stepper(props) {
                         <Content
                             step={step.content}
                             title={step.title}
+                            help={step.help}
                             key={index}
                         />
                     ))}
