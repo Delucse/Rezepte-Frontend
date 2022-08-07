@@ -31,6 +31,9 @@ export const SET_RECIPE_ID = 'SET_RECIPE_ID';
 export const ADD_RECIPE_PICTURE = 'ADD_RECIPE_PICTURE';
 export const SET_RECIPE_FAVORITE = 'SET_RECIPE_FAVORITE';
 
+// Images
+export const SET_IMAGES = 'SET_IMAGES';
+
 // Recipe Filter
 export const GET_RECIPES = 'GET_RECIPES';
 export const SET_WORD = 'SET_WORD';

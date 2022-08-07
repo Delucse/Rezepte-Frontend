@@ -22,6 +22,11 @@ import axios from 'axios';
 import { setRecipeId } from './recipeActions';
 import { setRoute } from './recipeFilterActions';
 import { alertErrorMessage, snackbarMessage } from './messageActions';
+import {
+    setProgress,
+    setProgressError,
+    setProgressSuccess,
+} from './progressActions';
 
 export const isFoodAmountError = (amount) => {
     var amountDecimal = amount;
@@ -482,6 +487,7 @@ const objectToFormData = (data, formData, subkey) => {
 };
 
 export const submitRecipe = (id) => (dispatch, getState) => {
+    dispatch(setProgress('recipeFormular'));
     var {
         title,
         portion,
@@ -549,6 +555,7 @@ export const submitRecipe = (id) => (dispatch, getState) => {
                     'recipeFormular'
                 )
             );
+            dispatch(setProgressSuccess('recipeFormular'));
         },
         error: (err) => {
             console.error(err.message);
@@ -559,6 +566,7 @@ export const submitRecipe = (id) => (dispatch, getState) => {
                         'recipeFormular'
                     )
                 );
+                dispatch(setProgressError('recipeFormular'));
             }
         },
     };

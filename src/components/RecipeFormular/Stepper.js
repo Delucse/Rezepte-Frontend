@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { checkRecipeError } from '../../actions/recipeFormularActions';
 import { resetMessage } from '../../actions/messageActions';
 
+import { useParams } from 'react-router-dom';
+
 import SwipeableViews from 'react-swipeable-views';
 
 import IconButton from '../IconButton';
@@ -14,7 +16,7 @@ import MuiStepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepButton from '@mui/material/StepButton';
 import StepLabel from '@mui/material/StepLabel';
-import { Typography } from '@mui/material';
+import { CircularProgress, Typography } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
@@ -93,6 +95,12 @@ function Stepper(props) {
     const error = useSelector((state) => state.message.error);
     const art = useSelector((state) => state.message.art);
 
+    const { id } = useParams();
+    const loading = useSelector(
+        (state) =>
+            state.progress.loading && state.progress.type === 'recipeFormular'
+    );
+
     const [actions, setActions] = useState();
 
     useEffect(() => {
@@ -154,6 +162,46 @@ function Stepper(props) {
 
     return (
         <div>
+            {loading ? (
+                <Box
+                    id="load"
+                    sx={{
+                        position: 'fixed',
+                        left: '-24px',
+                        marginLeft: '24px',
+                        width: 'calc(100% + 24px)',
+                        height: '100%',
+                        display: 'grid',
+                        alignItems: 'center',
+                        justifyItems: 'center',
+
+                        background: (theme) => theme.palette.background.default,
+                        opacity: 0.8,
+                        zIndex: 10,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            justifyItems: 'center',
+                            display: 'grid',
+                            transform: 'translateY(-57px)',
+                            height: '104px',
+                            width: '200px',
+                        }}
+                    >
+                        <CircularProgress size={70} />
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                marginTop: '10px',
+                                color: (theme) => theme.palette.text.primary,
+                            }}
+                        >
+                            Rezept wird {id ? 'aktualisiert' : 'veröffentlicht'}
+                        </Typography>
+                    </Box>
+                </Box>
+            ) : null}
             {/* back */}
             <Box
                 sx={{

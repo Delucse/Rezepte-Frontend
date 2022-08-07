@@ -11,13 +11,16 @@ import Button from '../Button';
 import IconButton from '../IconButton';
 import Tooltip from '../Tooltip';
 
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
+import {
+    Typography,
+    Box,
+    InputLabel,
+    ImageListItem,
+    ImageListItemBar,
+} from '@mui/material';
 
 import Icon from '@mdi/react';
-import { mdiCameraPlus, mdiCamera, mdiDelete } from '@mdi/js';
+import { mdiCameraPlus, mdiCamera, mdiDelete, mdiLoading } from '@mdi/js';
 
 function AddImage(props) {
     const dispatch = useDispatch();
@@ -26,6 +29,7 @@ function AddImage(props) {
 
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
+    const [progress, setProgress] = useState(false);
     const [drag, setDrag] = useState(false);
     const [counter, setCounter] = useState(0);
 
@@ -118,6 +122,7 @@ function AddImage(props) {
     };
 
     const submit = () => {
+        setProgress(true);
         var body = new FormData();
         body.append('picture', image.file);
 
@@ -138,9 +143,12 @@ function AddImage(props) {
                 dispatch(addPicture(res.data.image));
                 setOpen(false);
                 setImage(null);
+                setProgress(false);
             },
             error: (err) => {
-                console.error(err.message);
+                if (err.response.status !== 401) {
+                    setProgress(false);
+                }
             },
         };
 
@@ -167,8 +175,8 @@ function AddImage(props) {
             </Tooltip>
             <Dialog
                 open={open}
-                onClose={() => setOpen(false)}
-                closeIcon
+                onClose={!progress ? () => setOpen(false) : null}
+                closeIcon={!progress}
                 title={'Bild hinzufügen'}
                 fullWidth
                 content={
@@ -271,25 +279,52 @@ function AddImage(props) {
                     </div>
                 }
                 actions={
-                    <div>
-                        <Button
-                            variant="outlined"
-                            onClick={() => {
-                                setOpen(false);
-                                setImage(null);
+                    !progress ? (
+                        <div>
+                            <Button
+                                variant="outlined"
+                                onClick={() => {
+                                    setOpen(false);
+                                    setImage(null);
+                                }}
+                                sx={{ mr: 1 }}
+                            >
+                                Abbrechen
+                            </Button>
+                            <Button
+                                disabled={image === null}
+                                variant="contained"
+                                onClick={submit}
+                            >
+                                Bestätigen
+                            </Button>
+                        </div>
+                    ) : (
+                        <Box
+                            sx={{
+                                height: '36.5px',
+                                color: (theme) => theme.palette.primary.main,
+                                display: 'flex',
+                                alignItems: 'center',
                             }}
-                            sx={{ mr: 1 }}
                         >
-                            Abbrechen
-                        </Button>
-                        <Button
-                            disabled={image === null}
-                            variant="contained"
-                            onClick={submit}
-                        >
-                            Bestätigen
-                        </Button>
-                    </div>
+                            <Icon
+                                path={mdiLoading}
+                                size={1}
+                                spin={0.9}
+                                style={{ marginRight: '10px' }}
+                            />
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                    color: (theme) =>
+                                        theme.palette.text.primary,
+                                }}
+                            >
+                                Bild wird hochgeladen
+                            </Typography>
+                        </Box>
+                    )
                 }
             />
         </div>

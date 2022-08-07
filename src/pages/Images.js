@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDispatch } from 'react-redux';
-import { snackbarMessage } from '../actions/messageActions';
-
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteImage, getImages } from '../actions/imageActions';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -21,16 +19,125 @@ import {
 } from '@mui/material';
 
 import Icon from '@mdi/react';
-import { mdiDelete, mdiFullscreen } from '@mdi/js';
+import { mdiDelete, mdiLoading, mdiFullscreen } from '@mdi/js';
+
+function Image({ file, imageId, recipeId, title, openCarousel }) {
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+    const loading = useSelector(
+        (state) =>
+            state.progress.loading && state.progress.type === `image-${imageId}`
+    );
+
+    return (
+        <ImageListItem sx={{ height: '180px' }}>
+            <img
+                src={`${process.env.REACT_APP_IMAGE_URL}/${file}`}
+                alt=""
+                style={{
+                    cursor: 'pointer',
+                    height: '180px',
+                    objectFit: 'cover',
+                }}
+                onClick={openCarousel}
+                onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
+                    currentTarget.style =
+                        'height: 180px; object-fit: cover; cursor: pointer; filter: grayscale(1);';
+                }}
+            />
+            <ImageListItemBar
+                actionPosition={'left'}
+                actionIcon={
+                    <div style={{ display: 'flex' }}>
+                        <div
+                            style={{
+                                alignContent: 'center',
+                                display: 'flex',
+                                width: 'calc(100% - 2 * 40px)',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    lineHeight: 'calc(40px - 2 * 8px)',
+                                    padding: '8px',
+                                    cursor: 'pointer',
+                                    fontWeight: 'bold',
+                                    textOverflow: 'ellipsis',
+                                    overflow: 'hidden',
+                                    color: 'white',
+                                    '&:hover': {
+                                        color: (theme) =>
+                                            theme.palette.primary.main,
+                                    },
+                                }}
+                                onClick={() => navigate(`/rezepte/${recipeId}`)}
+                            >
+                                {title}
+                            </Box>
+                        </div>
+                        <IconButton
+                            sx={{
+                                padding: '8px',
+                                color: 'white',
+                                '&:hover': {
+                                    color: (theme) =>
+                                        theme.palette.primary.main,
+                                },
+                            }}
+                            onClick={openCarousel}
+                        >
+                            <Icon path={mdiFullscreen} size={1} />
+                        </IconButton>
+                        <IconButton
+                            sx={{
+                                padding: '8px',
+                                color: 'white',
+                                '&:hover': {
+                                    color: (theme) =>
+                                        theme.palette.primary.main,
+                                },
+                            }}
+                            onClick={
+                                loading
+                                    ? null
+                                    : () => dispatch(deleteImage(imageId))
+                            }
+                        >
+                            <Icon
+                                path={loading ? mdiLoading : mdiDelete}
+                                size={1}
+                                spin={loading ? 0.9 : false}
+                            />
+                        </IconButton>
+                    </div>
+                }
+                sx={{
+                    background: 'rgba(0, 0, 0, 0.25)',
+                    '.MuiImageListItemBar-titleWrap': {
+                        padding: 0,
+                    },
+                    '.MuiImageListItemBar-actionIcon': {
+                        width: '100%',
+                    },
+                }}
+            />
+        </ImageListItem>
+    );
+}
 
 function Images() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
 
-    const [images, setImages] = useState(null);
+    const images = useSelector((state) => state.image.images);
+    const loading = useSelector(
+        (state) => state.progress.loading && state.progress.type === 'images'
+    );
+
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(0);
-    const [loading, setLoading] = useState(true);
 
     const theme = useTheme();
     const lg = useMediaQuery(theme.breakpoints.up('lg'));
@@ -40,26 +147,8 @@ function Images() {
     const col = lg ? 4 : md ? 3 : sm ? 2 : 1;
 
     useEffect(() => {
-        const config = {
-            method: 'GET',
-            url: `${process.env.REACT_APP_API_URL}/recipe/image`,
-            success: (res) => {
-                setImages(res.data);
-                setLoading(false);
-            },
-            error: (err) => {
-                console.error(err.message);
-                setLoading(false);
-            },
-        };
-
-        axios(config)
-            .then((res) => {
-                res.config.success(res);
-            })
-            .catch((err) => {
-                err.config.error(err);
-            });
+        dispatch(getImages());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -71,33 +160,6 @@ function Images() {
     const handleOpen = (i) => {
         setIndex(i);
         setOpen(true);
-    };
-
-    const deleteImage = (id) => {
-        const config = {
-            method: 'DELETE',
-            url: `${process.env.REACT_APP_API_URL}/recipe/image/${id}`,
-            success: (res) => {
-                setImages(images.filter((img) => img._id !== id));
-                dispatch(
-                    snackbarMessage(
-                        'Das Bilder-Rezept wurde erfolgreich gelöscht.',
-                        `image-${id}`
-                    )
-                );
-            },
-            error: (err) => {
-                console.error(err.message);
-            },
-        };
-
-        axios(config)
-            .then((res) => {
-                res.config.success(res);
-            })
-            .catch((err) => {
-                err.config.error(err);
-            });
     };
 
     return !loading && images ? (
@@ -114,109 +176,16 @@ function Images() {
                     }))`,
                 }}
             >
-                {images.map((image, idx) => {
-                    return (
-                        <ImageListItem key={image._id} sx={{ height: '180px' }}>
-                            <img
-                                src={`${process.env.REACT_APP_IMAGE_URL}/${image.file}`}
-                                alt=""
-                                style={{
-                                    cursor: 'pointer',
-                                    height: '180px',
-                                    objectFit: 'cover',
-                                }}
-                                onClick={() => handleOpen(idx)}
-                                onError={({ currentTarget }) => {
-                                    currentTarget.onerror = null; // prevents looping
-                                    currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
-                                    currentTarget.style =
-                                        'height: 180px; object-fit: cover; cursor: pointer; filter: grayscale(1);';
-                                }}
-                            />
-                            <ImageListItemBar
-                                actionPosition={'left'}
-                                actionIcon={
-                                    <div style={{ display: 'flex' }}>
-                                        <div
-                                            style={{
-                                                alignContent: 'center',
-                                                display: 'flex',
-                                                width: 'calc(100% - 2 * 40px)',
-                                            }}
-                                        >
-                                            <Box
-                                                sx={{
-                                                    lineHeight:
-                                                        'calc(40px - 2 * 8px)',
-                                                    padding: '8px',
-                                                    cursor: 'pointer',
-                                                    fontWeight: 'bold',
-                                                    textOverflow: 'ellipsis',
-                                                    overflow: 'hidden',
-                                                    color: 'white',
-                                                    '&:hover': {
-                                                        color: (theme) =>
-                                                            theme.palette
-                                                                .primary.main,
-                                                    },
-                                                }}
-                                                onClick={() =>
-                                                    navigate(
-                                                        `/rezepte/${image.recipe._id}`
-                                                    )
-                                                }
-                                            >
-                                                {image.recipe.title}
-                                            </Box>
-                                        </div>
-                                        <IconButton
-                                            sx={{
-                                                padding: '8px',
-                                                color: 'white',
-                                                '&:hover': {
-                                                    color: (theme) =>
-                                                        theme.palette.primary
-                                                            .main,
-                                                },
-                                            }}
-                                            onClick={() => handleOpen(idx)}
-                                        >
-                                            <Icon
-                                                path={mdiFullscreen}
-                                                size={1}
-                                            />
-                                        </IconButton>
-                                        <IconButton
-                                            sx={{
-                                                padding: '8px',
-                                                color: 'white',
-                                                '&:hover': {
-                                                    color: (theme) =>
-                                                        theme.palette.primary
-                                                            .main,
-                                                },
-                                            }}
-                                            onClick={() => {
-                                                deleteImage(image._id);
-                                            }}
-                                        >
-                                            <Icon path={mdiDelete} size={1} />
-                                        </IconButton>
-                                    </div>
-                                }
-                                sx={{
-                                    background: 'rgba(0, 0, 0, 0.25)',
-                                    '.MuiImageListItemBar-titleWrap': {
-                                        padding: 0,
-                                    },
-                                    '.MuiImageListItemBar-actionIcon': {
-                                        width: '100%',
-                                    },
-                                }}
-                            />
-                        </ImageListItem>
-                    );
-                })}
+                {images.map((image, idx) => (
+                    <Image
+                        key={image._id}
+                        file={image.file}
+                        imageId={image._id}
+                        recipeId={image.recipe._id}
+                        title={image.recipe.title}
+                        openCarousel={() => handleOpen(idx)}
+                    />
+                ))}
                 <ImageCarousel
                     images={images.map(
                         (img) =>
