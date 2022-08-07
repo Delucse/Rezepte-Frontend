@@ -2,14 +2,15 @@ import React from 'react';
 
 import { Tooltip as MuiTooltip } from '@mui/material';
 
-function Tooltip({ title, arrow, placement, children, ...rest }) {
+function Tooltip({ controlled, title, arrow, placement, children, ...rest }) {
     return (
         <MuiTooltip
             title={title}
             arrow={arrow}
             placement={placement}
             enterTouchDelay={100}
-            leaveTouchDelay={1000}
+            leaveTouchDelay={controlled ? 3000 : 1000}
+            leaveDelay={controlled ? 3000 : 0}
             componentsProps={{
                 tooltip: {
                     sx: {

@@ -19,7 +19,7 @@ function Help({ explanation }) {
             }}
         >
             <IconButton
-                tooltipProps={{ title: explanation }}
+                tooltipProps={{ title: explanation, controlled: true }}
                 sx={{
                     width: `calc(24px * ${size})`,
                     height: `calc(24px * ${size})`,
