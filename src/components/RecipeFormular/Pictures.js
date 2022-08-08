@@ -6,6 +6,7 @@ import {
     changePictures,
     removePicture,
 } from '../../actions/recipeFormularActions';
+import { alertErrorMessage, resetMessage } from '../../actions/messageActions';
 
 import imageCompression from 'browser-image-compression';
 
@@ -36,6 +37,7 @@ function PictureInput(props) {
     const pictures = useSelector(
         (state) => state.recipeFormular.pictures.order
     );
+    const user = useSelector((state) => state.auth.user);
 
     const dispatch = useDispatch();
 
@@ -44,10 +46,15 @@ function PictureInput(props) {
 
     const onHandleFileInput = async (targetFiles) => {
         targetFiles = [...targetFiles];
-
-        if (targetFiles.length + pictures.length > 4) {
-            alert(
-                'Insgesamt zu viele Bilder. Es dürfen nur maximal vier Bilder hochgeladen werden.'
+        const picturesLength = pictures.filter(
+            (pic) => pic.user === user
+        ).length;
+        if (targetFiles.length + picturesLength > 4) {
+            dispatch(
+                alertErrorMessage(
+                    `Es dürfen nur maximal vier Bilder je Nutzer je Rezept hochgeladen werden. (Aktuell existieren ${picturesLength} eigene Bilder.)`,
+                    'images'
+                )
             );
             return;
         }
@@ -56,14 +63,21 @@ function PictureInput(props) {
         var index = 0;
         while (!error && index < targetFiles.length) {
             if (
-                !['image/jpeg', 'image/png'].includes(targetFiles[index].type)
+                !['image/jpeg', 'image/jpg', 'image/png'].includes(
+                    targetFiles[index].type
+                )
             ) {
                 error = true;
             }
             index += 1;
         }
         if (error) {
-            alert('Falsches Dateiformat.');
+            dispatch(
+                alertErrorMessage(
+                    'Mindestens ein Bild hat ein falsches Dateiformat. Gültige Bildformate sind ".png", ".jpg" und ".jpeg".',
+                    'images'
+                )
+            );
             return;
         }
 
@@ -193,11 +207,16 @@ function Pictures() {
     const title = useSelector((state) => state.recipeFormular.title);
     const user = useSelector((state) => state.auth.user);
     const errorPictures = useSelector(
-        (state) => state.recipeFormular.error.pictures
+        (state) => state.message.error && state.message.type === 'images'
     );
 
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(0);
+
+    useEffect(() => {
+        return () => dispatch(resetMessage());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         if (open) {
@@ -229,12 +248,7 @@ function Pictures() {
                         zIndex: 2,
                     }}
                 >
-                    <Alert
-                        error
-                        message={
-                            'Es muss mindestens ein Bild ausgewählt werden.'
-                        }
-                    />
+                    <Alert type={'images'} style={{ marginBottom: 0 }} reset />
                 </Box>
             ) : null}
             <div style={{ marginTop: '10px' }} />

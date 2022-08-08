@@ -2,14 +2,19 @@ import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { addPicture } from '../../actions/recipeActions';
+import { alertErrorMessage } from '../../actions/messageActions';
+
+import { Link } from 'react-router-dom';
 
 import imageCompression from 'browser-image-compression';
+
 import axios from 'axios';
 
 import Dialog from '../Dialog';
 import Button from '../Button';
 import IconButton from '../IconButton';
 import Tooltip from '../Tooltip';
+import Alert from '../Alert';
 
 import {
     Typography,
@@ -25,7 +30,9 @@ import { mdiCameraPlus, mdiCamera, mdiDelete, mdiLoading } from '@mdi/js';
 function AddImage(props) {
     const dispatch = useDispatch();
     const id = useSelector((state) => state.recipe.id);
+    const pictures = useSelector((state) => state.recipe.pictures);
     const user = useSelector((state) => state.auth.user);
+    const picturesLength = pictures.filter((pic) => pic.user === user).length;
 
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
@@ -35,13 +42,6 @@ function AddImage(props) {
 
     const onHandleFileInput = async (targetFiles) => {
         targetFiles = [...targetFiles];
-
-        if (targetFiles.length > 1) {
-            alert(
-                'Insgesamt zu viele Bilder. Es darf nur maximal ein Bilder hochgeladen werden.'
-            );
-            return;
-        }
 
         var error = false;
         var index = 0;
@@ -54,7 +54,12 @@ function AddImage(props) {
             index += 1;
         }
         if (error) {
-            alert('Falsches Dateiformat.');
+            dispatch(
+                alertErrorMessage(
+                    'Das hochzuladene Bild hat ein falsches Dateiformat. Gültige Bildformate sind ".png", ".jpg" und ".jpeg".',
+                    'images'
+                )
+            );
             return;
         }
 
@@ -181,100 +186,136 @@ function AddImage(props) {
                 fullWidth
                 content={
                     <div>
-                        {image === null ? (
-                            <div
-                                onDragEnter={handleDragIn}
-                                onDragLeave={handleDragOut}
-                                onDragOver={handleDrag}
-                                onDrop={handleDrop}
-                            >
-                                <input
-                                    style={{ display: 'none' }}
-                                    accept="image/*"
-                                    onChange={(e) =>
-                                        onHandleFileInput(e.target.files)
-                                    }
-                                    name="picture"
-                                    id="picture-button-file"
-                                    type="file"
-                                />
-                                <InputLabel
-                                    htmlFor="picture-button-file"
-                                    sx={{
-                                        color: (theme) =>
-                                            props.error
-                                                ? theme.palette.error.main
-                                                : theme.palette.action.active,
-                                        '&:hover': {
-                                            color: (theme) =>
-                                                theme.palette.primary.main,
-                                        },
-                                    }}
+                        <Alert type={'images'} reset />
+                        {picturesLength < 4 ? (
+                            image === null ? (
+                                <div
+                                    onDragEnter={handleDragIn}
+                                    onDragLeave={handleDragOut}
+                                    onDragOver={handleDrag}
+                                    onDrop={handleDrop}
                                 >
-                                    <Box
+                                    <input
+                                        style={{ display: 'none' }}
+                                        accept="image/*"
+                                        onChange={(e) =>
+                                            onHandleFileInput(e.target.files)
+                                        }
+                                        name="picture"
+                                        id="picture-button-file"
+                                        type="file"
+                                    />
+                                    <InputLabel
+                                        htmlFor="picture-button-file"
                                         sx={{
-                                            fontSize: '1rem',
-                                            cursor: 'pointer',
-                                            height: `calc(180px - 2 * 10px - 2 * 1.6px)`,
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
-                                            display: 'flex',
-                                            padding: '10px',
-                                            border: (theme) =>
-                                                drag
-                                                    ? `2px dashed ${theme.palette.primary.main}`
-                                                    : props.error
-                                                    ? `2px dashed ${theme.palette.error.main}`
-                                                    : `2px dashed ${theme.palette.action.active}`,
+                                            color: (theme) =>
+                                                props.error
+                                                    ? theme.palette.error.main
+                                                    : theme.palette.action
+                                                          .active,
+                                            '&:hover': {
+                                                color: (theme) =>
+                                                    theme.palette.primary.main,
+                                            },
                                         }}
                                     >
-                                        <div style={{ textAlign: 'center' }}>
-                                            <Icon path={mdiCamera} size={2} />
-                                            <br />
-                                            Bilder wählen
-                                        </div>
-                                    </Box>
-                                </InputLabel>
-                            </div>
-                        ) : (
-                            <ImageListItem
-                                sx={{ height: '180px', width: '100%' }}
-                            >
-                                <img
-                                    src={image.url}
-                                    alt=""
-                                    style={{
-                                        height: '180px',
-                                        objectFit: 'cover',
-                                    }}
-                                />
-                                <ImageListItemBar
-                                    actionIcon={
-                                        <IconButton
+                                        <Box
                                             sx={{
-                                                padding: '8px',
-                                                color: 'white',
-                                                '&:hover': {
-                                                    color: (theme) =>
-                                                        theme.palette.primary
-                                                            .main,
-                                                },
-                                            }}
-                                            onClick={() => {
-                                                setImage(null);
+                                                fontSize: '1rem',
+                                                cursor: 'pointer',
+                                                height: `calc(180px - 2 * 10px - 2 * 1.6px)`,
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                display: 'flex',
+                                                padding: '10px',
+                                                border: (theme) =>
+                                                    drag
+                                                        ? `2px dashed ${theme.palette.primary.main}`
+                                                        : props.error
+                                                        ? `2px dashed ${theme.palette.error.main}`
+                                                        : `2px dashed ${theme.palette.action.active}`,
                                             }}
                                         >
-                                            <Icon path={mdiDelete} size={1} />
-                                        </IconButton>
-                                    }
-                                    sx={{
-                                        background: 'rgba(0, 0, 0, 0.25)',
-                                        '.MuiImageListItemBar-titleWrap': {
-                                            padding: 0,
-                                        },
-                                    }}
-                                />
-                            </ImageListItem>
+                                            <div
+                                                style={{ textAlign: 'center' }}
+                                            >
+                                                <Icon
+                                                    path={mdiCamera}
+                                                    size={2}
+                                                />
+                                                <br />
+                                                Bilder wählen
+                                            </div>
+                                        </Box>
+                                    </InputLabel>
+                                </div>
+                            ) : (
+                                <ImageListItem
+                                    sx={{ height: '180px', width: '100%' }}
+                                >
+                                    <img
+                                        src={image.url}
+                                        alt=""
+                                        style={{
+                                            height: '180px',
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                    <ImageListItemBar
+                                        actionIcon={
+                                            <IconButton
+                                                sx={{
+                                                    padding: '8px',
+                                                    color: 'white',
+                                                    '&:hover': {
+                                                        color: (theme) =>
+                                                            theme.palette
+                                                                .primary.main,
+                                                    },
+                                                }}
+                                                onClick={() => {
+                                                    setImage(null);
+                                                }}
+                                            >
+                                                <Icon
+                                                    path={mdiDelete}
+                                                    size={1}
+                                                />
+                                            </IconButton>
+                                        }
+                                        sx={{
+                                            background: 'rgba(0, 0, 0, 0.25)',
+                                            '.MuiImageListItemBar-titleWrap': {
+                                                padding: 0,
+                                            },
+                                        }}
+                                    />
+                                </ImageListItem>
+                            )
+                        ) : (
+                            <Alert
+                                error
+                                message={
+                                    <div>
+                                        Du hast die maximale Anzahl von vier
+                                        Bildern je Nutzer je Rezept erreicht und
+                                        musst eines deiner bisherigen Bilder
+                                        löschen, bevor du ein neues Bild
+                                        hochladen kannst:{' '}
+                                        <Link
+                                            to={'/bilder'}
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: '#ef5350',
+                                            }}
+                                        >
+                                            Bilder verwalten
+                                        </Link>
+                                        .
+                                    </div>
+                                }
+                                style={{ margin: 0 }}
+                            />
                         )}
                     </div>
                 }

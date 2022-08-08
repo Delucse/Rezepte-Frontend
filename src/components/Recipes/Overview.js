@@ -29,6 +29,7 @@ import {
     mdiEggOffOutline,
     mdiFoodSteakOff,
     mdiBarleyOff,
+    mdiImageOffOutline,
 } from '@mdi/js';
 
 function Overview(props) {
@@ -103,36 +104,52 @@ function Overview(props) {
                 }}
                 onClick={() => navigate(`/rezepte/${props.id}`)}
             >
-                <Box
-                    sx={{
-                        height: !props.fullscreen
-                            ? 'calc(24px * 10)'
-                            : 'calc(100% - 64px)',
-                        width: 'calc(100%)',
-                        position: 'relative',
-                        backgroundImage: `url(${
-                            props.picture
-                                ? props.picture
-                                : `${process.env.PUBLIC_URL}/logo512.png`
-                        })`,
-                        backgroundSize: 'cover',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'center center',
-                        filter: props.picture ? 'none' : 'grayscale(1)',
-                    }}
-                >
-                    <img
-                        style={{ display: 'none' }}
-                        alt=""
-                        src={props.picture}
-                        onError={(e) => {
-                            e.currentTarget.parentNode.style.backgroundImage = `url(${process.env.PUBLIC_URL}/logo512.png)`;
-                            e.currentTarget.parentNode.style.filter =
-                                'grayscale(1)';
+                {props.picture || props.fullscreen ? (
+                    <Box
+                        sx={{
+                            height: !props.fullscreen
+                                ? 'calc(24px * 10)'
+                                : 'calc(100% - 64px)',
+                            width: 'calc(100%)',
+                            position: 'relative',
+                            backgroundImage: `url(${props.picture})`,
+                            backgroundSize: 'cover',
+                            backgroundRepeat: 'no-repeat',
+                            backgroundPosition: 'center center',
                         }}
-                    />
-                    <Ripped />
-                </Box>
+                    >
+                        {props.picture ? (
+                            <img
+                                style={{ display: 'none' }}
+                                alt=""
+                                src={props.picture}
+                                onError={(e) => {
+                                    e.currentTarget.parentNode.style.backgroundImage = `url(${process.env.PUBLIC_URL}/logo512.png)`;
+                                    e.currentTarget.parentNode.style.filter =
+                                        'grayscale(1)';
+                                }}
+                            />
+                        ) : (
+                            <Box
+                                sx={{
+                                    // paddingTop: '32px',
+                                    width: '100%',
+                                    height: '100%',
+                                    color: (theme) =>
+                                        theme.palette.action.hover,
+                                    background: (theme) =>
+                                        theme.palette.primary.light,
+                                    display: 'grid',
+                                    justifyItems: 'center',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Icon path={mdiImageOffOutline} size={'100%'} />
+                            </Box>
+                        )}
+                        <Ripped />
+                    </Box>
+                ) : null}
 
                 <Box sx={{ display: 'flex', padding: '20px 18px' }}>
                     <Box

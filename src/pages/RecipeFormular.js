@@ -46,7 +46,7 @@ const steps = [
     },
     {
         title: 'Bilder',
-        help: 'Jedes Rezept muss mindesten ein Bild enthalten. Gültige Bildformate sind ".png", ".jpg" und ".jpeg".',
+        help: 'Es dürfen nur maximal vier Bilder je Nutzer je Rezept hochgeladen werden. Gültige Bildformate sind ".png", ".jpg" und ".jpeg".',
         content: <Pictures />,
     },
     {

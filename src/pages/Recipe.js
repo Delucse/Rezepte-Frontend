@@ -21,6 +21,7 @@ import WakeLock from '../components/Recipe/WakeLock';
 import Loader from '../components/Loader';
 import IconButton from '../components/IconButton';
 import Tooltip from '../components/Tooltip';
+import AddImage from '../components/Recipe/AddImage';
 
 import {
     Grid,
@@ -133,21 +134,41 @@ function Recipe() {
                     lineHeight: '24px',
                     marginBottom: '24px',
                     color: (theme) => theme.palette.text.primary,
+                    display: 'flex',
                 }}
             >
                 {recipe.title}
+                {!formular && recipe.pictures.length === 0 ? (
+                    <Box sx={{ height: '24px', marginTop: '-8px' }}>
+                        <AddImage />
+                    </Box>
+                ) : null}
             </Box>
 
             <Grid container spacing={0} sx={{ marginBottom: '24px' }}>
-                <Grid item xs={12} sm={6} sx={{ height: 'calc(24px * 10)' }}>
-                    <Images pictures={recipe.pictures} title={recipe.title} />
-                </Grid>
+                {recipe.pictures.length > 0 ? (
+                    <Grid
+                        item
+                        xs={12}
+                        sm={6}
+                        sx={{ height: 'calc(24px * 10)' }}
+                    >
+                        <Images
+                            add={!formular}
+                            pictures={recipe.pictures}
+                            title={recipe.title}
+                        />
+                    </Grid>
+                ) : null}
                 <Grid
                     item
                     xs={12}
                     sm={6}
                     sx={{
-                        paddingLeft: { xs: 0, sm: '20px' },
+                        paddingLeft: {
+                            xs: 0,
+                            sm: recipe.pictures.length > 0 ? '20px' : 0,
+                        },
                         marginTop: { xs: '24px', sm: 0 },
                     }}
                 >

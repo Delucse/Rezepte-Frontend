@@ -16,7 +16,7 @@ import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 
 const CircularSwipeableViews = virtualize(SwipeableViews);
 
-function Images({ pictures, title }) {
+function Images({ pictures, title, add }) {
     const [open, setOpen] = useState(false);
 
     const [activeStep, setActiveStep] = useState(0);
@@ -58,14 +58,9 @@ function Images({ pictures, title }) {
                     height: 240,
                     width: '100%',
                     objectFit: 'cover',
-                    cursor: maxSteps > 0 ? 'pointer' : 'default',
-                    filter: maxSteps > 0 ? 'none' : 'grayscale(1)',
+                    cursor: 'pointer',
                 }}
-                src={
-                    maxSteps > 0
-                        ? pictures[index]
-                        : `${process.env.PUBLIC_URL}/logo512.png`
-                }
+                src={pictures[index]}
                 alt={title}
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
@@ -73,12 +68,12 @@ function Images({ pictures, title }) {
                     currentTarget.style =
                         'height: 240px; width: 100%; object-fit: cover; filter: grayscale(1);';
                 }}
-                onClick={maxSteps > 0 ? () => handleOpen(index) : null}
+                onClick={() => handleOpen(index)}
             />
         );
     };
 
-    return (
+    return maxSteps > 0 ? (
         <Box id="slider" sx={{ position: 'relative' }}>
             {maxSteps > 1 ? (
                 <Box>
@@ -187,9 +182,11 @@ function Images({ pictures, title }) {
             ) : (
                 slideRenderer({ index: 0, key: 0 })
             )}
-            <Box sx={{ position: 'absolute', bottom: 0, right: 0 }}>
-                <AddImage />
-            </Box>
+            {add ? (
+                <Box sx={{ position: 'absolute', bottom: 0, right: 0 }}>
+                    <AddImage />
+                </Box>
+            ) : null}
             {/* Tapes */}
             <Box sx={{ position: 'absolute', right: 30, top: -10 }}>
                 <Tape rotate={50} width={100} />
@@ -204,7 +201,7 @@ function Images({ pictures, title }) {
                 index={activeStep}
             />
         </Box>
-    );
+    ) : null;
 }
 
 export default Images;

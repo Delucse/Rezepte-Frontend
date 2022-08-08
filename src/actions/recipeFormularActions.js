@@ -71,7 +71,6 @@ const setError = (key, value) => (dispatch, getState) => {
             error[key] = errCategory;
             break;
         case 'keywords':
-        case 'pictures':
             if (value.length === 0) {
                 error[key] = true;
             } else {
@@ -409,9 +408,6 @@ export const changePictures = (files) => (dispatch, getState) => {
         type: SET_RECIPE_PICTURES,
         payload: pictures,
     });
-    if (getState().recipeFormular.error.submit) {
-        dispatch(setError('pictures', pictures.order));
-    }
 };
 
 export const removePicture = (url) => (dispatch, getState) => {
@@ -427,9 +423,6 @@ export const removePicture = (url) => (dispatch, getState) => {
         type: SET_RECIPE_PICTURES,
         payload: pictures,
     });
-    if (getState().recipeFormular.error.submit) {
-        dispatch(setError('pictures', pictures.order));
-    }
 };
 
 export const changePicturePosition =
@@ -455,7 +448,6 @@ export const checkRecipeError = () => (dispatch, getState) => {
         keywords,
         ingredients,
         steps,
-        pictures,
     } = getState().recipeFormular;
     dispatch(setError('title', title));
     dispatch(setError('portion', portion));
@@ -465,7 +457,6 @@ export const checkRecipeError = () => (dispatch, getState) => {
     dispatch(setError('keywords', keywords));
     dispatch(setError('ingredients', ingredients));
     dispatch(setError('steps', steps));
-    dispatch(setError('pictures', pictures.order));
     dispatch(setError('submit'));
 };
 
@@ -626,7 +617,6 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
                 keywords: false,
                 ingredients: [false, false, false],
                 steps: false,
-                pictures: false,
             },
         },
     });
