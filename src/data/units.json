@@ -1,12 +1,45 @@
 [
+    { "singular": " ", "information": "ohne Einheit" },
     {
-        "description": "Teelöffel",
-        "unit": "TL",
+        "singular": "TL",
+        "information": "Teelöffel",
+        "aliment": "singular",
         "group": "Volumen"
     },
     {
-        "description": "Esslöffel",
-        "unit": "EL",
+        "singular": "EL",
+        "information": "Esslöffel",
+        "aliment": "singular",
         "group": "Volumen"
+    },
+    {
+        "singular": "g",
+        "information": "Gramm",
+        "aliment": "singular",
+        "group": "Masse"
+    },
+    {
+        "singular": "kg",
+        "information": "Kilogramm",
+        "aliment": "singular",
+        "group": "Masse"
+    },
+    {
+        "singular": "Tasse",
+        "plural": "Tassen",
+        "aliment": "plural",
+        "group": "Gefäße"
+    },
+    {
+        "singular": "Dose",
+        "plural": "Dosen",
+        "aliment": "plural",
+        "group": "Gefäße"
+    },
+    {
+        "singular": "Flasche",
+        "plural": "Flaschen",
+        "aliment": "singular",
+        "group": "Gefäße"
     }
 ]

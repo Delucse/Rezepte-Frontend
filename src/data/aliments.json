@@ -1,6 +1,6 @@
 [
-    { "aliment": "Mehl" },
-    { "aliment": "Zucker" },
-    { "aliment": "Gurke" },
-    { "aliment": "Apfel" }
+    { "singular": "Mehl" },
+    { "singular": "Zucker" },
+    { "singular": "Gurke", "plural": "Gurken" },
+    { "singular": "Apfel", "plural": "Äpfel" }
 ]

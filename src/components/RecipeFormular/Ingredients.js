@@ -32,8 +32,14 @@ import {
     mdiTextShadow,
 } from '@mdi/js';
 
-import units from '../../data/units.json';
-import aliments from '../../data/aliments.json';
+import {
+    singularUnits,
+    pluralUnits,
+    singularAliments,
+    pluralAliments,
+    singularUnitsAlimentDictionary,
+    pluralUnitsAlimentDictionary,
+} from '../../data/dictionaries';
 
 function Title(props) {
     const dispatch = useDispatch();
@@ -140,6 +146,14 @@ function Food(props) {
         }
     };
 
+    var amountDecimal = props.amount;
+    if (amountDecimal === ' ') {
+        amountDecimal = 0;
+    } else if (typeof amountDecimal === 'string') {
+        const decimal = amountDecimal.replace(',', '.');
+        amountDecimal = Number(decimal);
+    }
+
     return (
         <div
             style={{
@@ -233,9 +247,14 @@ function Food(props) {
                     >
                         <Autocomplete
                             value={props.unit}
-                            options={units}
-                            optionLabel={'unit'}
+                            options={
+                                amountDecimal === 1 || amountDecimal === 0
+                                    ? singularUnits
+                                    : pluralUnits
+                            }
+                            optionLabel={'description'}
                             optionGroup={'group'}
+                            optionChange={'unit'}
                             label="Einheit"
                             fullWidth
                             onChange={setUnit}
@@ -252,7 +271,22 @@ function Food(props) {
                 >
                     <Autocomplete
                         value={props.aliment}
-                        options={aliments}
+                        options={
+                            amountDecimal === 1 || amountDecimal === 0
+                                ? singularUnitsAlimentDictionary[props.unit]
+                                    ? singularUnitsAlimentDictionary[
+                                          props.unit
+                                      ] === 'singular'
+                                        ? singularAliments
+                                        : pluralAliments
+                                    : singularAliments
+                                : pluralUnitsAlimentDictionary[props.unit]
+                                ? pluralUnitsAlimentDictionary[props.unit] ===
+                                  'singular'
+                                    ? singularAliments
+                                    : pluralAliments
+                                : pluralAliments
+                        }
                         optionLabel={'aliment'}
                         label="Zutat"
                         fullWidth

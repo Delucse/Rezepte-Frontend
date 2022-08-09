@@ -197,6 +197,7 @@ function Navbar() {
                                 margin: '8px 10px 8px 5px',
                                 padding: '7px 0',
                             }}
+                            onClick={() => setOpen(false)}
                         >
                             <DelucseLogo
                                 style={{
@@ -222,6 +223,7 @@ function Navbar() {
                                     alignItems: 'center',
                                     display: 'flex',
                                 }}
+                                onClick={() => setOpen(false)}
                             >
                                 <Box
                                     sx={{
@@ -245,6 +247,7 @@ function Navbar() {
                                     alignItems: 'center',
                                     display: 'flex',
                                 }}
+                                onClick={() => setOpen(false)}
                             >
                                 <Box
                                     sx={{

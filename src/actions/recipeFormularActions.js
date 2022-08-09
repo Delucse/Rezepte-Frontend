@@ -16,6 +16,14 @@ import {
 } from '../actions/types';
 
 import params from '../data/params.json';
+import {
+    singularUnitsDictionary,
+    pluralUnitsDictionary,
+    singularAlimentsDictionary,
+    pluralAlimentsDictionary,
+    singularUnitsAlimentDictionary,
+    pluralUnitsAlimentDictionary,
+} from '../data/dictionaries';
 
 import axios from 'axios';
 
@@ -225,6 +233,56 @@ export const changeIngredientsTitle =
 export const changeAmount =
     (ingredientsIndex, foodIndex, amount) => (dispatch, getState) => {
         var ingredients = getState().recipeFormular.ingredients;
+
+        var currentAmount =
+            ingredients[ingredientsIndex].food[foodIndex].amount;
+        if (currentAmount === ' ') {
+            currentAmount = 0;
+        } else if (typeof currentAmount === 'string') {
+            const amountDecimal = currentAmount.replace(',', '.');
+            currentAmount = Number(amountDecimal);
+        }
+        var newAmount = amount;
+        if (newAmount === ' ') {
+            newAmount = 0;
+        } else if (typeof newAmount === 'string') {
+            const amountDecimal = newAmount.replace(',', '.');
+            newAmount = Number(amountDecimal);
+        }
+
+        const unit = ingredients[ingredientsIndex].food[foodIndex].unit;
+        const aliment = ingredients[ingredientsIndex].food[foodIndex].aliment;
+        if (
+            (currentAmount > 1 || (currentAmount > 0 && currentAmount < 1)) &&
+            (newAmount === 1 || newAmount === 0)
+        ) {
+            if (pluralUnitsDictionary[unit]) {
+                ingredients[ingredientsIndex].food[foodIndex].unit =
+                    pluralUnitsDictionary[unit];
+            }
+            const pluralInfo = pluralUnitsAlimentDictionary[unit];
+            if (!pluralInfo) {
+                if (pluralAlimentsDictionary[aliment]) {
+                    ingredients[ingredientsIndex].food[foodIndex].aliment =
+                        pluralAlimentsDictionary[aliment];
+                }
+            }
+        } else if (
+            (currentAmount === 1 || currentAmount === 0) &&
+            (newAmount > 1 || (newAmount > 0 && newAmount < 1))
+        ) {
+            if (singularUnitsDictionary[unit]) {
+                ingredients[ingredientsIndex].food[foodIndex].unit =
+                    singularUnitsDictionary[unit];
+            }
+            const singularInfo = singularUnitsAlimentDictionary[unit];
+            if (!singularInfo) {
+                if (singularAlimentsDictionary[aliment]) {
+                    ingredients[ingredientsIndex].food[foodIndex].aliment =
+                        singularAlimentsDictionary[aliment];
+                }
+            }
+        }
         ingredients[ingredientsIndex].food[foodIndex].amount = amount;
         dispatch({
             type: SET_RECIPE_INGREDIENTS,
@@ -238,6 +296,55 @@ export const changeAmount =
 export const changeUnit =
     (ingredientsIndex, foodIndex, unit) => (dispatch, getState) => {
         var ingredients = getState().recipeFormular.ingredients;
+        const aliment = ingredients[ingredientsIndex].food[foodIndex].aliment;
+        var amount = ingredients[ingredientsIndex].food[foodIndex].amount;
+        if (amount === ' ') {
+            amount = 0;
+        } else if (typeof amount === 'string') {
+            const amountDecimal = amount.replace(',', '.');
+            amount = Number(amountDecimal);
+        }
+        if (amount === 1 || amount === 0) {
+            const singularInfo = singularUnitsAlimentDictionary[unit];
+            if (singularInfo) {
+                if (singularInfo === 'singular') {
+                    if (pluralAlimentsDictionary[aliment]) {
+                        ingredients[ingredientsIndex].food[foodIndex].aliment =
+                            pluralAlimentsDictionary[aliment];
+                    }
+                } else {
+                    if (singularAlimentsDictionary[aliment]) {
+                        ingredients[ingredientsIndex].food[foodIndex].aliment =
+                            singularAlimentsDictionary[aliment];
+                    }
+                }
+            } else {
+                if (pluralAlimentsDictionary[aliment]) {
+                    ingredients[ingredientsIndex].food[foodIndex].aliment =
+                        pluralAlimentsDictionary[aliment];
+                }
+            }
+        } else {
+            const pluralInfo = pluralUnitsAlimentDictionary[unit];
+            if (pluralInfo) {
+                if (pluralInfo === 'singular') {
+                    if (pluralAlimentsDictionary[aliment]) {
+                        ingredients[ingredientsIndex].food[foodIndex].aliment =
+                            pluralAlimentsDictionary[aliment];
+                    }
+                } else {
+                    if (singularAlimentsDictionary[aliment]) {
+                        ingredients[ingredientsIndex].food[foodIndex].aliment =
+                            singularAlimentsDictionary[aliment];
+                    }
+                }
+            } else {
+                if (singularAlimentsDictionary[aliment]) {
+                    ingredients[ingredientsIndex].food[foodIndex].aliment =
+                        singularAlimentsDictionary[aliment];
+                }
+            }
+        }
         ingredients[ingredientsIndex].food[foodIndex].unit = unit;
         dispatch({
             type: SET_RECIPE_INGREDIENTS,
