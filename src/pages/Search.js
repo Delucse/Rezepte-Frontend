@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -20,6 +20,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
 
 function Search() {
     const dispatch = useDispatch();
@@ -27,6 +29,7 @@ function Search() {
     const route = useSelector((state) => state.recipeFilter.route);
 
     useEffect(() => {
+        handleResize();
         if (!user) {
             dispatch(setRoute(''));
         }
@@ -37,6 +40,9 @@ function Search() {
 
     // read url params
     useEffect(() => {
+        handleResize();
+        window.addEventListener('resize', handleResize);
+
         const route = searchParams.get('route');
         const type = searchParams.get('typ');
         const word = searchParams.get('wort');
@@ -55,91 +61,122 @@ function Search() {
             filter = filter.map((f) => f.trim());
             dispatch(setCategories(filter));
         }
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const ref = useRef(null);
+    const [divHeight, setDivHeight] = useState(0);
+
+    const handleResize = () => {
+        setDivHeight(ref.current.clientHeight);
+    };
+
     return (
         <div>
-            <SearchBar redux />
-            <Box
+            <AppBar
+                ref={ref}
                 sx={{
-                    justifyContent: 'center',
-                    display: 'flex',
-                    marginTop: '10px',
-                    width: 'calc(100% + 20px)',
+                    background: (theme) => theme.palette.background.default,
+                    boxShadow: 'none',
+                    top: 'calc(55px + 54px + 24px)',
+                    padding: (theme) => `0 ${theme.spacing(3)}`,
                 }}
             >
-                <FormControl
-                    sx={{
-                        width: user ? 'min(100%, 650px)' : 'min(100%, 270px)',
-                        marginLeft: '9px',
-                    }}
-                >
-                    <RadioGroup
-                        row
-                        value={route}
-                        onChange={(e) => dispatch(setRoute(e.target.value))}
+                <Toolbar sx={{ padding: '0px !important', display: 'initial' }}>
+                    <SearchBar redux />
+                    <Box
                         sx={{
-                            width: '100%',
-                            justifyContent: 'space-between',
-                            color: (theme) => theme.palette.text.primary,
+                            justifyContent: 'center',
+                            display: 'flex',
+                            marginTop: '10px',
+                            marginBottom: '10px',
+                            width: 'calc(100% + 20px)',
                         }}
                     >
-                        <FormControlLabel
-                            value={''}
-                            control={
-                                <Radio
-                                    disableRipple
-                                    sx={{ marginLeft: '-9px' }}
-                                />
-                            }
-                            label="alle"
-                            sx={{ mr: '20px' }}
-                        />
-                        <FormControlLabel
-                            value={'basis'}
-                            control={
-                                <Radio
-                                    disableRipple
-                                    sx={{ marginLeft: '-9px' }}
-                                />
-                            }
-                            label="Grundrezepte"
-                            sx={{ mr: '20px' }}
-                        />
-                        {user ? (
-                            <FormControlLabel
-                                value={'favoriten'}
-                                control={
-                                    <Radio
-                                        disableRipple
-                                        sx={{ marginLeft: '-9px' }}
-                                    />
+                        <FormControl
+                            sx={{
+                                width: user
+                                    ? 'min(100%, 650px)'
+                                    : 'min(100%, 270px)',
+                                marginLeft: '9px',
+                            }}
+                        >
+                            <RadioGroup
+                                row
+                                value={route}
+                                onChange={(e) =>
+                                    dispatch(setRoute(e.target.value))
                                 }
-                                label="Favoriten"
-                                sx={{ mr: '20px' }}
-                            />
-                        ) : null}
-                        {user ? (
-                            <FormControlLabel
-                                value={'nutzer'}
-                                control={
-                                    <Radio
-                                        disableRipple
-                                        sx={{ marginLeft: '-9px' }}
+                                sx={{
+                                    width: '100%',
+                                    justifyContent: 'space-between',
+                                    color: (theme) =>
+                                        theme.palette.text.primary,
+                                }}
+                            >
+                                <FormControlLabel
+                                    value={''}
+                                    control={
+                                        <Radio
+                                            disableRipple
+                                            sx={{ marginLeft: '-9px' }}
+                                        />
+                                    }
+                                    label="alle"
+                                    sx={{ mr: '20px' }}
+                                />
+                                <FormControlLabel
+                                    value={'basis'}
+                                    control={
+                                        <Radio
+                                            disableRipple
+                                            sx={{ marginLeft: '-9px' }}
+                                        />
+                                    }
+                                    label="Grundrezepte"
+                                    sx={{ mr: '20px' }}
+                                />
+                                {user ? (
+                                    <FormControlLabel
+                                        value={'favoriten'}
+                                        control={
+                                            <Radio
+                                                disableRipple
+                                                sx={{ marginLeft: '-9px' }}
+                                            />
+                                        }
+                                        label="Favoriten"
+                                        sx={{ mr: '20px' }}
                                     />
-                                }
-                                label="Eigene"
-                                sx={{ mr: '20px' }}
-                            />
-                        ) : null}
-                    </RadioGroup>
-                </FormControl>
-            </Box>
+                                ) : null}
+                                {user ? (
+                                    <FormControlLabel
+                                        value={'nutzer'}
+                                        control={
+                                            <Radio
+                                                disableRipple
+                                                sx={{ marginLeft: '-9px' }}
+                                            />
+                                        }
+                                        label="Eigene"
+                                        sx={{ mr: '20px' }}
+                                    />
+                                ) : null}
+                            </RadioGroup>
+                        </FormControl>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+
             <Box
                 sx={{
-                    marginTop: '20px',
+                    paddingTop: `${divHeight}px`,
                     color: (theme) => theme.palette.text.primary,
+                    marginBottom: '-24px',
                 }}
             >
                 <Categories redux />
