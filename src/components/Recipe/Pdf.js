@@ -30,6 +30,15 @@ import { mdiPrinter } from '@mdi/js';
 
 import bakeware from '../../data/bakeware.json';
 
+import {
+    singularUnitsAlimentDictionary,
+    pluralUnitsAlimentDictionary,
+    singularUnitsDictionary,
+    pluralUnitsDictionary,
+    singularAlimentsDictionary,
+    pluralAlimentsDictionary,
+} from '../../data/dictionaries';
+
 import LobsterTwoBold from '../../fonts/LobsterTwo-Bold.ttf';
 
 Font.register({
@@ -59,6 +68,95 @@ const msToHoursAndMinutes = (time) => {
     }`;
 };
 
+const filename = (string) => {
+    string = string.replace(/Ä/g, 'Ae');
+    string = string.replace(/Ö/g, 'Oe');
+    string = string.replace(/Ü/g, 'Ue');
+    string = string.replace(/ä/g, 'ae');
+    string = string.replace(/ö/g, 'oe');
+    string = string.replace(/ü/g, 'ue');
+    string = string.replace(/ß/g, 'ss');
+    string = string.replace(/[^a-z0-9\s-]/gi, '').trim();
+    string = string.replace(/(\s|-)/g, '_');
+    return string;
+};
+
+const getAmount = (amount, portion, settings) => {
+    var calculatedAmount = amount * (settings.count / portion.count);
+    if (portion.volume > 0) {
+        calculatedAmount =
+            calculatedAmount * (settings.volume / portion.volume);
+    }
+    if (settings.rounded) {
+        var int = amount.toString().split('.')[0];
+        var decimal = amount.toString().split('.')[1];
+        var intDigits = int && int.length === 1 ? 2 : int.length === 2 ? 1 : 0;
+        var decimalDigits = decimal ? decimal.length + 1 : 0;
+        return calculatedAmount.toLocaleString('de-De', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: Math.max(intDigits, decimalDigits),
+        });
+    }
+    return calculatedAmount.toLocaleString('de-De', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 20,
+    });
+};
+
+const getUnit = (amount, unit) => {
+    if (amount === 1 || amount === 0) {
+        if (pluralUnitsDictionary[unit]) {
+            return pluralUnitsDictionary[unit];
+        }
+    } else {
+        if (singularUnitsDictionary[unit]) {
+            return singularUnitsDictionary[unit];
+        }
+    }
+    return unit;
+};
+
+const getAliment = (amount, unit, aliment) => {
+    if (amount === 0) {
+        return aliment;
+    } else if (amount === 1) {
+        const singularInfo = singularUnitsAlimentDictionary[unit];
+        if (singularInfo) {
+            if (singularInfo === 'singular') {
+                if (pluralAlimentsDictionary[aliment]) {
+                    return pluralAlimentsDictionary[aliment];
+                }
+            } else {
+                if (singularAlimentsDictionary[aliment]) {
+                    return singularAlimentsDictionary[aliment];
+                }
+            }
+        } else {
+            if (pluralAlimentsDictionary[aliment]) {
+                return pluralAlimentsDictionary[aliment];
+            }
+        }
+    } else {
+        const pluralInfo = pluralUnitsAlimentDictionary[unit];
+        if (pluralInfo) {
+            if (pluralInfo === 'singular') {
+                if (pluralAlimentsDictionary[aliment]) {
+                    return pluralAlimentsDictionary[aliment];
+                }
+            } else {
+                if (singularAlimentsDictionary[aliment]) {
+                    return singularAlimentsDictionary[aliment];
+                }
+            }
+        } else {
+            if (singularAlimentsDictionary[aliment]) {
+                return singularAlimentsDictionary[aliment];
+            }
+        }
+    }
+    return aliment;
+};
+
 function Steps({ steps, style }) {
     return (
         <View style={[style, { flexDirection: 'column' }]}>
@@ -83,29 +181,6 @@ function Steps({ steps, style }) {
 }
 
 function Ingredients({ theme, ingredients, settings, portion, style }) {
-    const getAmount = (amount) => {
-        var calculatedAmount = amount * (settings.count / portion.count);
-        if (portion.volume > 0) {
-            calculatedAmount =
-                calculatedAmount * (settings.volume / portion.volume);
-        }
-        if (settings.rounded) {
-            var int = amount.toString().split('.')[0];
-            var decimal = amount.toString().split('.')[1];
-            var intDigits =
-                int && int.length === 1 ? 2 : int.length === 2 ? 1 : 0;
-            var decimalDigits = decimal ? decimal.length + 1 : 0;
-            return calculatedAmount.toLocaleString('de-De', {
-                minimumFractionDigits: 0,
-                maximumFractionDigits: Math.max(intDigits, decimalDigits),
-            });
-        }
-        return calculatedAmount.toLocaleString('de-De', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 20,
-        });
-    };
-
     return (
         <View style={[style, { flexDirection: 'column' }]}>
             {ingredients.map((ingredient, index) => (
@@ -129,32 +204,41 @@ function Ingredients({ theme, ingredients, settings, portion, style }) {
                     >
                         {ingredient.title}
                     </Text>
-                    {ingredient.food.map((food, index) => (
-                        <View
-                            key={index}
-                            style={{
-                                flexDirection: 'row',
-                                marginBottom: 4,
-                                width: '100%',
-                            }}
-                        >
-                            <Text
+                    {ingredient.food.map((food, index) => {
+                        const amountString = getAmount(
+                            food.amount,
+                            portion,
+                            settings
+                        );
+                        const amount = Number(amountString.replace(',', '.'));
+                        const unit = getUnit(amount, food.unit);
+                        return (
+                            <View
+                                key={index}
                                 style={{
-                                    color: 'grey',
-                                    marginHorizontal: '8px',
+                                    flexDirection: 'row',
+                                    marginBottom: 4,
+                                    width: '100%',
                                 }}
                             >
-                                -
-                            </Text>
-                            <Text style={{ flex: 1 }}>
-                                {food.amount === 0
-                                    ? ''
-                                    : `${getAmount(food.amount)} `}
-                                {food.unit === ' ' ? '' : `${food.unit} `}
-                                {food.aliment}
-                            </Text>
-                        </View>
-                    ))}
+                                <Text
+                                    style={{
+                                        color: 'grey',
+                                        marginHorizontal: '8px',
+                                    }}
+                                >
+                                    -
+                                </Text>
+                                <Text style={{ flex: 1 }}>
+                                    {food.amount === 0
+                                        ? ''
+                                        : `${amountString} `}
+                                    {unit === ' ' ? '' : `${unit} `}
+                                    {getAliment(amount, unit, food.aliment)}
+                                </Text>
+                            </View>
+                        );
+                    })}
                 </View>
             ))}
         </View>
@@ -431,7 +515,7 @@ function Pdf() {
                         `pdf-${Date.now()}`
                     )
                 );
-                saveAs(blob, 'document.pdf');
+                saveAs(blob, `${filename(recipe.title)}.pdf`);
             }}
         >
             <Icon path={mdiPrinter} size={1} />

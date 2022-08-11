@@ -423,7 +423,7 @@ function Recipe() {
                         <ListItem
                             disablePadding
                             key={index}
-                            sx={{ alignItems: 'start' }}
+                            sx={{ alignItems: 'baseline' }}
                         >
                             <ListItemIcon
                                 sx={{

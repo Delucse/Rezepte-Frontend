@@ -63,3 +63,13 @@ units.forEach((unit) => {
         ] = unit.aliment;
     }
 });
+
+export const singularInfoDictionary = {};
+export const pluralInfoDictionary = {};
+aliments.forEach((aliment) => {
+    singularInfoDictionary[
+        aliment.singular ? aliment.singular : aliment.plural
+    ] = aliment.information;
+    pluralInfoDictionary[aliment.plural ? aliment.plural : aliment.singular] =
+        aliment.information;
+});

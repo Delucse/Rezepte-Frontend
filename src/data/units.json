@@ -41,5 +41,9 @@
         "plural": "Flaschen",
         "aliment": "singular",
         "group": "Gefäße"
+    },
+    {
+        "singular": "etwas",
+        "aliment": "singular"
     }
 ]

@@ -1,6 +1,16 @@
 [
-    { "singular": "Mehl" },
-    { "singular": "Zucker" },
-    { "singular": "Gurke", "plural": "Gurken" },
-    { "singular": "Apfel", "plural": "Äpfel" }
+    { "singular": "Mehl", "information": "Mehl" },
+    { "singular": "Zucker", "information": "Zucker" },
+    { "singular": "Gurke", "plural": "Gurken", "information": "Gurke" },
+    { "singular": "Apfel", "plural": "Äpfel", "information": "Apfel" },
+    { "singular": "frische Vollmilch", "information": "Milch" },
+    { "singular": "Brot", "plural": "Brote", "information": "Brot" },
+    { "singular": "Zimt", "information": "Zimt" },
+    { "singular": "Natron", "information": "Backnatron" },
+    {
+        "singular": "Zucchini",
+        "plural": "Zucchinis",
+        "information": "Zucchini"
+    },
+    { "singular": "Olivenöl", "plural": "Olivenöle", "information": "Olivenöl" }
 ]
