@@ -14,6 +14,7 @@ import {
     Path,
     pdf,
     Link,
+    Font,
 } from '@react-pdf/renderer';
 
 import QRCode from 'qrcode';
@@ -28,6 +29,19 @@ import Icon from '@mdi/react';
 import { mdiPrinter } from '@mdi/js';
 
 import bakeware from '../../data/bakeware.json';
+
+import LobsterTwoBold from '../../fonts/LobsterTwo-Bold.ttf';
+
+Font.register({
+    family: 'Lobster Two',
+    fonts: [
+        {
+            src: LobsterTwoBold,
+            format: 'truetype',
+            fontWeight: 700,
+        },
+    ],
+});
 
 const rgbToHex = (rgb) => {
     rgb = rgb.slice(rgb.indexOf('(') + 1, rgb.indexOf(')')).split(', ');
@@ -105,9 +119,12 @@ function Ingredients({ theme, ingredients, settings, portion, style }) {
                 >
                     <Text
                         style={{
-                            marginBottom: 10,
+                            marginBottom: 9,
                             textDecoration: 'underline',
                             textDecorationColor: theme.palette.primary.main,
+                            fontFamily: 'Lobster Two',
+                            fontWeight: 700,
+                            fontSize: '15pt',
                         }}
                     >
                         {ingredient.title}
@@ -158,7 +175,9 @@ function Header({ theme, title, portion, time }) {
         >
             <Text
                 style={{
-                    marginBottom: '5px',
+                    marginBottom: '3px',
+                    fontFamily: 'Lobster Two',
+                    fontWeight: 700,
                     fontSize: '25pt',
                     color: theme.palette.primary.main,
                 }}

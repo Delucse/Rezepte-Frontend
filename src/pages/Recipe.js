@@ -130,7 +130,8 @@ function Recipe() {
             <Box
                 sx={{
                     fontWeight: 700,
-                    fontSize: '22px',
+                    fontFamily: 'Lobster Two',
+                    fontSize: '26px',
                     lineHeight: '24px',
                     marginBottom: '24px',
                     color: (theme) => theme.palette.text.primary,
@@ -395,10 +396,9 @@ function Recipe() {
 
             <List
                 sx={{
-                    lineHeight: '24px',
                     padding: 0,
                     marginBottom: '24px',
-                    marginTop: '24px',
+                    marginTop: '25px',
                 }}
             >
                 <ListItem disablePadding>
@@ -406,6 +406,12 @@ function Recipe() {
                         variant="body1"
                         sx={{
                             fontWeight: 700,
+                            fontFamily: 'Lobster Two',
+                            fontSize: 'calc(1rem + 2px)',
+                            lineHeight: '24px',
+                            textDecoration: 'underline',
+                            textDecorationColor: (theme) =>
+                                theme.palette.primary.main,
                             color: (theme) => theme.palette.text.primary,
                         }}
                     >
@@ -422,7 +428,6 @@ function Recipe() {
                             <ListItemIcon
                                 sx={{
                                     minWidth: '25px',
-                                    lineHeight: 'initial',
                                     color: (theme) =>
                                         theme.palette.text.primary,
                                 }}

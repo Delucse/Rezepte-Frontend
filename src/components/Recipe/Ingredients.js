@@ -47,12 +47,18 @@ function Ingredients() {
             {ingredients.map((ingredient, index) => {
                 return (
                     <Grid item xs={12} sm={6} md={4} key={index}>
-                        <List sx={{ lineHeight: '24px', padding: 0 }}>
+                        <List sx={{ padding: 0, marginTop: '1px' }}>
                             <ListItem disablePadding>
                                 <Typography
                                     variant="body1"
                                     sx={{
                                         fontWeight: 700,
+                                        fontFamily: 'Lobster Two',
+                                        fontSize: 'calc(1rem + 2px)',
+                                        lineHeight: '24px',
+                                        textDecoration: 'underline',
+                                        textDecorationColor: (theme) =>
+                                            theme.palette.primary.main,
                                         color: (theme) =>
                                             theme.palette.text.primary,
                                     }}

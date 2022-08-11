@@ -151,12 +151,20 @@ function Overview(props) {
                     </Box>
                 ) : null}
 
-                <Box sx={{ display: 'flex', padding: '20px 18px' }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        padding: !props.fullscreen
+                            ? '20px 18px'
+                            : '16px 18px 20px 18px',
+                    }}
+                >
                     <Box
                         sx={{
                             fontWeight: 700,
-                            fontSize: '20px',
-                            lineHeight: '24px',
+                            fontFamily: 'Lobster Two',
+                            fontSize: '24px',
+                            lineHeight: !props.fullscreen ? '24px' : '28px',
                             flexGrow: 1,
                             marginRight: !props.fullscreen ? '5px' : 0,
                             color: (theme) => theme.palette.text.primary,
