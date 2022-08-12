@@ -8,6 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import ImageCarousel from '../components/ImageCarousel';
 import Loader from '../components/Loader';
 import IconButton from '../components/IconButton';
+import Button from '../components/Button';
+import Dialog from '../components/Dialog';
+import Textfield from '../components/Textfield';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -21,26 +24,35 @@ import {
 import Icon from '@mdi/react';
 import { mdiDelete, mdiLoading, mdiFullscreen } from '@mdi/js';
 
-function Image({ file, imageId, recipeId, title, openCarousel }) {
+function Image(props) {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const loading = useSelector(
         (state) =>
-            state.progress.loading && state.progress.type === `image-${imageId}`
+            state.progress.loading &&
+            state.progress.type === `image-${props.imageId}`
     );
+
+    const [open, setOpen] = useState(false);
+    const [file, setFile] = useState('');
+
+    const cancel = () => {
+        setFile('');
+        setOpen(false);
+    };
 
     return (
         <ImageListItem sx={{ height: '180px' }}>
             <img
-                src={`${process.env.REACT_APP_IMAGE_URL}/${file}`}
+                src={`${process.env.REACT_APP_IMAGE_URL}/${props.file}`}
                 alt=""
                 style={{
                     cursor: 'pointer',
                     height: '180px',
                     objectFit: 'cover',
                 }}
-                onClick={openCarousel}
+                onClick={props.openCarousel}
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
                     currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
@@ -73,9 +85,11 @@ function Image({ file, imageId, recipeId, title, openCarousel }) {
                                             theme.palette.primary.main,
                                     },
                                 }}
-                                onClick={() => navigate(`/rezepte/${recipeId}`)}
+                                onClick={() =>
+                                    navigate(`/rezepte/${props.recipeId}`)
+                                }
                             >
-                                {title}
+                                {props.title}
                             </Box>
                         </div>
                         <IconButton
@@ -87,7 +101,7 @@ function Image({ file, imageId, recipeId, title, openCarousel }) {
                                         theme.palette.primary.main,
                                 },
                             }}
-                            onClick={openCarousel}
+                            onClick={props.openCarousel}
                         >
                             <Icon path={mdiFullscreen} size={1} />
                         </IconButton>
@@ -100,11 +114,7 @@ function Image({ file, imageId, recipeId, title, openCarousel }) {
                                         theme.palette.primary.main,
                                 },
                             }}
-                            onClick={
-                                loading
-                                    ? null
-                                    : () => dispatch(deleteImage(imageId))
-                            }
+                            onClick={loading ? null : () => setOpen(true)}
                         >
                             <Icon
                                 path={loading ? mdiLoading : mdiDelete}
@@ -123,6 +133,50 @@ function Image({ file, imageId, recipeId, title, openCarousel }) {
                         width: '100%',
                     },
                 }}
+            />
+            <Dialog
+                open={open}
+                onClose={cancel}
+                closeIcon
+                fullWidth
+                title={`Bild löschen`}
+                noPadding
+                content={
+                    <Box>
+                        <Typography sx={{ marginBottom: '10px' }}>
+                            Gib als Bestätigung den Dateinamen an, um das Bild{' '}
+                            <div
+                                style={{ fontWeight: 700, display: 'contents' }}
+                            >
+                                {props.file}
+                            </div>{' '}
+                            vom Rezept {props.title} endgültig zu löschen.
+                        </Typography>
+                        <Textfield
+                            value={file}
+                            label="Dateiname"
+                            onChange={(e) => setFile(e.target.value)}
+                        />
+                    </Box>
+                }
+                actions={
+                    <div>
+                        <Button
+                            variant="outlined"
+                            onClick={cancel}
+                            sx={{ mr: 1 }}
+                        >
+                            Abbrechen
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={() => dispatch(deleteImage(props.imageId))}
+                            disabled={props.file !== file}
+                        >
+                            Bestätigen
+                        </Button>
+                    </div>
+                }
             />
         </ImageListItem>
     );

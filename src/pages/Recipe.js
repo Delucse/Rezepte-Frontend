@@ -3,12 +3,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRecipe, getRecipePreview } from '../actions/recipeActions';
 import { setProgressError } from '../actions/progressActions';
-import { setRoute } from '../actions/recipeFilterActions';
-import { snackbarMessage } from '../actions/messageActions';
 
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-
-import axios from 'axios';
 
 import NotePaper from '../components/NotePaper';
 import Portion from '../components/Recipe/Portion';
@@ -22,6 +18,7 @@ import Loader from '../components/Loader';
 import IconButton from '../components/IconButton';
 import Tooltip from '../components/Tooltip';
 import AddImage from '../components/Recipe/AddImage';
+import Delete from '../components/Recipe/Delete';
 
 import {
     Grid,
@@ -38,7 +35,6 @@ import Icon from '@mdi/react';
 import {
     mdiBarleyOff,
     mdiClockOutline,
-    mdiDelete,
     mdiEggOffOutline,
     mdiFoodSteakOff,
     mdiPencil,
@@ -94,35 +90,6 @@ function Recipe() {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, recipeFormular]);
-
-    const deleteRecipe = () => {
-        const config = {
-            success: (res) => {
-                dispatch(setRoute('nutzer'));
-                navigate('/rezepte/nutzer');
-                dispatch(
-                    snackbarMessage(
-                        `Das Rezept wurde erfolgreich gelöscht.`,
-                        'recipe'
-                    )
-                );
-            },
-            error: (err) => {
-                console.log(err);
-            },
-        };
-        axios
-            .delete(
-                `${process.env.REACT_APP_API_URL}/recipe/${recipe.id}`,
-                config
-            )
-            .then((res) => {
-                res.config.success(res);
-            })
-            .catch((err) => {
-                err.config.error(err);
-            });
-    };
 
     return !loading && !error && recipe.title ? (
         <NotePaper>
@@ -548,30 +515,7 @@ function Recipe() {
                             >
                                 <Icon path={mdiPencil} size={0.7} />
                             </IconButton>
-                            <IconButton
-                                tooltipProps={{
-                                    title: 'Löschen',
-                                    placement: 'right',
-                                }}
-                                sx={{
-                                    width: '23px',
-                                    height: '23px',
-                                    background: (theme) =>
-                                        theme.palette.action.hover,
-                                    border: (theme) =>
-                                        `1px solid ${theme.palette.error.light}`,
-                                    color: (theme) => theme.palette.error.light,
-                                    '&:hover': {
-                                        border: (theme) =>
-                                            `1px solid ${theme.palette.error.main}`,
-                                        color: (theme) =>
-                                            theme.palette.error.main,
-                                    },
-                                }}
-                                onClick={deleteRecipe}
-                            >
-                                <Icon path={mdiDelete} size={0.7} />
-                            </IconButton>
+                            <Delete id={recipe.id} title={recipe.title} />
                         </Box>
                     ) : null}
                 </Box>

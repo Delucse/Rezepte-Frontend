@@ -647,7 +647,7 @@ export const submitRecipe = (id) => (dispatch, getState) => {
             dispatch(resetRecipeFormular());
             dispatch(
                 snackbarMessage(
-                    `Das Rezept "${title}" wurde erfolgreich ${
+                    `Dein Rezept "${title}" wurde erfolgreich ${
                         id ? 'aktualisiert' : 'erstellt'
                     }.`,
                     'recipeFormular'

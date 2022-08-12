@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { addPicture } from '../../actions/recipeActions';
-import { alertErrorMessage } from '../../actions/messageActions';
+import {
+    alertErrorMessage,
+    snackbarMessage,
+} from '../../actions/messageActions';
 
 import { Link } from 'react-router-dom';
 
@@ -149,6 +152,12 @@ function AddImage(props) {
                 setOpen(false);
                 setImage(null);
                 setProgress(false);
+                dispatch(
+                    snackbarMessage(
+                        'Dein Bild wurde erfolgreich hochgeladen.',
+                        `image-${res.data.image}`
+                    )
+                );
             },
             error: (err) => {
                 if (err.response.status !== 401) {
@@ -263,25 +272,28 @@ function AddImage(props) {
                                     />
                                     <ImageListItemBar
                                         actionIcon={
-                                            <IconButton
-                                                sx={{
-                                                    padding: '8px',
-                                                    color: 'white',
-                                                    '&:hover': {
-                                                        color: (theme) =>
-                                                            theme.palette
-                                                                .primary.main,
-                                                    },
-                                                }}
-                                                onClick={() => {
-                                                    setImage(null);
-                                                }}
-                                            >
-                                                <Icon
-                                                    path={mdiDelete}
-                                                    size={1}
-                                                />
-                                            </IconButton>
+                                            !progress ? (
+                                                <IconButton
+                                                    sx={{
+                                                        padding: '8px',
+                                                        color: 'white',
+                                                        '&:hover': {
+                                                            color: (theme) =>
+                                                                theme.palette
+                                                                    .primary
+                                                                    .main,
+                                                        },
+                                                    }}
+                                                    onClick={() => {
+                                                        setImage(null);
+                                                    }}
+                                                >
+                                                    <Icon
+                                                        path={mdiDelete}
+                                                        size={1}
+                                                    />
+                                                </IconButton>
+                                            ) : null
                                         }
                                         sx={{
                                             background: 'rgba(0, 0, 0, 0.25)',

@@ -50,7 +50,7 @@ export const deleteImage = (id) => (dispatch, getState) => {
             });
             dispatch(
                 snackbarMessage(
-                    'Das Bilder-Rezept wurde erfolgreich gelöscht.',
+                    'Dein Bilder-Rezept wurde erfolgreich gelöscht.',
                     `image-${id}`
                 )
             );
