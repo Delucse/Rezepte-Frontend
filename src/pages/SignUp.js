@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../actions/authActions';
-import { resetMessage } from '../actions/messageActions';
+import { alertErrorMessage, resetMessage } from '../actions/messageActions';
 
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 
@@ -38,6 +38,7 @@ function SignUp() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
 
     const pathname =
@@ -78,6 +79,44 @@ function SignUp() {
 
     const handleMouseDownPassword = (e) => {
         e.preventDefault();
+    };
+
+    const registerCheck = () => {
+        if (username.trim() === '') {
+            dispatch(
+                alertErrorMessage(
+                    'Es muss ein Nutzername angegeben sein.',
+                    'user'
+                )
+            );
+        } else if (email.trim() === '') {
+            dispatch(
+                alertErrorMessage('Es muss eine E-Mail angegeben sein.', 'user')
+            );
+        } else if (password.trim() === '') {
+            dispatch(
+                alertErrorMessage(
+                    'Es muss ein Passwort angegeben sein.',
+                    'user'
+                )
+            );
+        } else if (confirmPassword.trim() === '') {
+            dispatch(
+                alertErrorMessage(
+                    'Bestätige dein Passwort durch wiederholte Eingabe dessen.',
+                    'user'
+                )
+            );
+        } else if (confirmPassword !== password) {
+            dispatch(
+                alertErrorMessage(
+                    'Die Passwörter stimmen nicht überein.',
+                    'user'
+                )
+            );
+        } else {
+            dispatch(register(username, password, email));
+        }
     };
 
     return (
@@ -171,16 +210,20 @@ function SignUp() {
                                 </IconButton>
                             }
                             fullWidth
+                            margin
+                        />
+                        <Textfield
+                            label="Passwort bestätigen"
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            fullWidth
                         />
                         <p style={{ marginTop: '20px' }}>
                             <Button
                                 variant="contained"
                                 sx={{ width: '100%' }}
-                                onClick={() =>
-                                    dispatch(
-                                        register(username, password, email)
-                                    )
-                                }
+                                onClick={registerCheck}
                             >
                                 Registrieren
                             </Button>
