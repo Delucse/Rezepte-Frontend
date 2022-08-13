@@ -128,13 +128,10 @@ function Categories() {
     const errorCategories = useSelector(
         (state) => state.recipeFormular.error.categories
     );
-    const errorKeywords = useSelector(
-        (state) => state.recipeFormular.error.keywords
-    );
 
     return (
         <div>
-            {errorKeywords || errorCategories ? (
+            {errorCategories ? (
                 <Box
                     sx={{
                         paddingBottom: '10px',
@@ -144,25 +141,14 @@ function Categories() {
                         zIndex: 2,
                     }}
                 >
-                    {errorCategories ? (
-                        <Alert
-                            error
-                            message={
-                                'Es muss jeweils mindestens eine Auswahlmöglichkeit ausgewählt werden.'
-                            }
-                        />
-                    ) : null}
-                    {errorKeywords ? (
-                        <Alert
-                            error
-                            message={
-                                'Es muss mindestens ein Schlüsselwort hinzugefügt werden.'
-                            }
-                        />
-                    ) : null}
+                    <Alert
+                        error
+                        message={
+                            'Es muss jeweils mindestens eine Auswahlmöglichkeit ausgewählt werden.'
+                        }
+                    />
                 </Box>
             ) : null}
-            <div style={{ marginTop: '10px' }} />
 
             <Grid container spacing={4} sx={{ marginBottom: '40px' }}>
                 {/* Lebensmittel */}

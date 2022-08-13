@@ -11,7 +11,6 @@ const initialState = {
     user: null,
     title: null,
     portion: null,
-    source: null,
     time: null,
     keywords: null,
     ingredients: null,

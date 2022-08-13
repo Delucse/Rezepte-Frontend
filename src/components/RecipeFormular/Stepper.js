@@ -74,9 +74,6 @@ function Stepper(props) {
         (state) => state.recipeFormular.pictures.order.length
     );
     const errorTitle = useSelector((state) => state.recipeFormular.error.title);
-    const errorSource = useSelector(
-        (state) => state.recipeFormular.error.source
-    );
     const errorPortion = useSelector(
         (state) => state.recipeFormular.error.portion
     );
@@ -123,7 +120,6 @@ function Stepper(props) {
         stepsLength,
         picturesLength,
         errorTitle,
-        errorSource,
         errorPortion,
         errorTime,
         errorCategories,

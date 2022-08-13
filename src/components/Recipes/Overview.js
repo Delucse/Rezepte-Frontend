@@ -61,7 +61,7 @@ function Overview(props) {
     };
 
     return (
-        <div style={{ height: props.fullscreen ? '100%' : 'inherit' }}>
+        <div style={{ height: props.fullscreen ? '100%' : 'max-content' }}>
             {props.fullscreen ? null : (
                 <Tape
                     rotate={props.rotate}

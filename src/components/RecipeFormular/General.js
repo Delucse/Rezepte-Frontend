@@ -1,10 +1,7 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import {
-    setRecipeTitle,
-    setRecipeSource,
-} from '../../actions/recipeFormularActions';
+import { setRecipeTitle } from '../../actions/recipeFormularActions';
 
 import Textfield from '../Textfield';
 import Portion from './Portion';
@@ -12,18 +9,14 @@ import Time from './Time';
 import Alert from '../Alert';
 
 import Icon from '@mdi/react';
-import { mdiCopyright, mdiTextShadow } from '@mdi/js';
+import { mdiTextShadow } from '@mdi/js';
 
 import { Box } from '@mui/material';
 
 function General() {
     const dispatch = useDispatch();
     const title = useSelector((state) => state.recipeFormular.title);
-    const source = useSelector((state) => state.recipeFormular.source);
     const errorTitle = useSelector((state) => state.recipeFormular.error.title);
-    const errorSource = useSelector(
-        (state) => state.recipeFormular.error.source
-    );
     const errorPortion = useSelector(
         (state) => state.recipeFormular.error.portion
     );
@@ -33,13 +26,9 @@ function General() {
         dispatch(setRecipeTitle(e.target.value));
     };
 
-    const onChangeSource = (e) => {
-        dispatch(setRecipeSource(e.target.value));
-    };
-
     return (
         <div>
-            {errorTitle || errorSource || errorPortion || errorTime ? (
+            {errorTitle || errorPortion || errorTime ? (
                 <Box
                     sx={{
                         paddingBottom: '10px',
@@ -53,14 +42,6 @@ function General() {
                         <Alert
                             error
                             message={'Es muss ein Titel gewählt werden.'}
-                        />
-                    ) : null}
-                    {errorSource ? (
-                        <Alert
-                            error
-                            message={
-                                'Es muss mindestens eine Quelle genant werden.'
-                            }
                         />
                     ) : null}
                     {errorPortion ? (
@@ -92,15 +73,6 @@ function General() {
                 label={'Titel'}
                 margin
                 start={<Icon path={mdiTextShadow} size={1} />}
-            />
-            <Textfield
-                error={errorSource}
-                value={source}
-                onChange={onChangeSource}
-                property={'source'}
-                label={'Quelle'}
-                margin
-                start={<Icon path={mdiCopyright} size={1} />}
             />
 
             {/* Portionen */}

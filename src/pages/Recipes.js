@@ -23,8 +23,7 @@ import Overview from '../components/Recipes/Overview';
 import params from '../data/params.json';
 
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import { Typography } from '@mui/material';
+import Masonry from '@mui/lab/Masonry';
 
 function Recipes(props) {
     const dispatch = useDispatch();
@@ -134,34 +133,28 @@ function Recipes(props) {
                 <SearchBar />
                 {!loading && !error && recipes ? (
                     recipes.length > 0 ? (
-                        <Grid container spacing={3}>
+                        <Masonry
+                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 6 }}
+                            spacing={3}
+                        >
                             {recipes.map((recipe) => (
-                                <Grid
-                                    item
-                                    xs={12}
-                                    sm={6}
-                                    md={4}
-                                    lg={3}
-                                    xl={2}
+                                <Overview
                                     key={recipe._id}
-                                >
-                                    <Overview
-                                        id={recipe._id}
-                                        title={recipe.title}
-                                        picture={
-                                            recipe.picture
-                                                ? `${process.env.REACT_APP_IMAGE_URL}/${recipe.picture}`
-                                                : null
-                                        }
-                                        keywords={recipe.keywords}
-                                        time={recipe.time}
-                                        date={recipe.date}
-                                        rotate={recipe.rotate}
-                                        favorite={recipe.favorite}
-                                    />
-                                </Grid>
+                                    id={recipe._id}
+                                    title={recipe.title}
+                                    picture={
+                                        recipe.picture
+                                            ? `${process.env.REACT_APP_IMAGE_URL}/${recipe.picture}`
+                                            : null
+                                    }
+                                    keywords={recipe.keywords}
+                                    time={recipe.time}
+                                    date={recipe.date}
+                                    rotate={recipe.rotate}
+                                    favorite={recipe.favorite}
+                                />
                             ))}
-                        </Grid>
+                        </Masonry>
                     ) : (
                         <Box
                             sx={{

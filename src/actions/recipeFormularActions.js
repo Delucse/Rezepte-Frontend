@@ -7,7 +7,6 @@ import {
     SET_RECIPE_CATEGORIES,
     ADD_RECIPE_KEYWORDS,
     REMOVE_RECIPE_KEYWORDS,
-    SET_RECIPE_SOURCE,
     SET_RECIPE_INGREDIENTS,
     SET_RECIPE_STEPS,
     SET_RECIPE_PICTURES,
@@ -51,7 +50,6 @@ const setError = (key, value) => (dispatch, getState) => {
     var error = getState().recipeFormular.error;
     switch (key) {
         case 'title':
-        case 'source':
             if (value === '') {
                 error[key] = true;
             } else {
@@ -77,13 +75,6 @@ const setError = (key, value) => (dispatch, getState) => {
                 }
             });
             error[key] = errCategory;
-            break;
-        case 'keywords':
-            if (value.length === 0) {
-                error[key] = true;
-            } else {
-                error[key] = false;
-            }
             break;
         case 'steps':
             var errSteps = false;
@@ -152,16 +143,6 @@ export const setRecipePortion = (count, area) => (dispatch, getState) => {
     }
 };
 
-export const setRecipeSource = (source) => (dispatch, getState) => {
-    dispatch({
-        type: SET_RECIPE_SOURCE,
-        payload: source,
-    });
-    if (getState().recipeFormular.error.submit) {
-        dispatch(setError('source', source));
-    }
-};
-
 export const setRecipeTime = (time, type) => (dispatch, getState) => {
     var timeState = getState().recipeFormular.time;
     timeState[type] = time;
@@ -200,9 +181,6 @@ export const addRecipeKeyword = (keyword) => (dispatch, getState) => {
         type: ADD_RECIPE_KEYWORDS,
         payload: keywords,
     });
-    if (getState().recipeFormular.error.submit) {
-        dispatch(setError('keywords', keywords));
-    }
 };
 
 export const removeRecipeKeyword = (word) => (dispatch, getState) => {
@@ -212,9 +190,6 @@ export const removeRecipeKeyword = (word) => (dispatch, getState) => {
         type: REMOVE_RECIPE_KEYWORDS,
         payload: keywords,
     });
-    if (getState().recipeFormular.error.submit) {
-        dispatch(setError('keywords', keywords));
-    }
 };
 
 export const changeIngredientsTitle =
@@ -546,22 +521,12 @@ export const changePicturePosition =
     };
 
 export const checkRecipeError = () => (dispatch, getState) => {
-    const {
-        title,
-        portion,
-        source,
-        time,
-        categories,
-        keywords,
-        ingredients,
-        steps,
-    } = getState().recipeFormular;
+    const { title, portion, time, categories, ingredients, steps } =
+        getState().recipeFormular;
     dispatch(setError('title', title));
     dispatch(setError('portion', portion));
-    dispatch(setError('source', source));
     dispatch(setError('time', time));
     dispatch(setError('categories', categories));
-    dispatch(setError('keywords', keywords));
     dispatch(setError('ingredients', ingredients));
     dispatch(setError('steps', steps));
     dispatch(setError('submit'));
@@ -586,16 +551,8 @@ const objectToFormData = (data, formData, subkey) => {
 
 export const submitRecipe = (id) => (dispatch, getState) => {
     dispatch(setProgress('recipeFormular'));
-    var {
-        title,
-        portion,
-        source,
-        time,
-        categories,
-        keywords,
-        steps,
-        pictures,
-    } = getState().recipeFormular;
+    var { title, portion, time, categories, keywords, steps, pictures } =
+        getState().recipeFormular;
 
     Object.entries(categories).forEach(([key]) => {
         if (categories[key]) {
@@ -605,7 +562,6 @@ export const submitRecipe = (id) => (dispatch, getState) => {
 
     var data = {
         title,
-        source,
         portion,
         time,
         keywords,
@@ -687,7 +643,6 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
                 count: 0,
                 area: -1,
             },
-            source: '',
             time: {
                 preparation: 0,
                 resting: 0,
@@ -720,8 +675,6 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
                 submit: false,
                 title: false,
                 portion: false,
-                source: false,
-                keywords: false,
                 ingredients: [false, false, false],
                 steps: false,
             },
@@ -737,16 +690,8 @@ export const setBlocked = (bool) => (dispatch) => {
 };
 
 export const setRecipeFormular = () => (dispatch, getState) => {
-    const {
-        title,
-        portion,
-        source,
-        time,
-        keywords,
-        ingredients,
-        steps,
-        pictures,
-    } = getState().recipe;
+    const { title, portion, time, keywords, ingredients, steps, pictures } =
+        getState().recipe;
     const categories = {
         ingredients: [],
         dish: [],
@@ -776,7 +721,6 @@ export const setRecipeFormular = () => (dispatch, getState) => {
         payload: {
             title,
             portion,
-            source,
             time,
             categories,
             keywords: otherKeywords,
@@ -791,8 +735,6 @@ export const setRecipeFormular = () => (dispatch, getState) => {
                 submit: false,
                 title: false,
                 portion: false,
-                source: false,
-                keywords: false,
                 ingredients: [false, false, false],
                 steps: false,
                 pictures: false,
