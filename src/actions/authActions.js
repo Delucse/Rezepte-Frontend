@@ -25,7 +25,7 @@ import {
 import axios from 'axios';
 
 // check token & load user
-export const loadUser = () => (dispatch) => {
+export const loadUser = () => (dispatch, getState) => {
     // user loading
     dispatch(setProgress('user'));
     const config = {
@@ -47,10 +47,12 @@ export const loadUser = () => (dispatch) => {
             );
         },
         error: (err) => {
-            dispatch({
-                type: AUTH_ERROR,
-            });
-            dispatch(setProgressError('user'));
+            if (err.response.status !== 401 || !getState().auth.refreshToken) {
+                dispatch({
+                    type: AUTH_ERROR,
+                });
+                dispatch(setProgressError('user'));
+            }
         },
     };
     axios
@@ -274,7 +276,7 @@ export const authInterceptor = () => (dispatch, getState) => {
                                     type: REFRESH_TOKEN_SUCCESS,
                                     payload: res.data,
                                 });
-                                dispatch(setProgressSuccess('auth'));
+                                // dispatch(setProgressSuccess('auth'));
                                 axios.defaults.headers.common['Authorization'] =
                                     'Bearer ' + res.data.token;
                                 // request was successfull, new request with the old parameters and the refreshed token
