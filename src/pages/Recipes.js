@@ -14,7 +14,7 @@ import {
 } from '../actions/recipeFilterActions';
 import { resetRecipe } from '../actions/recipeActions';
 
-import { useLocation, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 
 import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
@@ -24,6 +24,7 @@ import params from '../data/params.json';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import { Typography } from '@mui/material';
 
 function Recipes(props) {
     const dispatch = useDispatch();
@@ -109,7 +110,8 @@ function Recipes(props) {
             );
         }
         if (filter) {
-            filter = filter.toLowerCase().split(',');
+            filter = filter /*.toLowerCase()*/
+                .split(',');
             filter = filter.map((f) => f.trim());
             dispatch(setCategories(filter));
         }
@@ -166,9 +168,17 @@ function Recipes(props) {
                                 color: (theme) => theme.palette.text.primary,
                             }}
                         >
-                            {`Es konnten keine Rezepte mit ${
+                            {`Es konnten keine ${
+                                route === 'favoriten'
+                                    ? 'Favoriten'
+                                    : route === 'nutzer'
+                                    ? 'eigene Rezepte'
+                                    : route === 'basis'
+                                    ? 'Grundrezepte'
+                                    : 'Rezepte'
+                            } ${
                                 word !== ''
-                                    ? `dem angegebenen Suchwort "${word}"`
+                                    ? `mit dem angegebenen Suchwort "${word}"`
                                     : ''
                             } ${
                                 word !== '' && categories.length > 0
@@ -176,11 +186,43 @@ function Recipes(props) {
                                     : ''
                             } ${
                                 categories.length > 0
-                                    ? `den angegebenen Filtern "${categories.join(
-                                          '", "'
-                                      )}"`
+                                    ? `mit ${
+                                          categories.length === 1
+                                              ? 'dem angegebenen Filter'
+                                              : 'den angegebenen Filtern'
+                                      } "${categories.join('", "')}"`
                                     : ''
                             } gefunden werden.`}
+                            {user ? (
+                                <Box
+                                    sx={{
+                                        color: (theme) =>
+                                            theme.palette.text.primary,
+                                        display: 'contents',
+                                    }}
+                                >
+                                    {' '}
+                                    Sei der erste und{' '}
+                                    <Box
+                                        sx={{
+                                            color: (theme) =>
+                                                theme.palette.primary.main,
+                                            display: 'contents',
+                                        }}
+                                    >
+                                        <Link
+                                            to={'/rezepte/formular'}
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: 'inherit',
+                                            }}
+                                        >
+                                            erstelle
+                                        </Link>
+                                    </Box>{' '}
+                                    gleich ein passendes Rezept.
+                                </Box>
+                            ) : null}
                         </Box>
                     )
                 ) : error ? (

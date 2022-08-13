@@ -57,7 +57,8 @@ function Search() {
             dispatch(setWord(word));
         }
         if (filter) {
-            filter = filter.toLowerCase().split(',');
+            filter = filter /*.toLowerCase()*/
+                .split(',');
             filter = filter.map((f) => f.trim());
             dispatch(setCategories(filter));
         }
