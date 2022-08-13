@@ -21,17 +21,17 @@ import bakeware from '../../data/bakeware.json';
 function Portion() {
     const dispatch = useDispatch();
     const count = useSelector((state) => state.recipeFormular.portion.count);
-    const volume = useSelector((state) => state.recipeFormular.portion.volume);
+    const area = useSelector((state) => state.recipeFormular.portion.area);
     const errorPortion = useSelector(
         (state) => state.recipeFormular.error.portion
     );
 
     const portionAdd = () => {
-        dispatch(setRecipePortion(count + 1, volume));
+        dispatch(setRecipePortion(count + 1, area));
     };
 
     const portionReduce = () => {
-        dispatch(setRecipePortion(count - 1, volume));
+        dispatch(setRecipePortion(count - 1, area));
     };
 
     const isDish = (e) => {
@@ -42,9 +42,9 @@ function Portion() {
         }
     };
 
-    const setVolume = (volume) => {
-        if (volume) {
-            dispatch(setRecipePortion(count, volume));
+    const setArea = (area) => {
+        if (area) {
+            dispatch(setRecipePortion(count, area));
         } else {
             dispatch(setRecipePortion(count, 1));
         }
@@ -57,7 +57,7 @@ function Portion() {
                 <RadioGroup
                     row
                     name="Portionen"
-                    value={volume > 0 ? 1 : volume < 0 ? -1 : 0}
+                    value={area > 0 ? 1 : area < 0 ? -1 : 0}
                     onChange={isDish}
                     sx={{ color: (theme) => theme.palette.text.primary }}
                 >
@@ -67,7 +67,7 @@ function Portion() {
                             <Radio
                                 disableRipple
                                 sx={
-                                    errorPortion && volume < 0
+                                    errorPortion && area < 0
                                         ? {
                                               color: (theme) =>
                                                   theme.palette.error.main,
@@ -84,7 +84,7 @@ function Portion() {
                             <Radio
                                 disableRipple
                                 sx={
-                                    errorPortion && volume < 0
+                                    errorPortion && area < 0
                                         ? {
                                               color: (theme) =>
                                                   theme.palette.error.main,
@@ -97,7 +97,7 @@ function Portion() {
                     />
                 </RadioGroup>
             </FormControl>
-            {volume >= 0 ? (
+            {area >= 0 ? (
                 <div style={{ display: 'flex' }}>
                     <div
                         style={{
@@ -135,21 +135,19 @@ function Portion() {
                             +
                         </Button>
                     </div>
-                    {volume > 0 ? (
+                    {area > 0 ? (
                         <Autocomplete
                             value={
-                                bakeware.filter(
-                                    (bake) => bake.volume === volume
-                                )[0]
+                                bakeware.filter((bake) => bake.area === area)[0]
                             }
-                            onChange={setVolume}
+                            onChange={setArea}
                             options={bakeware}
                             optionLabel={'name'}
                             optionGroup={'group'}
-                            optionChange={'volume'}
+                            optionChange={'area'}
                             label={'Backform'}
                             start={<Icon path={mdiCupcake} size={1} />}
-                            error={errorPortion && volume === 1}
+                            error={errorPortion && area === 1}
                             fullWidth={true}
                         />
                     ) : null}

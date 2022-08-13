@@ -19,7 +19,7 @@ const initialState = {
     title: '',
     portion: {
         count: 0,
-        volume: -1,
+        area: -1,
     },
     source: '',
     time: {

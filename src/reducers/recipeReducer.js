@@ -20,7 +20,7 @@ const initialState = {
     favorite: null,
     settings: {
         count: 0,
-        volume: 0,
+        area: 0,
         rounded: true,
     },
 };

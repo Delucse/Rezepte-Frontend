@@ -1,8 +1,67 @@
 [
-    { "singular": " ", "information": "ohne Einheit" },
+    { "singular": " ", "information": "ohne Einheit", "group": "Ausnahme" },
+    {
+        "singular": "mg",
+        "information": "Milligramm",
+        "aliment": "singular",
+        "group": "Masse"
+    },
+    {
+        "singular": "g",
+        "information": "Gramm",
+        "aliment": "singular",
+        "group": "Masse"
+    },
+    {
+        "singular": "Pfund",
+        "aliment": "plural",
+        "group": "Masse"
+    },
+    {
+        "singular": "kg",
+        "information": "Kilogramm",
+        "aliment": "singular",
+        "group": "Masse"
+    },
+    {
+        "singular": "ml",
+        "information": "Milliliter",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
+    {
+        "singular": "cl",
+        "information": "Zentiliter",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
+    {
+        "singular": "dl",
+        "information": "Deziliter",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
+    {
+        "singular": "l",
+        "information": "Liter",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
     {
         "singular": "TL",
         "information": "Teelöffel",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
+    {
+        "singular": "TL, gestrichen",
+        "information": "gestrichener Teelöffel",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
+    {
+        "singular": "TL, gehäuft",
+        "information": "gehäufter Teelöffel",
         "aliment": "singular",
         "group": "Volumen"
     },
@@ -13,37 +72,118 @@
         "group": "Volumen"
     },
     {
-        "singular": "g",
-        "information": "Gramm",
+        "singular": "EL, gestrichen",
+        "information": "gestrichener Esslöffel",
         "aliment": "singular",
-        "group": "Masse"
+        "group": "Volumen"
     },
     {
-        "singular": "kg",
-        "information": "Kilogramm",
+        "singular": "EL, gehäuft",
+        "information": "gehäufter Esslöffel",
         "aliment": "singular",
-        "group": "Masse"
+        "group": "Volumen"
+    },
+    {
+        "singular": "Msp",
+        "information": "Messerspitze",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
+    {
+        "singular": "Schuss",
+        "plural": "Schüsse",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
+    {
+        "singular": "Spritzer",
+        "aliment": "singular",
+        "group": "Volumen"
+    },
+    {
+        "singular": "Stück",
+        "plural": "Stücke",
+        "aliment": "singular",
+        "group": "Sonstiges"
     },
     {
         "singular": "Tasse",
         "plural": "Tassen",
         "aliment": "plural",
-        "group": "Gefäße"
+        "group": "Gefäß"
     },
     {
         "singular": "Dose",
         "plural": "Dosen",
         "aliment": "plural",
-        "group": "Gefäße"
+        "group": "Gefäß"
     },
     {
         "singular": "Flasche",
         "plural": "Flaschen",
         "aliment": "singular",
-        "group": "Gefäße"
+        "group": "Gefäß"
+    },
+    {
+        "singular": "Becher",
+        "aliment": "singular",
+        "group": "Gefäß"
+    },
+    {
+        "singular": "Glas",
+        "plural": "Gläser",
+        "aliment": "plural",
+        "group": "Gefäß"
+    },
+    {
+        "singular": "Schnapsglas",
+        "plural": "Schnapsgläser",
+        "aliment": "plural",
+        "group": "Gefäß"
     },
     {
         "singular": "etwas",
-        "aliment": "singular"
+        "aliment": "singular",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Tropfen",
+        "aliment": "singular",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Prise",
+        "plural": "Prisen",
+        "aliment": "singular",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Stange",
+        "plural": "Stangen",
+        "aliment": "singular",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Packung",
+        "plural": "Packungen",
+        "aliment": "singular",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Päckchen",
+        "aliment": "singular",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Bund",
+        "plural": "Bünde",
+        "aliment": "plural",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Scheibe",
+        "plural": "Scheiben",
+        "aliment": "singular",
+        "group": "Sonstiges"
     }
 ]

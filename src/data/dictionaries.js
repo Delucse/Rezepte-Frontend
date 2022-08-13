@@ -1,35 +1,55 @@
 import units from './units.json';
 import aliments from './aliments.json';
 
-export const singularUnits = units.map((unit) => {
-    return {
-        description: `${unit.singular ? unit.singular : unit.plural}${
-            unit.information ? ` (${unit.information})` : ''
-        }`,
-        unit: unit.singular ? unit.singular : unit.plural,
-        group: unit.group,
-    };
-});
-export const pluralUnits = units.map((unit) => {
-    return {
-        description: `${unit.plural ? unit.plural : unit.singular}${
-            unit.information ? ` (${unit.information})` : ''
-        }`,
-        unit: unit.plural ? unit.plural : unit.singular,
-        group: unit.group,
-    };
-});
+export const singularUnits = units
+    .map((unit) => {
+        return {
+            description: `${unit.singular ? unit.singular : unit.plural}${
+                unit.information ? ` (${unit.information})` : ''
+            }`,
+            unit: unit.singular ? unit.singular : unit.plural,
+            group: unit.group,
+        };
+    })
+    .sort(
+        (a, b) => a.group.localeCompare(b.group) || a.unit.localeCompare(b.unit)
+    );
+export const pluralUnits = units
+    .map((unit) => {
+        return {
+            description: `${unit.plural ? unit.plural : unit.singular}${
+                unit.information ? ` (${unit.information})` : ''
+            }`,
+            unit: unit.plural ? unit.plural : unit.singular,
+            group: unit.group,
+        };
+    })
+    .sort(
+        (a, b) => a.group.localeCompare(b.group) || a.unit.localeCompare(b.unit)
+    );
 
-export const singularAliments = aliments.map((aliment) => {
-    return {
-        aliment: aliment.singular ? aliment.singular : aliment.plural,
-    };
-});
-export const pluralAliments = aliments.map((aliment) => {
-    return {
-        aliment: aliment.plural ? aliment.plural : aliment.singular,
-    };
-});
+export const singularAliments = aliments
+    .map((aliment) => {
+        return {
+            aliment: aliment.singular ? aliment.singular : aliment.plural,
+            group: aliment.group,
+        };
+    })
+    .sort(
+        (a, b) =>
+            a.group.localeCompare(b.group) || a.aliment.localeCompare(b.aliment)
+    );
+export const pluralAliments = aliments
+    .map((aliment) => {
+        return {
+            aliment: aliment.plural ? aliment.plural : aliment.singular,
+            group: aliment.group,
+        };
+    })
+    .sort(
+        (a, b) =>
+            a.group.localeCompare(b.group) || a.aliment.localeCompare(b.aliment)
+    );
 
 export const singularUnitsDictionary = {};
 export const pluralUnitsDictionary = {};

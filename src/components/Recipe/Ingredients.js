@@ -26,9 +26,8 @@ import {
 
 const getAmount = (amount, portion, settings) => {
     var calculatedAmount = amount * (settings.count / portion.count);
-    if (portion.volume > 0) {
-        calculatedAmount =
-            calculatedAmount * (settings.volume / portion.volume);
+    if (portion.area > 0) {
+        calculatedAmount = calculatedAmount * (settings.area / portion.area);
     }
     if (settings.rounded) {
         var int = amount.toString().split('.')[0];

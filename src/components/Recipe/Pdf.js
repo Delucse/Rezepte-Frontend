@@ -83,9 +83,8 @@ const filename = (string) => {
 
 const getAmount = (amount, portion, settings) => {
     var calculatedAmount = amount * (settings.count / portion.count);
-    if (portion.volume > 0) {
-        calculatedAmount =
-            calculatedAmount * (settings.volume / portion.volume);
+    if (portion.area > 0) {
+        calculatedAmount = calculatedAmount * (settings.area / portion.area);
     }
     if (settings.rounded) {
         var int = amount.toString().split('.')[0];
@@ -278,16 +277,15 @@ function Header({ theme, title, portion, time }) {
             >
                 <Text>
                     {portion.count.toLocaleString()}{' '}
-                    {portion.volume > 0
-                        ? bakeware.filter(
-                              (bake) => bake.volume === portion.volume
-                          ).length > 0
+                    {portion.area > 0
+                        ? bakeware.filter((bake) => bake.area === portion.area)
+                              .length > 0
                             ? `x ${
                                   bakeware.filter(
-                                      (bake) => bake.volume === portion.volume
+                                      (bake) => bake.area === portion.area
                                   )[0].name
                               }`
-                            : `x individuelle Backform (${portion.volume.toLocaleString()} cm²)`
+                            : `x individuelle Backform (${portion.area.toLocaleString()} cm²)`
                         : ` Portion${portion.count !== 1 ? 'en' : ''}`}
                 </Text>
                 {time.resting > 0 ? (

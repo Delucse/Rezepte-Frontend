@@ -16,10 +16,10 @@ import {
 
 import axios from 'axios';
 
-export const setRecipeSettings = (count, volume, rounded) => (dispatch) => {
+export const setRecipeSettings = (count, area, rounded) => (dispatch) => {
     dispatch({
         type: SET_RECIPE_SETTINGS,
-        payload: { count, volume, rounded },
+        payload: { count, area, rounded },
     });
 };
 
@@ -72,7 +72,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
             }),
             settings: {
                 count: recipeFormular.portion.count,
-                volume: recipeFormular.portion.volume,
+                area: recipeFormular.portion.area,
                 rounded: true,
             },
         },
@@ -116,7 +116,7 @@ export const getRecipe = (id, setFormular) => (dispatch) => {
                     favorite: res.data.favorite,
                     settings: {
                         count: res.data.portion.count,
-                        volume: res.data.portion.volume,
+                        area: res.data.portion.area,
                         rounded: true,
                     },
                 },
@@ -148,7 +148,7 @@ export const resetRecipe = () => (dispatch) => {
             favorite: null,
             settings: {
                 count: 0,
-                volume: 0,
+                area: 0,
                 rounded: true,
             },
         },

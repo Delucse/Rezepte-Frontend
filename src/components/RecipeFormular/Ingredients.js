@@ -288,6 +288,7 @@ function Food(props) {
                                 : pluralAliments
                         }
                         optionLabel={'aliment'}
+                        optionGroup={'group'}
                         label="Zutat"
                         fullWidth
                         onChange={setAliment}

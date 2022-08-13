@@ -25,7 +25,7 @@ import bakeware from '../../data/bakeware.json';
 
 const bakewares = bakeware.concat([
     {
-        volume: 2,
+        area: 2,
         name: 'individuelle Backform',
         group: 'Sonstiges',
     },
@@ -38,15 +38,15 @@ function Portion() {
 
     const [open, setOpen] = useState(false);
     const [count, setCount] = useState(settings.count);
-    const [volume, setVolume] = useState(settings.volume);
+    const [area, setArea] = useState(settings.area);
     const [rounded, setRounded] = useState(settings.rounded);
     const [individual, setIndividual] = useState(0);
-    const [errorVolume, setErrorVolume] = useState(false);
+    const [errorArea, setErrorArea] = useState(false);
     const [errorCount, setErrorCount] = useState(false);
 
     useEffect(() => {
         setCount(settings.count);
-        setVolume(settings.volume);
+        setArea(settings.area);
         setRounded(settings.rounded);
     }, [open, settings]);
 
@@ -84,7 +84,7 @@ function Portion() {
 
     const reset = () => {
         setCount(portion.count);
-        setVolume(portion.volume);
+        setArea(portion.area);
     };
 
     const cancel = () => {
@@ -96,34 +96,34 @@ function Portion() {
         if (typeof countDecimal === 'string') {
             countDecimal = countDecimal.replace(',', '.');
         }
-        if (volume === 2) {
+        if (area === 2) {
             dispatch(
                 setRecipeSettings(Number(countDecimal), individual, rounded)
             );
         } else {
-            dispatch(setRecipeSettings(Number(countDecimal), volume, rounded));
+            dispatch(setRecipeSettings(Number(countDecimal), area, rounded));
         }
         setOpen(false);
     };
 
-    const setV = (volume) => {
-        if (volume > 2) {
-            setErrorVolume(false);
-            setVolume(volume);
-        } else if (volume === 2) {
-            setErrorVolume(true);
-            setVolume(volume);
+    const setA = (area) => {
+        if (area > 2) {
+            setErrorArea(false);
+            setArea(area);
+        } else if (area === 2) {
+            setErrorArea(true);
+            setArea(area);
         } else {
-            setErrorVolume(true);
-            setVolume(1);
+            setErrorArea(true);
+            setArea(1);
         }
     };
 
-    const setArea = (e) => {
+    const setarea = (e) => {
         if (e.target.value > 2) {
-            setErrorVolume(false);
+            setErrorArea(false);
         } else {
-            setErrorVolume(true);
+            setErrorArea(true);
         }
         setIndividual(e.target.value);
     };
@@ -139,13 +139,12 @@ function Portion() {
                     variant="body1"
                 >
                     für {settings.count.toLocaleString()}
-                    {settings.volume > 0
-                        ? bakeware.filter(
-                              (bake) => bake.volume === settings.volume
-                          ).length > 0
+                    {settings.area > 0
+                        ? bakeware.filter((bake) => bake.area === settings.area)
+                              .length > 0
                             ? `x ${
                                   bakeware.filter(
-                                      (bake) => bake.volume === settings.volume
+                                      (bake) => bake.area === settings.area
                                   )[0].name
                               }`
                             : 'x individuelle Backform'
@@ -181,12 +180,12 @@ function Portion() {
                                 Gib eine positive Zahl an.
                             </Alert>
                         ) : null}
-                        {errorVolume ? (
+                        {errorArea ? (
                             <Alert
                                 severity="error"
                                 sx={{ marginBottom: '20px', borderRadius: 0 }}
                             >
-                                {volume !== 2
+                                {area !== 2
                                     ? 'Wähle eine Backform aus.'
                                     : 'Gebe einen Flächeninhalt in cm² an (mind. 3 cm²).'}
                             </Alert>
@@ -194,7 +193,7 @@ function Portion() {
                         <Box
                             sx={{
                                 display: {
-                                    xs: volume > 0 ? 'inherit' : 'flex',
+                                    xs: area > 0 ? 'inherit' : 'flex',
                                     sm: 'flex',
                                 },
                             }}
@@ -240,7 +239,7 @@ function Portion() {
                                 sx={{
                                     display: 'flex',
                                     marginTop: {
-                                        xs: volume > 0 ? '20px' : 0,
+                                        xs: area > 0 ? '20px' : 0,
                                         sm: 0,
                                     },
                                     width: {
@@ -249,25 +248,25 @@ function Portion() {
                                     },
                                 }}
                             >
-                                {volume > 0 ? (
+                                {area > 0 ? (
                                     <Autocomplete
                                         value={
                                             bakewares.filter(
-                                                (bake) => bake.volume === volume
+                                                (bake) => bake.area === area
                                             )[0]
                                         }
-                                        onChange={setV}
+                                        onChange={setA}
                                         options={bakewares}
                                         optionLabel={'name'}
                                         optionGroup={'group'}
-                                        optionChange={'volume'}
+                                        optionChange={'area'}
                                         label={'Backform'}
                                         start={
                                             <Icon path={mdiCupcake} size={1} />
                                         }
                                         fullWidth={true}
                                         style={{ marginRight: '10px' }}
-                                        error={errorVolume && volume === 1}
+                                        error={errorArea && area === 1}
                                     />
                                 ) : (
                                     <div
@@ -281,7 +280,7 @@ function Portion() {
                                     </div>
                                 )}
                                 {count === portion.count &&
-                                volume === portion.volume ? null : (
+                                area === portion.area ? null : (
                                     <Button
                                         tooltipProps={{
                                             title: 'Portionsangabe zurücksetzen',
@@ -299,14 +298,14 @@ function Portion() {
                                 )}
                             </Box>
                         </Box>
-                        {volume === 2 ? (
+                        {area === 2 ? (
                             <Box sx={{ ml: { sm: '105px' }, mt: 2 }}>
                                 <Textfield
                                     label="Flächenangabe"
-                                    error={errorVolume && individual === 2}
+                                    error={errorArea && individual === 2}
                                     type="number"
                                     value={individual}
-                                    onChange={setArea}
+                                    onChange={setarea}
                                     autoFocus
                                 />
                             </Box>
@@ -341,7 +340,7 @@ function Portion() {
                         <Button
                             variant="contained"
                             onClick={confirm}
-                            disabled={errorCount || errorVolume}
+                            disabled={errorCount || errorArea}
                         >
                             Bestätigen
                         </Button>

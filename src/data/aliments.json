@@ -1,16 +1,818 @@
 [
-    { "singular": "Mehl", "information": "Mehl" },
-    { "singular": "Zucker", "information": "Zucker" },
-    { "singular": "Gurke", "plural": "Gurken", "information": "Gurke" },
-    { "singular": "Apfel", "plural": "Äpfel", "information": "Apfel" },
-    { "singular": "frische Vollmilch", "information": "Milch" },
-    { "singular": "Brot", "plural": "Brote", "information": "Brot" },
-    { "singular": "Zimt", "information": "Zimt" },
-    { "singular": "Natron", "information": "Backnatron" },
+    {
+        "plural": "lauwarmes Wasser",
+        "information": "Wasser",
+        "group": "nichtalkoholische Getränke"
+    },
+    {
+        "singular": "Fanta",
+        "information": "Fanta",
+        "group": "nichtalkoholische Getränke"
+    },
+    {
+        "singular": "Butter",
+        "information": "Butter",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Ei",
+        "plural": "Eier",
+        "information": "Hühnerei",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Milch",
+        "information": "Kuhmilch",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Weizenmehl (405)",
+        "information": "Mehl",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "singular": "Weizenmehl (550)",
+        "information": "Mehl",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "singular": "Zucker",
+        "information": "Zucker",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Salz",
+        "information": "Salz",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Trockenhefe",
+        "plural": "Trockenhefen",
+        "information": "Backhefe",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Sesamsaat",
+        "information": "Sesam",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Eierlikör",
+        "information": "Eierlikör",
+        "group": "alkoholische Getränke"
+    },
+    {
+        "singular": "Backpulver",
+        "information": "Backpulver",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Vanillezucker",
+        "information": "Vanillin",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Buchweizenmehl",
+        "information": "Buchweizen",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "singular": "Olivenöl",
+        "information": "Olivenöl",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Sonnenblumenöl",
+        "information": "Sonnenblumenöl",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Rapsöl",
+        "information": "Rapsöl",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Mascarpone",
+        "information": "Mascarpone",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Kaffee",
+        "information": "Kaffee",
+        "group": "nichtalkoholische Getränke"
+    },
+    {
+        "singular": "Espresso",
+        "plural": "Espressi",
+        "information": "Espresso",
+        "group": "nichtalkoholische Getränke"
+    },
+    {
+        "singular": "Eigelb",
+        "plural": "Eigelbe",
+        "information": "Eigelb",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Eiweiß",
+        "plural": "Eiweiße",
+        "information": "Eiweiß",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Puderzucker",
+        "information": "Puderzucker",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Amaretto",
+        "information": "Amaretto",
+        "group": "alkoholische Getränke"
+    },
+    {
+        "singular": "Löffelbiskuit",
+        "plural": "Löffelbiskuits",
+        "information": "Löffelbiskuit",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Kakaopulver",
+        "information": "Kakaopulver",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Zwiebel",
+        "plural": "Zwiebeln",
+        "information": "Zwiebel",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Gemüsezwiebel",
+        "plural": "Gemüsezwiebeln",
+        "information": "Zwiebel",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Frühlingszwiebel",
+        "plural": "Frühlingszwiebeln",
+        "information": "Winterzwiebel",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Knoblauchzehe",
+        "plural": "Knoblauchzehen",
+        "information": "Knoblauch",
+        "group": "Gemüse"
+    },
+    { "singular": "Porree", "information": "Lauch", "group": "Gemüse" },
+    { "singular": "Fenchel", "information": "Fenchel", "group": "Gemüse" },
+
+    {
+        "singular": "Tomate",
+        "plural": "Tomaten",
+        "information": "Tomate",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "geschälte Tomate",
+        "plural": "geschälte Tomaten",
+        "information": "Tomate",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Paprikaschote",
+        "plural": "Paprikaschoten",
+        "information": "Paprika",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Kirschtomate",
+        "plural": "Kirschtomaten",
+        "information": "Tomate",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Mais",
+        "information": "Mais",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Fleischtomate",
+        "plural": "Fleischtomaten",
+        "information": "Tomate",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Erbse",
+        "plural": "Erbsen",
+        "information": "Erbse",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Gurke",
+        "plural": "Gurken",
+        "information": "Gurke",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Möhre",
+        "plural": "Möhren",
+        "information": "Möhre",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Avocado",
+        "plural": "Avocados",
+        "information": "Avocado",
+        "group": "Gemüse"
+    },
     {
         "singular": "Zucchini",
         "plural": "Zucchinis",
-        "information": "Zucchini"
+        "information": "Zucchini",
+        "group": "Gemüse"
     },
-    { "singular": "Olivenöl", "plural": "Olivenöle", "information": "Olivenöl" }
+    {
+        "singular": "Rote Bete",
+        "plural": "Rote Beten",
+        "information": "Rote Bete",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Aubergine",
+        "plural": "Auberginen",
+        "information": "Aubergine",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Patisson",
+        "plural": "Patissons",
+        "information": "Patisson",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Kürbis",
+        "plural": "Kürbisse",
+        "information": "Kürbis",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Hokkaidokürbis",
+        "plural": "Hokkaidokürbisse",
+        "information": "Hokkaidokürbis",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Spinat",
+        "information": "Spinat",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Palmkohl",
+        "plural": "Palmkohle",
+        "information": "Palmkohl",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Mangold",
+        "information": "Mangold",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Kassler",
+        "information": "Kassler",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "Thunfisch",
+        "plural": "Thunfische",
+        "information": "Thunfisch",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "Hühnerbrust",
+        "plural": "Hühnerbrüste",
+        "information": "Hühnerbrust",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "roher Schinken",
+        "plural": "rohe Schinken",
+        "information": "Rohschinken",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "mageres Schweinefleisch",
+        "information": "Schweinefleisch",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "frische Bratwurst",
+        "plural": "frische Bratwürste",
+        "information": "Bratwurst",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "gekochter Schinken",
+        "plural": "gekochte Schinken",
+        "information": "Formfleisch",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "Lachs",
+        "plural": "Lachse",
+        "information": "Lachs",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "Surimi",
+        "information": "Surimi",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "Speck",
+        "information": "Speck",
+        "group": "Fleisch & Fisch"
+    },
+    {
+        "singular": "Schlagsahne",
+        "information": "Schlagsahne",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Magerquark",
+        "information": "Magerquark",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Emmentaler",
+        "information": "Emmentaler",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "saure Sahne",
+        "information": "Rahm",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Schmand",
+        "information": "Schmand",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Parmesan",
+        "information": "Parmesan",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Mozzarella",
+        "information": "Mozzarella",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Frischkäse",
+        "information": "Frischkäse",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Schafkäse",
+        "information": "Schafkäse",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "fettarme Milch",
+        "information": "Milch",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Vollmilch",
+        "information": "Milch",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Joghurt",
+        "information": "Joghurt",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Käse",
+        "information": "Käse",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Dickmilch",
+        "information": "Dickmilch",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Buttermilch",
+        "information": "Buttermilch",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Quark",
+        "information": "Quark",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "singular": "Gouda",
+        "information": "Gouda",
+        "group": "Milchprodukte & Eier"
+    },
+    {
+        "plural": "Bandnudeln",
+        "information": "Liste von Pastaformen",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "plural": "Cannelloni",
+        "information": "Cannelloni",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "plural": "Penne",
+        "information": "Liste von Pastaformen",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "plural": "Orechhiette",
+        "information": "Liste von Pastaformen",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "plural": "Tortellini",
+        "information": "Tortellini",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "plural": "Haferflocken",
+        "information": "Haferflocken",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "plural": "Semmel",
+        "information": "Semmel",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "plural": "Reis",
+        "information": "Reis",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "plural": "Milchreis",
+        "information": "Milchreis",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "singular": "Pumpernickel",
+        "information": "Pumpernickel",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "singular": "Brot",
+        "plural": "Brote",
+        "information": "Brot",
+        "group": "Getreide & Getreideerzeugnisse"
+    },
+    {
+        "singular": "Marmelade",
+        "plural": "Marmeladen",
+        "information": "Marmelade",
+        "group": "Süßwaren"
+    },
+    {
+        "plural": "gemahlene Haselnüsse",
+        "information": "Hasel",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Vollmilch-Kuvertüre",
+        "information": "Kuvertüre",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Zartbitter-Kuvertüre",
+        "information": "Kuvertüre",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Vanillepuddingpulver",
+        "information": "Pudding",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Vollmilchschokolade",
+        "information": "Milchschokolade",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Zartbitterschokolade",
+        "information": "Bitterschokolade",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "weiße Schokolade",
+        "information": "weiße Schokolade",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "klaren Tortenguss",
+        "information": "Tortenguss",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Sahnesteif",
+        "information": "Sahnestandmittel",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Maronencreme",
+        "information": "Maronencreme",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Butterkeks",
+        "plural": "Butterkekse",
+        "information": "Keks",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Rosine",
+        "plural": "Rosinen",
+        "information": "Rosine",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Bittermandelaroma",
+        "information": "Backaroma",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Marzipan",
+        "information": "Marzipan",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Schokoladenpuddingpulver",
+        "information": "Pudding",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Vanilleschote",
+        "plural": "Vanilleschoten",
+        "information": "Vanilleschote",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Vanillearoma",
+        "information": "Vanillearoma",
+        "group": "Süßwaren"
+    },
+    {
+        "plural": "gemahlene Mandeln",
+        "information": "Mandel",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Backoblate",
+        "plural": "Backoblaten",
+        "information": "Oblate",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Hefe",
+        "plural": "Hefen",
+        "information": "Hefe",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Haselnuss",
+        "plural": "Haselnüsse",
+        "information": "Gemeine Hasel",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Hagelzucker",
+        "information": "Zucker",
+        "group": "Süßwaren"
+    },
+    {
+        "plural": "Mandeln",
+        "information": "Mandel",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Honig",
+        "information": "Honig",
+        "group": "Süßwaren"
+    },
+    {
+        "singular": "Zitronensaft",
+        "information": "Zitrone",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Zitronenschale",
+        "information": "Zitrone",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Zitrone",
+        "plural": "Zitronen",
+        "information": "Zitrone",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Mandarine",
+        "plural": "Mandarinen",
+        "information": "Mandarine",
+        "group": "Früchte & Obst"
+    },
+    {
+        "plural": "gemischte Beeren",
+        "information": "Beeren",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Orangensaft",
+        "information": "Orange",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Orangenschale",
+        "information": "Orange",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Orange",
+        "plural": "Orangen",
+        "information": "Orange",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Himbeere",
+        "plural": "Himbeeren",
+        "information": "Himbeere",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Banane",
+        "plural": "Bananen",
+        "information": "Banane",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Kiwi",
+        "plural": "Kiwis",
+        "information": "Kiwi",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Apfel",
+        "plural": "Äpfel",
+        "information": "Apfel",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Blaubeere",
+        "plural": "Blaubeeren",
+        "information": "Heidelbeere",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Muskatnus",
+        "plural": "Muskatnüsse",
+        "information": "Muskatnussbaum",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Basilikum",
+        "information": "Basilikum",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Lorbeerblatt",
+        "plural": "Lorbeerblätter",
+        "information": "Echter Lorbeer",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Salbei",
+        "information": "Salbei",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Zimt",
+        "information": "Zimt",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Meersalz",
+        "information": "Meersalz",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Essig",
+        "information": "Essig",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Sesamöl",
+        "information": "Sesamöl",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Sojasauce",
+        "information": "Sojasauce",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Wasabi",
+        "information": "Wasabi",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Weißweinessig",
+        "information": "Weißweinessig",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Petersilie",
+        "information": "Petersilie",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Senf",
+        "information": "Senf",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Ingwer",
+        "information": "Ingwer",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Palmin",
+        "information": "Palmin",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Mayonnaise",
+        "information": "Mayonnaise",
+        "group": "Gewürze, Öle & Fette"
+    },
+    {
+        "singular": "Gewürzgurke",
+        "plural": "Gewürzgurken",
+        "information": "Gewürzgurke",
+        "group": "Gemüse"
+    },
+    {
+        "singular": "Olive",
+        "plural": "Oliven",
+        "information": "Olive",
+        "group": "Früchte & Obst"
+    },
+    {
+        "singular": "Rum",
+        "information": "Rum",
+        "group": "alkoholische Getränke"
+    },
+    {
+        "singular": "Weinbrand",
+        "information": "Weinbrand",
+        "group": "alkoholische Getränke"
+    },
+    {
+        "singular": "Rotwein",
+        "information": "Rotwein",
+        "group": "alkoholische Getränke"
+    },
+    {
+        "singular": "Weißwein",
+        "information": "Weißwein",
+        "group": "alkoholische Getränke"
+    },
+    {
+        "plural": "Mineralwasser",
+        "information": "Mineralwasser",
+        "group": "nichtalkoholische Getränke"
+    },
+    {
+        "singular": "Natron",
+        "information": "Backnatron",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "getrockneter Seetang",
+        "information": "Seetang",
+        "group": "Sonstiges"
+    },
+    {
+        "singular": "Nori-Blatt",
+        "plural": "Nori-Blätter",
+        "information": "Nori",
+        "group": "Sonstiges"
+    }
 ]

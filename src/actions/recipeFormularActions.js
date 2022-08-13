@@ -95,7 +95,7 @@ const setError = (key, value) => (dispatch, getState) => {
             error[key] = errSteps;
             break;
         case 'portion':
-            if (value.count < 1 || value.volume === 1) {
+            if (value.count < 1 || value.area === 1) {
                 error[key] = true;
             } else {
                 error[key] = false;
@@ -142,13 +142,13 @@ export const setRecipeTitle = (title) => (dispatch, getState) => {
     }
 };
 
-export const setRecipePortion = (count, volume) => (dispatch, getState) => {
+export const setRecipePortion = (count, area) => (dispatch, getState) => {
     dispatch({
         type: SET_RECIPE_PORTION,
-        payload: { count, volume },
+        payload: { count, area },
     });
     if (getState().recipeFormular.error.submit) {
-        dispatch(setError('portion', { count, volume }));
+        dispatch(setError('portion', { count, area }));
     }
 };
 
@@ -685,7 +685,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
             title: '',
             portion: {
                 count: 0,
-                volume: -1,
+                area: -1,
             },
             source: '',
             time: {
