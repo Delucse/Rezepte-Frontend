@@ -14,7 +14,6 @@ import Icon from '@mdi/react';
 import {
     mdiDotsVertical,
     mdiSortAscending,
-    mdiSortDescending,
     mdiSortAlphabeticalAscending,
     mdiSortAlphabeticalDescending,
     mdiSortClockAscending,
@@ -25,14 +24,8 @@ import {
 
 const sort = [
     {
-        title: 'Relevanz aufsteigend',
-        icon: mdiSortAscending,
-        type: 'score',
-        ascending: true,
-    },
-    {
         title: 'Relevanz absteigend',
-        icon: mdiSortDescending,
+        icon: mdiSortAscending,
         type: 'score',
         ascending: false,
     },

@@ -14,7 +14,7 @@ const initialState = {
     type: 'all',
     sort: {
         type: 'score',
-        ascending: true,
+        ascending: false,
     },
     open: false,
     categories: [],

@@ -576,9 +576,7 @@ export const submitRecipe = (id) => (dispatch, getState) => {
     }
 
     var body = new FormData();
-    console.log(body);
     body = objectToFormData(data, body);
-    console.log(body);
 
     if (pictures.new.length > 0) {
         pictures.new.forEach((pic) => {
