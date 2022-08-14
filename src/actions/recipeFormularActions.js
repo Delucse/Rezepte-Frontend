@@ -540,10 +540,12 @@ const objectToFormData = (data, formData, subkey) => {
         } else {
             newkey = key;
         }
-        if (typeof value === 'object') {
-            formData = objectToFormData(data[key], formData, newkey);
-        } else {
-            formData.append(newkey, value);
+        if (value !== null) {
+            if (typeof value === 'object') {
+                formData = objectToFormData(data[key], formData, newkey);
+            } else {
+                formData.append(newkey, value);
+            }
         }
     });
     return formData;
@@ -574,7 +576,9 @@ export const submitRecipe = (id) => (dispatch, getState) => {
     }
 
     var body = new FormData();
+    console.log(body);
     body = objectToFormData(data, body);
+    console.log(body);
 
     if (pictures.new.length > 0) {
         pictures.new.forEach((pic) => {

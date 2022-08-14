@@ -201,7 +201,7 @@ function Ingredients({ theme, ingredients, settings, portion, style }) {
                             fontSize: '15pt',
                         }}
                     >
-                        {ingredient.title}
+                        {ingredient.title ? ingredient.title : 'Zutaten'}
                     </Text>
                     {ingredient.food.map((food, index) => {
                         const amountString = getAmount(

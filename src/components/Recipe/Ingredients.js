@@ -151,7 +151,11 @@ function Ingredients() {
                                             theme.palette.text.primary,
                                     }}
                                 >
-                                    {`Zutaten für ${ingredient.title}`}
+                                    {`Zutaten${
+                                        ingredient.title
+                                            ? ` für ${ingredient.title}`
+                                            : ''
+                                    }`}
                                 </Typography>
                             </ListItem>
                             {ingredient.food.map((food, index) => {

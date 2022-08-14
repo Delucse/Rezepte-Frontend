@@ -19,8 +19,9 @@ import Textfield from '../Textfield';
 import Autocomplete from '../Autocomplete';
 import Alert from '../Alert';
 import Button from '../Button';
+import Tooltip from '../Tooltip';
 
-import { Box } from '@mui/material';
+import { Box, Checkbox } from '@mui/material';
 
 import Icon from '@mdi/react';
 import {
@@ -100,7 +101,7 @@ function Title(props) {
                 </Button>
             </div>
             <Textfield
-                value={props.title}
+                value={props.title === null ? 'Kein Titel' : props.title}
                 onChange={(e) =>
                     dispatch(
                         changeIngredientsTitle(props.iIndex, e.target.value)
@@ -110,6 +111,35 @@ function Title(props) {
                 margin
                 label="Titel"
                 start={<Icon path={mdiTextShadow} size={1} />}
+                end={
+                    <Tooltip
+                        title={
+                            props.title !== null
+                                ? 'Titel deaktivieren'
+                                : 'Titel aktivieren'
+                        }
+                    >
+                        <Checkbox
+                            checked={props.title !== null}
+                            onChange={(e) => {
+                                if (e.target.checked) {
+                                    dispatch(
+                                        changeIngredientsTitle(props.iIndex, '')
+                                    );
+                                } else {
+                                    dispatch(
+                                        changeIngredientsTitle(
+                                            props.iIndex,
+                                            null
+                                        )
+                                    );
+                                }
+                            }}
+                            disableRipple
+                        />
+                    </Tooltip>
+                }
+                disabled={props.title === null}
             />
             <Button
                 disabled={props.length === 1}
