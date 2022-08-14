@@ -38,7 +38,9 @@ export const getRecipes = () => (dispatch, getState) => {
             dispatch(setProgressSuccess('recipeFilter'));
         },
         error: (err) => {
-            dispatch(setProgressError('recipeFilter'));
+            if (err.response.status !== 401) {
+                dispatch(setProgressError('recipeFilter'));
+            }
         },
     };
     axios
@@ -83,7 +85,9 @@ export const getRecipesFavorite = () => (dispatch, getState) => {
             dispatch(setProgressSuccess('recipeFilter'));
         },
         error: (err) => {
-            dispatch(setProgressError('recipeFilter'));
+            if (err.response.status !== 401) {
+                dispatch(setProgressError('recipeFilter'));
+            }
         },
     };
     axios
