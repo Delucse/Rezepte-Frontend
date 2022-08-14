@@ -82,7 +82,9 @@ export const register = (username, password, email) => (dispatch) => {
     axios
         .post(`${process.env.REACT_APP_API_URL}/auth/signup`, body, config)
         .then((res) => {
-            dispatch(alertMessage('Erfolgreiche Registrierung.', 'user'));
+            dispatch(
+                alertMessage('Du hast dich erfolgreich registriert.', 'user')
+            );
             dispatch({
                 type: REGISTER_SUCCESS,
             });

@@ -53,7 +53,12 @@ function Preview() {
                             zIndex: 2,
                         }}
                     >
-                        <Alert error message={'Es gibt noch Fehler.'} />
+                        <Alert
+                            error
+                            message={
+                                'Es wurden noch nicht alle Pflichtfelder ausgefüllt. Gehe zurück, um nachzusehen welche Felder nicht vollständig sind.'
+                            }
+                        />
                     </Box>
                 ) : (
                     <div>

@@ -187,34 +187,65 @@ function Recipes(props) {
                                     : ''
                             } gefunden werden.`}
                             {user ? (
-                                <Box
-                                    sx={{
-                                        color: (theme) =>
-                                            theme.palette.text.primary,
-                                        display: 'contents',
-                                    }}
-                                >
-                                    {' '}
-                                    Sei der erste und{' '}
+                                route !== 'favoriten' ? (
                                     <Box
                                         sx={{
                                             color: (theme) =>
-                                                theme.palette.primary.main,
+                                                theme.palette.text.primary,
                                             display: 'contents',
                                         }}
                                     >
-                                        <Link
-                                            to={'/rezepte/formular'}
-                                            style={{
-                                                textDecoration: 'none',
-                                                color: 'inherit',
+                                        {' '}
+                                        Sei der erste und{' '}
+                                        <Box
+                                            sx={{
+                                                color: (theme) =>
+                                                    theme.palette.primary.main,
+                                                display: 'contents',
                                             }}
                                         >
-                                            erstelle
-                                        </Link>
-                                    </Box>{' '}
-                                    gleich ein passendes Rezept.
-                                </Box>
+                                            <Link
+                                                to={'/rezepte/formular'}
+                                                style={{
+                                                    textDecoration: 'none',
+                                                    color: 'inherit',
+                                                }}
+                                            >
+                                                erstelle
+                                            </Link>
+                                        </Box>{' '}
+                                        gleich ein passendes Rezept.
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        sx={{
+                                            color: (theme) =>
+                                                theme.palette.text.primary,
+                                            display: 'contents',
+                                        }}
+                                    >
+                                        {' '}
+                                        Wähle zwischen den{' '}
+                                        <Box
+                                            sx={{
+                                                color: (theme) =>
+                                                    theme.palette.primary.main,
+                                                display: 'contents',
+                                            }}
+                                        >
+                                            <Link
+                                                to={'/rezepte'}
+                                                style={{
+                                                    textDecoration: 'none',
+                                                    color: 'inherit',
+                                                }}
+                                            >
+                                                Rezepten
+                                            </Link>
+                                        </Box>{' '}
+                                        aus und ergänze dein Kochbuch.
+                                    </Box>
+                                )
                             ) : null}
                         </Box>
                     )

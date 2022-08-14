@@ -25,8 +25,22 @@ function IndeterminateCheckbox(props) {
         var categories = props.value ? props.value : [];
         if (event.target.checked) {
             categories.push(event.target.value);
+            if (
+                event.target.value === 'vegan' &&
+                !('vegetarisch' in categories)
+            ) {
+                categories.push('vegetarisch');
+            }
         } else {
-            categories = categories.filter((cat) => cat !== event.target.value);
+            if (event.target.value === 'vegetarisch') {
+                categories = categories.filter(
+                    (cat) => cat !== event.target.value && cat !== 'vegan'
+                );
+            } else {
+                categories = categories.filter(
+                    (cat) => cat !== event.target.value
+                );
+            }
         }
         dispatch(setRecipeCategories(categories, props.objectKey));
     };
@@ -59,6 +73,7 @@ function IndeterminateCheckbox(props) {
                                 : props.value === false
                         }
                         onChange={handleChangeAll}
+                        disableRipple
                     />
                 }
             />
@@ -87,6 +102,7 @@ function IndeterminateCheckbox(props) {
                                     }
                                     value={category}
                                     onChange={handleChange}
+                                    disableRipple
                                 />
                             }
                         />
@@ -108,6 +124,7 @@ function IndeterminateCheckbox(props) {
                             }
                             checked={props.value === false}
                             onChange={handleChangeNot}
+                            disableRipple
                         />
                     }
                 />

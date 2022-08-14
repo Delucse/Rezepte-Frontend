@@ -31,7 +31,7 @@ const steps = [
     },
     {
         title: 'Kategorien',
-        help: 'Die Angabe von Kategorien dient einer besseren Such-und Filtermöglichkeit. Es muss mindestens eine Kategorie hinzugefügt werden.',
+        help: 'Die Angabe von Kategorien dient einer besseren Beschreibung deines Rezepts und damit einer guten Such-und Filtermöglichkeit.',
         content: <Categories />,
     },
     {
