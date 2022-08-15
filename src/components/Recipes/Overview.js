@@ -32,6 +32,15 @@ import {
     mdiImageOffOutline,
 } from '@mdi/js';
 
+const msToHoursAndMinutes = (time) => {
+    var t = time / 1000 / 60 / 60;
+    var hour = Math.trunc(t);
+    var minute = Math.round((t - hour) * 60);
+    return `${hour > 0 ? `${hour} Stunde${hour === 1 ? '' : 'n'} ` : ''}${
+        minute > 0 ? `${minute} Minute${minute === 1 ? '' : 'n'}` : ''
+    }`;
+};
+
 function Overview(props) {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
@@ -222,9 +231,7 @@ function Overview(props) {
                         ? { title: 'laktosefrei', icon: mdiBarleyOff }
                         : {},
                     {
-                        title: `${
-                            props.time / 1000 / 60 / 60
-                        } Stunden Gesamtzeit`,
+                        title: `${msToHoursAndMinutes(props.time)} Gesamtzeit`,
                         icon: mdiClockOutline,
                     },
                     {
@@ -236,7 +243,17 @@ function Overview(props) {
                 ].map((item, index) =>
                     item.icon ? (
                         <div key={index}>
-                            {item.icon === mdiClockOutline ? <Divider /> : null}
+                            {item.icon === mdiClockOutline &&
+                            [
+                                'vegan',
+                                'vegetarisch',
+                                'glutenfrei',
+                                'laktosefrei',
+                            ].some((ingredient) =>
+                                props.keywords.includes(ingredient)
+                            ) ? (
+                                <Divider />
+                            ) : null}
                             <MenuItem sx={{ cursor: 'default' }}>
                                 <ListItemIcon>
                                     <Icon path={item.icon} size={1} />
