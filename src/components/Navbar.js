@@ -39,6 +39,7 @@ import {
     mdiImageMultipleOutline,
     mdiChefHat,
     mdiFrequentlyAskedQuestions,
+    mdiBabyBottle,
 } from '@mdi/js';
 
 function Navlink(props) {
@@ -99,6 +100,12 @@ const menue = [
         link: '/rezepte',
         onClickDispatch: resetFilterSettings,
         icon: mdiFood,
+    },
+    {
+        text: 'Baby- & Kleinkinderrezepte',
+        link: '/rezepte/kleinkind',
+        onClickDispatch: resetFilterSettings,
+        icon: mdiBabyBottle,
     },
     {
         text: 'Grundrezepte',

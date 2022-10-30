@@ -50,6 +50,8 @@ export const getRecipes = () => (dispatch, getState) => {
                     ? '/favorite'
                     : route === 'nutzer'
                     ? '/user'
+                    : route === 'kleinkind'
+                    ? '/baby'
                     : route === 'basis'
                     ? '/basic'
                     : ''

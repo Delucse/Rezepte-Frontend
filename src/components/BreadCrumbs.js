@@ -80,6 +80,15 @@ const routes = [
         ],
     },
     {
+        pathname: /^\/rezepte\/kleinkind$/i,
+        params: [],
+        breadcrumbs: [
+            { title: <RecipeSearch />, pathname: '/suche' },
+            { title: 'Rezepte', pathname: '/rezepte' },
+            { title: 'Baby & Kleinkinder' },
+        ],
+    },
+    {
         pathname: /^\/rezepte\/basis$/i,
         params: [],
         breadcrumbs: [
@@ -103,6 +112,11 @@ const routes = [
                 title: 'Favoriten',
                 pathname: '/rezepte/favoriten',
                 condition: 'favoriten',
+            },
+            {
+                title: 'Baby & Kleinkinder',
+                pathname: '/rezepte/kleinkind',
+                condition: 'kleinkind',
             },
             {
                 title: 'Grundrezepte',

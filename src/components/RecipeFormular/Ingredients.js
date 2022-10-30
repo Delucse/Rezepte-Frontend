@@ -19,9 +19,8 @@ import Textfield from '../Textfield';
 import Autocomplete from '../Autocomplete';
 import Alert from '../Alert';
 import Button from '../Button';
-import Tooltip from '../Tooltip';
 
-import { Box, Checkbox } from '@mui/material';
+import { Box } from '@mui/material';
 
 import Icon from '@mdi/react';
 import {
@@ -48,7 +47,12 @@ function Title(props) {
     return (
         <div style={{ display: 'flex', width: '60%' }}>
             <div
-                style={{ display: 'grid', marginRight: '5px', height: '56px' }}
+                style={{
+                    display: 'grid',
+                    marginRight: '5px',
+                    height: '56px',
+                    marginBottom: props.length === 1 ? '20px' : null,
+                }}
             >
                 <Button
                     onClick={() =>
@@ -100,60 +104,41 @@ function Title(props) {
                     <Icon path={mdiChevronDown} size={1} />
                 </Button>
             </div>
-            <Textfield
-                value={props.title === null ? 'Kein Titel' : props.title}
-                onChange={(e) =>
-                    dispatch(
-                        changeIngredientsTitle(props.iIndex, e.target.value)
-                    )
-                }
-                error={props.title === '' && props.error}
-                margin
-                label="Titel"
-                start={<Icon path={mdiTextShadow} size={1} />}
-                end={
-                    <Tooltip
-                        title={
-                            props.title !== null
-                                ? 'Titel deaktivieren'
-                                : 'Titel aktivieren'
+            {props.length > 1 ? (
+                <div style={{ display: 'flex', width: '100%' }}>
+                    <Textfield
+                        value={props.title}
+                        onChange={(e) =>
+                            dispatch(
+                                changeIngredientsTitle(
+                                    props.iIndex,
+                                    e.target.value
+                                )
+                            )
                         }
+                        error={props.title === '' && props.error}
+                        margin
+                        label="Titel"
+                        start={<Icon path={mdiTextShadow} size={1} />}
+                    />
+
+                    <Button
+                        disabled={props.length === 1}
+                        onClick={() =>
+                            dispatch(removeIngredients(props.iIndex))
+                        }
+                        sx={{
+                            height: '56px',
+                            marginLeft: '5px',
+                            minWidth: '23px',
+                            padding: '0px',
+                        }}
+                        variant="outlined"
                     >
-                        <Checkbox
-                            checked={props.title !== null}
-                            onChange={(e) => {
-                                if (e.target.checked) {
-                                    dispatch(
-                                        changeIngredientsTitle(props.iIndex, '')
-                                    );
-                                } else {
-                                    dispatch(
-                                        changeIngredientsTitle(
-                                            props.iIndex,
-                                            null
-                                        )
-                                    );
-                                }
-                            }}
-                            disableRipple
-                        />
-                    </Tooltip>
-                }
-                disabled={props.title === null}
-            />
-            <Button
-                disabled={props.length === 1}
-                onClick={() => dispatch(removeIngredients(props.iIndex))}
-                sx={{
-                    height: '56px',
-                    marginLeft: '5px',
-                    minWidth: '23px',
-                    padding: '0px',
-                }}
-                variant="outlined"
-            >
-                <Icon path={mdiDelete} size={1} />
-            </Button>
+                        <Icon path={mdiDelete} size={1} />
+                    </Button>
+                </div>
+            ) : null}
         </div>
     );
 }
@@ -433,7 +418,10 @@ function Ingredients() {
                             borderTop: '1px solid grey',
                             top: 28,
                             right: 0,
-                            width: '40%',
+                            width:
+                                ingredients.length > 1
+                                    ? '40%'
+                                    : 'calc(100% - 24px - 12px)',
                         }}
                     />
                     <div

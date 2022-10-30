@@ -109,6 +109,11 @@ function App() {
                         />
                         <Route
                             exact
+                            path="kleinkind"
+                            element={<Recipes route="kleinkind" />}
+                        />
+                        <Route
+                            exact
                             path="basis"
                             element={<Recipes route="basis" />}
                         />

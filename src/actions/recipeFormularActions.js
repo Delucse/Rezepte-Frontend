@@ -345,6 +345,7 @@ export const changeAliment =
 
 export const addIngredients = (index) => (dispatch, getState) => {
     var ingredients = getState().recipeFormular.ingredients;
+    ingredients[0].title = '';
     var ingredient = {
         title: '',
         food: [
@@ -366,6 +367,9 @@ export const addIngredients = (index) => (dispatch, getState) => {
 export const removeIngredients = (index) => (dispatch, getState) => {
     var ingredients = getState().recipeFormular.ingredients;
     ingredients.splice(index, 1);
+    if (ingredients.length === 1) {
+        ingredients[0].title = null;
+    }
     dispatch({
         type: SET_RECIPE_INGREDIENTS,
         payload: [...ingredients],
@@ -659,7 +663,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
             keywords: [],
             ingredients: [
                 {
-                    title: '',
+                    title: null,
                     food: [
                         { amount: '', unit: '', aliment: '' },
                         { amount: '', unit: '', aliment: '' },
