@@ -447,6 +447,8 @@ function Recipe() {
                                 onClick={() =>
                                     keyword === 'Basic'
                                         ? navigate('/rezepte/basis')
+                                        : keyword === 'Baby'
+                                        ? navigate('/rezepte/kleinkind')
                                         : navigate(
                                               `/rezepte?${
                                                   filterParams.includes(keyword)
