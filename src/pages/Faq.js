@@ -6,7 +6,7 @@ import MuiAccordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import { Box } from '@mui/material';
+import { Box, Link } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiSilverwareVariant } from '@mdi/js';
@@ -67,48 +67,91 @@ const themes = [
         questions: [
             {
                 hash: '#delucse',
-                question: 'Was bedeutet "delucse"?',
-                answer: 'Antwort auf Frage 1',
+                question: 'Was bedeutet "Delucse"?',
+                answer: '"Delucse" ist eine Mischung aus "de Luc", also von Luc, und "deluxe", also Luxus. Diese Merkmale finden sich in dieser Anwendung wieder, da sie zum Einen von Luc programmiert wird und zum Anderen sämtliche Funktionen der Community beinhaltet.',
+            },
+            {
+                hash: '#app',
+                question: 'Gibt es eine App?',
+                answer: (
+                    <div>
+                        Jein. Die Anwendung ist eine klassische
+                        "Singe-Page-Application" basierend auf React. Allerdings
+                        ist es möglich die Webseite wie eine native App zu
+                        nutzen (
+                        <Link
+                            href="https://de.wikipedia.org/wiki/Progressive_Web_App"
+                            target="_blank"
+                            alt="PWA"
+                        >
+                            PWA
+                        </Link>
+                        ). D.h. man kann sich die Webseite zum Homescreen
+                        hinzufügen oder alternativ eine der foglenden Dateien
+                        herunterladen und auf dem jeweiligen Gerät installieren,
+                        damit man in den Genuss einer scheinbaren App kommt.
+                        <ul>
+                            <li>
+                                <Link
+                                    href={`${process.env.PUBLIC_URL}/Delucse.apk`}
+                                    alt="Android"
+                                >
+                                    Android
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href={`${process.env.PUBLIC_URL}/Delucse.ps1`}
+                                    alt="Windows"
+                                >
+                                    Windows
+                                </Link>{' '}
+                                (mit PowerShell ausführen)
+                            </li>
+                            <li>iOS folgt zu einem späteren Zeitpunkt</li>
+                        </ul>
+                    </div>
+                ),
             },
         ],
     },
-    {
-        title: 'Rezepte',
-        hash: '#rezepte',
-        questions: [
-            {
-                hash: '#favorit',
-                question: 'Wie kann ich ein Rezept meinem Kochbuch hinzufügen?',
-                answer: 'Antwort auf Frage 2',
-            },
-            {
-                hash: '#portion',
-                question: 'Wie kann ich die Portionsangaben verändern?',
-                answer: 'Antwort auf Frage 3',
-            },
-            {
-                hash: '#erstellen',
-                question: 'Wie kann ich ein neues Rezept erstellen?',
-                answer: 'Antwort auf Frage 4',
-            },
-        ],
-    },
-    {
-        title: 'Konto',
-        hash: '#konto',
-        questions: [
-            {
-                hash: '#registrierung',
-                question: 'Was muss ich alles bei der Registrierung angeben?',
-                answer: 'Antwort auf Frage 5',
-            },
-            {
-                hash: '#abmeldung',
-                question: 'Warum werde ich immer automatisch abgemeldet?',
-                answer: 'Antwort auf Frage 6',
-            },
-        ],
-    },
+    // {
+    //     title: 'Rezepte',
+    //     hash: '#rezepte',
+    //     questions: [
+    //         {
+    //             hash: '#favorit',
+    //             question: 'Wie kann ich ein Rezept meinem Kochbuch hinzufügen?',
+    //             answer: 'Antwort auf Frage 2',
+    //         },
+    //         {
+    //             hash: '#portion',
+    //             question: 'Wie kann ich die Portionsangaben verändern?',
+    //             answer: 'Antwort auf Frage 3',
+    //         },
+    //         {
+    //             hash: '#erstellen',
+    //             question: 'Wie kann ich ein neues Rezept erstellen?',
+    //             answer: 'Antwort auf Frage 4',
+    //         },
+    //     ],
+    // },
+    // {
+    //     title: 'Konto',
+    //     hash: '#konto',
+    //     questions: [
+    //         {
+    //             hash: '#registrierung',
+    //             question: 'Was muss ich alles bei der Registrierung angeben?',
+    //             answer: 'Antwort auf Frage 5',
+    //         },
+    //         {
+    //             hash: '#abmeldung',
+    //             question: 'Warum werde ich immer automatisch abgemeldet?',
+    //             answer: 'Antwort auf Frage 6',
+    //         },
+    //     ],
+    // },
 ];
 
 function Faq() {
