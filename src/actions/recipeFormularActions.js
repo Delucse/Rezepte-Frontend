@@ -86,7 +86,17 @@ const setError = (key, value) => (dispatch, getState) => {
             error[key] = errSteps;
             break;
         case 'portion':
-            if (value.count < 1 || value.area === 1) {
+            if (
+                !value.count ||
+                (value.count && value.count < 1) ||
+                (value.form &&
+                    (isNaN(value.form[0].toString().replace(',', '.')) ||
+                        value.form[0].toString().replace(',', '.') <= 0)) ||
+                (value.form &&
+                    value.form.length === 2 &&
+                    (isNaN(value.form[1].toString().replace(',', '.')) ||
+                        value.form[1].toString().replace(',', '.') <= 0))
+            ) {
                 error[key] = true;
             } else {
                 error[key] = false;
@@ -94,7 +104,7 @@ const setError = (key, value) => (dispatch, getState) => {
             break;
         case 'ingredients':
             var errIngredients = value.map((val) => {
-                if (val.title === '') {
+                if (val.title && val.title === '') {
                     return true;
                 }
                 if (
@@ -133,13 +143,17 @@ export const setRecipeTitle = (title) => (dispatch, getState) => {
     }
 };
 
-export const setRecipePortion = (count, area) => (dispatch, getState) => {
+export const setRecipePortion = (count, form) => (dispatch, getState) => {
+    var payload = { count };
+    if (form) {
+        payload.form = form;
+    }
     dispatch({
         type: SET_RECIPE_PORTION,
-        payload: { count, area },
+        payload: payload,
     });
     if (getState().recipeFormular.error.submit) {
-        dispatch(setError('portion', { count, area }));
+        dispatch(setError('portion', payload));
     }
 };
 
@@ -368,7 +382,7 @@ export const removeIngredients = (index) => (dispatch, getState) => {
     var ingredients = getState().recipeFormular.ingredients;
     ingredients.splice(index, 1);
     if (ingredients.length === 1) {
-        ingredients[0].title = null;
+        delete ingredients[0].title;
     }
     dispatch({
         type: SET_RECIPE_INGREDIENTS,
@@ -566,6 +580,10 @@ export const submitRecipe = (id) => (dispatch, getState) => {
         }
     });
 
+    if (portion.form) {
+        portion.form = portion.form.map((f) => f.toString().replace(',', '.'));
+    }
+
     var data = {
         title,
         portion,
@@ -645,10 +663,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
         type: SET_RECIPE_FORMULAR,
         payload: {
             title: '',
-            portion: {
-                count: 0,
-                area: -1,
-            },
+            portion: {},
             time: {
                 preparation: 0,
                 resting: 0,
@@ -663,7 +678,6 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
             keywords: [],
             ingredients: [
                 {
-                    title: null,
                     food: [
                         { amount: '', unit: '', aliment: '' },
                         { amount: '', unit: '', aliment: '' },
@@ -681,7 +695,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
                 submit: false,
                 title: false,
                 portion: false,
-                ingredients: [false, false, false],
+                ingredients: [false],
                 steps: false,
             },
         },
@@ -741,7 +755,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
                 submit: false,
                 title: false,
                 portion: false,
-                ingredients: [false, false, false],
+                ingredients: ingredients.map((i) => false),
                 steps: false,
                 pictures: false,
             },

@@ -1,87 +1,92 @@
 [
     {
-        "area": 113.097,
+        "form": [12],
         "name": "Springform Ø 12 cm",
         "group": "Springform"
     },
     {
-        "area": 201.062,
+        "form": [16],
         "name": "Springform Ø 16 cm",
         "group": "Springform"
     },
     {
-        "area": 254.469,
+        "form": [18],
         "name": "Springform Ø 18 cm",
         "group": "Springform"
     },
     {
-        "area": 314.159,
+        "form": [20],
         "name": "Springform Ø 20 cm",
         "group": "Springform"
     },
     {
-        "area": 380.133,
+        "form": [22],
         "name": "Springform Ø 22 cm",
         "group": "Springform"
     },
     {
-        "area": 452.389,
+        "form": [24],
         "name": "Springform Ø 24 cm",
         "group": "Springform"
     },
     {
-        "area": 530.929,
+        "form": [26],
         "name": "Springform Ø 26 cm",
         "group": "Springform"
     },
     {
-        "area": 615.752,
+        "form": [28],
         "name": "Springform Ø 28 cm",
         "group": "Springform"
     },
     {
-        "area": 706.858,
+        "form": [30],
         "name": "Springform Ø 30 cm",
         "group": "Springform"
     },
     {
-        "area": 804.248,
+        "form": [32],
         "name": "Springform Ø 32 cm",
         "group": "Springform"
     },
     {
-        "area": 275,
+        "form": [25, 11],
         "name": "Kastenform 25 cm x 11 cm",
         "group": "Kastenform"
     },
     {
-        "area": 330,
+        "form": [30, 11],
         "name": "Kastenform 30 cm x 11 cm",
         "group": "Kastenform"
     },
     {
-        "area": 385,
+        "form": [35, 11],
         "name": "Kastenform 35 cm x 11 cm",
         "group": "Kastenform"
     },
     {
-        "area": 884,
+        "form": [34, 26],
         "name": "Backlech 34 cm x 26 cm",
         "group": "Backblech"
     },
     {
-        "area": 988,
+        "form": [38, 26],
         "name": "Backlech 38 cm x 26 cm",
         "group": "Backblech"
     },
     {
-        "area": 1152,
+        "form": [36, 32],
         "name": "Backlech 36 cm x 32 cm",
         "group": "Backblech"
     },
     {
-        "area": 1292,
+        "form": [38, 34],
         "name": "Backlech 38 cm x 34 cm",
         "group": "Backblech"
+    },
+    {
+        "form": [0],
+        "name": "individuelle Backform",
+        "group": "Sonstiges"
     }
 ]

@@ -24,10 +24,20 @@ import {
     pluralInfoDictionary,
 } from '../../data/dictionaries';
 
+const calculateArea = (form) => {
+    if (form.length > 1) {
+        return form[0] * form[1];
+    } else {
+        return Math.PI * Math.pow(form[0] / 2, 2);
+    }
+};
+
 const getAmount = (amount, portion, settings) => {
     var calculatedAmount = amount * (settings.count / portion.count);
-    if (portion.area > 0) {
-        calculatedAmount = calculatedAmount * (settings.area / portion.area);
+    if (portion.form) {
+        calculatedAmount =
+            calculatedAmount *
+            (calculateArea(settings.form) / calculateArea(portion.form));
     }
     if (settings.rounded) {
         var int = amount.toString().split('.')[0];

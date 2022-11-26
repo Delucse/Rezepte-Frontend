@@ -16,10 +16,7 @@ import {
 
 const initialState = {
     title: '',
-    portion: {
-        count: 0,
-        area: -1,
-    },
+    portion: {},
     time: {
         preparation: 0,
         resting: 0,
@@ -34,7 +31,6 @@ const initialState = {
     keywords: [],
     ingredients: [
         {
-            title: '',
             food: [
                 { amount: '', unit: '', aliment: '' },
                 { amount: '', unit: '', aliment: '' },
@@ -53,7 +49,7 @@ const initialState = {
         title: false,
         portion: false,
         keywords: false,
-        ingredients: [false, false, false],
+        ingredients: [false],
         steps: false,
         pictures: false,
     },

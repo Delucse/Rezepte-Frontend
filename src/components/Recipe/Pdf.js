@@ -81,10 +81,20 @@ const filename = (string) => {
     return string;
 };
 
+const calculateArea = (form) => {
+    if (form.length > 1) {
+        return form[0] * form[1];
+    } else {
+        return Math.PI * Math.pow(form[0] / 2, 2);
+    }
+};
+
 const getAmount = (amount, portion, settings) => {
     var calculatedAmount = amount * (settings.count / portion.count);
-    if (portion.area > 0) {
-        calculatedAmount = calculatedAmount * (settings.area / portion.area);
+    if (portion.form) {
+        calculatedAmount =
+            calculatedAmount *
+            (calculateArea(settings.form) / calculateArea(portion.form));
     }
     if (settings.rounded) {
         var int = amount.toString().split('.')[0];
@@ -277,16 +287,28 @@ function Header({ theme, title, portion, time }) {
             >
                 <Text>
                     {portion.count.toLocaleString()}{' '}
-                    {portion.area > 0
-                        ? bakeware.filter((bake) => bake.area === portion.area)
-                              .length > 0
-                            ? `x ${
-                                  bakeware.filter(
-                                      (bake) => bake.area === portion.area
-                                  )[0].name
-                              }`
-                            : `x individuelle Backform (${portion.area.toLocaleString()} cm²)`
-                        : ` Portion${portion.count !== 1 ? 'en' : ''}`}
+                    {portion.form
+                        ? `${
+                              portion.form.length > 1
+                                  ? `${
+                                        portion.form[0] < 15 ||
+                                        portion.form[1] < 15
+                                            ? `Kastenform${
+                                                  portion.count !== 1
+                                                      ? 'en'
+                                                      : ''
+                                              }`
+                                            : `Backblech${
+                                                  portion.count !== 1 ? 'e' : ''
+                                              }`
+                                    } ${portion.form[0]} cm x ${
+                                        portion.form[1]
+                                    } cm`
+                                  : `Springform${
+                                        portion.count !== 1 ? 'en' : ''
+                                    } Ø ${portion.form[0]} cm`
+                          }`
+                        : `Portion${portion.count !== 1 ? 'en' : ''}`}
                 </Text>
                 {time.resting > 0 ? (
                     <Text style={{ marginRight: 8, marginLeft: 8 }}>|</Text>

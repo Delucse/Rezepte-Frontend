@@ -16,10 +16,14 @@ import {
 
 import axios from 'axios';
 
-export const setRecipeSettings = (count, area, rounded) => (dispatch) => {
+export const setRecipeSettings = (count, form, rounded) => (dispatch) => {
+    var payload = { count, rounded };
+    if (form) {
+        payload.form = form;
+    }
     dispatch({
         type: SET_RECIPE_SETTINGS,
-        payload: { count, area, rounded },
+        payload: payload,
     });
 };
 
@@ -36,7 +40,9 @@ export const getRecipePreview = () => (dispatch, getState) => {
     var ingredients = [];
     recipeFormular.ingredients.forEach((ingredient) => {
         var i = {};
-        i.title = ingredient.title;
+        if (ingredient.title) {
+            i.title = ingredient.title;
+        }
         i.food = [];
         ingredient.food.forEach((food) => {
             var f = {};
@@ -55,26 +61,31 @@ export const getRecipePreview = () => (dispatch, getState) => {
         ingredients.push(i);
     });
 
+    var payload = {
+        id: recipe.id,
+        user: getState().auth.user,
+        title: recipeFormular.title,
+        portion: recipeFormular.portion,
+        time: recipeFormular.time,
+        keywords: keywords,
+        ingredients: ingredients,
+        steps: recipeFormular.steps,
+        pictures: recipeFormular.pictures.order.map((pic) => {
+            return { _id: pic.id, file: pic.url };
+        }),
+        settings: {
+            count: recipeFormular.portion.count,
+            rounded: true,
+        },
+    };
+
+    if (recipeFormular.portion.form) {
+        payload.settings.form = recipeFormular.portion.form;
+    }
+
     dispatch({
         type: GET_RECIPE,
-        payload: {
-            id: recipe.id,
-            user: getState().auth.user,
-            title: recipeFormular.title,
-            portion: recipeFormular.portion,
-            time: recipeFormular.time,
-            keywords: keywords,
-            ingredients: ingredients,
-            steps: recipeFormular.steps,
-            pictures: recipeFormular.pictures.order.map((pic) => {
-                return { _id: pic.id, file: pic.url };
-            }),
-            settings: {
-                count: recipeFormular.portion.count,
-                area: recipeFormular.portion.area,
-                rounded: true,
-            },
-        },
+        payload: payload,
     });
     dispatch(setProgressSuccess('recipe'));
 };
@@ -99,25 +110,28 @@ export const getRecipe = (id, setFormular) => (dispatch) => {
     axios
         .get(`${process.env.REACT_APP_API_URL}/recipe/${id}`, config)
         .then((res) => {
+            var payload = {
+                id: res.data._id,
+                user: res.data.user,
+                title: res.data.title,
+                portion: res.data.portion,
+                time: res.data.time,
+                keywords: res.data.keywords,
+                ingredients: res.data.ingredients,
+                steps: res.data.steps,
+                pictures: res.data.pictures,
+                favorite: res.data.favorite,
+                settings: {
+                    count: res.data.portion.count,
+                    rounded: true,
+                },
+            };
+            if (res.data.portion.form) {
+                payload.settings.form = res.data.portion.form;
+            }
             dispatch({
                 type: GET_RECIPE,
-                payload: {
-                    id: res.data._id,
-                    user: res.data.user,
-                    title: res.data.title,
-                    portion: res.data.portion,
-                    time: res.data.time,
-                    keywords: res.data.keywords,
-                    ingredients: res.data.ingredients,
-                    steps: res.data.steps,
-                    pictures: res.data.pictures,
-                    favorite: res.data.favorite,
-                    settings: {
-                        count: res.data.portion.count,
-                        area: res.data.portion.area,
-                        rounded: true,
-                    },
-                },
+                payload: payload,
             });
             dispatch(setProgressSuccess('recipe'));
             if (setFormular) {
@@ -145,7 +159,6 @@ export const resetRecipe = () => (dispatch) => {
             favorite: null,
             settings: {
                 count: 0,
-                area: 0,
                 rounded: true,
             },
         },

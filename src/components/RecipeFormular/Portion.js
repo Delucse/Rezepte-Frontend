@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { setRecipePortion } from '../../actions/recipeFormularActions';
@@ -7,6 +7,7 @@ import Textfield from '../Textfield';
 import Autocomplete from '../Autocomplete';
 import Button from '../Button';
 
+import Box from '@mui/material/Box';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -16,37 +17,126 @@ import FormLabel from '@mui/material/FormLabel';
 import Icon from '@mdi/react';
 import { mdiCupcake } from '@mdi/js';
 
-import bakeware from '../../data/bakeware.json';
+import bakewares from '../../data/bakeware.json';
 
 function Portion() {
     const dispatch = useDispatch();
     const count = useSelector((state) => state.recipeFormular.portion.count);
-    const area = useSelector((state) => state.recipeFormular.portion.area);
+    const form = useSelector((state) => state.recipeFormular.portion.form);
     const errorPortion = useSelector(
         (state) => state.recipeFormular.error.portion
     );
 
+    const [individualForm, setIndividualForm] = useState(
+        form &&
+            bakewares.filter(
+                (bake) => JSON.stringify(bake.form) === JSON.stringify(form)
+            ).length === 0
+    );
+
     const portionAdd = () => {
-        dispatch(setRecipePortion(count + 1, area));
+        dispatch(setRecipePortion(count + 1, form));
     };
 
     const portionReduce = () => {
-        dispatch(setRecipePortion(count - 1, area));
+        dispatch(setRecipePortion(count - 1, form));
     };
 
     const isDish = (e) => {
         if (e.target.value === '0') {
-            dispatch(setRecipePortion(count, 0));
+            setIndividualForm(false);
+            dispatch(setRecipePortion(count || 0, null));
         } else {
-            dispatch(setRecipePortion(count, 1));
+            dispatch(setRecipePortion(count || 0, [-1]));
         }
     };
 
-    const setArea = (area) => {
-        if (area) {
-            dispatch(setRecipePortion(count, area));
+    const setForms = (form) => {
+        if (form) {
+            setIndividualForm(form[0] === 0);
+            dispatch(setRecipePortion(count, form));
         } else {
-            dispatch(setRecipePortion(count, 1));
+            dispatch(setRecipePortion(count, [-1]));
+        }
+    };
+
+    const dimensionAdd = (index) => {
+        if (!isNaN(form[index])) {
+            if (form.length > 1) {
+                if (index > 0) {
+                    dispatch(
+                        setRecipePortion(count, [
+                            form[0],
+                            parseInt(form[index]) + 1,
+                        ])
+                    );
+                } else {
+                    dispatch(
+                        setRecipePortion(count, [
+                            parseInt(form[index]) + 1,
+                            form[1],
+                        ])
+                    );
+                }
+            } else {
+                dispatch(setRecipePortion(count, [parseInt(form[index]) + 1]));
+            }
+        } else {
+            if (form.length > 1) {
+                if (index > 0) {
+                    dispatch(setRecipePortion(count, [form[0], 1]));
+                } else {
+                    dispatch(setRecipePortion(count, [1, form[1]]));
+                }
+            } else {
+                dispatch(setRecipePortion(count, [1]));
+            }
+        }
+    };
+
+    const dimensionReduce = (index) => {
+        if (!isNaN(form[index])) {
+            if (form.length > 1) {
+                if (index > 0) {
+                    dispatch(
+                        setRecipePortion(count, [
+                            form[0],
+                            parseInt(form[index]) - 1,
+                        ])
+                    );
+                } else {
+                    dispatch(
+                        setRecipePortion(count, [
+                            parseInt(form[index]) - 1,
+                            form[1],
+                        ])
+                    );
+                }
+            } else {
+                dispatch(setRecipePortion(count, [parseInt(form[index]) - 1]));
+            }
+        } else {
+            if (form.length > 1) {
+                if (index > 0) {
+                    dispatch(setRecipePortion(count, [form[0], 1]));
+                } else {
+                    dispatch(setRecipePortion(count, [1, form[1]]));
+                }
+            } else {
+                dispatch(setRecipePortion(count, [1]));
+            }
+        }
+    };
+
+    const setDimension = (d, index) => {
+        if (form.length > 1) {
+            if (index > 0) {
+                dispatch(setRecipePortion(count, [form[0], d]));
+            } else {
+                dispatch(setRecipePortion(count, [d, form[1]]));
+            }
+        } else {
+            dispatch(setRecipePortion(count, [d]));
         }
     };
 
@@ -57,7 +147,7 @@ function Portion() {
                 <RadioGroup
                     row
                     name="Portionen"
-                    value={area > 0 ? 1 : area < 0 ? -1 : 0}
+                    value={form ? 1 : count !== undefined ? 0 : -1}
                     onChange={isDish}
                     sx={{ color: (theme) => theme.palette.text.primary }}
                 >
@@ -67,7 +157,7 @@ function Portion() {
                             <Radio
                                 disableRipple
                                 sx={
-                                    errorPortion && area < 0
+                                    errorPortion && count === undefined
                                         ? {
                                               color: (theme) =>
                                                   theme.palette.error.main,
@@ -84,7 +174,7 @@ function Portion() {
                             <Radio
                                 disableRipple
                                 sx={
-                                    errorPortion && area < 0
+                                    errorPortion && count === undefined
                                         ? {
                                               color: (theme) =>
                                                   theme.palette.error.main,
@@ -97,59 +187,282 @@ function Portion() {
                     />
                 </RadioGroup>
             </FormControl>
-            {area >= 0 ? (
-                <div style={{ display: 'flex' }}>
-                    <div
-                        style={{
-                            display: 'flex',
-                            width: '110px',
-                            marginRight: '10px',
+            {count !== undefined ? (
+                <div>
+                    <Box
+                        sx={{
+                            display: {
+                                xs: form > 0 ? 'inherit' : 'flex',
+                                sm: 'flex',
+                            },
                         }}
                     >
-                        <Button
-                            disabled={count <= 1}
-                            sx={{
-                                height: '56px',
-                                minWidth: '23px',
-                                padding: 0,
+                        <div
+                            style={{
+                                display: 'flex',
+                                width: '115px',
+                                marginRight: '10px',
                             }}
-                            variant="contained"
-                            onClick={portionReduce}
                         >
-                            -
-                        </Button>
-                        <Textfield
-                            disabled
-                            value={count}
-                            error={count === 0 && errorPortion}
-                        />
-                        <Button
+                            <Button
+                                disabled={count <= 1}
+                                sx={{
+                                    height: '56px',
+                                    minWidth: '23px',
+                                    padding: 0,
+                                }}
+                                variant="contained"
+                                onClick={portionReduce}
+                            >
+                                -
+                            </Button>
+                            <Textfield
+                                disabled
+                                value={count}
+                                error={count === 0 && errorPortion}
+                            />
+                            <Button
+                                sx={{
+                                    height: '56px',
+                                    minWidth: '23px',
+                                    padding: 0,
+                                }}
+                                variant="contained"
+                                onClick={portionAdd}
+                            >
+                                +
+                            </Button>
+                        </div>
+                        <Box
                             sx={{
-                                height: '56px',
-                                minWidth: '23px',
-                                padding: 0,
+                                display: 'flex',
+                                marginTop: {
+                                    xs: form > 0 ? '20px' : 0,
+                                    sm: 0,
+                                },
+                                width: {
+                                    xs: '100%',
+                                    sm: 'calc(100% - 115px - 10px)',
+                                },
                             }}
-                            variant="contained"
-                            onClick={portionAdd}
                         >
-                            +
-                        </Button>
-                    </div>
-                    {area > 0 ? (
-                        <Autocomplete
-                            value={
-                                bakeware.filter((bake) => bake.area === area)[0]
-                            }
-                            onChange={setArea}
-                            options={bakeware}
-                            optionLabel={'name'}
-                            optionGroup={'group'}
-                            optionChange={'area'}
-                            label={'Backform'}
-                            start={<Icon path={mdiCupcake} size={1} />}
-                            error={errorPortion && area === 1}
-                            fullWidth={true}
-                        />
+                            {form && form.length > 0 ? (
+                                <Autocomplete
+                                    value={
+                                        individualForm
+                                            ? bakewares[bakewares.length - 1]
+                                            : bakewares.filter(
+                                                  (bake) =>
+                                                      JSON.stringify(
+                                                          bake.form
+                                                      ) === JSON.stringify(form)
+                                              )[0]
+                                    }
+                                    onChange={setForms}
+                                    options={bakewares}
+                                    optionLabel={'name'}
+                                    optionGroup={'group'}
+                                    optionChange={'form'}
+                                    label={'Backform'}
+                                    start={<Icon path={mdiCupcake} size={1} />}
+                                    fullWidth={true}
+                                    error={errorPortion && !individualForm}
+                                />
+                            ) : (
+                                <div
+                                    style={{
+                                        marginRight: '10px',
+                                        lineHeight: '56px',
+                                        flexGrow: 1,
+                                    }}
+                                >
+                                    Portion{count !== 1 ? 'en' : ''}
+                                </div>
+                            )}
+                        </Box>
+                    </Box>
+
+                    {individualForm ? (
+                        <div>
+                            <Box
+                                sx={{
+                                    ml: { sm: '125px' },
+                                    display: 'flex',
+                                }}
+                            >
+                                <RadioGroup
+                                    row
+                                    value={form.length}
+                                    onChange={(e) => {
+                                        if (e.target.value > 1) {
+                                            dispatch(
+                                                setRecipePortion(count, [
+                                                    form[0]
+                                                        .toString()
+                                                        .replace(',', '.') > 0
+                                                        ? form[0]
+                                                        : 0,
+                                                    0,
+                                                ])
+                                            );
+                                        } else {
+                                            dispatch(
+                                                setRecipePortion(count, [
+                                                    form[0]
+                                                        .toString()
+                                                        .replace(',', '.') > 0
+                                                        ? form[0]
+                                                        : 0,
+                                                ])
+                                            );
+                                        }
+                                    }}
+                                    sx={{
+                                        color: (theme) =>
+                                            theme.palette.text.primary,
+                                    }}
+                                >
+                                    <FormControlLabel
+                                        value={1}
+                                        control={<Radio disableRipple />}
+                                        label="rund"
+                                    />
+                                    <FormControlLabel
+                                        value={2}
+                                        control={<Radio disableRipple />}
+                                        label="eckig"
+                                    />
+                                </RadioGroup>
+                            </Box>
+                            <Box
+                                sx={{
+                                    ml: { sm: '125px' },
+                                    display: 'flex',
+                                }}
+                            >
+                                <div
+                                    style={{
+                                        color: 'rgba(0, 0, 0, 0.6)',
+                                        fontSize: 'small',
+                                        fontFamily:
+                                            '"Roboto","Helvetica","Arial",sans-serif',
+                                    }}
+                                >
+                                    {form.length === 1
+                                        ? 'Durchmesser'
+                                        : 'Länge'}{' '}
+                                    (in cm):
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            width: '115px',
+                                            marginRight: '30px',
+                                            marginTop: '5px',
+                                        }}
+                                    >
+                                        <Button
+                                            disabled={form[0] <= 1}
+                                            sx={{
+                                                height: '56px',
+                                                minWidth: '23px',
+                                                padding: 0,
+                                            }}
+                                            variant="contained"
+                                            onClick={() => dimensionReduce(0)}
+                                        >
+                                            -
+                                        </Button>
+                                        <Textfield
+                                            value={form[0]
+                                                .toString()
+                                                .replace('.', ',')}
+                                            style={{ width: '69px' }}
+                                            onChange={(e) =>
+                                                setDimension(e.target.value, 0)
+                                            }
+                                            error={
+                                                errorPortion &&
+                                                (isNaN(form[0]) || form[0] <= 0)
+                                            }
+                                        />
+                                        <Button
+                                            sx={{
+                                                height: '56px',
+                                                minWidth: '23px',
+                                                padding: 0,
+                                            }}
+                                            variant="contained"
+                                            onClick={() => dimensionAdd(0)}
+                                        >
+                                            +
+                                        </Button>
+                                    </div>
+                                </div>
+                                {form.length > 1 ? (
+                                    <div
+                                        style={{
+                                            color: 'rgba(0, 0, 0, 0.6)',
+                                            fontSize: 'small',
+                                            fontFamily:
+                                                '"Roboto","Helvetica","Arial",sans-serif',
+                                        }}
+                                    >
+                                        Breite (in cm):
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                width: '115px',
+                                                marginRight: '30px',
+                                                marginTop: '5px',
+                                            }}
+                                        >
+                                            <Button
+                                                disabled={form[1] <= 1}
+                                                sx={{
+                                                    height: '56px',
+                                                    minWidth: '23px',
+                                                    padding: 0,
+                                                }}
+                                                variant="contained"
+                                                onClick={() =>
+                                                    dimensionReduce(1)
+                                                }
+                                            >
+                                                -
+                                            </Button>
+                                            <Textfield
+                                                value={form[1]
+                                                    .toString()
+                                                    .replace('.', ',')}
+                                                style={{ width: '69px' }}
+                                                onChange={(e) =>
+                                                    setDimension(
+                                                        e.target.value,
+                                                        1
+                                                    )
+                                                }
+                                                error={
+                                                    errorPortion &&
+                                                    (isNaN(form[1]) ||
+                                                        form[1] <= 0)
+                                                }
+                                            />
+                                            <Button
+                                                sx={{
+                                                    height: '56px',
+                                                    minWidth: '23px',
+                                                    padding: 0,
+                                                }}
+                                                variant="contained"
+                                                onClick={() => dimensionAdd(1)}
+                                            >
+                                                +
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ) : null}
+                            </Box>
+                        </div>
                     ) : null}
                 </div>
             ) : null}

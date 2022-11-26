@@ -16,20 +16,14 @@ import {
     Alert,
     FormControlLabel,
     Checkbox,
+    RadioGroup,
+    Radio,
 } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiPencil, mdiCupcake, mdiRotateLeft } from '@mdi/js';
 
-import bakeware from '../../data/bakeware.json';
-
-const bakewares = bakeware.concat([
-    {
-        area: 2,
-        name: 'individuelle Backform',
-        group: 'Sonstiges',
-    },
-]);
+import bakewares from '../../data/bakeware.json';
 
 function Portion() {
     const dispatch = useDispatch();
@@ -38,16 +32,26 @@ function Portion() {
 
     const [open, setOpen] = useState(false);
     const [count, setCount] = useState(settings.count);
-    const [area, setArea] = useState(settings.area);
-    const [rounded, setRounded] = useState(settings.rounded);
-    const [individual, setIndividual] = useState(0);
-    const [errorArea, setErrorArea] = useState(false);
     const [errorCount, setErrorCount] = useState(false);
+    const [form, setForm] = useState(settings.form);
+    const [errorForm, setErrorForm] = useState(false);
+    const [individualForm, setIndividualForm] = useState(false);
+    const [rounded, setRounded] = useState(settings.rounded);
 
     useEffect(() => {
         setCount(settings.count);
-        setArea(settings.area);
+        setErrorCount(false);
+        setForm(settings.form);
         setRounded(settings.rounded);
+        setIndividualForm(
+            settings.form &&
+                bakewares.filter(
+                    (bake) =>
+                        JSON.stringify(bake.form) ===
+                        JSON.stringify(settings.form)
+                ).length === 0
+        );
+        setErrorForm(false);
     }, [open, settings]);
 
     const portionAdd = () => {
@@ -82,9 +86,133 @@ function Portion() {
         setCount(portion);
     };
 
+    const dimensionAdd = (index) => {
+        if (!isNaN(form[index])) {
+            if (form.length > 1) {
+                if (index > 0) {
+                    const dimensionDecimal = form[0]
+                        .toString()
+                        .replace(',', '.');
+                    if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+                        setErrorForm(false);
+                    }
+                    setForm([form[0], parseInt(form[index]) + 1]);
+                } else {
+                    const dimensionDecimal = form[1]
+                        .toString()
+                        .replace(',', '.');
+                    if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+                        setErrorForm(false);
+                    }
+                    setForm([parseInt(form[index]) + 1, form[1]]);
+                }
+            } else {
+                setErrorForm(false);
+                setForm([parseInt(form[index]) + 1]);
+            }
+        } else {
+            if (form.length > 1) {
+                if (index > 0) {
+                    const dimensionDecimal = form[0]
+                        .toString()
+                        .replace(',', '.');
+                    if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+                        setErrorForm(false);
+                    }
+                    setForm([form[0], 1]);
+                } else {
+                    const dimensionDecimal = form[1]
+                        .toString()
+                        .replace(',', '.');
+                    if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+                        setErrorForm(false);
+                    }
+                    setForm([1, form[1]]);
+                }
+            } else {
+                setErrorForm(false);
+                setForm([1]);
+            }
+        }
+    };
+
+    const dimensionReduce = (index) => {
+        if (!isNaN(form[index])) {
+            if (form.length > 1) {
+                if (index > 0) {
+                    const dimensionDecimal = form[0]
+                        .toString()
+                        .replace(',', '.');
+                    if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+                        setErrorForm(false);
+                    }
+                    setForm([form[0], parseInt(form[index]) - 1]);
+                } else {
+                    const dimensionDecimal = form[1]
+                        .toString()
+                        .replace(',', '.');
+                    if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+                        setErrorForm(false);
+                    }
+                    setForm([parseInt(form[index]) - 1, form[1]]);
+                }
+            } else {
+                setErrorForm(false);
+                setForm([parseInt(form[index]) - 1]);
+            }
+        } else {
+            if (form.length > 1) {
+                if (index > 0) {
+                    const dimensionDecimal = form[0]
+                        .toString()
+                        .replace(',', '.');
+                    if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+                        setErrorForm(false);
+                    }
+                    setForm([form[0], 1]);
+                } else {
+                    const dimensionDecimal = form[1]
+                        .toString()
+                        .replace(',', '.');
+                    if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+                        setErrorForm(false);
+                    }
+                    setForm([1, form[1]]);
+                }
+            } else {
+                setErrorForm(false);
+                setForm([1]);
+            }
+        }
+    };
+
+    const setDimension = (d, index) => {
+        const dimensionDecimal = d.replace(',', '.');
+        if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
+            setErrorForm(false);
+        } else {
+            setErrorForm(true);
+        }
+        if (form.length > 1) {
+            if (index > 0) {
+                setForm([form[0], d]);
+            } else {
+                setForm([d, form[1]]);
+            }
+        } else {
+            setForm([d]);
+        }
+    };
+
     const reset = () => {
         setCount(portion.count);
-        setArea(portion.area);
+        setIndividualForm(
+            bakewares.filter(
+                (bake) =>
+                    JSON.stringify(bake.form) === JSON.stringify(portion.form)
+            ).length === 0
+        );
+        setForm(portion.form);
     };
 
     const cancel = () => {
@@ -96,36 +224,37 @@ function Portion() {
         if (typeof countDecimal === 'string') {
             countDecimal = countDecimal.replace(',', '.');
         }
-        if (area === 2) {
-            dispatch(
-                setRecipeSettings(Number(countDecimal), individual, rounded)
-            );
-        } else {
-            dispatch(setRecipeSettings(Number(countDecimal), area, rounded));
-        }
+        dispatch(
+            setRecipeSettings(
+                Number(countDecimal),
+                form &&
+                    form.map((f) => {
+                        if (typeof f === 'string') {
+                            f = f.replace(',', '.');
+                        }
+                        return Number(f);
+                    }),
+                rounded
+            )
+        );
         setOpen(false);
     };
 
-    const setA = (area) => {
-        if (area > 2) {
-            setErrorArea(false);
-            setArea(area);
-        } else if (area === 2) {
-            setErrorArea(true);
-            setArea(area);
+    const setForms = (form) => {
+        if (form) {
+            setErrorForm(form[0] === 0 || (form.length > 1 && form[1] === 0));
+            setIndividualForm(
+                form[0] === 0 ||
+                    bakewares.filter(
+                        (bake) =>
+                            JSON.stringify(bake.form) === JSON.stringify(form)
+                    ).length === 0
+            );
+            setForm(form);
         } else {
-            setErrorArea(true);
-            setArea(1);
+            setErrorForm(true);
+            setForm([-1]);
         }
-    };
-
-    const setarea = (e) => {
-        if (e.target.value > 2) {
-            setErrorArea(false);
-        } else {
-            setErrorArea(true);
-        }
-        setIndividual(e.target.value);
     };
 
     return (
@@ -139,15 +268,29 @@ function Portion() {
                     variant="body1"
                 >
                     für {settings.count.toLocaleString()}
-                    {settings.area > 0
-                        ? bakeware.filter((bake) => bake.area === settings.area)
-                              .length > 0
-                            ? `x ${
-                                  bakeware.filter(
-                                      (bake) => bake.area === settings.area
-                                  )[0].name
-                              }`
-                            : 'x individuelle Backform'
+                    {settings.form
+                        ? ` ${
+                              settings.form.length > 1
+                                  ? `${
+                                        settings.form[0] < 15 ||
+                                        settings.form[1] < 15
+                                            ? `Kastenform${
+                                                  settings.count !== 1
+                                                      ? 'en'
+                                                      : ''
+                                              }`
+                                            : `Backblech${
+                                                  settings.count !== 1
+                                                      ? 'e'
+                                                      : ''
+                                              }`
+                                    } ${settings.form[0]} cm x ${
+                                        settings.form[1]
+                                    } cm`
+                                  : `Springform${
+                                        settings.count !== 1 ? 'en' : ''
+                                    } Ø ${settings.form[0]} cm`
+                          }`
                         : ` Portion${settings.count !== 1 ? 'en' : ''}`}
                 </Typography>
                 <IconButton
@@ -175,25 +318,28 @@ function Portion() {
                         {errorCount ? (
                             <Alert
                                 severity="error"
-                                sx={{ marginBottom: '20px', borderRadius: 0 }}
+                                sx={{
+                                    marginBottom: errorForm ? '10px' : '20px',
+                                    borderRadius: 0,
+                                }}
                             >
-                                Gib eine positive Zahl an.
+                                Mengenangabe: Gib eine positive Zahl an.
                             </Alert>
                         ) : null}
-                        {errorArea ? (
+                        {errorForm ? (
                             <Alert
                                 severity="error"
                                 sx={{ marginBottom: '20px', borderRadius: 0 }}
                             >
-                                {area !== 2
+                                {!individualForm
                                     ? 'Wähle eine Backform aus.'
-                                    : 'Gebe einen Flächeninhalt in cm² an (mind. 3 cm²).'}
+                                    : 'Abmessungen der Backform: Gib eine positive Zahl an.'}
                             </Alert>
                         ) : null}
                         <Box
                             sx={{
                                 display: {
-                                    xs: area > 0 ? 'inherit' : 'flex',
+                                    xs: form ? 'inherit' : 'flex',
                                     sm: 'flex',
                                 },
                             }}
@@ -201,7 +347,7 @@ function Portion() {
                             <div
                                 style={{
                                     display: 'flex',
-                                    width: '95px',
+                                    width: '115px',
                                     marginRight: '10px',
                                 }}
                             >
@@ -219,7 +365,7 @@ function Portion() {
                                 </Button>
                                 <Textfield
                                     value={count.toString().replace('.', ',')}
-                                    style={{ width: '49px' }}
+                                    style={{ width: '69px' }}
                                     onChange={(e) => setPortion(e.target.value)}
                                     error={errorCount}
                                 />
@@ -239,34 +385,49 @@ function Portion() {
                                 sx={{
                                     display: 'flex',
                                     marginTop: {
-                                        xs: area > 0 ? '20px' : 0,
+                                        xs: form ? '20px' : 0,
                                         sm: 0,
                                     },
                                     width: {
                                         xs: '100%',
-                                        sm: 'calc(100% - 95px - 10px)',
+                                        sm: 'calc(100% - 115px - 10px)',
                                     },
                                 }}
                             >
-                                {area > 0 ? (
+                                {form && form.length > 0 ? (
                                     <Autocomplete
                                         value={
-                                            bakewares.filter(
-                                                (bake) => bake.area === area
-                                            )[0]
+                                            individualForm
+                                                ? bakewares[
+                                                      bakewares.length - 1
+                                                  ]
+                                                : bakewares.filter(
+                                                      (bake) =>
+                                                          JSON.stringify(
+                                                              bake.form
+                                                          ) ===
+                                                          JSON.stringify(form)
+                                                  )[0]
                                         }
-                                        onChange={setA}
+                                        onChange={setForms}
                                         options={bakewares}
                                         optionLabel={'name'}
                                         optionGroup={'group'}
-                                        optionChange={'area'}
+                                        optionChange={'form'}
                                         label={'Backform'}
                                         start={
                                             <Icon path={mdiCupcake} size={1} />
                                         }
                                         fullWidth={true}
-                                        style={{ marginRight: '10px' }}
-                                        error={errorArea && area === 1}
+                                        style={{
+                                            marginRight:
+                                                count === portion.count &&
+                                                JSON.stringify(form) ===
+                                                    JSON.stringify(portion.form)
+                                                    ? '0px'
+                                                    : '10px',
+                                        }}
+                                        error={errorForm && !individualForm}
                                     />
                                 ) : (
                                     <div
@@ -280,7 +441,8 @@ function Portion() {
                                     </div>
                                 )}
                                 {count === portion.count &&
-                                area === portion.area ? null : (
+                                JSON.stringify(form) ===
+                                    JSON.stringify(portion.form) ? null : (
                                     <Button
                                         tooltipProps={{
                                             title: 'Portionsangabe zurücksetzen',
@@ -298,19 +460,193 @@ function Portion() {
                                 )}
                             </Box>
                         </Box>
-                        {area === 2 ? (
-                            <Box sx={{ ml: { sm: '105px' }, mt: 2 }}>
-                                <Textfield
-                                    label="Flächenangabe"
-                                    error={errorArea && individual === 2}
-                                    type="number"
-                                    value={individual}
-                                    onChange={setarea}
-                                    autoFocus
-                                />
-                            </Box>
+                        {individualForm ? (
+                            <div>
+                                <Box
+                                    sx={{
+                                        ml: { sm: '125px' },
+                                        display: 'flex',
+                                    }}
+                                >
+                                    <RadioGroup
+                                        row
+                                        value={form.length}
+                                        onChange={(e) => {
+                                            if (e.target.value > 1) {
+                                                setForms([
+                                                    form[0]
+                                                        .toString()
+                                                        .replace(',', '.') > 0
+                                                        ? form[0]
+                                                        : 0,
+                                                    0,
+                                                ]);
+                                            } else {
+                                                setForms([
+                                                    form[0]
+                                                        .toString()
+                                                        .replace(',', '.') > 0
+                                                        ? form[0]
+                                                        : 0,
+                                                ]);
+                                            }
+                                        }}
+                                        sx={{
+                                            color: (theme) =>
+                                                theme.palette.text.primary,
+                                        }}
+                                    >
+                                        <FormControlLabel
+                                            value={1}
+                                            control={<Radio disableRipple />}
+                                            label="rund"
+                                        />
+                                        <FormControlLabel
+                                            value={2}
+                                            control={<Radio disableRipple />}
+                                            label="eckig"
+                                        />
+                                    </RadioGroup>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        ml: { sm: '125px' },
+                                        display: 'flex',
+                                    }}
+                                >
+                                    <div
+                                        style={{
+                                            color: 'rgba(0, 0, 0, 0.6)',
+                                            fontSize: 'small',
+                                            fontFamily:
+                                                '"Roboto","Helvetica","Arial",sans-serif',
+                                        }}
+                                    >
+                                        {form.length === 1
+                                            ? 'Durchmesser'
+                                            : 'Länge'}{' '}
+                                        (in cm):
+                                        <div
+                                            style={{
+                                                display: 'flex',
+                                                width: '115px',
+                                                marginRight: '30px',
+                                                marginTop: '5px',
+                                            }}
+                                        >
+                                            <Button
+                                                disabled={form[0] <= 1}
+                                                sx={{
+                                                    height: '56px',
+                                                    minWidth: '23px',
+                                                    padding: 0,
+                                                }}
+                                                variant="contained"
+                                                onClick={() =>
+                                                    dimensionReduce(0)
+                                                }
+                                            >
+                                                -
+                                            </Button>
+                                            <Textfield
+                                                value={form[0]
+                                                    .toString()
+                                                    .replace('.', ',')}
+                                                style={{ width: '69px' }}
+                                                onChange={(e) =>
+                                                    setDimension(
+                                                        e.target.value,
+                                                        0
+                                                    )
+                                                }
+                                                error={
+                                                    errorForm &&
+                                                    (isNaN(form[0]) ||
+                                                        form[0] <= 0)
+                                                }
+                                            />
+                                            <Button
+                                                sx={{
+                                                    height: '56px',
+                                                    minWidth: '23px',
+                                                    padding: 0,
+                                                }}
+                                                variant="contained"
+                                                onClick={() => dimensionAdd(0)}
+                                            >
+                                                +
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    {form.length > 1 ? (
+                                        <div
+                                            style={{
+                                                color: 'rgba(0, 0, 0, 0.6)',
+                                                fontSize: 'small',
+                                                fontFamily:
+                                                    '"Roboto","Helvetica","Arial",sans-serif',
+                                            }}
+                                        >
+                                            Breite (in cm):
+                                            <div
+                                                style={{
+                                                    display: 'flex',
+                                                    width: '115px',
+                                                    marginRight: '30px',
+                                                    marginTop: '5px',
+                                                }}
+                                            >
+                                                <Button
+                                                    disabled={form[1] <= 1}
+                                                    sx={{
+                                                        height: '56px',
+                                                        minWidth: '23px',
+                                                        padding: 0,
+                                                    }}
+                                                    variant="contained"
+                                                    onClick={() =>
+                                                        dimensionReduce(1)
+                                                    }
+                                                >
+                                                    -
+                                                </Button>
+                                                <Textfield
+                                                    value={form[1]
+                                                        .toString()
+                                                        .replace('.', ',')}
+                                                    style={{ width: '69px' }}
+                                                    onChange={(e) =>
+                                                        setDimension(
+                                                            e.target.value,
+                                                            1
+                                                        )
+                                                    }
+                                                    error={
+                                                        errorForm &&
+                                                        (isNaN(form[1]) ||
+                                                            form[1] <= 0)
+                                                    }
+                                                />
+                                                <Button
+                                                    sx={{
+                                                        height: '56px',
+                                                        minWidth: '23px',
+                                                        padding: 0,
+                                                    }}
+                                                    variant="contained"
+                                                    onClick={() =>
+                                                        dimensionAdd(1)
+                                                    }
+                                                >
+                                                    +
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ) : null}
+                                </Box>
+                            </div>
                         ) : null}
-                        <Box sx={{ display: 'flex' }}>
+                        <Box sx={{ display: 'flex', marginTop: '16px' }}>
                             <FormControlLabel
                                 label={'Mengenangaben runden'}
                                 control={
@@ -340,7 +676,7 @@ function Portion() {
                         <Button
                             variant="contained"
                             onClick={confirm}
-                            disabled={errorCount || errorArea}
+                            disabled={errorCount || errorForm}
                         >
                             Bestätigen
                         </Button>

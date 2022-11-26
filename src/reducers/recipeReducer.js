@@ -19,7 +19,6 @@ const initialState = {
     favorite: null,
     settings: {
         count: 0,
-        area: 0,
         rounded: true,
     },
 };
