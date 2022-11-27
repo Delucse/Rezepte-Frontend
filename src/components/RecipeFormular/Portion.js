@@ -217,9 +217,24 @@ function Portion() {
                                 -
                             </Button>
                             <Textfield
-                                disabled
+                                type="number"
+                                pattern="\d*"
+                                step="1"
                                 value={count}
-                                error={count === 0 && errorPortion}
+                                onChange={(e) => {
+                                    if (e.target.validity.valid) {
+                                        dispatch(
+                                            setRecipePortion(
+                                                e.target.value,
+                                                form
+                                            )
+                                        );
+                                    }
+                                }}
+                                error={
+                                    (!/\d*/.test(count) || count < 1) &&
+                                    errorPortion
+                                }
                             />
                             <Button
                                 sx={{
@@ -373,13 +388,21 @@ function Portion() {
                                             -
                                         </Button>
                                         <Textfield
+                                            type="number"
+                                            pattern="\d*(\.?|,?)\d*"
+                                            step="any"
                                             value={form[0]
                                                 .toString()
                                                 .replace('.', ',')}
                                             style={{ width: '69px' }}
-                                            onChange={(e) =>
-                                                setDimension(e.target.value, 0)
-                                            }
+                                            onChange={(e) => {
+                                                if (e.target.validity.valid) {
+                                                    setDimension(
+                                                        e.target.value,
+                                                        0
+                                                    );
+                                                }
+                                            }}
                                             error={
                                                 errorPortion &&
                                                 (isNaN(form[0]) || form[0] <= 0)
@@ -431,16 +454,23 @@ function Portion() {
                                                 -
                                             </Button>
                                             <Textfield
+                                                type="number"
+                                                pattern="\d*(\.?|,?)\d*"
+                                                step="any"
                                                 value={form[1]
                                                     .toString()
                                                     .replace('.', ',')}
                                                 style={{ width: '69px' }}
-                                                onChange={(e) =>
-                                                    setDimension(
-                                                        e.target.value,
-                                                        1
-                                                    )
-                                                }
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.validity.valid
+                                                    ) {
+                                                        setDimension(
+                                                            e.target.value,
+                                                            1
+                                                        );
+                                                    }
+                                                }}
                                                 error={
                                                     errorPortion &&
                                                     (isNaN(form[1]) ||

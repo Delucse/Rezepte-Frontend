@@ -364,9 +364,16 @@ function Portion() {
                                     -
                                 </Button>
                                 <Textfield
+                                    type="number"
+                                    pattern="\d*(\.?|,?)\d*"
+                                    step="any"
                                     value={count.toString().replace('.', ',')}
                                     style={{ width: '69px' }}
-                                    onChange={(e) => setPortion(e.target.value)}
+                                    onChange={(e) => {
+                                        if (e.target.validity.valid) {
+                                            setPortion(e.target.value);
+                                        }
+                                    }}
                                     error={errorCount}
                                 />
                                 <Button
@@ -549,16 +556,23 @@ function Portion() {
                                                 -
                                             </Button>
                                             <Textfield
+                                                type="number"
+                                                pattern="\d*(\.?|,?)\d*"
+                                                step="any"
                                                 value={form[0]
                                                     .toString()
                                                     .replace('.', ',')}
                                                 style={{ width: '69px' }}
-                                                onChange={(e) =>
-                                                    setDimension(
-                                                        e.target.value,
-                                                        0
-                                                    )
-                                                }
+                                                onChange={(e) => {
+                                                    if (
+                                                        e.target.validity.valid
+                                                    ) {
+                                                        setDimension(
+                                                            e.target.value,
+                                                            0
+                                                        );
+                                                    }
+                                                }}
                                                 error={
                                                     errorForm &&
                                                     (isNaN(form[0]) ||
@@ -611,16 +625,24 @@ function Portion() {
                                                     -
                                                 </Button>
                                                 <Textfield
+                                                    type="number"
+                                                    pattern="\d*(\.?|,?)\d*"
+                                                    step="any"
                                                     value={form[1]
                                                         .toString()
                                                         .replace('.', ',')}
                                                     style={{ width: '69px' }}
-                                                    onChange={(e) =>
-                                                        setDimension(
-                                                            e.target.value,
-                                                            1
-                                                        )
-                                                    }
+                                                    onChange={(e) => {
+                                                        if (
+                                                            e.target.validity
+                                                                .valid
+                                                        ) {
+                                                            setDimension(
+                                                                e.target.value,
+                                                                1
+                                                            );
+                                                        }
+                                                    }}
                                                     error={
                                                         errorForm &&
                                                         (isNaN(form[1]) ||

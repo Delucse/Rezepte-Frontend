@@ -28,8 +28,6 @@ import { useTheme } from '@mui/material';
 import Icon from '@mdi/react';
 import { mdiPrinter } from '@mdi/js';
 
-import bakeware from '../../data/bakeware.json';
-
 import {
     singularUnitsAlimentDictionary,
     pluralUnitsAlimentDictionary,

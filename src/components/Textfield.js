@@ -36,8 +36,14 @@ function Textfield(props) {
                 label={props.label}
                 id={props.property}
                 onChange={props.onChange}
+                onKeyPress={props.onKeyPress}
                 onClick={props.onClick}
                 type={props.type ? props.type : 'text'}
+                inputProps={
+                    props.pattern && props.step
+                        ? { pattern: props.pattern, step: props.step }
+                        : {}
+                }
                 placeholder={props.placeholder}
                 style={props.style}
                 startAdornment={
