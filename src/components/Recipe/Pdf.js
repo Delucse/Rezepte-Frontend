@@ -341,7 +341,7 @@ function Header({ theme, title, portion, time }) {
     );
 }
 
-function Footer({ theme, qr }) {
+function Footer({ theme, qr, id }) {
     return (
         <View
             fixed
@@ -414,10 +414,10 @@ function Footer({ theme, qr }) {
                         }
                     />
                     <Link
-                        src={window.location.href}
+                        src={`${process.env.REACT_APP_BASE_URL}/rezepte/${id}`}
                         style={{ color: 'grey', textDecoration: 'none' }}
                     >
-                        {window.location.href}
+                        <Text>{`${process.env.REACT_APP_BASE_URL}/rezepte/${id}`}</Text>
                     </Link>
                 </View>
                 <Image
@@ -476,7 +476,7 @@ function PdfDocument({ theme, qr, recipe }) {
                         }}
                     />
                 </View>
-                <Footer qr={qr} theme={theme} />
+                <Footer qr={qr} theme={theme} id={recipe.id} />
             </Page>
         </Document>
     );
@@ -491,14 +491,17 @@ function Pdf() {
 
     const generateQR = () => {
         try {
-            return QRCode.toDataURL(window.location.href, {
-                type: 'svg',
-                margin: 0,
-                color: {
-                    light: '#fff',
-                    dark: rgbToHex(theme.palette.primary.light),
-                },
-            });
+            return QRCode.toDataURL(
+                `${process.env.REACT_APP_BASE_URL}/rezepte/${recipe.id}`,
+                {
+                    type: 'svg',
+                    margin: 0,
+                    color: {
+                        light: '#fff',
+                        dark: rgbToHex(theme.palette.primary.light),
+                    },
+                }
+            );
         } catch (err) {
             console.error(err);
             return null;

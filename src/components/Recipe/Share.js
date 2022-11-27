@@ -74,7 +74,7 @@ const actions = [
 function Share(props) {
     const dispatch = useDispatch();
 
-    const url = window.location.href;
+    const url = `${process.env.REACT_APP_BASE_URL}/rezepte/${props.id}`;
     const type = useSelector((state) => state.message.type);
 
     const classes = useStyles(useTheme());

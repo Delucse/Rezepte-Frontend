@@ -101,7 +101,7 @@ function Qr() {
 
     const handleScan = (data) => {
         if (data) {
-            const url = window.location.origin;
+            const url = process.env.REACT_APP_BASE_URL;
             const pattern = new RegExp(url, 'g');
             if (pattern.test(data)) {
                 navigate(data.replace(url, ''));
