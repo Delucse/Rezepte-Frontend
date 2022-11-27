@@ -62,8 +62,8 @@ function RecipeFormular() {
     const recipeId = useSelector((state) => state.recipe.id);
     const recipePictures = useSelector((state) => state.recipe.pictures);
     const uploaded = useSelector((state) => state.recipeFormular.uploaded);
-    const formularFilled = useSelector(
-        (state) => state.recipeFormular.portion.count > 0
+    const formularFilled = useSelector((state) =>
+        state.recipeFormular.portion.hasOwnProperty('count')
     );
 
     const { id } = useParams();

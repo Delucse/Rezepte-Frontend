@@ -55,7 +55,7 @@ function Portion() {
     }, [open, settings]);
 
     const portionAdd = () => {
-        if (!isNaN(count)) {
+        if (count !== '' && !isNaN(count)) {
             setCount(parseInt(count) + 1);
         } else {
             setErrorCount(false);
@@ -64,7 +64,7 @@ function Portion() {
     };
 
     const portionReduce = () => {
-        if (!isNaN(count)) {
+        if (count !== '' && !isNaN(count)) {
             var parsedCount = parseInt(count);
             if (parsedCount !== count) {
                 parsedCount += 1;
@@ -87,7 +87,12 @@ function Portion() {
     };
 
     const dimensionAdd = (index) => {
-        if (!isNaN(form[index])) {
+        if (form[index] !== '' && !isNaN(form[index])) {
+            var parsedDimension = parseInt(form[index]);
+            if (parsedDimension !== form[index]) {
+                parsedDimension += 1;
+            }
+            parsedDimension -= 1;
             if (form.length > 1) {
                 if (index > 0) {
                     const dimensionDecimal = form[0]
@@ -96,7 +101,7 @@ function Portion() {
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
-                    setForm([form[0], parseInt(form[index]) + 1]);
+                    setForm([form[0], parsedDimension]);
                 } else {
                     const dimensionDecimal = form[1]
                         .toString()
@@ -104,11 +109,11 @@ function Portion() {
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
-                    setForm([parseInt(form[index]) + 1, form[1]]);
+                    setForm([parsedDimension, form[1]]);
                 }
             } else {
                 setErrorForm(false);
-                setForm([parseInt(form[index]) + 1]);
+                setForm([parsedDimension]);
             }
         } else {
             if (form.length > 1) {
@@ -137,7 +142,12 @@ function Portion() {
     };
 
     const dimensionReduce = (index) => {
-        if (!isNaN(form[index])) {
+        if (form[index] !== '' && !isNaN(form[index])) {
+            var parsedDimension = parseInt(form[index]);
+            if (parsedDimension !== form[index]) {
+                parsedDimension += 1;
+            }
+            parsedDimension -= 1;
             if (form.length > 1) {
                 if (index > 0) {
                     const dimensionDecimal = form[0]
@@ -146,7 +156,7 @@ function Portion() {
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
-                    setForm([form[0], parseInt(form[index]) - 1]);
+                    setForm([form[0], parsedDimension]);
                 } else {
                     const dimensionDecimal = form[1]
                         .toString()
@@ -154,11 +164,11 @@ function Portion() {
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
-                    setForm([parseInt(form[index]) - 1, form[1]]);
+                    setForm([parsedDimension, form[1]]);
                 }
             } else {
                 setErrorForm(false);
-                setForm([parseInt(form[index]) - 1]);
+                setForm([parsedDimension]);
             }
         } else {
             if (form.length > 1) {
@@ -365,12 +375,15 @@ function Portion() {
                                 </Button>
                                 <Textfield
                                     type="number"
-                                    pattern="\d*(\.?|,?)\d*"
                                     step="any"
                                     value={count.toString().replace('.', ',')}
                                     style={{ width: '69px' }}
                                     onChange={(e) => {
-                                        if (e.target.validity.valid) {
+                                        if (
+                                            /^\d*(\.?|,?)\d*$/.test(
+                                                e.target.value
+                                            )
+                                        ) {
                                             setPortion(e.target.value);
                                         }
                                     }}
@@ -557,7 +570,6 @@ function Portion() {
                                             </Button>
                                             <Textfield
                                                 type="number"
-                                                pattern="\d*(\.?|,?)\d*"
                                                 step="any"
                                                 value={form[0]
                                                     .toString()
@@ -565,7 +577,9 @@ function Portion() {
                                                 style={{ width: '69px' }}
                                                 onChange={(e) => {
                                                     if (
-                                                        e.target.validity.valid
+                                                        /^\d*(\.?|,?)\d*$/.test(
+                                                            e.target.value
+                                                        )
                                                     ) {
                                                         setDimension(
                                                             e.target.value,
@@ -626,7 +640,6 @@ function Portion() {
                                                 </Button>
                                                 <Textfield
                                                     type="number"
-                                                    pattern="\d*(\.?|,?)\d*"
                                                     step="any"
                                                     value={form[1]
                                                         .toString()
@@ -634,8 +647,9 @@ function Portion() {
                                                     style={{ width: '69px' }}
                                                     onChange={(e) => {
                                                         if (
-                                                            e.target.validity
-                                                                .valid
+                                                            /^\d*(\.?|,?)\d*$/.test(
+                                                                e.target.value
+                                                            )
                                                         ) {
                                                             setDimension(
                                                                 e.target.value,

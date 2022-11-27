@@ -40,8 +40,10 @@ function Textfield(props) {
                 onClick={props.onClick}
                 type={props.type ? props.type : 'text'}
                 inputProps={
-                    props.pattern && props.step
-                        ? { pattern: props.pattern, step: props.step }
+                    props.pattern
+                        ? { pattern: props.pattern }
+                        : props.step
+                        ? { step: props.step }
                         : {}
                 }
                 placeholder={props.placeholder}
