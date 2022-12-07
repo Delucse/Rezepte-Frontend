@@ -67,23 +67,25 @@ function AddImage(props) {
         }
 
         const options = {
-            maxSizeMB: 2,
-            maxWidthOrHeight: 600,
+            maxSizeMB: 0.6,
             useWebWorker: true,
             // onProgress: (percent) => {console.log(percent)}
         };
         const promises = targetFiles.map((file) => {
-            return imageCompression(file, options)
-                .then((compressedBlob) => {
-                    // Conver the blob to file
-                    return new File([compressedBlob], file.name, {
-                        type: file.type,
-                        lastModified: Date.now(),
+            if (file.size / 1024 / 1024 > options.maxSizeMB) {
+                return imageCompression(file, options)
+                    .then((compressedBlob) => {
+                        // Convert the blob to file
+                        return new File([compressedBlob], file.name, {
+                            type: file.type,
+                            lastModified: Date.now(),
+                        });
+                    })
+                    .catch((e) => {
+                        console.error('image', e);
                     });
-                })
-                .catch((e) => {
-                    console.error('image', e);
-                });
+            }
+            return file;
         });
         const files = await Promise.all(promises);
         changeImage(files[0]);

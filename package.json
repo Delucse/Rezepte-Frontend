@@ -18,7 +18,7 @@
         "@testing-library/user-event": "^12.8.3",
         "@types/date-fns": "^2.6.0",
         "axios": "^0.26.1",
-        "browser-image-compression": "^1.0.17",
+        "browser-image-compression": "^2.0.0",
         "file-saver": "^2.0.5",
         "fraction.js": "^4.2.0",
         "moment": "^2.29.1",
