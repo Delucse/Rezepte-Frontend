@@ -225,6 +225,7 @@ function Portion() {
                             <Textfield
                                 type="number"
                                 step="1"
+                                lang="de-DE"
                                 value={count}
                                 onChange={(e) => {
                                     if (/^\d*$/.test(e.target.value)) {
@@ -395,6 +396,7 @@ function Portion() {
                                         <Textfield
                                             type="number"
                                             step="any"
+                                            lang="de-DE"
                                             value={form[0]
                                                 .toString()
                                                 .replace('.', ',')}
@@ -464,6 +466,7 @@ function Portion() {
                                             <Textfield
                                                 type="number"
                                                 step="any"
+                                                lang="de-DE"
                                                 value={form[1]
                                                     .toString()
                                                     .replace('.', ',')}

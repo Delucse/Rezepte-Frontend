@@ -376,6 +376,7 @@ function Portion() {
                                 <Textfield
                                     type="number"
                                     step="any"
+                                    lang="de-DE"
                                     value={count.toString().replace('.', ',')}
                                     style={{ width: '69px' }}
                                     onChange={(e) => {
@@ -571,6 +572,7 @@ function Portion() {
                                             <Textfield
                                                 type="number"
                                                 step="any"
+                                                lang="de-DE"
                                                 value={form[0]
                                                     .toString()
                                                     .replace('.', ',')}
@@ -641,6 +643,7 @@ function Portion() {
                                                 <Textfield
                                                     type="number"
                                                     step="any"
+                                                    lang="de-DE"
                                                     value={form[1]
                                                         .toString()
                                                         .replace('.', ',')}
