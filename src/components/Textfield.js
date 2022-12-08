@@ -28,6 +28,7 @@ function Textfield(props) {
                             ? `1px solid ${theme.palette.error.main}`
                             : 'inherit',
                 }}
+                inputRef={props.inputRef}
                 autoFocus={props.autoFocus}
                 disabled={props.disabled}
                 color={props.error ? 'error' : null}
@@ -37,6 +38,7 @@ function Textfield(props) {
                 id={props.property}
                 onChange={props.onChange}
                 onKeyPress={props.onKeyPress}
+                onKeyDown={props.onKeyDown}
                 onClick={props.onClick}
                 type={props.type ? props.type : 'text'}
                 inputProps={

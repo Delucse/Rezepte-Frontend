@@ -78,7 +78,10 @@ export const register = (username, password, email) => (dispatch) => {
         },
     };
     // Request Body
-    const body = { username: username, password: password, email: email };
+    const body = { username: username, password: password };
+    if (email !== '') {
+        body.email = email;
+    }
     axios
         .post(`${process.env.REACT_APP_API_URL}/auth/signup`, body, config)
         .then((res) => {
@@ -129,6 +132,7 @@ const timeToLogout =
 
 // Login user
 export const login = (username, password) => (dispatch) => {
+    dispatch(setProgress('signin'));
     // Headers
     const config = {
         headers: {

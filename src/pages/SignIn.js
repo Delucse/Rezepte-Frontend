@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../actions/authActions';
@@ -14,7 +14,7 @@ import Button from '../components/Button';
 import IconButton from '../components/IconButton';
 
 import { styled } from '@mui/material/styles';
-import { Divider } from '@mui/material';
+import { Divider, CircularProgress } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
@@ -36,6 +36,11 @@ function SignIn() {
     const last = useSelector((state) => state.auth.last);
     const error = useSelector((state) => state.message.error);
     const art = useSelector((state) => state.message.art);
+    const progress = useSelector(
+        (state) => state.progress.loading && state.progress.type === 'signin'
+    );
+
+    const passwordRef = useRef();
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -127,15 +132,26 @@ function SignIn() {
                             label="Nutzername"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    passwordRef.current.focus();
+                                }
+                            }}
                             fullWidth
                             margin
                             autoFocus
                         />
                         <Textfield
+                            inputRef={passwordRef}
                             type={showPassword ? 'text' : 'password'}
                             label="Passwort"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter' && !progress) {
+                                    dispatch(login(username, password));
+                                }
+                            }}
                             end={
                                 <IconButton
                                     onClick={handleClickShowPassword}
@@ -162,8 +178,13 @@ function SignIn() {
                                 onClick={() =>
                                     dispatch(login(username, password))
                                 }
+                                disabled={progress}
                             >
-                                Anmelden
+                                {!progress ? (
+                                    'Anmelden'
+                                ) : (
+                                    <CircularProgress size={24.5} />
+                                )}
                             </Button>
                         </p>
                         <p style={{ textAlign: 'center', fontSize: '0.8rem' }}>

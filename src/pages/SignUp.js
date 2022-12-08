@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { register } from '../actions/authActions';
 import { alertErrorMessage, resetMessage } from '../actions/messageActions';
+import { setProgress, setProgressError } from '../actions/progressActions';
 
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 
@@ -14,7 +15,7 @@ import Button from '../components/Button';
 import IconButton from '../components/IconButton';
 
 import { styled } from '@mui/material/styles';
-import { Divider } from '@mui/material';
+import { Divider, CircularProgress } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
@@ -34,6 +35,13 @@ function SignUp() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
     const error = useSelector((state) => state.message.error);
+    const progress = useSelector(
+        (state) => state.progress.loading && state.progress.type === 'signup'
+    );
+
+    const emailRef = useRef();
+    const passwordRef = useRef();
+    const confirmPasswordRef = useRef();
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -82,18 +90,22 @@ function SignUp() {
     };
 
     const registerCheck = () => {
+        dispatch(setProgress('signup'));
         if (username.trim() === '') {
+            dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
                     'Es muss ein Nutzername angegeben sein.',
                     'user'
                 )
             );
-        } else if (email.trim() === '') {
-            dispatch(
-                alertErrorMessage('Es muss eine E-Mail angegeben sein.', 'user')
-            );
+            // } else if (email.trim() === '') {
+            //     dispatch(setProgressError('signup'));
+            //     dispatch(
+            //         alertErrorMessage('Es muss eine E-Mail angegeben sein.', 'user')
+            //     );
         } else if (password.trim() === '') {
+            dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
                     'Es muss ein Passwort angegeben sein.',
@@ -101,6 +113,7 @@ function SignUp() {
                 )
             );
         } else if (confirmPassword.trim() === '') {
+            dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
                     'Bestätige dein Passwort durch wiederholte Eingabe dessen.',
@@ -108,6 +121,7 @@ function SignUp() {
                 )
             );
         } else if (confirmPassword !== password) {
+            dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
                     'Die Passwörter stimmen nicht überein.',
@@ -175,23 +189,40 @@ function SignUp() {
                             label="Nutzername"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    emailRef.current.focus();
+                                }
+                            }}
                             fullWidth
                             margin
                             autoFocus
                         />
                         <Textfield
+                            inputRef={emailRef}
                             type="email"
-                            label="E-Mail"
+                            label="E-Mail (optional)"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    passwordRef.current.focus();
+                                }
+                            }}
                             fullWidth
                             margin
                         />
                         <Textfield
+                            inputRef={passwordRef}
                             type={showPassword ? 'text' : 'password'}
                             label="Passwort"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    confirmPasswordRef.current.focus();
+                                }
+                            }}
                             end={
                                 <IconButton
                                     onClick={handleClickShowPassword}
@@ -213,10 +244,16 @@ function SignUp() {
                             margin
                         />
                         <Textfield
+                            inputRef={confirmPasswordRef}
                             label="Passwort bestätigen"
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            onKeyDown={(event) => {
+                                if (event.key === 'Enter' && !progress) {
+                                    registerCheck();
+                                }
+                            }}
                             fullWidth
                         />
                         <p style={{ marginTop: '20px' }}>
@@ -224,8 +261,13 @@ function SignUp() {
                                 variant="contained"
                                 sx={{ width: '100%' }}
                                 onClick={registerCheck}
+                                disabled={progress}
                             >
-                                Registrieren
+                                {!progress ? (
+                                    'Registrieren'
+                                ) : (
+                                    <CircularProgress size={24.5} />
+                                )}
                             </Button>
                         </p>
                     </div>
