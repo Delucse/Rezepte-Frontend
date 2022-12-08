@@ -27,6 +27,11 @@ function App() {
     const dispatch = useDispatch();
     const color = useSelector((state) => state.settings.color);
 
+    useEffect(() => {
+        document.body.style.setProperty('--main', color.main);
+        document.body.style.setProperty('--light', color.light);
+    }, [color]);
+
     const systemModeIsDark = useMediaQuery('(prefers-color-scheme: dark)');
 
     const themeConfig = {
