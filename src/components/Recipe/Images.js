@@ -37,15 +37,15 @@ function Images({ pictures, title, add }) {
     };
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => mod(prevActiveStep + 1, maxSteps));
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => mod(prevActiveStep - 1, maxSteps));
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
     const handleStepChange = (step) => {
-        setActiveStep(mod(step, maxSteps));
+        setActiveStep(step);
     };
 
     const slideRenderer = ({ index, key }) => {
@@ -148,35 +148,38 @@ function Images({ pictures, title, add }) {
                             alignItems: 'center',
                         }}
                     >
-                        {pictures.map((picture, idx) => (
-                            <Box
-                                key={idx}
-                                sx={{
-                                    backgroundColor:
-                                        activeStep === idx
-                                            ? (theme) =>
-                                                  theme.palette.primary.main
-                                            : 'none',
-                                    borderColor: (theme) =>
-                                        theme.palette.primary.main,
-                                    width: '7px',
-                                    height: '7px',
-                                    borderWidth: '1px',
-                                    borderStyle: 'solid',
-                                    borderRadius: '50%',
-                                    marginLeft: idx === 0 ? 0 : '6px',
-                                    cursor:
-                                        activeStep !== idx
-                                            ? 'pointer'
-                                            : 'default',
-                                }}
-                                onClick={
-                                    activeStep !== idx
-                                        ? () => setActiveStep(idx)
-                                        : null
-                                }
-                            />
-                        ))}
+                        {pictures.map((picture, idx) => {
+                            const modStep = mod(activeStep, maxSteps);
+                            return (
+                                <Box
+                                    key={idx}
+                                    sx={{
+                                        backgroundColor:
+                                            modStep === idx
+                                                ? (theme) =>
+                                                      theme.palette.primary.main
+                                                : 'none',
+                                        borderColor: (theme) =>
+                                            theme.palette.primary.main,
+                                        width: '7px',
+                                        height: '7px',
+                                        borderWidth: '1px',
+                                        borderStyle: 'solid',
+                                        borderRadius: '50%',
+                                        marginLeft: idx === 0 ? 0 : '6px',
+                                        cursor:
+                                            activeStep !== idx
+                                                ? 'pointer'
+                                                : 'default',
+                                    }}
+                                    onClick={
+                                        modStep !== idx
+                                            ? () => setActiveStep(idx)
+                                            : null
+                                    }
+                                />
+                            );
+                        })}
                     </Box>
                 </Box>
             ) : (

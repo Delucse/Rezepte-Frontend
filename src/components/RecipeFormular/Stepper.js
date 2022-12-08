@@ -274,6 +274,7 @@ function Stepper(props) {
                 }}
             >
                 <SwipeableViews
+                    resistance
                     axis={'x'}
                     index={activeStep}
                     onChangeIndex={(index) => handleStep(index)}

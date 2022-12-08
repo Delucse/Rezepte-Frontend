@@ -30,15 +30,15 @@ function ImageCarousel(props) {
     };
 
     const next = () => {
-        setIndex(mod(index + 1, props.images.length));
+        setIndex(index + 1);
     };
 
     const back = () => {
-        setIndex(mod(index - 1, props.images.length));
+        setIndex(index - 1);
     };
 
     const handleIndexChange = (idx) => {
-        setIndex(mod(idx, props.images.length));
+        setIndex(idx);
     };
 
     useEffect(() => {
@@ -213,24 +213,32 @@ function ImageCarousel(props) {
                         alignItems: 'center',
                     }}
                 >
-                    {props.images.map((image, idx) => (
-                        <Box
-                            key={idx}
-                            sx={{
-                                backgroundColor:
-                                    index === idx ? 'white' : 'none',
-                                borderColor: 'white',
-                                width: '12px',
-                                height: '12px',
-                                borderWidth: '1px',
-                                borderStyle: 'solid',
-                                borderRadius: '50%',
-                                marginLeft: idx === 0 ? 0 : '6px',
-                                cursor: index !== idx ? 'pointer' : 'default',
-                            }}
-                            onClick={index !== idx ? () => setIndex(idx) : null}
-                        />
-                    ))}
+                    {props.images.map((image, idx) => {
+                        const modIndex = mod(index, props.images.length);
+                        return (
+                            <Box
+                                key={idx}
+                                sx={{
+                                    backgroundColor:
+                                        modIndex === idx ? 'white' : 'none',
+                                    borderColor: 'white',
+                                    width: '12px',
+                                    height: '12px',
+                                    borderWidth: '1px',
+                                    borderStyle: 'solid',
+                                    borderRadius: '50%',
+                                    marginLeft: idx === 0 ? 0 : '6px',
+                                    cursor:
+                                        index !== idx ? 'pointer' : 'default',
+                                }}
+                                onClick={
+                                    modIndex !== idx
+                                        ? () => setIndex(idx)
+                                        : null
+                                }
+                            />
+                        );
+                    })}
                 </Box>
             </DialogContent>
         </Dialog>

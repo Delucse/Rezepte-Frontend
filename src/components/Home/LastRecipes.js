@@ -45,15 +45,15 @@ function LastRecipes() {
     }, []);
 
     const next = () => {
-        setIndex(mod(index + 1, recipes.length));
+        setIndex(index + 1);
     };
 
     const back = () => {
-        setIndex(mod(index - 1, recipes.length));
+        setIndex(index - 1);
     };
 
     const handleIndexChange = (idx) => {
-        setIndex(mod(idx, recipes.length));
+        setIndex(idx);
     };
 
     const slideRenderer = ({ index, key }) => {
@@ -151,26 +151,32 @@ function LastRecipes() {
                     alignItems: 'center',
                 }}
             >
-                {recipes.map((recipe, idx) => (
-                    <Box
-                        key={idx}
-                        sx={{
-                            backgroundColor:
-                                index === idx
-                                    ? (theme) => theme.palette.primary.light
-                                    : 'none',
-                            borderColor: (theme) => theme.palette.primary.light,
-                            width: '7px',
-                            height: '7px',
-                            borderWidth: '1px',
-                            borderStyle: 'solid',
-                            borderRadius: '50%',
-                            marginLeft: idx === 0 ? 0 : '6px',
-                            cursor: index !== idx ? 'pointer' : 'default',
-                        }}
-                        onClick={index !== idx ? () => setIndex(idx) : null}
-                    />
-                ))}
+                {recipes.map((recipe, idx) => {
+                    const modIndex = mod(index, recipes.length);
+                    return (
+                        <Box
+                            key={idx}
+                            sx={{
+                                backgroundColor:
+                                    modIndex === idx
+                                        ? (theme) => theme.palette.primary.light
+                                        : 'none',
+                                borderColor: (theme) =>
+                                    theme.palette.primary.light,
+                                width: '7px',
+                                height: '7px',
+                                borderWidth: '1px',
+                                borderStyle: 'solid',
+                                borderRadius: '50%',
+                                marginLeft: idx === 0 ? 0 : '6px',
+                                cursor: index !== idx ? 'pointer' : 'default',
+                            }}
+                            onClick={
+                                modIndex !== idx ? () => setIndex(idx) : null
+                            }
+                        />
+                    );
+                })}
             </Box>
         </div>
     ) : loading ? null : (
