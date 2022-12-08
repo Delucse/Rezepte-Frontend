@@ -89,23 +89,16 @@ function Portion() {
     const dimensionAdd = (index) => {
         if (form[index] !== '' && !isNaN(form[index])) {
             var parsedDimension = parseInt(form[index]);
-            if (parsedDimension !== form[index]) {
-                parsedDimension += 1;
-            }
-            parsedDimension -= 1;
+            parsedDimension += 1;
             if (form.length > 1) {
                 if (index > 0) {
-                    const dimensionDecimal = form[0]
-                        .toString()
-                        .replace(',', '.');
+                    const dimensionDecimal = form[0].toLocaleString();
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
                     setForm([form[0], parsedDimension]);
                 } else {
-                    const dimensionDecimal = form[1]
-                        .toString()
-                        .replace(',', '.');
+                    const dimensionDecimal = form[1].toLocaleString();
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
@@ -118,17 +111,13 @@ function Portion() {
         } else {
             if (form.length > 1) {
                 if (index > 0) {
-                    const dimensionDecimal = form[0]
-                        .toString()
-                        .replace(',', '.');
+                    const dimensionDecimal = form[0].toLocaleString();
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
                     setForm([form[0], 1]);
                 } else {
-                    const dimensionDecimal = form[1]
-                        .toString()
-                        .replace(',', '.');
+                    const dimensionDecimal = form[1].toLocaleString();
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
@@ -150,17 +139,13 @@ function Portion() {
             parsedDimension -= 1;
             if (form.length > 1) {
                 if (index > 0) {
-                    const dimensionDecimal = form[0]
-                        .toString()
-                        .replace(',', '.');
+                    const dimensionDecimal = form[0].toLocaleString();
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
                     setForm([form[0], parsedDimension]);
                 } else {
-                    const dimensionDecimal = form[1]
-                        .toString()
-                        .replace(',', '.');
+                    const dimensionDecimal = form[1].toLocaleString();
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
@@ -173,17 +158,13 @@ function Portion() {
         } else {
             if (form.length > 1) {
                 if (index > 0) {
-                    const dimensionDecimal = form[0]
-                        .toString()
-                        .replace(',', '.');
+                    const dimensionDecimal = form[0].toLocaleString();
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
                     setForm([form[0], 1]);
                 } else {
-                    const dimensionDecimal = form[1]
-                        .toString()
-                        .replace(',', '.');
+                    const dimensionDecimal = form[1].toLocaleString();
                     if (!isNaN(dimensionDecimal) && dimensionDecimal > 0) {
                         setErrorForm(false);
                     }
@@ -294,12 +275,10 @@ function Portion() {
                                                       ? 'e'
                                                       : ''
                                               }`
-                                    } ${settings.form[0]} cm x ${
-                                        settings.form[1]
-                                    } cm`
+                                    } ${settings.form[0].toLocaleString()} cm x ${settings.form[1].toLocaleString()} cm`
                                   : `Springform${
                                         settings.count !== 1 ? 'en' : ''
-                                    } Ø ${settings.form[0]} cm`
+                                    } Ø ${settings.form[0].toLocaleString()} cm`
                           }`
                         : ` Portion${settings.count !== 1 ? 'en' : ''}`}
                 </Typography>
@@ -376,7 +355,7 @@ function Portion() {
                                 <Textfield
                                     type="number"
                                     step="any"
-                                    value={count.toString().replace('.', ',')}
+                                    value={count}
                                     style={{ width: '69px' }}
                                     onChange={(e) => {
                                         if (
@@ -494,20 +473,12 @@ function Portion() {
                                         onChange={(e) => {
                                             if (e.target.value > 1) {
                                                 setForms([
-                                                    form[0]
-                                                        .toString()
-                                                        .replace(',', '.') > 0
-                                                        ? form[0]
-                                                        : 0,
+                                                    form[0] > 0 ? form[0] : 0,
                                                     0,
                                                 ]);
                                             } else {
                                                 setForms([
-                                                    form[0]
-                                                        .toString()
-                                                        .replace(',', '.') > 0
-                                                        ? form[0]
-                                                        : 0,
+                                                    form[0] > 0 ? form[0] : 0,
                                                 ]);
                                             }
                                         }}
@@ -571,9 +542,7 @@ function Portion() {
                                             <Textfield
                                                 type="number"
                                                 step="any"
-                                                value={form[0]
-                                                    .toString()
-                                                    .replace('.', ',')}
+                                                value={form[0]}
                                                 style={{ width: '69px' }}
                                                 onChange={(e) => {
                                                     if (
@@ -641,9 +610,7 @@ function Portion() {
                                                 <Textfield
                                                     type="number"
                                                     step="any"
-                                                    value={form[1]
-                                                        .toString()
-                                                        .replace('.', ',')}
+                                                    value={form[1]}
                                                     style={{ width: '69px' }}
                                                     onChange={(e) => {
                                                         if (

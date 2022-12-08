@@ -44,7 +44,11 @@ function Portion() {
 
     const portionReduce = () => {
         if (count !== '' && !isNaN(count)) {
-            dispatch(setRecipePortion(parseInt(count) - 1, form));
+            if (parseInt(count) !== count) {
+                dispatch(setRecipePortion(parseInt(count), form));
+            } else {
+                dispatch(setRecipePortion(parseInt(count) - 1, form));
+            }
         } else {
             dispatch(setRecipePortion(1, form));
         }
@@ -71,10 +75,7 @@ function Portion() {
     const dimensionAdd = (index) => {
         if (form[index] !== '' && !isNaN(form[index])) {
             var parsedDimension = parseInt(form[index]);
-            if (parsedDimension !== form[index]) {
-                parsedDimension += 1;
-            }
-            parsedDimension -= 1;
+            parsedDimension += 1;
             if (form.length > 1) {
                 if (index > 0) {
                     dispatch(
@@ -227,7 +228,9 @@ function Portion() {
                                 step="1"
                                 value={count}
                                 onChange={(e) => {
-                                    if (/^\d*$/.test(e.target.value)) {
+                                    if (
+                                        /^\d*(\.?|,?)\d*$/.test(e.target.value)
+                                    ) {
                                         dispatch(
                                             setRecipePortion(
                                                 e.target.value,
@@ -237,7 +240,9 @@ function Portion() {
                                     }
                                 }}
                                 error={
-                                    (!/\d*/.test(count) || count < 1) &&
+                                    (!/\d*/.test(count) ||
+                                        count < 1 ||
+                                        parseInt(count) !== Number(count)) &&
                                     errorPortion
                                 }
                             />
@@ -317,22 +322,14 @@ function Portion() {
                                         if (e.target.value > 1) {
                                             dispatch(
                                                 setRecipePortion(count, [
-                                                    form[0]
-                                                        .toString()
-                                                        .replace(',', '.') > 0
-                                                        ? form[0]
-                                                        : 0,
+                                                    form[0] > 0 ? form[0] : 0,
                                                     0,
                                                 ])
                                             );
                                         } else {
                                             dispatch(
                                                 setRecipePortion(count, [
-                                                    form[0]
-                                                        .toString()
-                                                        .replace(',', '.') > 0
-                                                        ? form[0]
-                                                        : 0,
+                                                    form[0] > 0 ? form[0] : 0,
                                                 ])
                                             );
                                         }
@@ -395,9 +392,7 @@ function Portion() {
                                         <Textfield
                                             type="number"
                                             step="any"
-                                            value={form[0]
-                                                .toString()
-                                                .replace('.', ',')}
+                                            value={form[0]}
                                             style={{ width: '69px' }}
                                             onChange={(e) => {
                                                 if (
@@ -464,9 +459,7 @@ function Portion() {
                                             <Textfield
                                                 type="number"
                                                 step="any"
-                                                value={form[1]
-                                                    .toString()
-                                                    .replace('.', ',')}
+                                                value={form[1]}
                                                 style={{ width: '69px' }}
                                                 onChange={(e) => {
                                                     if (

@@ -80,7 +80,10 @@ export const getRecipePreview = () => (dispatch, getState) => {
     };
 
     if (recipeFormular.portion.form) {
-        payload.settings.form = recipeFormular.portion.form;
+        const formDecimal = recipeFormular.portion.form.map((f) =>
+            Number(f.toString().replace(',', '.'))
+        );
+        payload.settings.form = formDecimal;
     }
 
     dispatch({

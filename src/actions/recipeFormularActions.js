@@ -88,7 +88,11 @@ const setError = (key, value) => (dispatch, getState) => {
         case 'portion':
             if (
                 !value.count ||
-                (value.count && value.count < 1) ||
+                (value.count &&
+                    (isNaN(value.count.toString().replace(',', '.')) ||
+                        parseInt(value.count.toString().replace(',', '.')) !==
+                            Number(value.count.toString().replace(',', '.')) ||
+                        value.count.toString().replace(',', '.') < 1)) ||
                 (value.form &&
                     (isNaN(value.form[0].toString().replace(',', '.')) ||
                         value.form[0].toString().replace(',', '.') <= 0)) ||
@@ -581,7 +585,9 @@ export const submitRecipe = (id) => (dispatch, getState) => {
     });
 
     if (portion.form) {
-        portion.form = portion.form.map((f) => f.toString().replace(',', '.'));
+        portion.form = portion.form.map((f) =>
+            Number(f.toString().replace(',', '.'))
+        );
     }
 
     var data = {
