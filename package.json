@@ -73,5 +73,9 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "engines": {
+        "npm": ">=8.5.5",
+        "node": ">=16.13.2"
     }
 }
