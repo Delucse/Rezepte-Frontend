@@ -178,6 +178,8 @@ function Filter() {
                         sx={{
                             background: (theme) =>
                                 theme.palette.background.default,
+                            backgroundImage:
+                                'linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))',
                             position: 'absolute',
                             bottom: 0,
                             height: (theme) => theme.spacing(3),

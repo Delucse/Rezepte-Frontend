@@ -294,15 +294,17 @@ function Portion() {
                                     error={errorPortion && !individualForm}
                                 />
                             ) : (
-                                <div
-                                    style={{
+                                <Box
+                                    sx={{
+                                        color: (theme) =>
+                                            theme.palette.text.primary,
                                         marginRight: '10px',
                                         lineHeight: '56px',
                                         flexGrow: 1,
                                     }}
                                 >
                                     Portion{count !== 1 ? 'en' : ''}
-                                </div>
+                                </Box>
                             )}
                         </Box>
                     </Box>
@@ -357,9 +359,10 @@ function Portion() {
                                     display: 'flex',
                                 }}
                             >
-                                <div
-                                    style={{
-                                        color: 'rgba(0, 0, 0, 0.6)',
+                                <Box
+                                    sx={{
+                                        color: (theme) =>
+                                            theme.palette.text.secondary,
                                         fontSize: 'small',
                                         fontFamily:
                                             '"Roboto","Helvetica","Arial",sans-serif',
@@ -423,11 +426,12 @@ function Portion() {
                                             +
                                         </Button>
                                     </div>
-                                </div>
+                                </Box>
                                 {form.length > 1 ? (
-                                    <div
-                                        style={{
-                                            color: 'rgba(0, 0, 0, 0.6)',
+                                    <Box
+                                        sx={{
+                                            color: (theme) =>
+                                                theme.palette.text.secondary,
                                             fontSize: 'small',
                                             fontFamily:
                                                 '"Roboto","Helvetica","Arial",sans-serif',
@@ -491,7 +495,7 @@ function Portion() {
                                                 +
                                             </Button>
                                         </div>
-                                    </div>
+                                    </Box>
                                 ) : null}
                             </Box>
                         </div>

@@ -8,6 +8,7 @@ import { loadUser } from './actions/authActions';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box } from '@mui/material';
 
 import Home from './pages/Home';
 import Error from './pages/Error';
@@ -134,7 +135,19 @@ function App() {
                             </PrivateRoute>
                         }
                     />
-                    <Route path="konto" element={<div>Konto TODO</div>} />
+                    <Route
+                        path="konto"
+                        element={
+                            <Box
+                                sx={{
+                                    color: (theme) =>
+                                        theme.palette.text.primary,
+                                }}
+                            >
+                                Konto TODO
+                            </Box>
+                        }
+                    />
                     <Route path="einstellungen" element={<Settings />} />
                     <Route path="faq" element={<Faq />} />
                     <Route path="qr" element={<Qr />} />
