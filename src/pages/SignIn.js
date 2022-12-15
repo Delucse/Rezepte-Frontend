@@ -50,8 +50,10 @@ function SignIn() {
         location.state && location.state.background
             ? location.state.background.state &&
               location.state.background.state.background
-                ? location.state.background.state.background.pathname
-                : location.state.background.pathname
+                ? location.state.background.state.background.pathname +
+                  location.state.background.state.background.search
+                : location.state.background.pathname +
+                  location.state.background.search
             : '/';
 
     useEffect(() => {

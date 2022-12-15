@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWord, setType } from '../../actions/recipeFilterActions';
 
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 import IconButton from '../IconButton';
+
+import params from '../../data/params.json';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -18,9 +20,13 @@ import Icon from '@mdi/react';
 import { mdiClose, mdiCog, mdiMagnify } from '@mdi/js';
 
 function Search(props) {
+    const navigate = useNavigate();
+
     const dispatch = useDispatch();
     const word = useSelector((state) => state.recipeFilter.word);
+    const sort = useSelector((state) => state.recipeFilter.sort);
     const type = useSelector((state) => state.recipeFilter.type);
+    const categories = useSelector((state) => state.recipeFilter.categories);
     const route = useSelector((state) => state.recipeFilter.route);
 
     const [search, setSearch] = useState(word);
@@ -45,6 +51,33 @@ function Search(props) {
         setAnchorEl(null);
     };
 
+    const setParams = () => {
+        var newParams = '';
+        if (word !== '') {
+            newParams += `&wort=${word}`;
+        }
+        if (type !== 'all') {
+            newParams += `&typ=${params.type[type.toLowerCase()]}`;
+        }
+        if (sort.type !== 'score') {
+            newParams += `&sortierung=${
+                params.sort.type[sort.type.toLowerCase()]
+            }`;
+        }
+        if (sort.ascending !== false) {
+            newParams += `&reihenfolge=${
+                params.sort.ascending[sort.ascending]
+            }`;
+        }
+        if (categories.length > 0) {
+            newParams += `&filter=${categories.join(',')}`;
+        }
+        if (newParams !== '') {
+            newParams = newParams.replace('&', '?');
+        }
+        return newParams;
+    };
+
     return (
         <div style={{ display: 'flex', width: '100%' }}>
             <Textfield
@@ -67,6 +100,18 @@ function Search(props) {
                         ? dispatch(setWord(e.target.value))
                         : setSearch(e.target.value)
                 }
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                        props.redux
+                            ? navigate(
+                                  `/rezepte${
+                                      route !== '' ? `/${route}` : ''
+                                  }${setParams()}`,
+                                  { exact: true }
+                              )
+                            : dispatch(setWord(search));
+                    }
+                }}
                 start={
                     <IconButton
                         tooltipProps={{ title: 'Sucheinstellungen' }}
@@ -124,7 +169,9 @@ function Search(props) {
                     tooltipProps={{ title: 'Rezepte durchsuchen' }}
                     component={NavLink}
                     exact="true"
-                    to={`/rezepte${route !== '' ? `/${route}` : ''}`}
+                    to={`/rezepte${
+                        route !== '' ? `/${route}` : ''
+                    }${setParams()}`}
                     sx={{
                         height: '56px',
                         minWidth: '56px',

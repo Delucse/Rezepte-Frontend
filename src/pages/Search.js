@@ -30,7 +30,7 @@ function Search() {
 
     useEffect(() => {
         handleResize();
-        if (!user) {
+        if ((!user && route === 'favoriten') || route === 'nutzer') {
             dispatch(setRoute(''));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,13 +43,9 @@ function Search() {
         handleResize();
         window.addEventListener('resize', handleResize);
 
-        const route = searchParams.get('route');
         const type = searchParams.get('typ');
         const word = searchParams.get('wort');
         var filter = searchParams.get('filter');
-        if (route) {
-            dispatch(setRoute(params.route[route.toLowerCase()]));
-        }
         if (type) {
             dispatch(setType(params.typ[type.toLowerCase()]));
         }
@@ -102,7 +98,7 @@ function Search() {
                             sx={{
                                 width: user
                                     ? 'min(100%, 650px)'
-                                    : 'min(100%, 270px)',
+                                    : 'min(100%, 384px)',
                                 marginLeft: '9px',
                             }}
                         >
@@ -139,6 +135,17 @@ function Search() {
                                         />
                                     }
                                     label="Grundrezepte"
+                                    sx={{ mr: '20px' }}
+                                />
+                                <FormControlLabel
+                                    value={'kleinkind'}
+                                    control={
+                                        <Radio
+                                            disableRipple
+                                            sx={{ marginLeft: '-9px' }}
+                                        />
+                                    }
+                                    label="Kleinkinderrezepte"
                                     sx={{ mr: '20px' }}
                                 />
                                 {user ? (

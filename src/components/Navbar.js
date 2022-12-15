@@ -19,7 +19,6 @@ import Divider from '@mui/material/Divider';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import { useTheme } from '@mui/material';
 
 import Icon from '@mdi/react';
 import {
@@ -42,48 +41,71 @@ import {
     mdiBabyBottle,
 } from '@mdi/js';
 
-function Navlink(props) {
-    const theme = useTheme();
+function NavListItem(props) {
+    return (
+        <ListItem
+            button
+            onClick={props.onClick}
+            sx={{
+                fontWeight: props.isActive ? '700' : 'inherit',
+                color: (theme) =>
+                    props.isActive
+                        ? theme.palette.text.primary
+                        : theme.palette.text.secondary,
+            }}
+        >
+            <ListItemIcon sx={{ color: 'inherit' }}>
+                <Icon path={props.icon} size={1} />
+            </ListItemIcon>
+            <ListItemText
+                primary={props.text}
+                primaryTypographyProps={{
+                    fontWeight: 'inherit',
+                    color: 'inherit',
+                }}
+            />
+        </ListItem>
+    );
+}
 
+function Navlink(props) {
     const location = useLocation();
     const dispatch = useDispatch();
 
+    const isActive = location.pathname === props.link;
+
     const onClick = () => {
-        if (props.onClickDispatch) {
+        if (props.onClickDispatch && !isActive) {
             dispatch(props.onClickDispatch());
         }
         props.onClick();
     };
 
     return props.auth === undefined || props.auth ? (
-        <NavLink
-            to={props.link}
-            end
-            style={({ isActive }) => ({
-                fontWeight: isActive ? '700' : 'inherit',
-                textDecoration: 'none',
-                color: isActive
-                    ? theme.palette.text.primary
-                    : theme.palette.text.secondary,
-            })}
-            state={{
-                background: props.background ? location : null,
-                reset: props.reset ? props.reset : null,
-            }}
-        >
-            <ListItem button onClick={onClick}>
-                <ListItemIcon sx={{ color: 'inherit' }}>
-                    <Icon path={props.icon} size={1} />
-                </ListItemIcon>
-                <ListItemText
-                    primary={props.text}
-                    primaryTypographyProps={{
-                        fontWeight: 'inherit',
-                        color: 'inherit',
-                    }}
+        !isActive ? (
+            <NavLink
+                to={props.link}
+                end
+                style={{ textDecoration: 'none' }}
+                state={{
+                    background: props.background ? location : null,
+                    reset: props.reset ? props.reset : null,
+                }}
+            >
+                <NavListItem
+                    onClick={onClick}
+                    icon={props.icon}
+                    text={props.text}
                 />
-            </ListItem>
-        </NavLink>
+            </NavLink>
+        ) : (
+            <NavListItem
+                isActive
+                onClick={onClick}
+                icon={props.icon}
+                text={props.text}
+            />
+        )
     ) : null;
 }
 

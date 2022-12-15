@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+
+import { useDispatch } from 'react-redux';
+import { setRoute } from '../actions/recipeFilterActions';
 
 import { Link } from 'react-router-dom';
 
@@ -63,6 +66,12 @@ const themes = [
 ];
 
 function Home() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(setRoute(''));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <div>
             <Grid

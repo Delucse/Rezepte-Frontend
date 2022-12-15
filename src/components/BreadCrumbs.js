@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import { Helmet } from 'react-helmet';
 
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Box from '@mui/material/Box';
@@ -12,22 +12,51 @@ import Box from '@mui/material/Box';
 import Icon from '@mdi/react';
 import { mdiHome } from '@mdi/js';
 
-function GetRecipeTitle({ pageTitle }) {
-    const title = useSelector((state) => state.recipe.title);
-    const result = title ? title : 'lädt ...';
+import params from '../data/params.json';
 
-    return pageTitle ? (
-        <Helmet>
-            <title>{result} | Delucse</title>
-        </Helmet>
+function Link({ pathname, title }) {
+    return pathname ? (
+        <Box
+            sx={{
+                color: (theme) => theme.palette.primary.light,
+                '&:hover': {
+                    color: (theme) => theme.palette.primary.main,
+                },
+            }}
+        >
+            <RouterLink
+                to={pathname}
+                style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                }}
+            >
+                {title}
+            </RouterLink>
+        </Box>
     ) : (
-        result
+        <>
+            <DocumentTitle title={`${title} | Delucse`} />
+            {title}
+        </>
     );
 }
 
-function RecipeSearch({ pageTitle }) {
-    const { word, type } = useSelector((state) => state.recipeFilter);
-    const result = `${
+function RecipeLink({ formular }) {
+    const { id } = useParams();
+
+    const title = useSelector((state) => state.recipe.title);
+    const result = title ? title : 'lädt ...';
+
+    return (
+        <Link title={result} pathname={formular ? `/rezepte/${id}` : null} />
+    );
+}
+
+function SearchLink({ pathname }) {
+    const word = useSelector((state) => state.recipeFilter.word);
+    const type = useSelector((state) => state.recipeFilter.type);
+    const title = `${
         type === 'all'
             ? 'Suche'
             : type === 'title'
@@ -41,167 +70,154 @@ function RecipeSearch({ pageTitle }) {
             : 'Suche'
     }${' '}${word !== '' ? ` von "${word}"` : ''}`;
 
-    return pageTitle ? (
-        <Helmet>
-            <title>{result} | Delucse</title>
-        </Helmet>
-    ) : (
-        result
-    );
+    return <Link pathname={pathname ? '/suche' : null} title={title} />;
+}
+
+function RecipesOverviewLink({ pathname, title }) {
+    const word = useSelector((state) => state.recipeFilter.word);
+    const sort = useSelector((state) => state.recipeFilter.sort);
+    const type = useSelector((state) => state.recipeFilter.type);
+    const categories = useSelector((state) => state.recipeFilter.categories);
+
+    var path = pathname;
+    if (word !== '') {
+        path += `&wort=${word}`;
+    }
+    if (type !== 'all') {
+        path += `&typ=${params.type[type.toLowerCase()]}`;
+    }
+    if (sort.type !== 'score') {
+        path += `&sortierung=${params.sort.type[sort.type.toLowerCase()]}`;
+    }
+    if (sort.ascending !== false) {
+        path += `&reihenfolge=${params.sort.ascending[sort.ascending]}`;
+    }
+    if (categories.length > 0) {
+        path += `&filter=${categories.join(',')}`;
+    }
+    if (path !== pathname) {
+        path = path.replace('&', '?');
+    }
+
+    return <Link pathname={path} title={title} />;
 }
 
 const routes = [
-    { pathname: /^\/$/i, params: [], breadcrumbs: [] },
+    { pathname: /^\/$/i, breadcrumbs: [] },
     { pathname: /^\/(anmeldung|registrierung)$/i, breadcrumbs: [] },
     {
         pathname: /^\/rezepte$/i,
-        params: [],
-        breadcrumbs: [
-            { title: <RecipeSearch />, pathname: '/suche' },
-            { title: 'Rezepte' },
-        ],
+        breadcrumbs: [<SearchLink pathname />, <Link title="Rezepte" />],
     },
     {
         pathname: /^\/rezepte\/nutzer$/i,
-        params: [],
         breadcrumbs: [
-            { title: <RecipeSearch />, pathname: '/suche' },
-            { title: 'Rezepte', pathname: '/rezepte' },
-            { title: 'Nutzer' },
+            <SearchLink pathname />,
+            <RecipesOverviewLink pathname="/rezepte" title="Rezepte" />,
+            <Link title="Nutzer" />,
         ],
     },
     {
         pathname: /^\/rezepte\/favoriten$/i,
-        params: [],
         breadcrumbs: [
-            { title: <RecipeSearch />, pathname: '/suche' },
-            { title: 'Rezepte', pathname: '/rezepte' },
-            { title: 'Favoriten' },
+            <SearchLink pathname />,
+            <RecipesOverviewLink title="Rezepte" pathname="/rezepte" />,
+            <Link title="Favoriten" />,
         ],
     },
     {
         pathname: /^\/rezepte\/kleinkind$/i,
-        params: [],
         breadcrumbs: [
-            { title: <RecipeSearch />, pathname: '/suche' },
-            { title: 'Rezepte', pathname: '/rezepte' },
-            { title: 'Baby & Kleinkinder' },
+            <SearchLink pathname />,
+            <RecipesOverviewLink pathname="/rezepte" title="Rezepte" />,
+            <Link title="Baby & Kleinkinder" />,
         ],
     },
     {
         pathname: /^\/rezepte\/basis$/i,
-        params: [],
         breadcrumbs: [
-            { title: <RecipeSearch />, pathname: '/suche' },
-            { title: 'Rezepte', pathname: '/rezepte' },
-            { title: 'Grundrezepte' },
+            <SearchLink pathname />,
+            <RecipesOverviewLink pathname="/rezepte" title="Rezepte" />,
+            <Link title="Grundrezepte" />,
         ],
     },
     {
         pathname: /^\/rezepte\/.{24}$/i,
-        params: ['id'],
         breadcrumbs: [
-            { title: <RecipeSearch />, pathname: '/suche' },
-            { title: 'Rezepte', pathname: '/rezepte' },
-            {
-                title: 'Nutzer',
-                pathname: '/rezepte/nutzer',
-                condition: 'nutzer',
-            },
-            {
-                title: 'Favoriten',
-                pathname: '/rezepte/favoriten',
-                condition: 'favoriten',
-            },
-            {
-                title: 'Baby & Kleinkinder',
-                pathname: '/rezepte/kleinkind',
-                condition: 'kleinkind',
-            },
-            {
-                title: 'Grundrezepte',
-                pathname: '/rezepte/basis',
-                condition: 'basis',
-            },
-            { title: <GetRecipeTitle /> },
+            <SearchLink pathname />,
+            <RecipesOverviewLink pathname="/rezepte" title="Rezepte" />,
+            <RecipesOverviewLink
+                pathname="/rezepte/nutzer"
+                title="Nutzer"
+                condition="nutzer"
+            />,
+            <RecipesOverviewLink
+                pathname="/rezepte/favoriten"
+                title="Favoriten"
+                condition="favoriten"
+            />,
+            <RecipesOverviewLink
+                pathname="/rezepte/kleinkind"
+                title="Baby & Kleinkinder"
+                condition="kleinkind"
+            />,
+            <RecipesOverviewLink
+                pathname="/rezepte/basis"
+                title="Grundrezepte"
+                condition="basis"
+            />,
+            <RecipeLink />,
         ],
     },
     {
         pathname: /^\/rezepte\/formular$/i,
-        params: [],
         breadcrumbs: [
-            { title: 'Rezepte', pathname: '/rezepte' },
-            { title: 'Formular' },
+            <Link pathname="/rezepte" title="Rezepte" />,
+            <Link title="Formular" />,
         ],
     },
     {
         pathname: /^\/rezepte\/formular\/.{24}$/i,
-        params: ['id'],
         breadcrumbs: [
-            { title: 'Rezepte', pathname: '/rezepte' },
-            {
-                title: <GetRecipeTitle />,
-                pathname: '/rezepte/:id',
-                params: 'id',
-                replace: '/rezepte/',
-            },
-            { title: 'Formular' },
+            <Link pathname="/rezepte" title="Rezepte" />,
+            <RecipeLink formular />,
+            <Link title="Formular" />,
         ],
     },
     {
         pathname: /^\/suche$/i,
-        params: [],
-        breadcrumbs: [{ title: <RecipeSearch /> }],
+        breadcrumbs: [<SearchLink />],
     },
     {
         pathname: /^\/bilder$/i,
-        params: [],
-        breadcrumbs: [{ title: 'Meine Bilder' }],
+        breadcrumbs: [<Link title="Meine Bilder" />],
     },
     {
         pathname: /^\/konto$/i,
-        params: [],
-        breadcrumbs: [{ title: 'Konto' }],
+        breadcrumbs: [<Link title="Konto" />],
     },
     {
         pathname: /^\/einstellungen$/i,
-        params: [],
-        breadcrumbs: [{ title: 'Einstellungen' }],
+        breadcrumbs: [<Link title="Einstellungen" />],
     },
     {
         pathname: /^\/faq$/i,
-        params: [],
-        breadcrumbs: [{ title: 'FAQ' }],
+        breadcrumbs: [<Link title="FAQ" />],
     },
     {
         pathname: /^\/qr$/i,
-        params: [],
-        breadcrumbs: [{ title: 'QR-Code auslesen' }],
+        breadcrumbs: [<Link title="QR-Code auslesen" />],
     },
     {
         pathname: /^.*$/i,
-        // params: ['*'],
-        breadcrumbs: [{ title: 'Error' }],
+        breadcrumbs: [<Link title="Error" />],
     },
 ];
 
-function DocumentTitle({ breadcrumbs }) {
-    const Title =
-        breadcrumbs.length > 0 &&
-        breadcrumbs[breadcrumbs.length - 1].title.type;
-    return breadcrumbs.length > 0 ? (
-        typeof breadcrumbs[breadcrumbs.length - 1].title === 'string' ? (
-            <Helmet>
-                <title>
-                    {breadcrumbs[breadcrumbs.length - 1].title} | Delucse
-                </title>
-            </Helmet>
-        ) : (
-            <Title pageTitle />
-        )
-    ) : (
+function DocumentTitle({ title }) {
+    return (
         <Helmet>
-            <title>Delucse</title>
+            <title>{title}</title>
         </Helmet>
     );
 }
@@ -218,178 +234,84 @@ function BreadCrumbs() {
                 : location.state.background.pathname
             : location.pathname;
 
-    var params = useParams();
-    var keyParams = Object.keys(params);
-    if (/\/(anmeldung|registrierung)/.test(location.pathname)) {
-        if (/^\/rezepte(\/formular\/|\/).{24}$/i.test(pathname)) {
-            keyParams = ['id'];
-        } else {
-            keyParams = [];
-        }
-    }
-
-    const currentRoute = routes.filter((route) => {
-        if (route.hasOwnProperty('params')) {
-            return (
-                route.pathname.test(pathname) &&
-                JSON.stringify(route.params) === JSON.stringify(keyParams)
-            );
-        }
-        return route.pathname.test(pathname);
-    })[0];
-
-    var breadcrumbs = currentRoute.breadcrumbs.map((bc) => {
-        if (bc.params) {
-            if (bc.pathname.includes(`:${bc.params}`)) {
-                bc.pathname = bc.pathname.replace(
-                    `:${bc.params}`,
-                    params[bc.params]
-                );
-            } else {
-                bc.pathname = `${bc.replace}${params[bc.params]}`;
-            }
-        }
-        return bc;
-    });
-
-    breadcrumbs = breadcrumbs.filter((bc) => {
-        return (
-            !bc.hasOwnProperty('condition') ||
-            (bc.hasOwnProperty('condition') && bc.condition === route)
+    const breadcrumbs = routes
+        .filter((route) => route.pathname.test(pathname))[0]
+        .breadcrumbs.filter(
+            (bc) =>
+                !bc.props ||
+                !bc.props.hasOwnProperty('condition') ||
+                (bc.props.hasOwnProperty('condition') &&
+                    bc.props.condition === route)
         );
-    });
 
     return (
         <div style={{ zIndex: 1, position: 'sticky', top: 'calc(55px)' }}>
-            <DocumentTitle breadcrumbs={breadcrumbs} />
+            <DocumentTitle title={'Delucse'} />
             {breadcrumbs.length > 0 ? (
-                <div>
-                    <Box
-                        sx={{
-                            height: '30px',
-                            background: (theme) =>
-                                theme.palette.background.default,
-                            padding: (theme) =>
-                                `${theme.spacing(3)} ${theme.spacing(
-                                    3
-                                )} 0px ${theme.spacing(3)}`,
-                            width: (theme) =>
-                                `calc(100% - 2 * ${theme.spacing(3)})`,
-                            overflowY: 'hidden',
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                overflowX: 'auto',
-                                overflowY: 'hidden',
-                                display: 'flex',
-                            }}
-                        >
-                            <Breadcrumbs
-                                separator="›"
-                                sx={{
-                                    marginBottom: '10px',
-                                    '.MuiBreadcrumbs-ol': {
-                                        flexWrap: 'nowrap',
-                                    },
-                                    '.MuiBreadcrumbs-li': {
-                                        width: 'max-content',
-                                    },
-                                }}
-                            >
-                                <Link
-                                    to={'/'}
-                                    style={{ textDecoration: 'none' }}
-                                >
-                                    <Box
-                                        sx={{
-                                            color: (theme) =>
-                                                theme.palette.primary.light,
-                                            '&:hover': {
-                                                color: (theme) =>
-                                                    theme.palette.primary.main,
-                                            },
-                                        }}
-                                    >
-                                        <Icon
-                                            path={mdiHome}
-                                            size={1}
-                                            style={{ color: 'inherit' }}
-                                        />
-                                    </Box>
-                                </Link>
-                                {breadcrumbs.map(
-                                    ({ pathname, title }, index) => {
-                                        return index !==
-                                            breadcrumbs.length - 1 ? (
-                                            <Box
-                                                sx={{
-                                                    color: (theme) =>
-                                                        theme.palette.primary
-                                                            .light,
-                                                    '&:hover': {
-                                                        color: (theme) =>
-                                                            theme.palette
-                                                                .primary.main,
-                                                    },
-                                                }}
-                                                key={index}
-                                            >
-                                                <Link
-                                                    to={pathname}
-                                                    style={{
-                                                        textDecoration: 'none',
-                                                        color: 'inherit',
-                                                    }}
-                                                >
-                                                    {title}
-                                                </Link>
-                                            </Box>
-                                        ) : (
-                                            <div key={index}>{title}</div>
-                                        );
-                                    }
-                                )}
-                            </Breadcrumbs>
-                        </Box>
-                    </Box>
-                    <Box
-                        sx={{
-                            height: (theme) => theme.spacing(3),
-                            background: (theme) =>
-                                theme.palette.background
-                                    .default /*'linear-gradient(white 0%, transparent 60%)'*/,
-                        }}
-                    />
-                </div>
-            ) : currentRoute.hasOwnProperty('params') ||
-              (location.state &&
-                  location.state.background &&
-                  location.state.background.pathname === '/') ? (
                 <Box
                     sx={{
+                        height: '30px',
+                        background: (theme) => theme.palette.background.default,
                         padding: (theme) =>
                             `${theme.spacing(3)} ${theme.spacing(
                                 3
                             )} 0px ${theme.spacing(3)}`,
-                        background: (theme) =>
-                            theme.palette.background
-                                .default /*'linear-gradient(white 0%, transparent 60%)'*/,
+                        width: (theme) =>
+                            `calc(100% - 2 * ${theme.spacing(3)})`,
+                        overflowY: 'hidden',
                     }}
-                />
-            ) : (
-                <Box
-                    sx={{
-                        padding: (theme) =>
-                            `${theme.spacing(3)} ${theme.spacing(
-                                3
-                            )} 54px ${theme.spacing(3)}`,
-                        background: (theme) =>
-                            theme.palette.background
-                                .default /*'linear-gradient(white 0%, transparent 60%)'*/,
-                    }}
-                />
-            )}
+                >
+                    <Box
+                        sx={{
+                            overflowX: 'auto',
+                            overflowY: 'hidden',
+                            display: 'flex',
+                        }}
+                    >
+                        <Breadcrumbs
+                            separator="›"
+                            sx={{
+                                marginBottom: '10px',
+                                '.MuiBreadcrumbs-ol': {
+                                    flexWrap: 'nowrap',
+                                },
+                                '.MuiBreadcrumbs-li': {
+                                    width: 'max-content',
+                                },
+                            }}
+                        >
+                            <Link
+                                pathname={'/'}
+                                title={
+                                    <Icon
+                                        path={mdiHome}
+                                        size={1}
+                                        style={{ color: 'inherit' }}
+                                    />
+                                }
+                            />
+                            {breadcrumbs.map((link, index) => {
+                                return <div key={index}>{link}</div>;
+                            })}
+                        </Breadcrumbs>
+                    </Box>
+                </Box>
+            ) : null}
+            <Box
+                sx={{
+                    height: (theme) =>
+                        theme.spacing(breadcrumbs.length > 0 ? 3 : 0),
+                    padding: (theme) =>
+                        breadcrumbs.length > 0
+                            ? 0
+                            : `${theme.spacing(3)} ${theme.spacing(
+                                  3
+                              )} 0px ${theme.spacing(3)}`,
+                    background: (theme) =>
+                        theme.palette.background
+                            .default /*'linear-gradient(white 0%, transparent 60%)'*/,
+                }}
+            />
         </div>
     );
 }

@@ -43,29 +43,34 @@ function Recipes(props) {
     const recipes = useSelector((state) => state.recipeFilter.recipes);
     const route = useSelector((state) => state.recipeFilter.route);
 
-    const [oldType, setOldType] = useState(type);
-    const [oldUser, setUser] = useState(user);
-
     const search = useLocation().search;
 
+    const [oldSearch, setSearch] = useState(search);
+    const [oldUser, setUser] = useState(user);
+
     useEffect(() => {
-        if (
-            search === '' &&
-            !(type !== oldType && word === '') &&
-            props.route === route
-        ) {
-            dispatch(getRecipes());
-        }
-        setOldType(type);
+        setSearch(search);
+        setParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [word, sort, type, categories, route]);
+    }, [word, sort, type, categories]);
 
     useEffect(() => {
         if (props.route !== route) {
             dispatch(setRoute(props.route));
+            if (search === '') {
+                dispatch(resetFilterSettings());
+            }
+            dispatch(resetRecipes());
+            dispatch(getRecipes());
+        } else if (
+            (props.route === route && search === '') ||
+            oldSearch !== search
+        ) {
+            dispatch(resetRecipes());
+            dispatch(getRecipes());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.route, route]);
+    }, [search, props.route]);
 
     useEffect(() => {
         if (user && user !== oldUser && route === '') {
@@ -80,47 +85,64 @@ function Recipes(props) {
     useEffect(() => {
         dispatch(resetRecipe());
 
-        // read url params
-        const route = searchParams.get('route');
-        const type = searchParams.get('typ');
-        const word = searchParams.get('wort');
-        const sort = searchParams.get('sortierung');
-        const ascending = searchParams.get('reihenfolge');
-        var filter = searchParams.get('filter');
-
         if (search !== '') {
+            // read url params
+            const type = searchParams.get('typ');
+            const word = searchParams.get('wort');
+            const sort = searchParams.get('sortierung');
+            const ascending = searchParams.get('reihenfolge');
+            var filter = searchParams.get('filter');
+
             dispatch(resetFilterSettings());
+
+            if (type) {
+                dispatch(setType(params.typ[type.toLowerCase()]));
+            }
+            if (word) {
+                dispatch(setWord(word));
+            }
+            if (sort && ascending) {
+                dispatch(
+                    setSort(
+                        params.sortierung[sort.toLowerCase()],
+                        params.reihenfolge[ascending.toLowerCase()]
+                    )
+                );
+            }
+            if (filter) {
+                filter = filter /*.toLowerCase()*/
+                    .split(',');
+                filter = filter.map((f) => f.trim());
+                dispatch(setCategories(filter));
+            }
+            dispatch(getRecipes());
         }
-        if (route) {
-            dispatch(setRoute(params.route[route.toLowerCase()]));
-        }
-        if (type) {
-            dispatch(setType(params.typ[type.toLowerCase()]));
-        }
-        if (word) {
-            dispatch(setWord(word));
-        }
-        if (sort && ascending) {
-            dispatch(
-                setSort(
-                    params.sortierung[sort.toLowerCase()],
-                    params.reihenfolge[ascending.toLowerCase()]
-                )
-            );
-        }
-        if (filter) {
-            filter = filter /*.toLowerCase()*/
-                .split(',');
-            filter = filter.map((f) => f.trim());
-            dispatch(setCategories(filter));
-        }
-        setSearchParams();
 
         return () => {
             dispatch(resetRecipes());
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const setParams = () => {
+        const newParams = {};
+        if (word !== '') {
+            newParams.wort = word;
+        }
+        if (type !== 'all') {
+            newParams.typ = params.type[type.toLowerCase()];
+        }
+        if (sort.type !== 'score') {
+            newParams.sortierung = params.sort.type[sort.type.toLowerCase()];
+        }
+        if (sort.ascending !== false) {
+            newParams.reihenfolge = params.sort.ascending[sort.ascending];
+        }
+        if (categories.length > 0) {
+            newParams.filter = categories.join(',');
+        }
+        setSearchParams(newParams);
+    };
 
     return (
         <div style={{ marginTop: '-90px' }}>
@@ -169,7 +191,7 @@ function Recipes(props) {
                                 route === 'favoriten'
                                     ? 'Favoriten'
                                     : route === 'nutzer'
-                                    ? 'eigene Rezepte'
+                                    ? 'eigenen Rezepte'
                                     : route === 'basis'
                                     ? 'Grundrezepte'
                                     : 'Rezepte'
@@ -238,7 +260,10 @@ function Recipes(props) {
                                             }}
                                         >
                                             <Link
-                                                to={'/rezepte'}
+                                                to={{
+                                                    pathname: '/rezepte',
+                                                    search: search,
+                                                }}
                                                 style={{
                                                     textDecoration: 'none',
                                                     color: 'inherit',

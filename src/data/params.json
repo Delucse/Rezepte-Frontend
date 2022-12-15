@@ -1,15 +1,17 @@
 {
-    "route": {
-        "alle": "",
-        "favoriten": "favoriten",
-        "nutzer": "nutzer"
-    },
     "typ": {
         "alle": "all",
         "titel": "title",
         "zutaten": "ingredients",
         "schlüsselwort": "keywords",
         "arbteitsschritte": "steps"
+    },
+    "type": {
+        "all": "alle",
+        "title": "titel",
+        "ingredients": "zutaten",
+        "keywords": "schlüsselwort",
+        "steps": "arbteitsschritte"
     },
     "sortierung": {
         "relevanz": "score",
@@ -20,6 +22,18 @@
     "reihenfolge": {
         "aufsteigend": true,
         "absteigend": false
+    },
+    "sort": {
+        "type": {
+            "score": "relevanz",
+            "title": "alphabet",
+            "time": "gesamtzeit",
+            "date": "datum"
+        },
+        "ascending": {
+            "true": "aufsteigend",
+            "false": "absteigend"
+        }
     },
     "filter": {
         "Lebensmittel": ["vegan", "vegetarisch", "glutenfrei", "laktosefrei"],
