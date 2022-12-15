@@ -81,7 +81,7 @@ function Categories(props) {
                                             checked={
                                                 props.redux
                                                     ? reduxCategories.includes(
-                                                          item.toLowerCase()
+                                                          item
                                                       )
                                                     : categories.includes(item)
                                             }
