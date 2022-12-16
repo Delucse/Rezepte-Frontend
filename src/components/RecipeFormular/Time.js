@@ -3,139 +3,258 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setRecipeTime } from '../../actions/recipeFormularActions';
 
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 import { ClockPicker } from '@mui/x-date-pickers/ClockPicker';
+
+import moment from 'moment';
 
 import Textfield from '../Textfield';
 import Dialog from '../Dialog';
 import Button from '../Button';
-import IconButton from '../IconButton';
+import Alert from '../Alert';
 
-import { Grid } from '@mui/material';
+import { Grid, Tabs, Tab, Box } from '@mui/material';
 
 import Icon from '@mdi/react';
-import { mdiChevronLeft, mdiChevronRight, mdiClockOutline } from '@mdi/js';
+import { mdiClockOutline, mdiStove, mdiTimerPauseOutline } from '@mdi/js';
 
 function TimePicker(props) {
     const dispatch = useDispatch();
 
-    const [date, setDate] = useState(
-        new Date(
-            props.time + new Date(props.time).getTimezoneOffset() * 60 * 1000
-        )
-    );
+    const date = moment(props.time).utc();
+
     const [previewDate, setPreviewDate] = useState(date);
-    const [view, setView] = useState('hours');
+    const [days, setDays] = useState(
+        parseInt(previewDate.valueOf() / (24 * 60 * 60 * 1000))
+    );
+    const [hours, setHours] = useState(previewDate.hours());
+    const [minutes, setMinutes] = useState(previewDate.minutes());
+    const [view, setView] = useState('days');
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
-        setDate(
-            new Date(
-                props.time +
-                    new Date(props.time).getTimezoneOffset() * 60 * 1000
-            )
-        );
-    }, [props]);
+        const daysInMs = days * 24 * 60 * 60 * 1000;
+        const hourssInMs = hours * 60 * 60 * 1000;
+        const minutesInMs = minutes * 60 * 1000;
+        setPreviewDate(moment(daysInMs + hourssInMs + minutesInMs).utc());
+    }, [days, hours, minutes]);
 
     const toggle = () => {
         setOpen(!open);
     };
 
     const submit = () => {
-        var newDate = new Date(
-            previewDate.getTime() -
-                new Date(previewDate.getTime()).getTimezoneOffset() * 60 * 1000
-        );
-        dispatch(setRecipeTime(newDate.getTime(), props.type));
-        setDate(previewDate);
+        dispatch(setRecipeTime(previewDate.valueOf(), props.type));
         toggle();
-        setView('hours');
     };
 
     const cancel = () => {
         toggle();
-        setPreviewDate(date);
-        setView('hours');
+        setDays(parseInt(date.valueOf() / (24 * 60 * 60 * 1000)));
+        setHours(date.hours());
+        setMinutes(date.minutes());
+        setView('days');
     };
 
-    const getHours = (date) => {
-        return date.getHours().toString().padStart(2, 0);
+    const getTimeTitle = (date, preview) => {
+        var title = '';
+        var days = parseInt(date.valueOf() / (24 * 60 * 60 * 1000));
+        var hours = date.hours();
+        var minutes = date.minutes();
+        if (days > 0) {
+            title += `${days} ${days > 1 ? 'Tage' : 'Tag'}`;
+        }
+        if (hours > 0) {
+            title += `${title !== '' ? ' ' : ''}${hours} ${
+                hours > 1 ? 'Stunden' : 'Stunde'
+            }`;
+        }
+        if (minutes > 0) {
+            title += `${title !== '' ? ' ' : ''}${minutes} ${
+                minutes > 1 ? 'Minuten' : 'Minute'
+            }`;
+        }
+        if (preview) {
+            if (title !== '') {
+                title = `: ${title}`;
+            }
+        } else {
+            if (title === '') {
+                title = `keine Angabe`;
+            }
+        }
+        return title;
     };
 
-    const getMinutes = (date) => {
-        return date.getMinutes().toString().padStart(2, 0);
+    const handleTab = (event, newValue) => {
+        setView(newValue);
     };
+
+    const add = () => {
+        if (days !== '' && !isNaN(days)) {
+            setDays(parseInt(days) + 1);
+        } else {
+            setDays(1);
+        }
+    };
+
+    const reduce = () => {
+        if (days !== '' && !isNaN(days)) {
+            if (parseInt(days) !== days) {
+                setDays(parseInt(days));
+            } else {
+                setDays(parseInt(days) - 1);
+            }
+        } else {
+            setDays(1);
+        }
+    };
+
+    const error =
+        !/\d*/.test(days) ||
+        days < 0 ||
+        parseInt(days) !== Number(days) ||
+        Number(days) > 100000000;
 
     return (
         <div>
             <Textfield
-                value={`${getHours(date)}:${getMinutes(date)} Stunden`}
+                value={getTimeTitle(date)}
                 onClick={toggle}
                 label={props.label}
                 error={props.error}
-                start={<Icon path={mdiClockOutline} size={1} />}
+                start={
+                    <Icon
+                        path={props.icon ? props.icon : mdiClockOutline}
+                        size={1}
+                    />
+                }
             />
             <Dialog
                 open={open}
                 onClose={cancel}
                 closeIcon
+                width="280px"
                 title={`${props.label}${
-                    previewDate.getHours() === 0 &&
-                    previewDate.getMinutes() === 0
+                    previewDate.valueOf() === 0 || error
                         ? ''
-                        : `: ${getHours(previewDate)}:${getMinutes(
-                              previewDate
-                          )} Stunden`
+                        : getTimeTitle(previewDate, true)
                 }`}
                 content={
-                    <div>
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <ClockPicker
-                                date={previewDate}
-                                onChange={(newDate) => {
-                                    setPreviewDate(newDate);
-                                    setView(
-                                        view === 'hours' ? 'minutes' : view
-                                    );
-                                }}
-                                openTo="hours"
-                                view={view}
+                    <div
+                        style={{
+                            height: `calc(315px + ${error ? '50' : '0'}px)`,
+                        }}
+                    >
+                        {error ? (
+                            <Alert
+                                error
+                                message={'Gib eine positive Zahl an.'}
                             />
-                        </LocalizationProvider>
-                        <div
-                            style={{
-                                justifyContent: 'center',
-                                display: 'flex',
-                            }}
-                        >
-                            <IconButton
-                                onClick={() => setView('hours')}
-                                disabled={view === 'hours'}
-                                sx={{
-                                    padding: '8px',
-                                    '&:hover': {
-                                        color: (theme) =>
-                                            theme.palette.primary.main,
-                                    },
+                        ) : null}
+                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                            <Tabs
+                                onChange={handleTab}
+                                indicatorColor="primary"
+                                variant="fullWidth"
+                                value={view}
+                            >
+                                <Tab
+                                    disableRipple
+                                    value="days"
+                                    label="Tage"
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                    }}
+                                />
+                                <Tab
+                                    disableRipple
+                                    value="hours"
+                                    label="Stunden"
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                    }}
+                                />
+                                <Tab
+                                    disableRipple
+                                    value="minutes"
+                                    label="Minuten"
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontSize: '1rem',
+                                    }}
+                                />
+                            </Tabs>
+                        </Box>
+                        {view !== 'days' ? (
+                            <LocalizationProvider dateAdapter={AdapterMoment}>
+                                <ClockPicker
+                                    componentsProps={{ sx: { width: '100%' } }}
+                                    date={previewDate}
+                                    onChange={(newDate) => {
+                                        if (view === 'minutes') {
+                                            setMinutes(newDate.minutes());
+                                        } else {
+                                            setHours(newDate.hours());
+                                        }
+                                    }}
+                                    view={view}
+                                />
+                            </LocalizationProvider>
+                        ) : (
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    width: '100%',
+                                    margin: '16px 0',
                                 }}
                             >
-                                <Icon path={mdiChevronLeft} size={1} />
-                            </IconButton>
-                            <IconButton
-                                onClick={() => setView('minutes')}
-                                disabled={view === 'minutes'}
-                                sx={{
-                                    padding: '8px',
-                                    '&:hover': {
-                                        color: (theme) =>
-                                            theme.palette.primary.main,
-                                    },
-                                }}
-                            >
-                                <Icon path={mdiChevronRight} size={1} />
-                            </IconButton>
-                        </div>
+                                <Button
+                                    disabled={days <= 0}
+                                    sx={{
+                                        height: '56px',
+                                        minWidth: '56px',
+                                        padding: 0,
+                                    }}
+                                    variant="contained"
+                                    onClick={() => reduce()}
+                                >
+                                    -
+                                </Button>
+                                <Textfield
+                                    type="number"
+                                    inputProps={{
+                                        sx: { textAlign: 'center' },
+                                        step: '1',
+                                    }}
+                                    value={days}
+                                    onChange={(e) => {
+                                        if (
+                                            /^\d*(\.?|,?)\d*$/.test(
+                                                e.target.value
+                                            )
+                                        ) {
+                                            setDays(e.target.value);
+                                        }
+                                    }}
+                                    error={error}
+                                />
+                                <Button
+                                    sx={{
+                                        height: '56px',
+                                        minWidth: '56px',
+                                        padding: 0,
+                                    }}
+                                    variant="contained"
+                                    onClick={() => add()}
+                                >
+                                    +
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 }
                 actions={
@@ -147,7 +266,11 @@ function TimePicker(props) {
                         >
                             Abbrechen
                         </Button>
-                        <Button onClick={submit} variant="contained">
+                        <Button
+                            disabled={error}
+                            onClick={submit}
+                            variant="contained"
+                        >
                             Bestätigen
                         </Button>
                     </div>
@@ -177,7 +300,8 @@ function Time() {
             </Grid>
             <Grid item xs={12} sm={6} md={4}>
                 <TimePicker
-                    label="Wartezeit"
+                    label="Ruhezeit"
+                    icon={mdiTimerPauseOutline}
                     time={resting}
                     type="resting"
                     error={errorTime}
@@ -186,6 +310,7 @@ function Time() {
             <Grid item xs={12} sm={6} md={4}>
                 <TimePicker
                     label="Backzeit"
+                    icon={mdiStove}
                     time={baking}
                     type="baking"
                     error={errorTime}

@@ -354,7 +354,10 @@ function Portion() {
                                 </Button>
                                 <Textfield
                                     type="number"
-                                    step="any"
+                                    inputProps={{
+                                        sx: { textAlign: 'center' },
+                                        step: 'any',
+                                    }}
                                     value={count}
                                     style={{ width: '69px' }}
                                     onChange={(e) => {
@@ -542,7 +545,10 @@ function Portion() {
                                             </Button>
                                             <Textfield
                                                 type="number"
-                                                step="any"
+                                                inputProps={{
+                                                    sx: { textAlign: 'center' },
+                                                    step: 'any',
+                                                }}
                                                 value={form[0]}
                                                 style={{ width: '69px' }}
                                                 onChange={(e) => {
@@ -612,7 +618,12 @@ function Portion() {
                                                 </Button>
                                                 <Textfield
                                                     type="number"
-                                                    step="any"
+                                                    inputProps={{
+                                                        sx: {
+                                                            textAlign: 'center',
+                                                        },
+                                                        step: 'any',
+                                                    }}
                                                     value={form[1]}
                                                     style={{ width: '69px' }}
                                                     onChange={(e) => {

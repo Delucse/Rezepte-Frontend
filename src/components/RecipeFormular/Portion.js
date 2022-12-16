@@ -225,7 +225,10 @@ function Portion() {
                             </Button>
                             <Textfield
                                 type="number"
-                                step="1"
+                                inputProps={{
+                                    sx: { textAlign: 'center' },
+                                    step: '1',
+                                }}
                                 value={count}
                                 onChange={(e) => {
                                     if (
@@ -394,7 +397,10 @@ function Portion() {
                                         </Button>
                                         <Textfield
                                             type="number"
-                                            step="any"
+                                            inputProps={{
+                                                sx: { textAlign: 'center' },
+                                                step: 'any',
+                                            }}
                                             value={form[0]}
                                             style={{ width: '69px' }}
                                             onChange={(e) => {
@@ -462,7 +468,10 @@ function Portion() {
                                             </Button>
                                             <Textfield
                                                 type="number"
-                                                step="any"
+                                                inputProps={{
+                                                    sx: { textAlign: 'center' },
+                                                    step: 'any',
+                                                }}
                                                 value={form[1]}
                                                 style={{ width: '69px' }}
                                                 onChange={(e) => {

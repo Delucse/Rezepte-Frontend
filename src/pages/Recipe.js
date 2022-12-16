@@ -35,6 +35,8 @@ import Icon from '@mdi/react';
 import {
     mdiBarleyOff,
     mdiClockOutline,
+    mdiStove,
+    mdiTimerPauseOutline,
     mdiEggOffOutline,
     mdiFoodSteakOff,
     mdiPencil,
@@ -47,13 +49,28 @@ Object.keys(params.filter).forEach((key) => {
     filterParams = filterParams.concat(params.filter[key]);
 });
 
-const msToHoursAndMinutes = (time) => {
-    var t = time / 1000 / 60 / 60;
-    var hour = Math.trunc(t);
-    var minute = Math.trunc((t - hour) * 60);
-    return `${hour > 0 ? `${hour} Stunde${hour === 1 ? '' : 'n'} ` : ''}${
-        minute > 0 ? `${minute} Minute${minute === 1 ? '' : 'n'}` : ''
-    }`;
+const msToReadableTime = (time) => {
+    const minute = 60 * 1000;
+    const hour = 60 * minute;
+    const day = 24 * hour;
+    const days = parseInt(time / day);
+    const hours = parseInt((time - days * day) / hour);
+    const minutes = parseInt((time - days * day - hours * hour) / minute);
+    var title = '';
+    if (days > 0) {
+        title += `${days} ${days > 1 ? 'Tage' : 'Tag'}`;
+    }
+    if (hours > 0) {
+        title += `${title !== '' ? ' ' : ''}${hours} ${
+            hours > 1 ? 'Stunden' : 'Stunde'
+        }`;
+    }
+    if (minutes > 0) {
+        title += `${title !== '' ? ' ' : ''}${minutes} ${
+            minutes > 1 ? 'Minuten' : 'Minute'
+        }`;
+    }
+    return title;
 };
 
 function Recipe() {
@@ -269,88 +286,91 @@ function Recipe() {
                     </div>
                     <div style={{ marginBottom: '24px' }}>
                         {recipe.time.preparation > 0 ? (
-                            <Box
-                                sx={{
-                                    '&:hover': {
+                            <Tooltip title="Zubereitungszeit">
+                                <Box
+                                    sx={{
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.light,
+                                        },
                                         color: (theme) =>
-                                            theme.palette.primary.light,
-                                    },
-                                    color: (theme) =>
-                                        theme.palette.primary.main,
-                                    marginRight: '10px',
-                                    display: 'flex',
-                                }}
-                            >
-                                <Icon
-                                    path={mdiClockOutline}
-                                    size={1}
-                                    style={{
-                                        color: 'inherit',
+                                            theme.palette.primary.main,
                                         marginRight: '10px',
-                                        width: '24px',
+                                        display: 'flex',
                                     }}
-                                />
-                                <Typography variant="body1">
-                                    Zubereitungzeit:{' '}
-                                    {msToHoursAndMinutes(
-                                        recipe.time.preparation
-                                    )}
-                                </Typography>
-                            </Box>
+                                >
+                                    <Icon
+                                        path={mdiClockOutline}
+                                        size={1}
+                                        style={{
+                                            color: 'inherit',
+                                            marginRight: '10px',
+                                            width: '24px',
+                                        }}
+                                    />
+                                    <Typography variant="body1">
+                                        {msToReadableTime(
+                                            recipe.time.preparation
+                                        )}
+                                    </Typography>
+                                </Box>
+                            </Tooltip>
                         ) : null}
                         {recipe.time.resting > 0 ? (
-                            <Box
-                                sx={{
-                                    '&:hover': {
+                            <Tooltip title="Ruhezeit">
+                                <Box
+                                    sx={{
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.light,
+                                        },
                                         color: (theme) =>
-                                            theme.palette.primary.light,
-                                    },
-                                    color: (theme) =>
-                                        theme.palette.primary.main,
-                                    marginRight: '10px',
-                                    display: 'flex',
-                                }}
-                            >
-                                <Icon
-                                    path={mdiClockOutline}
-                                    size={1}
-                                    style={{
-                                        color: 'inherit',
+                                            theme.palette.primary.main,
                                         marginRight: '10px',
+                                        display: 'flex',
                                     }}
-                                />
-                                <Typography variant="body1">
-                                    Wartezeit:{' '}
-                                    {msToHoursAndMinutes(recipe.time.resting)}
-                                </Typography>
-                            </Box>
+                                >
+                                    <Icon
+                                        path={mdiTimerPauseOutline}
+                                        size={1}
+                                        style={{
+                                            color: 'inherit',
+                                            marginRight: '10px',
+                                        }}
+                                    />
+                                    <Typography variant="body1">
+                                        {msToReadableTime(recipe.time.resting)}
+                                    </Typography>
+                                </Box>
+                            </Tooltip>
                         ) : null}
                         {recipe.time.baking > 0 ? (
-                            <Box
-                                sx={{
-                                    '&:hover': {
+                            <Tooltip title="Backzeit">
+                                <Box
+                                    sx={{
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.light,
+                                        },
                                         color: (theme) =>
-                                            theme.palette.primary.light,
-                                    },
-                                    color: (theme) =>
-                                        theme.palette.primary.main,
-                                    marginRight: '10px',
-                                    display: 'flex',
-                                }}
-                            >
-                                <Icon
-                                    path={mdiClockOutline}
-                                    size={1}
-                                    style={{
-                                        color: 'inherit',
+                                            theme.palette.primary.main,
                                         marginRight: '10px',
+                                        display: 'flex',
                                     }}
-                                />
-                                <Typography variant="body1">
-                                    Backzeit:{' '}
-                                    {msToHoursAndMinutes(recipe.time.baking)}
-                                </Typography>
-                            </Box>
+                                >
+                                    <Icon
+                                        path={mdiStove}
+                                        size={1}
+                                        style={{
+                                            color: 'inherit',
+                                            marginRight: '10px',
+                                        }}
+                                    />
+                                    <Typography variant="body1">
+                                        {msToReadableTime(recipe.time.baking)}
+                                    </Typography>
+                                </Box>
+                            </Tooltip>
                         ) : null}
                     </div>
                     {/* Portion */}

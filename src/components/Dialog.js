@@ -65,6 +65,9 @@ function Dialog(props) {
                 sx: {
                     borderRadius: 0,
                     color: (theme) => theme.palette.text.primary,
+                    width: props.width
+                        ? `calc(${props.width} + 2 * 16px)`
+                        : 'unset',
                 },
             }}
             fullScreen={props.fullScreen}

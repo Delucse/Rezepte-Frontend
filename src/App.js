@@ -58,6 +58,15 @@ function App() {
                         : 'light'
                     : color.mode,
         },
+        components: {
+            MuiClockPicker: {
+                styleOverrides: {
+                    root: {
+                        width: '280px',
+                    },
+                },
+            },
+        },
     };
     const theme = createTheme(themeConfig);
 

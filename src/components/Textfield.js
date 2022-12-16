@@ -44,13 +44,7 @@ function Textfield(props) {
                 multiline={props.multiline}
                 minRows={props.minRows}
                 maxRows={props.maxRows}
-                inputProps={
-                    props.pattern
-                        ? { pattern: props.pattern }
-                        : props.step
-                        ? { step: props.step }
-                        : {}
-                }
+                inputProps={props.inputProps}
                 placeholder={props.placeholder}
                 style={props.style}
                 startAdornment={
