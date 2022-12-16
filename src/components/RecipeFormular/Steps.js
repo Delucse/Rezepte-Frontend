@@ -27,7 +27,9 @@ function Step(props) {
                 marginBottom: props.length - 1 === props.fIndex ? 0 : '10px',
             }}
         >
-            <div style={{ display: 'grid', marginRight: '5px' }}>
+            <div
+                style={{ display: 'grid', marginRight: '5px', height: '56px' }}
+            >
                 <Button
                     onClick={() =>
                         dispatch(
@@ -74,6 +76,8 @@ function Step(props) {
             </div>
             <Textfield
                 value={props.step}
+                multiline
+                minRows={1}
                 onChange={(e) =>
                     dispatch(changeStep(props.index, e.target.value))
                 }

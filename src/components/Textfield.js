@@ -22,7 +22,7 @@ function Textfield(props) {
             <OutlinedInput
                 sx={{
                     borderRadius: '0px',
-                    height: '56px',
+                    minHeight: '56px',
                     border: (theme) =>
                         props.disabled && props.error
                             ? `1px solid ${theme.palette.error.main}`
@@ -41,6 +41,9 @@ function Textfield(props) {
                 onKeyDown={props.onKeyDown}
                 onClick={props.onClick}
                 type={props.type ? props.type : 'text'}
+                multiline={props.multiline}
+                minRows={props.minRows}
+                maxRows={props.maxRows}
                 inputProps={
                     props.pattern
                         ? { pattern: props.pattern }
@@ -53,7 +56,15 @@ function Textfield(props) {
                 startAdornment={
                     props.start ? (
                         <InputAdornment
-                            sx={{ maxHeight: '56px', height: '56px' }}
+                            sx={
+                                !props.multiline
+                                    ? { maxHeight: '56px', height: '56px' }
+                                    : {
+                                          alignItems: 'start',
+                                          height: '100%',
+                                          maxHeight: '100%',
+                                      }
+                            }
                             position="start"
                         >
                             {props.start}
@@ -63,7 +74,15 @@ function Textfield(props) {
                 endAdornment={
                     props.end ? (
                         <InputAdornment
-                            sx={{ maxHeight: '56px', height: '56px' }}
+                            sx={
+                                !props.multiline
+                                    ? { maxHeight: '56px', height: '56px' }
+                                    : {
+                                          alignItems: 'start',
+                                          height: '100%',
+                                          maxHeight: '100%',
+                                      }
+                            }
                             position="start"
                         >
                             {props.end}
