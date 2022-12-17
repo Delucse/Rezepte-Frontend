@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -22,6 +22,8 @@ import Preview from '../components/RecipeFormular/Preview';
 import Pictures from '../components/RecipeFormular/Pictures';
 import Stepper from '../components/RecipeFormular/Stepper';
 import Categories from '../components/RecipeFormular/Categories';
+
+import { Box } from '@mui/material';
 
 const steps = [
     {
@@ -61,10 +63,6 @@ function RecipeFormular() {
     const blocked = useSelector((state) => state.recipeFormular.blocked);
     const recipeId = useSelector((state) => state.recipe.id);
     const recipePictures = useSelector((state) => state.recipe.pictures);
-    const uploaded = useSelector((state) => state.recipeFormular.uploaded);
-    const formularFilled = useSelector((state) =>
-        state.recipeFormular.portion.hasOwnProperty('count')
-    );
 
     const { id } = useParams();
 
@@ -92,16 +90,39 @@ function RecipeFormular() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeId]);
 
+    const [wait, setWait] = useState(0);
+    useEffect(() => {
+        if (wait < 1) {
+            setTimeout(() => {
+                setWait(wait + 1);
+            }, 1000);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [wait]);
+
     const [showDialogLeavingPage, confirmNavigation, cancelNavigation] =
         usePrompt(blocked);
 
     return (
         <div>
-            {uploaded || !id || (id && id === recipeId && formularFilled) ? (
-                <Stepper steps={steps} />
-            ) : (
-                'Daten werden geladen ...'
-            )}
+            {wait < 1 && id ? (
+                <Box
+                    sx={{
+                        background: (theme) => theme.palette.background.default,
+                        color: (theme) => theme.palette.text.primary,
+                        height: '100%',
+                        position: 'absolute',
+                        zIndex: 4,
+                        width: {
+                            xs: 'calc(100% - 2 * 24px)',
+                            md: 'calc(100% - 2 * 15px - 1px)',
+                        },
+                    }}
+                >
+                    Daten werden geladen ...
+                </Box>
+            ) : null}
+            <Stepper steps={steps} />
             <NavigationPrompt
                 open={showDialogLeavingPage}
                 closePrompt={(bool) => dispatch(setBlocked(bool))}
