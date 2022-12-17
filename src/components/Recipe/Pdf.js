@@ -57,15 +57,29 @@ const rgbToHex = (rgb) => {
         .join('')}`;
 };
 
-const msToHoursAndMinutes = (time) => {
-    var t = time / 1000 / 60 / 60;
-    var hour = Math.trunc(t);
-    var minute = Math.trunc((t - hour) * 60);
-    return `${hour > 0 ? `${hour} Stunde${hour === 1 ? '' : 'n'} ` : ''}${
-        minute > 0 ? `${minute} Minute${minute === 1 ? '' : 'n'}` : ''
-    }`;
+const msToReadableTime = (time) => {
+    const minute = 60 * 1000;
+    const hour = 60 * minute;
+    const day = 24 * hour;
+    const days = parseInt(time / day);
+    const hours = parseInt((time - days * day) / hour);
+    const minutes = parseInt((time - days * day - hours * hour) / minute);
+    var title = '';
+    if (days > 0) {
+        title += `${days} ${days > 1 ? 'Tage' : 'Tag'}`;
+    }
+    if (hours > 0) {
+        title += `${title !== '' ? ' ' : ''}${hours} ${
+            hours > 1 ? 'Stunden' : 'Stunde'
+        }`;
+    }
+    if (minutes > 0) {
+        title += `${title !== '' ? ' ' : ''}${minutes} ${
+            minutes > 1 ? 'Minuten' : 'Minute'
+        }`;
+    }
+    return title;
 };
-
 const filename = (string) => {
     string = string.replace(/Ä/g, 'Ae');
     string = string.replace(/Ö/g, 'Oe');
@@ -319,7 +333,7 @@ function Header({ theme, title, portion, time }) {
                                 d="M21 13.35C20.36 13.13 19.7 13 19 13C19 9.13 15.87 6 12 6S5 9.13 5 13 8.13 20 12 20C12.37 20 12.72 19.96 13.08 19.91C13.18 20.6 13.4 21.25 13.71 21.83C13.16 21.94 12.59 22 12 22C7.03 22 3 17.97 3 13S7.03 4 12 4C14.12 4 16.07 4.74 17.62 6L19.04 4.56C19.55 5 20 5.46 20.45 5.97L19.03 7.39C20.26 8.93 21 10.88 21 13C21 13.12 21 13.23 21 13.35M11 14H13V8H11V14M15 1H9V3H15V1M19.63 16.5V21.5H21.5V16.5H19.63M16.5 21.5H18.38V16.5H16.5V21.5Z"
                             />
                         </Svg>
-                        <Text> {msToHoursAndMinutes(time.resting)}</Text>
+                        <Text> {msToReadableTime(time.resting)}</Text>
                     </View>
                 ) : null}
                 {time.baking > 0 ? (
@@ -333,7 +347,7 @@ function Header({ theme, title, portion, time }) {
                                 d="M6,14H8L11,17H9L6,14M4,4H5V3A1,1 0 0,1 6,2H10A1,1 0 0,1 11,3V4H13V3A1,1 0 0,1 14,2H18A1,1 0 0,1 19,3V4H20A2,2 0 0,1 22,6V19A2,2 0 0,1 20,21V22H17V21H7V22H4V21A2,2 0 0,1 2,19V6A2,2 0 0,1 4,4M18,7A1,1 0 0,1 19,8A1,1 0 0,1 18,9A1,1 0 0,1 17,8A1,1 0 0,1 18,7M14,7A1,1 0 0,1 15,8A1,1 0 0,1 14,9A1,1 0 0,1 13,8A1,1 0 0,1 14,7M20,6H4V10H20V6M4,19H20V12H4V19M6,7A1,1 0 0,1 7,8A1,1 0 0,1 6,9A1,1 0 0,1 5,8A1,1 0 0,1 6,7M13,14H15L18,17H16L13,14Z"
                             />
                         </Svg>
-                        <Text> {msToHoursAndMinutes(time.baking)}</Text>
+                        <Text> {msToReadableTime(time.baking)}</Text>
                     </View>
                 ) : null}
             </View>
