@@ -54,7 +54,6 @@ const reducer = (state = initialState, action) => {
         case REGISTER_SUCCESS:
             return {
                 ...state,
-                user: '',
             };
         default:
             return state;

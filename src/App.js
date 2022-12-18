@@ -23,6 +23,7 @@ import Settings from './pages/Settings';
 import Images from './pages/Images';
 import Faq from './pages/Faq';
 import Qr from './pages/Qr';
+import Verification from './pages/Verification';
 
 function App() {
     const dispatch = useDispatch();
@@ -166,6 +167,12 @@ function App() {
                     {!background && (
                         <Route path="registrierung" element={<SignUp />} />
                     )}
+                    {!background && (
+                        <Route
+                            path="verifizierung/:token"
+                            element={<Verification />}
+                        />
+                    )}
                     <Route path="*" element={<Error />} />
                 </Route>
             </Routes>
@@ -173,6 +180,10 @@ function App() {
                 <Routes>
                     <Route path="anmeldung" element={<SignIn />} />
                     <Route path="registrierung" element={<SignUp />} />
+                    <Route
+                        path="verifizierung/:token"
+                        element={<Verification />}
+                    />
                 </Routes>
             )}
         </ThemeProvider>

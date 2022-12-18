@@ -67,6 +67,8 @@ function Dialog(props) {
                     color: (theme) => theme.palette.text.primary,
                     width: props.width
                         ? `calc(${props.width} + 2 * 16px)`
+                        : props.fullWidth
+                        ? '100%'
                         : 'unset',
                 },
             }}

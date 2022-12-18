@@ -105,6 +105,7 @@ function RecipesOverviewLink({ pathname, title }) {
 const routes = [
     { pathname: /^\/$/i, breadcrumbs: [] },
     { pathname: /^\/(anmeldung|registrierung)$/i, breadcrumbs: [] },
+    { pathname: /^\/verifizierung\/.*$/i, breadcrumbs: [] },
     {
         pathname: /^\/rezepte$/i,
         breadcrumbs: [<SearchLink pathname />, <Link title="Rezepte" />],

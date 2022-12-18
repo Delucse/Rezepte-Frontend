@@ -33,8 +33,8 @@ function SignUp() {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.auth.user);
     const error = useSelector((state) => state.message.error);
+    const type = useSelector((state) => state.message.type);
     const progress = useSelector(
         (state) => state.progress.loading && state.progress.type === 'signup'
     );
@@ -60,21 +60,9 @@ function SignUp() {
             : '/';
 
     useEffect(() => {
-        if (user === '') {
-            navigate('/anmeldung', {
-                state: location.state
-                    ? {
-                          background: location.state.background,
-                          auth: location.state.auth,
-                      }
-                    : {},
-                replace: true,
-            });
+        if (error && type !== 'verification') {
+            dispatch(resetMessage());
         }
-    }, [user, navigate, location.state]);
-
-    useEffect(() => {
-        dispatch(resetMessage());
         return () => {
             if (error) {
                 dispatch(resetMessage());
@@ -101,11 +89,11 @@ function SignUp() {
                     'user'
                 )
             );
-            // } else if (email.trim() === '') {
-            //     dispatch(setProgressError('signup'));
-            //     dispatch(
-            //         alertErrorMessage('Es muss eine E-Mail angegeben sein.', 'user')
-            //     );
+        } else if (email.trim() === '') {
+            dispatch(setProgressError('signup'));
+            dispatch(
+                alertErrorMessage('Es muss eine E-Mail angegeben sein.', 'user')
+            );
         } else if (password.trim() === '') {
             dispatch(setProgressError('signup'));
             dispatch(
@@ -131,7 +119,19 @@ function SignUp() {
                 )
             );
         } else {
-            dispatch(register(username, password, email));
+            dispatch(
+                register(username, password, email, () => {
+                    navigate('/anmeldung', {
+                        state: location.state
+                            ? {
+                                  background: location.state.background,
+                                  auth: location.state.auth,
+                              }
+                            : {},
+                        replace: true,
+                    });
+                })
+            );
         }
     };
 
@@ -184,6 +184,11 @@ function SignUp() {
                     >
                         <Alert
                             type={'user'}
+                            style={{ marginBottom: '20px' }}
+                            error
+                        />
+                        <Alert
+                            type={'verification'}
                             style={{ marginBottom: '20px' }}
                             error
                         />

@@ -70,7 +70,7 @@ export const loadUser = () => (dispatch, getState) => {
 };
 
 // register User
-export const register = (username, password, email) => (dispatch) => {
+export const register = (username, password, email, cb) => (dispatch) => {
     // Headers
     const config = {
         headers: {
@@ -78,20 +78,21 @@ export const register = (username, password, email) => (dispatch) => {
         },
     };
     // Request Body
-    const body = { username: username, password: password };
-    if (email !== '') {
-        body.email = email;
-    }
+    const body = { username: username, password: password, email: email };
     axios
         .post(`${process.env.REACT_APP_API_URL}/auth/signup`, body, config)
         .then((res) => {
             dispatch(
-                alertMessage('Du hast dich erfolgreich registriert.', 'user')
+                alertMessage(
+                    'Du hast dich erfolgreich registriert. Schaue nun in deinem Postfach nach, um deine E-Mail-Adresse zu bestätigen.',
+                    'user'
+                )
             );
             dispatch({
                 type: REGISTER_SUCCESS,
             });
             dispatch(setProgressSuccess('auth'));
+            cb();
         })
         .catch((err) => {
             if (err.response.status !== 401) {
@@ -165,16 +166,34 @@ export const login = (username, password) => (dispatch) => {
             );
         })
         .catch((err) => {
+            if (err.response.status === 500) {
+                dispatch(alertErrorMessage('Interner Server-Fehler.', 'user'));
+            } else {
+                if (
+                    err.response.data.message ===
+                    'Username or password is wrong.'
+                ) {
+                    dispatch(
+                        alertErrorMessage(
+                            'Benutzername oder Passwort ist nicht korrekt.',
+                            'user'
+                        )
+                    );
+                } else if (
+                    err.response.data.message === 'User is not verified.'
+                ) {
+                    dispatch(
+                        alertErrorMessage(
+                            'Nutzer-Konto ist nicht verifiziert.',
+                            'user'
+                        )
+                    );
+                }
+            }
             dispatch({
                 type: LOGIN_FAIL,
             });
             dispatch(setProgressError('auth'));
-            dispatch(
-                alertErrorMessage(
-                    `Benutzername oder Passwort ist nicht korrekt.`,
-                    'user'
-                )
-            );
         });
 };
 
