@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { register } from '../actions/authActions';
-import { alertErrorMessage, resetMessage } from '../actions/messageActions';
-import { setProgress, setProgressError } from '../actions/progressActions';
+import {
+    resetMessage,
+    alertMessage,
+    alertErrorMessage,
+} from '../actions/messageActions';
 
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
+
+import axios from 'axios';
 
 import Dialog from '../components/Dialog';
 import DelucseLogo from '../components/DelucseLogo';
@@ -14,62 +18,46 @@ import Textfield from '../components/Textfield';
 import Button from '../components/Button';
 import IconButton from '../components/IconButton';
 
-import { styled } from '@mui/material/styles';
-import { Divider, CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
+import {
+    setProgress,
+    setProgressError,
+    setProgressSuccess,
+} from '../actions/progressActions';
 
-const StyledLink = styled(Link)(({ theme }) => ({
-    color: theme.palette.primary.main,
-    textDecoration: 'none',
-    '&:hover': {
-        textDecoration: 'underline',
-    },
-}));
-
-function SignUp() {
-    const location = useLocation();
+function SetPassword() {
     const navigate = useNavigate();
+    const { id, token } = useParams();
 
     const dispatch = useDispatch();
     const error = useSelector((state) => state.message.error);
+    const art = useSelector((state) => state.message.art);
     const type = useSelector((state) => state.message.type);
     const progress = useSelector(
-        (state) => state.progress.loading && state.progress.type === 'signup'
+        (state) =>
+            state.progress.loading && state.progress.type === 'setPassword'
     );
 
-    const emailRef = useRef();
     const passwordRef = useRef();
-    const confirmPasswordRef = useRef();
 
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-
-    const pathname =
-        location.state && location.state.background
-            ? location.state.background.state &&
-              location.state.background.state.background
-                ? location.state.background.state.background.pathname +
-                  location.state.background.state.background.search
-                : location.state.background.pathname +
-                  location.state.background.search
-            : '/';
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     useEffect(() => {
-        if (error && type !== 'verification') {
+        if (error) {
             dispatch(resetMessage());
         }
         return () => {
-            if (error) {
+            if (art === 'alert' && type === 'password') {
                 dispatch(resetMessage());
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [username, password, email]);
+    }, [confirmPassword, password]);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -79,71 +67,91 @@ function SignUp() {
         e.preventDefault();
     };
 
-    const registerCheck = () => {
-        dispatch(setProgress('signup'));
-        if (username.trim() === '') {
-            dispatch(setProgressError('signup'));
-            dispatch(
-                alertErrorMessage(
-                    'Es muss ein Nutzername angegeben sein.',
-                    'user'
-                )
-            );
-        } else if (email.trim() === '') {
-            dispatch(setProgressError('signup'));
-            dispatch(
-                alertErrorMessage('Es muss eine E-Mail angegeben sein.', 'user')
-            );
-        } else if (password.trim() === '') {
-            dispatch(setProgressError('signup'));
+    const resetPassword = () => {
+        dispatch(setProgress('setPassword'));
+        if (password.trim() === '') {
             dispatch(
                 alertErrorMessage(
                     'Es muss ein Passwort angegeben sein.',
-                    'user'
+                    'password'
                 )
             );
+            dispatch(setProgressError('setPassword'));
         } else if (confirmPassword.trim() === '') {
-            dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
                     'Bestätige dein Passwort durch wiederholte Eingabe dessen.',
-                    'user'
+                    'password'
                 )
             );
+            dispatch(setProgressError('setPassword'));
         } else if (confirmPassword !== password) {
-            dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
                     'Die Passwörter stimmen nicht überein.',
-                    'user'
+                    'password'
                 )
             );
+            dispatch(setProgressError('setPassword'));
         } else {
-            dispatch(
-                register(username, password, email, () => {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            };
+            // Request Body
+            const body = {
+                token: token,
+                password: password,
+                confirmPassword: confirmPassword,
+            };
+            axios
+                .put(
+                    `${process.env.REACT_APP_API_URL}/user/password/${id}`,
+                    body,
+                    config
+                )
+                .then((res) => {
+                    dispatch(
+                        alertMessage(
+                            'Du hast dein Passwort erfolgreich zurückgesetzt.',
+                            'user'
+                        )
+                    );
+                    dispatch(setProgressSuccess('setPassword'));
                     navigate('/anmeldung', {
-                        state: location.state
-                            ? {
-                                  background: location.state.background,
-                                  auth: location.state.auth,
-                              }
-                            : {},
                         replace: true,
                     });
                 })
-            );
+                .catch((err) => {
+                    if (err.response.status === 500) {
+                        dispatch(
+                            alertErrorMessage(
+                                'Passwort zurücksetzen ist fehlgeschlagen: Interner Server-Fehler. Probiere es bitte zu einem späteren Zeitpunkt erneut.',
+                                'password'
+                            )
+                        );
+                    } else {
+                        dispatch(
+                            alertErrorMessage(
+                                'Dein Zurücksetzungslink ist bereits abgelaufen. Gib bitte erneut deine E-Mail an.',
+                                'setPassword'
+                            )
+                        );
+                        navigate('/passwort', {
+                            replace: true,
+                        });
+                    }
+                    dispatch(setProgressError('setPassword'));
+                });
         }
     };
 
     return (
         <Dialog
-            open={true}
             maxWidth={'sm'}
             fullWidth
-            backIcon={location.state && location.state.auth}
-            onBack={() => navigate('/', { replace: true })}
-            closeIcon={location.state && !location.state.auth}
-            onClose={() => navigate(pathname, { replace: true })}
+            open
             title={
                 <div style={{ justifyItems: 'center', display: 'grid' }}>
                     <Link to="/">
@@ -156,27 +164,6 @@ function SignUp() {
             }
             content={
                 <div>
-                    {location.state && location.state.auth ? (
-                        <div
-                            style={{
-                                marginBottom: '20px',
-                                textAlign: 'center',
-                            }}
-                        >
-                            <p
-                                style={{
-                                    textAlign: 'center',
-                                    paddingRight: '34px',
-                                    paddingLeft: '34px',
-                                    marginTop: '10px',
-                                }}
-                            >
-                                Die aufgerufene Seite ist passwortgeschützt.
-                                Registriere dich bitte hier.
-                            </p>
-                            <Divider variant="fullWidth" />
-                        </div>
-                    ) : null}
                     <div
                         style={{
                             paddingRight: '34px',
@@ -185,51 +172,17 @@ function SignUp() {
                         }}
                     >
                         <Alert
-                            type={'user'}
+                            type={'password'}
                             style={{ marginBottom: '20px' }}
-                            error
-                        />
-                        <Alert
-                            type={'verification'}
-                            style={{ marginBottom: '20px' }}
-                            error
                         />
                         <Textfield
-                            label="Nutzername"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                    emailRef.current.focus();
-                                }
-                            }}
-                            fullWidth
-                            margin
-                            autoFocus
-                        />
-                        <Textfield
-                            inputRef={emailRef}
-                            type="email"
-                            label="E-Mail"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            onKeyDown={(event) => {
-                                if (event.key === 'Enter') {
-                                    passwordRef.current.focus();
-                                }
-                            }}
-                            fullWidth
-                            margin
-                        />
-                        <Textfield
-                            inputRef={passwordRef}
                             type={showPassword ? 'text' : 'password'}
                             label="Passwort"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             onKeyDown={(event) => {
                                 if (event.key === 'Enter') {
-                                    confirmPasswordRef.current.focus();
+                                    passwordRef.current.focus();
                                 }
                             }}
                             end={
@@ -253,14 +206,14 @@ function SignUp() {
                             margin
                         />
                         <Textfield
-                            inputRef={confirmPasswordRef}
+                            inputRef={passwordRef}
                             label="Passwort bestätigen"
                             type="password"
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             onKeyDown={(event) => {
                                 if (event.key === 'Enter' && !progress) {
-                                    registerCheck();
+                                    resetPassword();
                                 }
                             }}
                             fullWidth
@@ -269,18 +222,18 @@ function SignUp() {
                             <Button
                                 variant="contained"
                                 sx={{ width: '100%' }}
-                                onClick={registerCheck}
+                                onClick={() => resetPassword()}
                                 disabled={progress}
                             >
                                 {!progress ? (
-                                    'Registrieren'
+                                    'Passwort neu vergeben'
                                 ) : (
                                     <CircularProgress size={24.5} />
                                 )}
                             </Button>
                         </p>
                     </div>
-                    <Divider variant="fullWidth" />
+                    {/* <Divider variant="fullWidth" />
                     <p
                         style={{
                             textAlign: 'center',
@@ -289,7 +242,7 @@ function SignUp() {
                             marginBottom: 0,
                         }}
                     >
-                        Du hast bereits ein Konto?{' '}
+                        Du kannst dich wieder an dein Passwort erinnern?{' '}
                         <StyledLink
                             to="/anmeldung"
                             state={
@@ -305,11 +258,11 @@ function SignUp() {
                         >
                             Anmelden
                         </StyledLink>
-                    </p>
+                    </p> */}
                 </div>
             }
         />
     );
 }
 
-export default SignUp;
+export default SetPassword;

@@ -106,6 +106,8 @@ const routes = [
     { pathname: /^\/$/i, breadcrumbs: [] },
     { pathname: /^\/(anmeldung|registrierung)$/i, breadcrumbs: [] },
     { pathname: /^\/verifizierung\/.*$/i, breadcrumbs: [] },
+    { pathname: /^\/passwort$/i, breadcrumbs: [] },
+    { pathname: /^\/passwort\/.*\/.*$/i, breadcrumbs: [] },
     {
         pathname: /^\/rezepte$/i,
         breadcrumbs: [<SearchLink pathname />, <Link title="Rezepte" />],

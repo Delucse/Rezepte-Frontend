@@ -9,7 +9,7 @@ import {
 
 import axios from 'axios';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 import Dialog from '../components/Dialog';
 import DelucseLogo from '../components/DelucseLogo';
@@ -61,25 +61,23 @@ function Verification() {
                 });
             })
             .catch((err) => {
-                if (err.response.status !== 401) {
-                    if (err.response.status === 500) {
-                        dispatch(
-                            alertErrorMessage(
-                                'Verifizierung ist fehlgeschlagen: Interner Server-Fehler. Probiere es bitte zu einem späteren Zeitpunkt erneut.',
-                                'verification'
-                            )
-                        );
-                    } else {
-                        navigate('/registrierung', {
-                            replace: true,
-                        });
-                        dispatch(
-                            alertErrorMessage(
-                                'Dein Bestätigungs-Link ist bereits abgelaufen. Registriere dich bitte erneut.',
-                                'verification'
-                            )
-                        );
-                    }
+                if (err.response.status === 500) {
+                    dispatch(
+                        alertErrorMessage(
+                            'Verifizierung ist fehlgeschlagen: Interner Server-Fehler. Probiere es bitte zu einem späteren Zeitpunkt erneut.',
+                            'verification'
+                        )
+                    );
+                } else {
+                    dispatch(
+                        alertErrorMessage(
+                            'Dein Bestätigungs-Link ist bereits abgelaufen. Registriere dich bitte erneut.',
+                            'verification'
+                        )
+                    );
+                    navigate('/registrierung', {
+                        replace: true,
+                    });
                 }
             });
     };
@@ -91,10 +89,12 @@ function Verification() {
             open
             title={
                 <div style={{ justifyItems: 'center', display: 'grid' }}>
-                    <DelucseLogo
-                        color="primary"
-                        style={{ height: '40px', verticalAlign: 'bottom' }}
-                    />
+                    <Link to="/">
+                        <DelucseLogo
+                            color="primary"
+                            style={{ height: '40px', verticalAlign: 'bottom' }}
+                        />
+                    </Link>
                 </div>
             }
             content={

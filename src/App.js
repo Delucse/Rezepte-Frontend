@@ -24,6 +24,8 @@ import Images from './pages/Images';
 import Faq from './pages/Faq';
 import Qr from './pages/Qr';
 import Verification from './pages/Verification';
+import SetPassword from './pages/SetPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
     const dispatch = useDispatch();
@@ -173,6 +175,16 @@ function App() {
                             element={<Verification />}
                         />
                     )}
+                    {!background && (
+                        <Route path="passwort">
+                            <Route
+                                exact
+                                path=":id/:token"
+                                element={<SetPassword />}
+                            />
+                            <Route index element={<ResetPassword />} />
+                        </Route>
+                    )}
                     <Route path="*" element={<Error />} />
                 </Route>
             </Routes>
@@ -184,6 +196,14 @@ function App() {
                         path="verifizierung/:token"
                         element={<Verification />}
                     />
+                    <Route path="passwort">
+                        <Route
+                            exact
+                            path=":id/:token"
+                            element={<SetPassword />}
+                        />
+                        <Route index element={<ResetPassword />} />
+                    </Route>
                 </Routes>
             )}
         </ThemeProvider>

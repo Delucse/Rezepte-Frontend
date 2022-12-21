@@ -85,6 +85,8 @@ function SignIn() {
     return (
         <Dialog
             open={!last}
+            maxWidth={'sm'}
+            fullWidth
             backIcon={location.state && location.state.auth}
             onBack={() => navigate('/', { replace: true })}
             closeIcon={location.state && !location.state.auth}
@@ -191,7 +193,7 @@ function SignIn() {
                         </p>
                         <p style={{ textAlign: 'center', fontSize: '0.8rem' }}>
                             <StyledLink
-                                to=""
+                                to="/passwort"
                                 replace
                                 state={
                                     location.state
