@@ -33,6 +33,7 @@ function SetPassword() {
     const { id, token } = useParams();
 
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.auth.user);
     const error = useSelector((state) => state.message.error);
     const art = useSelector((state) => state.message.art);
     const type = useSelector((state) => state.message.type);
@@ -46,6 +47,12 @@ function SetPassword() {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
+
+    useEffect(() => {
+        if (user) {
+            navigate('/', { replace: true });
+        }
+    }, [user, navigate]);
 
     useEffect(() => {
         if (error) {
@@ -69,10 +76,10 @@ function SetPassword() {
 
     const resetPassword = () => {
         dispatch(setProgress('setPassword'));
-        if (password.trim() === '') {
+        if (password.trim().length < 8) {
             dispatch(
                 alertErrorMessage(
-                    'Es muss ein Passwort angegeben sein.',
+                    'Es muss ein Passwort angegeben sein (mindestens 8 Zeichen).',
                     'password'
                 )
             );
@@ -80,7 +87,7 @@ function SetPassword() {
         } else if (confirmPassword.trim() === '') {
             dispatch(
                 alertErrorMessage(
-                    'Bestätige dein Passwort durch wiederholte Eingabe dessen.',
+                    'Bestätige dein Passwort durch wiederholte Eingabe.',
                     'password'
                 )
             );

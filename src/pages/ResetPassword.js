@@ -61,10 +61,7 @@ function ResetPassword() {
         dispatch(setProgress('resetPassword'));
         if (username.trim() === '') {
             dispatch(
-                alertErrorMessage(
-                    'Es muss ein Nutzername angegeben sein.',
-                    'password'
-                )
+                alertErrorMessage('Gib einen Nutzernamen an.', 'password')
             );
             dispatch(setProgressError('resetPasswort'));
         } else {

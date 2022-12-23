@@ -70,62 +70,76 @@ export const loadUser = () => (dispatch, getState) => {
 };
 
 // register User
-export const register = (username, password, email, cb) => (dispatch) => {
-    // Headers
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-    // Request Body
-    const body = { username: username, password: password, email: email };
-    axios
-        .post(`${process.env.REACT_APP_API_URL}/auth/signup`, body, config)
-        .then((res) => {
-            dispatch(
-                alertMessage(
-                    'Du hast dich erfolgreich registriert. Schaue nun in deinem Postfach nach, um deine E-Mail-Adresse zu bestätigen.',
-                    'user'
-                )
-            );
-            dispatch({
-                type: REGISTER_SUCCESS,
-            });
-            dispatch(setProgressSuccess('auth'));
-            cb();
-        })
-        .catch((err) => {
-            if (err.response.status !== 401) {
-                if (err.response.status === 500) {
-                    dispatch(
-                        alertErrorMessage('Interner Server-Fehler.', 'user')
-                    );
-                } else {
-                    if (err.response.data.message === 'Email already exists') {
+export const register =
+    (username, email, password, confirmPassword, cb) => (dispatch) => {
+        // Headers
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        // Request Body
+        const body = { username, email, password, confirmPassword };
+        axios
+            .post(`${process.env.REACT_APP_API_URL}/auth/signup`, body, config)
+            .then((res) => {
+                dispatch(
+                    alertMessage(
+                        'Du hast dich erfolgreich registriert. Schaue nun in deinem Postfach nach, um deine E-Mail-Adresse zu bestätigen.',
+                        'user'
+                    )
+                );
+                dispatch({
+                    type: REGISTER_SUCCESS,
+                });
+                dispatch(setProgressSuccess('auth'));
+                cb();
+            })
+            .catch((err) => {
+                if (err.response.status !== 401) {
+                    if (err.response.status === 500) {
                         dispatch(
-                            alertErrorMessage(
-                                'E-Mail bereits vorhanden.',
-                                'user'
-                            )
+                            alertErrorMessage('Interner Server-Fehler.', 'user')
                         );
-                    } else if (
-                        err.response.data.message === 'Username already exists'
-                    ) {
-                        dispatch(
-                            alertErrorMessage(
-                                'Nutzername bereits vorhanden.',
-                                'user'
-                            )
-                        );
+                    } else {
+                        if (
+                            err.response.data.message === 'email already exists'
+                        ) {
+                            dispatch(
+                                alertErrorMessage(
+                                    'E-Mail-Adresse ist bereits vorhanden.',
+                                    'user'
+                                )
+                            );
+                        } else if (
+                            err.response.data.message ===
+                            'invalid email address'
+                        ) {
+                            dispatch(
+                                alertErrorMessage(
+                                    'E-Mail-Adresse ist nicht valide.',
+                                    'user'
+                                )
+                            );
+                        } else if (
+                            err.response.data.message ===
+                            'username already exists'
+                        ) {
+                            dispatch(
+                                alertErrorMessage(
+                                    'Nutzername ist bereits vorhanden.',
+                                    'user'
+                                )
+                            );
+                        }
                     }
                 }
-            }
-            dispatch({
-                type: REGISTER_FAIL,
+                dispatch({
+                    type: REGISTER_FAIL,
+                });
+                dispatch(setProgressError('auth'));
             });
-            dispatch(setProgressError('auth'));
-        });
-};
+    };
 
 var logoutTimerId;
 const timeToLogout =
@@ -134,67 +148,78 @@ const timeToLogout =
 // Login user
 export const login = (username, password) => (dispatch) => {
     dispatch(setProgress('signin'));
-    // Headers
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
-    // Request Body
-    const body = { username: username, password: password };
-    axios
-        .post(`${process.env.REACT_APP_API_URL}/auth/signin`, body, config)
-        .then((res) => {
-            // Logout automatically if refreshToken "expired"
-            dispatch({
-                type: LAST_SIGNIN,
-                payload: Date.now(),
-            });
-            const logoutTimer = () =>
-                setTimeout(() => dispatch(signoutIntern()), timeToLogout);
-            logoutTimerId = logoutTimer();
-            dispatch({
-                type: LOGIN_SUCCESS,
-                payload: res.data,
-            });
-            dispatch(setProgressSuccess('auth'));
-            dispatch(
-                snackbarMessage(
-                    `Herzlich Willkommen, ${res.data.user}!`,
-                    'user'
-                )
-            );
-        })
-        .catch((err) => {
-            if (err.response.status === 500) {
-                dispatch(alertErrorMessage('Interner Server-Fehler.', 'user'));
-            } else {
-                if (
-                    err.response.data.message ===
-                    'Username or password is wrong.'
-                ) {
+
+    if (username.trim() === '') {
+        dispatch(setProgressError('signin'));
+        dispatch(alertErrorMessage('Gib deinen Nutzernamen an.', 'user'));
+    } else if (password.trim() === '') {
+        dispatch(setProgressError('signin'));
+        dispatch(alertErrorMessage('Gib dein Passwort an.', 'user'));
+    } else {
+        // Headers
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+        // Request Body
+        const body = { username: username, password: password };
+        axios
+            .post(`${process.env.REACT_APP_API_URL}/auth/signin`, body, config)
+            .then((res) => {
+                // Logout automatically if refreshToken "expired"
+                dispatch({
+                    type: LAST_SIGNIN,
+                    payload: Date.now(),
+                });
+                const logoutTimer = () =>
+                    setTimeout(() => dispatch(signoutIntern()), timeToLogout);
+                logoutTimerId = logoutTimer();
+                dispatch({
+                    type: LOGIN_SUCCESS,
+                    payload: res.data,
+                });
+                dispatch(setProgressSuccess('auth'));
+                dispatch(
+                    snackbarMessage(
+                        `Herzlich Willkommen, ${res.data.user}!`,
+                        'user'
+                    )
+                );
+            })
+            .catch((err) => {
+                if (err.response.status === 500) {
                     dispatch(
-                        alertErrorMessage(
-                            'Benutzername oder Passwort ist nicht korrekt.',
-                            'user'
-                        )
+                        alertErrorMessage('Interner Server-Fehler.', 'user')
                     );
-                } else if (
-                    err.response.data.message === 'User is not verified.'
-                ) {
-                    dispatch(
-                        alertErrorMessage(
-                            'Nutzer-Konto ist nicht verifiziert.',
-                            'user'
-                        )
-                    );
+                } else {
+                    if (
+                        err.response.data.message ===
+                        'username or password is wrong.'
+                    ) {
+                        dispatch(
+                            alertErrorMessage(
+                                'Benutzername oder Passwort ist nicht korrekt.',
+                                'user'
+                            )
+                        );
+                    } else if (
+                        err.response.data.message === 'user is not verified.'
+                    ) {
+                        dispatch(
+                            alertErrorMessage(
+                                'Nutzer-Konto ist nicht verifiziert.',
+                                'user'
+                            )
+                        );
+                    }
                 }
-            }
-            dispatch({
-                type: LOGIN_FAIL,
+                dispatch({
+                    type: LOGIN_FAIL,
+                });
+                dispatch(setProgressError('auth'));
             });
-            dispatch(setProgressError('auth'));
-        });
+    }
 };
 
 export const resetSignout = () => (dispatch) => {

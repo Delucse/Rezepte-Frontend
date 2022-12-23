@@ -81,11 +81,11 @@ function SignUp() {
 
     const registerCheck = () => {
         dispatch(setProgress('signup'));
-        if (username.trim() === '') {
+        if (username.trim().length < 3) {
             dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
-                    'Es muss ein Nutzername angegeben sein.',
+                    'Es muss ein Nutzername angegeben sein (mindestens 3 Zeichen).',
                     'user'
                 )
             );
@@ -94,11 +94,11 @@ function SignUp() {
             dispatch(
                 alertErrorMessage('Es muss eine E-Mail angegeben sein.', 'user')
             );
-        } else if (password.trim() === '') {
+        } else if (password.trim().length < 8) {
             dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
-                    'Es muss ein Passwort angegeben sein.',
+                    'Es muss ein Passwort angegeben sein (mindestens 8 Zeichen).',
                     'user'
                 )
             );
@@ -106,7 +106,7 @@ function SignUp() {
             dispatch(setProgressError('signup'));
             dispatch(
                 alertErrorMessage(
-                    'Bestätige dein Passwort durch wiederholte Eingabe dessen.',
+                    'Bestätige dein Passwort durch wiederholte Eingabe.',
                     'user'
                 )
             );
@@ -120,7 +120,7 @@ function SignUp() {
             );
         } else {
             dispatch(
-                register(username, password, email, () => {
+                register(username, email, password, confirmPassword, () => {
                     navigate('/anmeldung', {
                         state: location.state
                             ? {
