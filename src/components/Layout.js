@@ -18,7 +18,11 @@ function Layout() {
     );
 
     return loading ? (
-        <Loader />
+        <Loader
+            info={
+                'Es kann ggf. zu einer kurzen Verzögerung kommen, bis alle Daten geladen sind.'
+            }
+        />
     ) : (
         <Box
             sx={{

@@ -47,11 +47,18 @@ export const loadUser = () => (dispatch, getState) => {
             );
         },
         error: (err) => {
-            if (err.response.status !== 401 || !getState().auth.refreshToken) {
-                dispatch({
-                    type: AUTH_ERROR,
-                });
-                dispatch(setProgressError('user'));
+            if (err.response) {
+                if (
+                    err.response.status !== 401 ||
+                    !getState().auth.refreshToken
+                ) {
+                    dispatch({
+                        type: AUTH_ERROR,
+                    });
+                    dispatch(setProgressError('user'));
+                }
+            } else {
+                dispatch(loadUser());
             }
         },
     };
