@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteImage, getImages } from '../actions/imageActions';
 
 import { useNavigate } from 'react-router-dom';
+
+import { useInViewport } from '../hooks/useInViewport';
 
 import ImageCarousel from '../components/ImageCarousel';
 import Loader from '../components/Loader';
@@ -27,6 +29,9 @@ import { mdiDelete, mdiLoading, mdiFullscreen } from '@mdi/js';
 function Image(props) {
     const navigate = useNavigate();
 
+    const elemRef = useRef();
+    const inViewport = useInViewport(elemRef);
+
     const dispatch = useDispatch();
     const loading = useSelector(
         (state) =>
@@ -44,21 +49,21 @@ function Image(props) {
 
     return (
         <ImageListItem sx={{ height: '180px' }}>
-            <img
-                src={`${process.env.REACT_APP_IMAGE_URL}/${props.file}`}
-                alt=""
-                style={{
-                    cursor: 'pointer',
+            <Box
+                ref={elemRef}
+                sx={{
                     height: '180px',
-                    objectFit: 'cover',
+                    width: 'calc(100%)',
+                    position: 'relative',
+                    backgroundImage: inViewport
+                        ? `url(${process.env.REACT_APP_IMAGE_URL}/${props.file})`
+                        : 'none',
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
+                    cursor: 'pointer',
                 }}
                 onClick={props.openCarousel}
-                onError={({ currentTarget }) => {
-                    currentTarget.onerror = null; // prevents looping
-                    currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
-                    currentTarget.style =
-                        'height: 180px; object-fit: cover; cursor: pointer; filter: grayscale(1);';
-                }}
             />
             <ImageListItemBar
                 actionPosition={'left'}

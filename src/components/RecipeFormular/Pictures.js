@@ -292,13 +292,6 @@ function Pictures() {
                                         objectFit: 'cover',
                                     }}
                                     onClick={() => handleOpen(idx)}
-                                    onError={({ currentTarget }) => {
-                                        currentTarget.onerror = null; // prevents looping
-                                        currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
-                                        currentTarget.style = `height: ${
-                                            idx === 0 ? '172px' : '180px'
-                                        }; object-fit: cover; cursor: pointer; filter: grayscale(1);`;
-                                    }}
                                 />
                                 <ImageListItemBar
                                     actionPosition={'left'}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,6 +9,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 import moment from 'moment';
+
+import { useInViewport } from '../../hooks/useInViewport';
 
 import Ripped from './Ripped';
 import Tape from '../Tape';
@@ -46,6 +48,9 @@ function Overview(props) {
     const user = useSelector((state) => state.auth.user);
 
     const navigate = useNavigate();
+
+    const elemRef = useRef();
+    const inViewport = useInViewport(elemRef);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -115,33 +120,25 @@ function Overview(props) {
             >
                 {props.picture || props.fullscreen ? (
                     <Box
+                        ref={elemRef}
                         sx={{
                             height: !props.fullscreen
                                 ? 'calc(24px * 10)'
                                 : 'calc(100% - 64px)',
                             width: 'calc(100%)',
                             position: 'relative',
-                            backgroundImage: `url(${props.picture})`,
+                            backgroundImage:
+                                inViewport && props.picture
+                                    ? `url(${props.picture})`
+                                    : 'none',
                             backgroundSize: 'cover',
                             backgroundRepeat: 'no-repeat',
                             backgroundPosition: 'center center',
                         }}
                     >
-                        {props.picture ? (
-                            <img
-                                style={{ display: 'none' }}
-                                alt=""
-                                src={props.picture}
-                                onError={(e) => {
-                                    e.currentTarget.parentNode.style.backgroundImage = `url(${process.env.PUBLIC_URL}/logo512.png)`;
-                                    e.currentTarget.parentNode.style.filter =
-                                        'grayscale(1)';
-                                }}
-                            />
-                        ) : (
+                        {!props.picture ? (
                             <Box
                                 sx={{
-                                    // paddingTop: '32px',
                                     width: '100%',
                                     height: '100%',
                                     color: (theme) =>
@@ -155,7 +152,7 @@ function Overview(props) {
                             >
                                 <Icon path={mdiImageOffOutline} size={'100%'} />
                             </Box>
-                        )}
+                        ) : null}
                         <Ripped />
                     </Box>
                 ) : null}

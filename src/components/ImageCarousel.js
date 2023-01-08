@@ -63,18 +63,7 @@ function ImageCarousel(props) {
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
                 }}
-            >
-                <img
-                    style={{ display: 'none' }}
-                    alt=""
-                    src={props.images[index]}
-                    onError={(e) => {
-                        e.currentTarget.parentNode.style.backgroundImage = `url(${process.env.PUBLIC_URL}/logo512.png)`;
-                        e.currentTarget.parentNode.style.filter =
-                            'grayscale(1)';
-                    }}
-                />
-            </Box>
+            />
         );
     };
 
@@ -190,18 +179,7 @@ function ImageCarousel(props) {
                                     backgroundPosition: 'center center',
                                     margin: 'auto',
                                 }}
-                            >
-                                <img
-                                    style={{ display: 'none' }}
-                                    alt=""
-                                    src={props.images[index]}
-                                    onError={(e) => {
-                                        e.currentTarget.parentNode.style.backgroundImage = `url(${process.env.PUBLIC_URL}/logo512.png)`;
-                                        e.currentTarget.parentNode.style.filter =
-                                            'grayscale(1)';
-                                    }}
-                                />
-                            </Box>
+                            />
                         </Box>
                     )}
                 </Box>
