@@ -47,29 +47,58 @@ input[type=number] {
     overflow: clip !important;
 }
 
-#tape:hover #tapeStyle {
-    visibility: visible;
+@media (hover: hover){
+    #tape:hover #tapeStyle {
+        visibility: visible;
+    }
+    
+    #tape:hover #tapeStyleCheck {
+        visibility: hidden;
+    }
+    
+    #favorite:hover #heart {
+        display: none;
+    }
+    
+    #favorite:hover #heartHover {
+        display: flex;
+    }
+    
+    #wakeLock:hover #eye {
+        display: none;
+    }
+    
+    #wakeLock:hover #eyeHover {
+        display: flex;
+    }    
 }
 
-#tape:hover #tapeStyleCheck {
-    visibility: hidden;
+@media (hover: none){
+    #tape:active #tapeStyle {
+        visibility: visible;
+    }
+    
+    #tape:active #tapeStyleCheck {
+        visibility: hidden;
+    }
+    
+    #favorite:active #heart {
+        display: none;
+    }
+    
+    #favorite:active #heartHover {
+        display: flex;
+    }
+    
+    #wakeLock:active #eye {
+        display: none;
+    }
+    
+    #wakeLock:active #eyeHover {
+        display: flex;
+    }    
 }
 
-#favorite:hover #heart {
-    display: none;
-}
-
-#favorite:hover #heartHover {
-    display: flex;
-}
-
-#wakeLock:hover #eye {
-    display: none;
-}
-
-#wakeLock:hover #eyeHover {
-    display: flex;
-}
 
 .Toastify__toast-container {
     padding: 0 !important;
