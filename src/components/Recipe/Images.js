@@ -53,20 +53,14 @@ function Images({ pictures, title, add }) {
         return (
             <Box
                 key={key}
-                component="img"
                 sx={{
                     height: 240,
                     width: '100%',
-                    objectFit: 'cover',
+                    backgroundImage: `url(${pictures[index]})`,
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center center',
                     cursor: 'pointer',
-                }}
-                src={pictures[index]}
-                alt={title}
-                onError={({ currentTarget }) => {
-                    currentTarget.onerror = null; // prevents looping
-                    currentTarget.src = `${process.env.PUBLIC_URL}/logo512.png`;
-                    currentTarget.style =
-                        'height: 240px; width: 100%; object-fit: cover; filter: grayscale(1);';
                 }}
                 onClick={() => handleOpen(index)}
             />

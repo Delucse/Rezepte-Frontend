@@ -264,12 +264,13 @@ function AddImage(props) {
                                 <ImageListItem
                                     sx={{ height: '180px', width: '100%' }}
                                 >
-                                    <img
-                                        src={image.url}
-                                        alt=""
-                                        style={{
+                                    <Box
+                                        sx={{
                                             height: '180px',
-                                            objectFit: 'cover',
+                                            backgroundImage: `url(${image.url})`,
+                                            backgroundSize: 'cover',
+                                            backgroundRepeat: 'no-repeat',
+                                            backgroundPosition: 'center center',
                                         }}
                                     />
                                     <ImageListItemBar

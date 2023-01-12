@@ -33,7 +33,7 @@ const actions = [
         icon: <Icon path={mdiWhatsapp} size={0.6} />,
         name: 'WhatsApp',
         href: (title, url) => {
-            return `WhatsApp://send?text=${title}: ${url}`;
+            return `WhatsApp://send?text=${url}`;
         },
     },
     {
@@ -74,7 +74,7 @@ const actions = [
 function Share(props) {
     const dispatch = useDispatch();
 
-    const url = `${process.env.REACT_APP_BASE_URL}/rezepte/${props.id}`;
+    const url = `${process.env.REACT_APP_SHARE_URL}/${props.id}`;
     const type = useSelector((state) => state.message.type);
 
     const classes = useStyles(useTheme());

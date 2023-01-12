@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -9,6 +9,8 @@ import {
 import { alertErrorMessage, resetMessage } from '../../actions/messageActions';
 
 import imageCompression from 'browser-image-compression';
+
+import { useInViewport } from '../../hooks/useInViewport';
 
 import ImageCarousel from '../ImageCarousel';
 import Alert from '../Alert';
@@ -212,6 +214,9 @@ function Pictures() {
         (state) => state.message.error && state.message.type === 'images'
     );
 
+    const elemRef = useRef();
+    const inViewport = useInViewport(elemRef);
+
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(0);
 
@@ -257,6 +262,7 @@ function Pictures() {
             <Grid item xs={12}>
                 <PictureInput error={errorPictures} />
                 <div
+                    ref={elemRef}
                     style={{
                         width: '100%',
                         listStyle: 'none',
@@ -283,13 +289,16 @@ function Pictures() {
                                         : { height: '180px' }
                                 }
                             >
-                                <img
-                                    src={picturesUrl[idx]}
-                                    alt=""
-                                    style={{
-                                        cursor: 'pointer',
+                                <Box
+                                    sx={{
                                         height: idx === 0 ? '172px' : '180px',
-                                        objectFit: 'cover',
+                                        backgroundImage: inViewport
+                                            ? `url(${picturesUrl[idx]})`
+                                            : 'none',
+                                        backgroundSize: 'cover',
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center center',
+                                        cursor: 'pointer',
                                     }}
                                     onClick={() => handleOpen(idx)}
                                 />
