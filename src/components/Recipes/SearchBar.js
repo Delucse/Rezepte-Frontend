@@ -34,6 +34,7 @@ function SearchBar(props) {
                         boxShadow: 'none',
                         top: 'calc(55px + 54px + 24px)',
                         padding: (theme) => `0 ${theme.spacing(3)}`,
+                        zIndex: (theme) => theme.zIndex.appBar - 201,
                     }}
                 >
                     <Toolbar

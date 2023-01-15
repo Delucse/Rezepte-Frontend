@@ -248,7 +248,7 @@ function BreadCrumbs() {
         );
 
     return (
-        <div style={{ zIndex: 1, position: 'sticky', top: 'calc(55px)' }}>
+        <>
             <DocumentTitle title={'Delucse'} />
             {breadcrumbs.length > 0 ? (
                 <Box
@@ -262,6 +262,9 @@ function BreadCrumbs() {
                         width: (theme) =>
                             `calc(100% - 2 * ${theme.spacing(3)})`,
                         overflowY: 'hidden',
+                        zIndex: (theme) => theme.zIndex.appBar - 20,
+                        position: 'sticky',
+                        top: '55px',
                     }}
                 >
                     <Box
@@ -313,9 +316,15 @@ function BreadCrumbs() {
                     background: (theme) =>
                         theme.palette.background
                             .default /*'linear-gradient(white 0%, transparent 60%)'*/,
+                    position: 'sticky',
+                    top:
+                        breadcrumbs.length > 0
+                            ? 'calc(55px + 30px + 24px)'
+                            : '55px',
+                    zIndex: (theme) => theme.zIndex.appBar - 40,
                 }}
             />
-        </div>
+        </>
     );
 }
 

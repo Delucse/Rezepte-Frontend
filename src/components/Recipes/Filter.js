@@ -96,7 +96,7 @@ function Filter() {
                 ModalProps={{
                     keepMounted: true,
                 }}
-                sx={{ zIndex: 1 }}
+                sx={{ zIndex: (theme) => theme.zIndex.drawer - 2 }}
             >
                 <Box
                     sx={{

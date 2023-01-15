@@ -3,6 +3,7 @@ import {
     SET_RECIPE_SETTINGS,
     SET_RECIPE_ID,
     SET_RECIPE_FAVORITE,
+    SET_RECIPE_NOTE,
     ADD_RECIPE_PICTURE,
 } from '../actions/types';
 
@@ -124,6 +125,7 @@ export const getRecipe = (id, setFormular) => (dispatch) => {
                 steps: res.data.steps,
                 pictures: res.data.pictures,
                 favorite: res.data.favorite,
+                note: res.data.note,
                 settings: {
                     count: res.data.portion.count,
                     rounded: true,
@@ -160,6 +162,7 @@ export const resetRecipe = () => (dispatch) => {
             steps: null,
             pictures: null,
             favorite: null,
+            note: null,
             settings: {
                 count: 0,
                 rounded: true,
@@ -225,6 +228,65 @@ export const deleteRecipeFavorite = () => (dispatch, getState) => {
                     `"${
                         getState().recipe.title
                     }" wurde erfolgreich aus deinem Kochbuch entfernt.`,
+                    'recipe'
+                )
+            );
+        },
+        error: (err) => {
+            console.error(err);
+        },
+    };
+    axios(config)
+        .then((res) => {
+            res.config.success(res);
+        })
+        .catch((err) => {
+            err.config.error(err);
+        });
+};
+
+export const setRecipeNote = (note) => (dispatch, getState) => {
+    const config = {
+        method: 'POST',
+        url: `${process.env.REACT_APP_API_URL}/recipe/note/${
+            getState().recipe.id
+        }`,
+        data: { text: note },
+        success: (res) => {
+            dispatch({
+                type: SET_RECIPE_NOTE,
+                payload: note,
+            });
+        },
+        error: (err) => {
+            console.error(err);
+        },
+    };
+    axios(config)
+        .then((res) => {
+            res.config.success(res);
+        })
+        .catch((err) => {
+            err.config.error(err);
+        });
+};
+
+export const deleteRecipeNote = () => (dispatch, getState) => {
+    const config = {
+        method: 'DELETE',
+        url: `${process.env.REACT_APP_API_URL}/recipe/note/${
+            getState().recipe.id
+        }`,
+        success: (res) => {
+            dispatch({
+                type: SET_RECIPE_NOTE,
+                payload: '',
+            });
+            dispatch(
+                snackbarMessage(
+                    `Deine Notiz zum Rezept "${
+                        getState().recipe.title
+                    }" wurde erfolgreich entfernt.`,
                     'recipe'
                 )
             );

@@ -128,6 +128,13 @@ function Sort() {
                     vertical: 'top',
                     horizontal: 'center',
                 }}
+                MenuListProps={{ sx: { padding: 0 } }}
+                PaperProps={{ sx: { borderRadius: 0, marginTop: '5px' } }}
+                sx={{
+                    '&.MuiMenu-root': {
+                        zIndex: (theme) => theme.zIndex.appBar,
+                    },
+                }}
             >
                 {sort.map((item, index) => (
                     <MenuItem

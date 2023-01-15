@@ -192,7 +192,7 @@ function Navbar() {
         <div>
             <AppBar
                 position="fixed"
-                sx={{ zIndex: (theme) => theme.zIndex.modal + 1 }}
+                sx={{ zIndex: (theme) => theme.zIndex.appBar }}
                 enableColorOnDark
             >
                 <Toolbar
@@ -298,6 +298,7 @@ function Navbar() {
             ></Toolbar>
             <SwipeableDrawer
                 sx={{
+                    zIndex: (theme) => theme.zIndex.appBar - 1,
                     '.MuiDrawer-paper': {
                         top: '55px',
                         width: '250px',

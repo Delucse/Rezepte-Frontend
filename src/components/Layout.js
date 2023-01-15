@@ -35,7 +35,7 @@ function Layout() {
             <BreadCrumbs />
             <Box
                 sx={{
-                    zIndex: 0,
+                    zIndex: 'unset',
                     position: 'relative',
                     padding: (theme) =>
                         `0 ${theme.spacing(3)} ${theme.spacing(

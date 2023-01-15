@@ -68,47 +68,6 @@ export const getRecipes = () => (dispatch, getState) => {
         });
 };
 
-export const getRecipesFavorite = () => (dispatch, getState) => {
-    const { word, sort, type, categories, recipes } = getState().recipeFilter;
-    dispatch(setProgressSuccess('recipeFilter'));
-    const config = {
-        success: (res) => {
-            var updatedRecipes = recipes.map((recipe) => {
-                var index = res.data.findIndex(
-                    (data) => data._id === recipe._id
-                );
-                recipe.favorite = res.data[index].favorite;
-                return recipe;
-            });
-            dispatch({
-                type: GET_RECIPES,
-                payload: [...updatedRecipes],
-            });
-            dispatch(setProgressSuccess('recipeFilter'));
-        },
-        error: (err) => {
-            if (err.response.status !== 401) {
-                dispatch(setProgressError('recipeFilter'));
-            }
-        },
-    };
-    axios
-        .get(
-            `${
-                process.env.REACT_APP_API_URL
-            }/recipe?search=${word}&type=${type}&keywords=${categories.join(
-                ','
-            )}&sort=${sort.type}&ascending=${sort.ascending}`,
-            config
-        )
-        .then((res) => {
-            res.config.success(res);
-        })
-        .catch((err) => {
-            err.config.error(err);
-        });
-};
-
 export const setOpen = (bool) => (dispatch) => {
     dispatch({
         type: FILTER_OPEN,

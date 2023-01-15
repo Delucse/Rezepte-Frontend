@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     getRecipes,
-    getRecipesFavorite,
     resetFilterSettings,
     resetRecipes,
     setCategories,
@@ -74,7 +73,7 @@ function Recipes(props) {
 
     useEffect(() => {
         if (user && user !== oldUser && route === '') {
-            dispatch(getRecipesFavorite());
+            dispatch(getRecipes());
         }
         setUser(user);
         // eslint-disable-next-line react-hooks/exhaustive-deps

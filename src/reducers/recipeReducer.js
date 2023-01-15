@@ -3,6 +3,7 @@ import {
     SET_RECIPE_SETTINGS,
     SET_RECIPE_ID,
     SET_RECIPE_FAVORITE,
+    SET_RECIPE_NOTE,
     ADD_RECIPE_PICTURE,
 } from '../actions/types';
 
@@ -17,6 +18,7 @@ const initialState = {
     steps: null,
     pictures: null,
     favorite: null,
+    note: null,
     settings: {
         count: 0,
         rounded: true,
@@ -44,6 +46,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 favorite: action.payload,
+            };
+        case SET_RECIPE_NOTE:
+            return {
+                ...state,
+                note: action.payload,
             };
         case ADD_RECIPE_PICTURE:
             return {

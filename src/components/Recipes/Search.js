@@ -211,6 +211,13 @@ function Search(props) {
                     vertical: 'top',
                     horizontal: 'center',
                 }}
+                MenuListProps={{ sx: { padding: 0 } }}
+                PaperProps={{ sx: { borderRadius: 0 } }}
+                sx={{
+                    '&.MuiMenu-root': {
+                        zIndex: (theme) => theme.zIndex.appBar,
+                    },
+                }}
             >
                 {[
                     { title: 'Standardsuche', type: 'all' },

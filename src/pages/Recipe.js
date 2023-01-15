@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { getRecipe, getRecipePreview } from '../actions/recipeActions';
@@ -19,6 +19,7 @@ import IconButton from '../components/IconButton';
 import Tooltip from '../components/Tooltip';
 import AddImage from '../components/Recipe/AddImage';
 import Delete from '../components/Recipe/Delete';
+import Notes from '../components/Recipe/Notes';
 
 import {
     Grid,
@@ -108,6 +109,16 @@ function Recipe() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id, recipeFormular]);
 
+    const [oldUser, setUser] = useState(user);
+
+    useEffect(() => {
+        if (id && user && user !== oldUser) {
+            dispatch(getRecipe(id));
+        }
+        setUser(user);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
+
     return !loading && !error && recipe.title ? (
         <NotePaper>
             {/* Titel */}
@@ -120,6 +131,14 @@ function Recipe() {
                     marginBottom: '24px',
                     color: (theme) => theme.palette.text.primary,
                     display: 'flex',
+                    width:
+                        user && recipe.note
+                            ? {
+                                  xs: 'calc(100% - 100px)',
+                                  sm: 'calc(100% - 130px)',
+                                  md: 'calc(100% - 160px)',
+                              }
+                            : '100%',
                 }}
             >
                 {recipe.title}
@@ -381,30 +400,30 @@ function Recipe() {
             {/* Zutaten */}
             <Ingredients />
 
+            <Box sx={{ marginTop: '25px', display: 'flex' }}>
+                <Typography
+                    variant="body1"
+                    sx={{
+                        fontWeight: 700,
+                        fontFamily: 'Lobster Two',
+                        fontSize: 'calc(1rem + 2px)',
+                        lineHeight: '24px',
+                        textDecoration: 'underline',
+                        textDecorationColor: (theme) =>
+                            theme.palette.primary.main,
+                        color: (theme) => theme.palette.text.primary,
+                    }}
+                >
+                    Arbeitsschritte{' '}
+                </Typography>
+                {user ? <Notes /> : null}
+            </Box>
             <List
                 sx={{
                     padding: 0,
                     marginBottom: '24px',
-                    marginTop: '25px',
                 }}
             >
-                <ListItem disablePadding>
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            fontWeight: 700,
-                            fontFamily: 'Lobster Two',
-                            fontSize: 'calc(1rem + 2px)',
-                            lineHeight: '24px',
-                            textDecoration: 'underline',
-                            textDecorationColor: (theme) =>
-                                theme.palette.primary.main,
-                            color: (theme) => theme.palette.text.primary,
-                        }}
-                    >
-                        Arbeitsschritte
-                    </Typography>
-                </ListItem>
                 {recipe.steps.map((step, index) => {
                     return (
                         <ListItem
