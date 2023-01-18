@@ -113,7 +113,7 @@ function Recipe() {
 
     useEffect(() => {
         if (id && user && user !== oldUser) {
-            dispatch(getRecipe(id));
+            dispatch(getRecipe(id, null, false));
         }
         setUser(user);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -132,7 +132,7 @@ function Recipe() {
                     color: (theme) => theme.palette.text.primary,
                     display: 'flex',
                     width:
-                        user && recipe.note
+                        !formular && user && recipe.note !== null
                             ? {
                                   xs: 'calc(100% - 100px)',
                                   sm: 'calc(100% - 130px)',
@@ -416,7 +416,7 @@ function Recipe() {
                 >
                     Arbeitsschritte{' '}
                 </Typography>
-                {user ? <Notes /> : null}
+                {!formular && user && recipe.note !== null ? <Notes /> : null}
             </Box>
             <List
                 sx={{

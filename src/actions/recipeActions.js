@@ -78,6 +78,8 @@ export const getRecipePreview = () => (dispatch, getState) => {
             count: recipeFormular.portion.count,
             rounded: true,
         },
+        note: recipe.note,
+        favorite: recipe.favorite,
     };
 
     if (recipeFormular.portion.form) {
@@ -101,53 +103,57 @@ export const setRecipeId = (id) => (dispatch) => {
     });
 };
 
-export const getRecipe = (id, setFormular) => (dispatch) => {
-    dispatch(setProgress('recipe'));
-    const config = {
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        onDownloadProgress: (progressEvent) => {
-            // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
-        },
-    };
-    axios
-        .get(`${process.env.REACT_APP_API_URL}/recipe/${id}`, config)
-        .then((res) => {
-            var payload = {
-                id: res.data._id,
-                user: res.data.user,
-                title: res.data.title,
-                portion: res.data.portion,
-                time: res.data.time,
-                keywords: res.data.keywords,
-                ingredients: res.data.ingredients,
-                steps: res.data.steps,
-                pictures: res.data.pictures,
-                favorite: res.data.favorite,
-                note: res.data.note,
-                settings: {
-                    count: res.data.portion.count,
-                    rounded: true,
-                },
-            };
-            if (res.data.portion.form) {
-                payload.settings.form = res.data.portion.form;
-            }
-            dispatch({
-                type: GET_RECIPE,
-                payload: payload,
+export const getRecipe =
+    (id, setFormular, loadUi = true) =>
+    (dispatch) => {
+        if (loadUi) {
+            dispatch(setProgress('recipe'));
+        }
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            onDownloadProgress: (progressEvent) => {
+                // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
+            },
+        };
+        axios
+            .get(`${process.env.REACT_APP_API_URL}/recipe/${id}`, config)
+            .then((res) => {
+                var payload = {
+                    id: res.data._id,
+                    user: res.data.user,
+                    title: res.data.title,
+                    portion: res.data.portion,
+                    time: res.data.time,
+                    keywords: res.data.keywords,
+                    ingredients: res.data.ingredients,
+                    steps: res.data.steps,
+                    pictures: res.data.pictures,
+                    favorite: res.data.favorite,
+                    note: res.data.note,
+                    settings: {
+                        count: res.data.portion.count,
+                        rounded: true,
+                    },
+                };
+                if (res.data.portion.form) {
+                    payload.settings.form = res.data.portion.form;
+                }
+                dispatch({
+                    type: GET_RECIPE,
+                    payload: payload,
+                });
+                dispatch(setProgressSuccess('recipe'));
+                if (setFormular) {
+                    dispatch(setRecipeFormular());
+                }
+            })
+            .catch((err) => {
+                dispatch(setProgressError('recipe'));
+                console.error(err);
             });
-            dispatch(setProgressSuccess('recipe'));
-            if (setFormular) {
-                dispatch(setRecipeFormular());
-            }
-        })
-        .catch((err) => {
-            dispatch(setProgressError('recipe'));
-            console.error(err);
-        });
-};
+    };
 
 export const resetRecipe = () => (dispatch) => {
     dispatch({

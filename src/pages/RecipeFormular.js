@@ -22,6 +22,7 @@ import Preview from '../components/RecipeFormular/Preview';
 import Pictures from '../components/RecipeFormular/Pictures';
 import Stepper from '../components/RecipeFormular/Stepper';
 import Categories from '../components/RecipeFormular/Categories';
+import Loader from '../components/Loader';
 
 import { Box } from '@mui/material';
 
@@ -106,21 +107,25 @@ function RecipeFormular() {
     return (
         <div>
             {wait < 1 && id ? (
-                <Box
-                    sx={{
-                        background: (theme) => theme.palette.background.default,
-                        color: (theme) => theme.palette.text.primary,
-                        height: '100%',
-                        position: 'absolute',
-                        zIndex: 4,
-                        width: {
-                            xs: 'calc(100% - 2 * 24px)',
-                            md: 'calc(100% - 2 * 15px - 1px)',
-                        },
-                    }}
-                >
-                    Daten werden geladen ...
-                </Box>
+                <>
+                    <Box
+                        sx={{
+                            background: (theme) =>
+                                theme.palette.background.default,
+                            color: (theme) => theme.palette.text.primary,
+                            height: '100%',
+                            position: 'absolute',
+                            zIndex: 4,
+                            width: {
+                                xs: 'calc(100% - 2 * 24px)',
+                                md: 'calc(100% - 2 * 15px - 1px)',
+                            },
+                        }}
+                    >
+                        Daten werden geladen ...
+                    </Box>
+                    <Loader top={109} transparent />
+                </>
             ) : null}
             <Stepper steps={steps} />
             <NavigationPrompt

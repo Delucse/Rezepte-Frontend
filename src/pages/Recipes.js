@@ -280,7 +280,7 @@ function Recipes(props) {
                 ) : error ? (
                     <div>Error</div>
                 ) : (
-                    <Loader top={189} />
+                    <Loader top={189} transparent />
                 )}
             </div>
         </div>
