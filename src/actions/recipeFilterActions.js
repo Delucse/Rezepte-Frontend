@@ -7,6 +7,7 @@ import {
     SET_CATEGORIES,
     RESET_RECIPES_FILTER,
     SET_ROUTE,
+    SET_AUTHOR,
 } from '../actions/types';
 
 import { snackbarMessage } from './messageActions';
@@ -19,7 +20,8 @@ import {
 import axios from 'axios';
 
 export const getRecipes = () => (dispatch, getState) => {
-    const { word, sort, type, categories, route } = getState().recipeFilter;
+    const { word, sort, type, categories, route, author } =
+        getState().recipeFilter;
     dispatch(setProgress('recipeFilter'));
     const config = {
         onDownloadProgress: (progressEvent) => {
@@ -57,7 +59,7 @@ export const getRecipes = () => (dispatch, getState) => {
                     : ''
             }?search=${word}&type=${type}&keywords=${categories.join(
                 ','
-            )}&sort=${sort.type}&ascending=${sort.ascending}`,
+            )}&author=${author}&sort=${sort.type}&ascending=${sort.ascending}`,
             config
         )
         .then((res) => {
@@ -79,6 +81,13 @@ export const setWord = (word) => (dispatch) => {
     dispatch({
         type: SET_WORD,
         payload: word,
+    });
+};
+
+export const setAuthor = (author) => (dispatch) => {
+    dispatch({
+        type: SET_AUTHOR,
+        payload: author,
     });
 };
 
@@ -134,6 +143,7 @@ export const resetFilterSettings = () => (dispatch) => {
                 type: 'score',
                 ascending: false,
             },
+            author: '',
             open: false,
             categories: [],
             recipes: null,

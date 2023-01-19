@@ -12,6 +12,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import SearchBar from '../components/Recipes/Search';
 import Categories from '../components/Recipes/Categories';
+import Author from '../components/Recipes/Author';
 
 import params from '../data/params.json';
 
@@ -22,6 +23,7 @@ import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
 function Search() {
     const dispatch = useDispatch();
@@ -187,7 +189,14 @@ function Search() {
                     marginBottom: '-24px',
                 }}
             >
+                <Typography
+                    variant="body1"
+                    sx={{ fontWeight: 'bold', marginBottom: '20px' }}
+                >
+                    Filter
+                </Typography>
                 <Categories redux />
+                <Author redux />
             </Box>
         </div>
     );

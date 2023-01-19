@@ -455,50 +455,31 @@ function Recipe() {
 
             {/* Schlagwörter */}
             <div style={{ marginTop: '-5px' }}>
-                {recipe.keywords
-                    // .concat(recipe.user ? [recipe.user] : [])
-                    .map((keyword, index) => {
-                        return (
-                            <Chip
-                                sx={{
-                                    marginTop: '7px',
-                                    marginRight: '5px',
-                                    height: '19px',
-                                    marginBottom: '-2px',
-                                    cursor: 'pointer',
-                                    background: (theme) =>
-                                        theme.palette.primary.light,
-                                    color: (theme) =>
-                                        theme.palette.getContrastText(
-                                            theme.palette.primary.light
-                                        ),
-                                    '&:hover': {
-                                        background: (theme) =>
-                                            theme.palette.primary.main,
-                                        color: (theme) =>
-                                            theme.palette.getContrastText(
-                                                theme.palette.primary.main
-                                            ),
-                                    },
-                                }}
-                                key={index}
-                                label={keyword}
-                                onClick={() =>
-                                    keyword === 'Basic'
-                                        ? navigate('/rezepte/basis')
-                                        : keyword === 'Baby'
-                                        ? navigate('/rezepte/kleinkind')
-                                        : navigate(
-                                              `/rezepte?${
-                                                  filterParams.includes(keyword)
-                                                      ? `filter=${keyword}`
-                                                      : `wort=${keyword}&typ=schlüsselwort`
-                                              }`
-                                          )
-                                }
-                            />
-                        );
-                    })}
+                {recipe.keywords.map((keyword, index) => {
+                    return (
+                        <Tag
+                            key={index}
+                            label={keyword}
+                            onClick={() =>
+                                keyword === 'Basic'
+                                    ? navigate('/rezepte/basis')
+                                    : keyword === 'Baby'
+                                    ? navigate('/rezepte/kleinkind')
+                                    : navigate(
+                                          `/rezepte?${
+                                              filterParams.includes(keyword)
+                                                  ? `filter=${keyword}`
+                                                  : `wort=${keyword}&typ=schlüsselwort`
+                                          }`
+                                      )
+                            }
+                        />
+                    );
+                })}
+                <Tag
+                    label={recipe.user}
+                    onClick={() => navigate(`/rezepte?autor=${recipe.user}`)}
+                />
             </div>
 
             {/* Manipulieren */}
@@ -566,6 +547,32 @@ function Recipe() {
         <div>Error</div>
     ) : (
         <Loader />
+    );
+}
+
+function Tag({ label, onClick }) {
+    return (
+        <Chip
+            sx={{
+                marginTop: '7px',
+                marginRight: '5px',
+                height: '19px',
+                marginBottom: '-2px',
+                cursor: 'pointer',
+                background: (theme) => theme.palette.primary.light,
+                color: (theme) =>
+                    theme.palette.getContrastText(theme.palette.primary.light),
+                '&:hover': {
+                    background: (theme) => theme.palette.primary.main,
+                    color: (theme) =>
+                        theme.palette.getContrastText(
+                            theme.palette.primary.main
+                        ),
+                },
+            }}
+            label={label}
+            onClick={onClick}
+        />
     );
 }
 

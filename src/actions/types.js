@@ -44,6 +44,7 @@ export const SET_CATEGORIES = 'SET_CATEGORIES';
 export const SET_SORT = 'SET_SORT';
 export const RESET_RECIPES_FILTER = 'RESET_RECIPES_FILTER';
 export const SET_ROUTE = 'SET_ROUTE';
+export const SET_AUTHOR = 'SET_AUTHOR';
 
 // Recipe Formular
 export const SET_RECIPE_ERROR = 'SET_RECIPE_ERROR';

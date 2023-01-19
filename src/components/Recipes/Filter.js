@@ -1,9 +1,14 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { removeCategory, setOpen } from '../../actions/recipeFilterActions';
+import {
+    removeCategory,
+    setAuthor,
+    setOpen,
+} from '../../actions/recipeFilterActions';
 
 import Categories from './Categories';
+import Author from './Author';
 import Button from '../Button';
 
 import { Global } from '@emotion/react';
@@ -31,9 +36,11 @@ const Puller = styled(Box)(({ theme }) => ({
 
 function Filter() {
     const dispatch = useDispatch();
+
     const open = useSelector((state) => state.recipeFilter.open);
     const recipes = useSelector((state) => state.recipeFilter.recipes);
     const categories = useSelector((state) => state.recipeFilter.categories);
+    const author = useSelector((state) => state.recipeFilter.author);
 
     const toggle = () => {
         dispatch(setOpen(!open));
@@ -58,7 +65,7 @@ function Filter() {
                         vertical: 'bottom',
                         horizontal: 'right',
                     }}
-                    badgeContent={categories.length}
+                    badgeContent={categories.length + (author !== '' ? 1 : 0)}
                     componentsProps={{
                         badge: {
                             sx: {
@@ -96,7 +103,7 @@ function Filter() {
                 ModalProps={{
                     keepMounted: true,
                 }}
-                sx={{ zIndex: (theme) => theme.zIndex.drawer - 2 }}
+                sx={{ zIndex: (theme) => theme.zIndex.appBar - 5 }}
             >
                 <Box
                     sx={{
@@ -144,25 +151,41 @@ function Filter() {
                                     display: 'flex',
                                 }}
                             >
-                                {!open
-                                    ? categories.map((category, index) => (
-                                          <Chip
-                                              key={index}
-                                              label={category}
-                                              onDelete={() =>
-                                                  dispatch(
-                                                      removeCategory(category)
-                                                  )
-                                              }
-                                              color="primary"
-                                              size="small"
-                                              sx={{
-                                                  marginRight: '5px',
-                                                  marginBottom: '10px',
-                                              }}
-                                          />
-                                      ))
-                                    : null}
+                                {!open ? (
+                                    <>
+                                        {categories.map((category, index) => (
+                                            <Chip
+                                                key={index}
+                                                label={category}
+                                                onDelete={() =>
+                                                    dispatch(
+                                                        removeCategory(category)
+                                                    )
+                                                }
+                                                color="primary"
+                                                size="small"
+                                                sx={{
+                                                    marginRight: '5px',
+                                                    marginBottom: '10px',
+                                                }}
+                                            />
+                                        ))}
+                                        {author !== '' ? (
+                                            <Chip
+                                                label={author}
+                                                onDelete={() =>
+                                                    dispatch(setAuthor(''))
+                                                }
+                                                color="primary"
+                                                size="small"
+                                                sx={{
+                                                    marginRight: '5px',
+                                                    marginBottom: '10px',
+                                                }}
+                                            />
+                                        ) : null}
+                                    </>
+                                ) : null}
                             </Box>
                         </Box>
                     </Box>
@@ -173,7 +196,14 @@ function Filter() {
                         overflow: 'auto',
                     }}
                 >
+                    <Typography
+                        variant="body1"
+                        sx={{ fontWeight: 'bold', marginBottom: '20px' }}
+                    >
+                        Filter
+                    </Typography>
                     <Categories />
+                    <Author />
                     <Box
                         sx={{
                             background: (theme) =>

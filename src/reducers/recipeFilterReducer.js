@@ -7,6 +7,7 @@ import {
     SET_TYPE,
     RESET_RECIPES_FILTER,
     SET_ROUTE,
+    SET_AUTHOR,
 } from '../actions/types';
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
     },
     open: false,
     categories: [],
+    author: '',
     route: '',
     recipes: null,
 };
@@ -63,6 +65,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 route: action.payload,
+            };
+        case SET_AUTHOR:
+            return {
+                ...state,
+                author: action.payload,
             };
         default:
             return state;

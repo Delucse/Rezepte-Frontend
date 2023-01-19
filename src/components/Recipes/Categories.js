@@ -19,10 +19,12 @@ import {
 
 function Categories(props) {
     const dispatch = useDispatch();
+
     const reduxCategories = useSelector(
         (state) => state.recipeFilter.categories
     );
     const open = useSelector((state) => state.recipeFilter.open);
+
     const [categories, setCategoriesState] = useState(reduxCategories);
 
     const addCategoryState = (category) => {
@@ -60,47 +62,37 @@ function Categories(props) {
     }, [open]);
 
     return (
-        <div>
-            <Typography
-                variant="body1"
-                sx={{ fontWeight: 'bold', marginBottom: '20px' }}
-            >
-                Filter
-            </Typography>
-            <Grid container spacing={3} sx={{ marginBottom: 3 }}>
-                {Object.keys(params.filter).map((key, index) => (
-                    <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                        <Typography variant="body1">{key}</Typography>
-                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                            {params.filter[key].map((item, index) => (
-                                <FormControlLabel
-                                    key={index}
-                                    label={item}
-                                    control={
-                                        <Checkbox
-                                            checked={
-                                                props.redux
-                                                    ? reduxCategories.includes(
-                                                          item
-                                                      )
-                                                    : categories.includes(item)
-                                            }
-                                            value={item}
-                                            onChange={
-                                                props.redux
-                                                    ? handleChangeRedux
-                                                    : handleChangeState
-                                            }
-                                            disableRipple
-                                        />
-                                    }
-                                />
-                            ))}
-                        </Box>
-                    </Grid>
-                ))}
-            </Grid>
-        </div>
+        <Grid container spacing={3} sx={{ marginBottom: 3 }}>
+            {Object.keys(params.filter).map((key, index) => (
+                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
+                    <Typography variant="body1">{key}</Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        {params.filter[key].map((item, index) => (
+                            <FormControlLabel
+                                key={index}
+                                label={item}
+                                control={
+                                    <Checkbox
+                                        checked={
+                                            props.redux
+                                                ? reduxCategories.includes(item)
+                                                : categories.includes(item)
+                                        }
+                                        value={item}
+                                        onChange={
+                                            props.redux
+                                                ? handleChangeRedux
+                                                : handleChangeState
+                                        }
+                                        disableRipple
+                                    />
+                                }
+                            />
+                        ))}
+                    </Box>
+                </Grid>
+            ))}
+        </Grid>
     );
 }
 

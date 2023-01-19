@@ -51,7 +51,7 @@ function Toast() {
             pauseOnHover
             closeButton={CloseButton}
             style={{
-                '--toastify-z-index': 1199,
+                '--toastify-z-index': 1299,
                 '--toastify-color-light': theme.palette.primary.main,
                 '--toastify-text-color-light':
                     theme.palette.primary.contrastText,

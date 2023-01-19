@@ -5,6 +5,7 @@ import {
     getRecipes,
     resetFilterSettings,
     resetRecipes,
+    setAuthor,
     setCategories,
     setRoute,
     setSort,
@@ -36,6 +37,7 @@ function Recipes(props) {
     );
     const user = useSelector((state) => state.auth.user);
     const word = useSelector((state) => state.recipeFilter.word);
+    const author = useSelector((state) => state.recipeFilter.author);
     const sort = useSelector((state) => state.recipeFilter.sort);
     const type = useSelector((state) => state.recipeFilter.type);
     const categories = useSelector((state) => state.recipeFilter.categories);
@@ -51,7 +53,7 @@ function Recipes(props) {
         setSearch(search);
         setParams();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [word, sort, type, categories]);
+    }, [word, sort, type, categories, author]);
 
     useEffect(() => {
         if (props.route !== route) {
@@ -90,6 +92,7 @@ function Recipes(props) {
             const word = searchParams.get('wort');
             const sort = searchParams.get('sortierung');
             const ascending = searchParams.get('reihenfolge');
+            const author = searchParams.get('autor');
             var filter = searchParams.get('filter');
 
             dispatch(resetFilterSettings());
@@ -107,6 +110,9 @@ function Recipes(props) {
                         params.reihenfolge[ascending.toLowerCase()]
                     )
                 );
+            }
+            if (author) {
+                dispatch(setAuthor(author));
             }
             if (filter) {
                 filter = filter /*.toLowerCase()*/
@@ -127,6 +133,9 @@ function Recipes(props) {
         const newParams = {};
         if (word !== '') {
             newParams.wort = word;
+        }
+        if (author !== '') {
+            newParams.autor = author;
         }
         if (type !== 'all') {
             newParams.typ = params.type[type.toLowerCase()];
@@ -194,7 +203,7 @@ function Recipes(props) {
                                     : route === 'basis'
                                     ? 'Grundrezepte'
                                     : 'Rezepte'
-                            } ${
+                            } ${author !== '' ? `von "${author}"` : ''} ${
                                 word !== ''
                                     ? `mit dem angegebenen Suchwort "${word}"`
                                     : ''
