@@ -1,0 +1,52 @@
+[
+    {
+        "singular": "Pizza",
+        "plural": "Pizzen",
+        "group": "Stückzahl"
+    },
+    {
+        "singular": "Brot",
+        "plural": "Brote",
+        "group": "Stückzahl"
+    },
+    {
+        "singular": "Keks",
+        "plural": "Kekse",
+        "group": "Stückzahl"
+    },
+    {
+        "singular": "Plätzchen",
+        "group": "Stückzahl"
+    },
+    {
+        "singular": "Flasche",
+        "plural": "Flaschen",
+        "group": "Stückzahl"
+    },
+    {
+        "singular": "Rolle",
+        "plural": "Rollen",
+        "group": "Stückzahl"
+    },
+    {
+        "singular": "Glas",
+        "plural": "Gläser",
+        "group": "Stückzahl"
+    },
+    {
+        "singular": "Gramm",
+        "group": "Masse"
+    },
+    {
+        "singular": "Kilogramm",
+        "group": "Masse"
+    },
+    {
+        "singular": "Deziliter",
+        "group": "Volumen"
+    },
+    {
+        "singular": "Liter",
+        "group": "Volumen"
+    }
+]

@@ -24,6 +24,23 @@ import Icon from '@mdi/react';
 import { mdiPencil, mdiCupcake, mdiRotateLeft } from '@mdi/js';
 
 import bakewares from '../../data/bakeware.json';
+import {
+    singularPortionsDictionary,
+    pluralPortionsDictionary,
+} from '../../data/dictionaries';
+
+const getPortion = (count, portion) => {
+    if (count === 1) {
+        if (pluralPortionsDictionary[portion]) {
+            return pluralPortionsDictionary[portion];
+        }
+    } else {
+        if (singularPortionsDictionary[portion]) {
+            return singularPortionsDictionary[portion];
+        }
+    }
+    return portion;
+};
 
 function Portion() {
     const dispatch = useDispatch();
@@ -280,6 +297,8 @@ function Portion() {
                                         settings.count !== 1 ? 'en' : ''
                                     } Ø ${settings.form[0].toLocaleString()} cm`
                           }`
+                        : portion.art
+                        ? ` ${getPortion(settings.count, portion.art)}`
                         : ` Portion${settings.count !== 1 ? 'en' : ''}`}
                 </Typography>
                 <IconButton
@@ -439,7 +458,11 @@ function Portion() {
                                             flexGrow: 1,
                                         }}
                                     >
-                                        Portion{count !== 1 ? 'en' : ''}
+                                        {portion.art
+                                            ? getPortion(count, portion.art)
+                                            : `Portion${
+                                                  count !== 1 ? 'en' : ''
+                                              }`}
                                     </div>
                                 )}
                                 {count === portion.count &&

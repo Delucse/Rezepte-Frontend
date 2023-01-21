@@ -147,10 +147,13 @@ export const setRecipeTitle = (title) => (dispatch, getState) => {
     }
 };
 
-export const setRecipePortion = (count, form) => (dispatch, getState) => {
+export const setRecipePortion = (count, form, art) => (dispatch, getState) => {
     var payload = { count };
     if (form) {
         payload.form = form;
+    }
+    if (art !== undefined) {
+        payload.art = art;
     }
     dispatch({
         type: SET_RECIPE_PORTION,
@@ -742,6 +745,9 @@ export const setRecipeFormular = () => (dispatch, getState) => {
     pictures.forEach((pic) =>
         orderPicture.push({ id: pic._id, url: pic.file, user: pic.user })
     );
+    if (!portion.art && !portion.form) {
+        portion.art = null;
+    }
     dispatch({
         type: SET_RECIPE_FORMULAR,
         payload: {

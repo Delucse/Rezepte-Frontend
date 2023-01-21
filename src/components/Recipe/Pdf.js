@@ -35,6 +35,8 @@ import {
     pluralUnitsDictionary,
     singularAlimentsDictionary,
     pluralAlimentsDictionary,
+    singularPortionsDictionary,
+    pluralPortionsDictionary,
 } from '../../data/dictionaries';
 
 import LobsterTwoBold from '../../fonts/LobsterTwo-Bold.ttf';
@@ -176,6 +178,19 @@ const getAliment = (amount, unit, aliment) => {
         }
     }
     return aliment;
+};
+
+const getPortion = (count, portion) => {
+    if (count === 1) {
+        if (pluralPortionsDictionary[portion]) {
+            return pluralPortionsDictionary[portion];
+        }
+    } else {
+        if (singularPortionsDictionary[portion]) {
+            return singularPortionsDictionary[portion];
+        }
+    }
+    return portion;
 };
 
 function Steps({ steps, style }) {
@@ -320,6 +335,8 @@ function Header({ theme, title, portion, time }) {
                                         portion.count !== 1 ? 'en' : ''
                                     } Ø ${portion.form[0]} cm`
                           }`
+                        : portion.art
+                        ? getPortion(portion.count, portion.art)
                         : `Portion${portion.count !== 1 ? 'en' : ''}`}
                 </Text>
                 {time.resting > 0 ? (
@@ -450,6 +467,11 @@ function Footer({ theme, qr, id }) {
 }
 
 function PdfDocument({ theme, qr, recipe }) {
+    const portion = {
+        ...recipe.settings,
+        art: recipe.portion.art,
+    };
+
     return (
         <Document>
             <Page
@@ -462,7 +484,7 @@ function PdfDocument({ theme, qr, recipe }) {
                 <Header
                     theme={theme}
                     title={recipe.title}
-                    portion={recipe.settings}
+                    portion={portion}
                     time={recipe.time}
                 />
                 <View style={{ flexDirection: 'row' }}>

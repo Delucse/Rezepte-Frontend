@@ -18,11 +18,34 @@ import Icon from '@mdi/react';
 import { mdiCupcake } from '@mdi/js';
 
 import bakewares from '../../data/bakeware.json';
+import {
+    pluralPortions,
+    singularPortions,
+    singularPortionsDictionary,
+    pluralPortionsDictionary,
+} from '../../data/dictionaries';
+
+const getArt = (count, art) => {
+    if (art === null) {
+        return art;
+    }
+    if (count === 1) {
+        if (pluralPortionsDictionary[art]) {
+            return pluralPortionsDictionary[art];
+        }
+    } else {
+        if (singularPortionsDictionary[art]) {
+            return singularPortionsDictionary[art];
+        }
+    }
+    return art;
+};
 
 function Portion() {
     const dispatch = useDispatch();
     const count = useSelector((state) => state.recipeFormular.portion.count);
     const form = useSelector((state) => state.recipeFormular.portion.form);
+    const art = useSelector((state) => state.recipeFormular.portion.art);
     const errorPortion = useSelector(
         (state) => state.recipeFormular.error.portion
     );
@@ -36,28 +59,46 @@ function Portion() {
 
     const portionAdd = () => {
         if (count !== '' && !isNaN(count)) {
-            dispatch(setRecipePortion(parseInt(count) + 1, form));
+            dispatch(
+                setRecipePortion(
+                    parseInt(count) + 1,
+                    form,
+                    getArt(parseInt(count) + 1, art)
+                )
+            );
         } else {
-            dispatch(setRecipePortion(1, form));
+            dispatch(setRecipePortion(1, form, getArt(1, art)));
         }
     };
 
     const portionReduce = () => {
         if (count !== '' && !isNaN(count)) {
             if (parseInt(count) !== count) {
-                dispatch(setRecipePortion(parseInt(count), form));
+                dispatch(
+                    setRecipePortion(
+                        parseInt(count),
+                        form,
+                        getArt(parseInt(count), art)
+                    )
+                );
             } else {
-                dispatch(setRecipePortion(parseInt(count) - 1, form));
+                dispatch(
+                    setRecipePortion(
+                        parseInt(count) - 1,
+                        form,
+                        getArt(parseInt(count) - 1, art)
+                    )
+                );
             }
         } else {
-            dispatch(setRecipePortion(1, form));
+            dispatch(setRecipePortion(1, form, getArt(1, art)));
         }
     };
 
     const isDish = (e) => {
         if (e.target.value === '0') {
             setIndividualForm(false);
-            dispatch(setRecipePortion(count || 0, null));
+            dispatch(setRecipePortion(count || 0, null, null));
         } else {
             dispatch(setRecipePortion(count || 0, [-1]));
         }
@@ -198,10 +239,7 @@ function Portion() {
                 <div>
                     <Box
                         sx={{
-                            display: {
-                                xs: form > 0 ? 'inherit' : 'flex',
-                                sm: 'flex',
-                            },
+                            display: 'flex',
                         }}
                     >
                         <div
@@ -264,14 +302,8 @@ function Portion() {
                         <Box
                             sx={{
                                 display: 'flex',
-                                marginTop: {
-                                    xs: form > 0 ? '20px' : 0,
-                                    sm: 0,
-                                },
-                                width: {
-                                    xs: '100%',
-                                    sm: 'calc(100% - 115px - 10px)',
-                                },
+                                marginTop: 0,
+                                width: 'calc(100% - 115px - 10px)',
                             }}
                         >
                             {form && form.length > 0 ? (
@@ -293,22 +325,32 @@ function Portion() {
                                     optionChange={'form'}
                                     label={'Backform'}
                                     start={<Icon path={mdiCupcake} size={1} />}
-                                    fullWidth={true}
+                                    fullWidth
                                     error={errorPortion && !individualForm}
                                 />
-                            ) : (
-                                <Box
-                                    sx={{
-                                        color: (theme) =>
-                                            theme.palette.text.primary,
-                                        marginRight: '10px',
-                                        lineHeight: '56px',
-                                        flexGrow: 1,
-                                    }}
-                                >
-                                    Portion{count !== 1 ? 'en' : ''}
-                                </Box>
-                            )}
+                            ) : null}
+                            {art !== undefined ? (
+                                <Autocomplete
+                                    value={art}
+                                    options={
+                                        count === 1
+                                            ? singularPortions
+                                            : pluralPortions
+                                    }
+                                    optionLabel={'portion'}
+                                    optionGroup={'group'}
+                                    label={`Portion${
+                                        count === 1 ? '' : 'en'
+                                    } (optional)`}
+                                    fullWidth
+                                    onChange={(art) =>
+                                        dispatch(
+                                            setRecipePortion(count, form, art)
+                                        )
+                                    }
+                                    freeSolo
+                                />
+                            ) : null}
                         </Box>
                     </Box>
 

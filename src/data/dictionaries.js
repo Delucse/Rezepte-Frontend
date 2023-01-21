@@ -1,5 +1,6 @@
 import units from './units.json';
 import aliments from './aliments.json';
+import portions from './portions.json';
 
 export const singularUnits = units
     .map((unit) => {
@@ -51,6 +52,30 @@ export const pluralAliments = aliments
             a.group.localeCompare(b.group) || a.aliment.localeCompare(b.aliment)
     );
 
+export const singularPortions = portions
+    .map((portion) => {
+        return {
+            portion: portion.singular ? portion.singular : portion.plural,
+            group: portion.group,
+        };
+    })
+    .sort(
+        (a, b) =>
+            a.group.localeCompare(b.group) || a.portion.localeCompare(b.portion)
+    );
+
+export const pluralPortions = portions
+    .map((portion) => {
+        return {
+            portion: portion.plural ? portion.plural : portion.singular,
+            group: portion.group,
+        };
+    })
+    .sort(
+        (a, b) =>
+            a.group.localeCompare(b.group) || a.portion.localeCompare(b.portion)
+    );
+
 export const singularUnitsDictionary = {};
 export const pluralUnitsDictionary = {};
 units.forEach((unit) => {
@@ -69,6 +94,17 @@ aliments.forEach((aliment) => {
     pluralAlimentsDictionary[
         aliment.plural ? aliment.plural : aliment.singular
     ] = aliment.singular ? aliment.singular : aliment.plural;
+});
+
+export const singularPortionsDictionary = {};
+export const pluralPortionsDictionary = {};
+portions.forEach((portion) => {
+    singularPortionsDictionary[
+        portion.singular ? portion.singular : portion.plural
+    ] = portion.plural ? portion.plural : portion.singular;
+    pluralPortionsDictionary[
+        portion.plural ? portion.plural : portion.singular
+    ] = portion.singular ? portion.singular : portion.plural;
 });
 
 export const singularUnitsAlimentDictionary = {};
