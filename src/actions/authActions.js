@@ -271,7 +271,7 @@ export const signout = () => (dispatch, getState) => {
         });
 };
 
-const signoutIntern = () => (dispatch) => {
+export const signoutIntern = () => (dispatch) => {
     dispatch({
         type: LOGOUT_SUCCESS,
     });

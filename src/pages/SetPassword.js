@@ -240,32 +240,6 @@ function SetPassword() {
                             </Button>
                         </p>
                     </div>
-                    {/* <Divider variant="fullWidth" />
-                    <p
-                        style={{
-                            textAlign: 'center',
-                            paddingRight: '34px',
-                            paddingLeft: '34px',
-                            marginBottom: 0,
-                        }}
-                    >
-                        Du kannst dich wieder an dein Passwort erinnern?{' '}
-                        <StyledLink
-                            to="/anmeldung"
-                            state={
-                                location.state
-                                    ? {
-                                          background: location.state.background,
-                                          auth: location.state.auth,
-                                      }
-                                    : {}
-                            }
-                            replace
-                            style={{ fontWeight: 'bold' }}
-                        >
-                            Anmelden
-                        </StyledLink>
-                    </p> */}
                 </div>
             }
         />

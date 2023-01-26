@@ -8,7 +8,6 @@ import { loadUser } from './actions/authActions';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box } from '@mui/material';
 
 import Home from './pages/Home';
 import Error from './pages/Error';
@@ -23,6 +22,7 @@ import Settings from './pages/Settings';
 import Images from './pages/Images';
 import Faq from './pages/Faq';
 import Qr from './pages/Qr';
+import Account from './pages/Account';
 import Verification from './pages/Verification';
 import SetPassword from './pages/SetPassword';
 import ResetPassword from './pages/ResetPassword';
@@ -151,14 +151,9 @@ function App() {
                     <Route
                         path="konto"
                         element={
-                            <Box
-                                sx={{
-                                    color: (theme) =>
-                                        theme.palette.text.primary,
-                                }}
-                            >
-                                Konto TODO
-                            </Box>
+                            <PrivateRoute>
+                                <Account />
+                            </PrivateRoute>
                         }
                     />
                     <Route path="einstellungen" element={<Settings />} />

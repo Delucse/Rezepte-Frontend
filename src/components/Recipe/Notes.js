@@ -224,110 +224,105 @@ const Notes = () => {
         setOpen(!open);
     };
 
-    return note !== null ? (
-        note.length > 0 ? (
-            <div
-                style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 10,
-                }}
-            >
-                <div onClick={note.length > 0 ? toggle : () => {}}>
-                    <PaperClip
-                        style={{
-                            cursor: note.length > 0 ? 'pointer' : 'default',
-                            top: -15,
-                            left: { xs: 40, sm: 70, md: 100 },
-                            transition: 'transform 1s',
-                            transform: `rotate(${open ? 3 : 15}deg)`,
-                            zIndex: (theme) => theme.zIndex.appBar - 30 + 1,
-                        }}
-                    />
-                </div>
-                <Box
-                    onClick={!open ? toggle : null}
-                    sx={{
-                        cursor: open ? 'default' : 'pointer',
-                        zIndex: (theme) => theme.zIndex.appBar - 30,
-                        transition: 'all 1s ease-in-out',
+    return note.length > 0 ? (
+        <div
+            style={{
+                position: 'absolute',
+                top: 0,
+                right: 10,
+            }}
+        >
+            <div onClick={note.length > 0 ? toggle : () => {}}>
+                <PaperClip
+                    style={{
+                        cursor: note.length > 0 ? 'pointer' : 'default',
+                        top: -15,
+                        left: { xs: 40, sm: 70, md: 100 },
+                        transition: 'transform 1s',
                         transform: `rotate(${open ? 3 : 15}deg)`,
-                        width: open
-                            ? '200px'
-                            : { xs: '70px', sm: '120px', md: '180px' },
-                        maxHeight: open ? '999px' : '24px',
-                        position: 'relative',
-                        background: (theme) => theme.palette.primary.light,
-                        overflow: 'hidden',
-                        padding: '30px 10px 25px 10px',
-                        borderRadius: '0 0 0 30px/45px',
-                        boxShadow: `inset 0 -40px 40px rgba(0,0,0,0.05),
+                        zIndex: (theme) => theme.zIndex.appBar - 30 + 1,
+                    }}
+                />
+            </div>
+            <Box
+                onClick={!open ? toggle : null}
+                sx={{
+                    cursor: open ? 'default' : 'pointer',
+                    zIndex: (theme) => theme.zIndex.appBar - 30,
+                    transition: 'all 1s ease-in-out',
+                    transform: `rotate(${open ? 3 : 15}deg)`,
+                    width: open
+                        ? '200px'
+                        : { xs: '70px', sm: '120px', md: '180px' },
+                    maxHeight: open ? '999px' : '24px',
+                    position: 'relative',
+                    background: (theme) => theme.palette.primary.light,
+                    overflow: 'hidden',
+                    padding: '30px 10px 25px 10px',
+                    borderRadius: '0 0 0 30px/45px',
+                    boxShadow: `inset 0 -40px 40px rgba(0,0,0,0.05),
                    inset 0 25px 10px rgba(0,0,0,0.05),
                    0 5px 6px 5px rgba(0,0,0,0.05)`,
-                        // fontFamily: "'Permanent Marker', cursive",
-                        lineHeight: '24px',
-                        fontSize: '.9rem',
-                        // fontFamily: 'Lucida Handwriting',
-                        color: (theme) => theme.palette.text.primary,
+                    // fontFamily: "'Permanent Marker', cursive",
+                    lineHeight: '24px',
+                    fontSize: '.9rem',
+                    // fontFamily: 'Lucida Handwriting',
+                    color: (theme) => theme.palette.text.primary,
 
-                        '&:before': {
-                            content: '""',
-                            display: 'block',
-                            position: 'absolute',
-                            width: '20px',
-                            height: '25px',
-                            background: (theme) => theme.palette.primary.light,
-                            boxShadow: `3px -2px 10px rgba(0,0,0,0.5),
+                    '&:before': {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        width: '20px',
+                        height: '25px',
+                        background: (theme) => theme.palette.primary.light,
+                        boxShadow: `3px -2px 10px rgba(0,0,0,0.5),
                    inset 15px -15px 15px rgba(0,0,0,0.05)`,
-                            left: 0,
-                            bottom: 0,
-                            zIndex: 2,
-                            transform: 'skewX(25deg)',
-                        },
+                        left: 0,
+                        bottom: 0,
+                        zIndex: 2,
+                        transform: 'skewX(25deg)',
+                    },
+                }}
+            >
+                <Box
+                    sx={{
+                        overflow: 'hidden',
+                        whiteSpace: open ? 'unset' : 'nowrap',
+                        textOverflow: 'ellipsis',
                     }}
                 >
+                    {note}
+                </Box>
+                {open ? (
                     <Box
                         sx={{
-                            overflow: 'hidden',
-                            whiteSpace: open ? 'unset' : 'nowrap',
-                            textOverflow: 'ellipsis',
+                            display: 'flex',
+                            marginTop: '10px',
+                            float: 'right',
                         }}
                     >
-                        {note}
+                        <Editor confirm={() => setOpen(true)} isOpen={open} />
+                        <Delete confirm={() => setOpen(false)} />
                     </Box>
-                    {open ? (
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                marginTop: '10px',
-                                float: 'right',
-                            }}
-                        >
-                            <Editor
-                                confirm={() => setOpen(true)}
-                                isOpen={open}
-                            />
-                            <Delete confirm={() => setOpen(false)} />
-                        </Box>
-                    ) : (
-                        <Box sx={{ visibility: 'hidden' }}>{note}</Box>
-                    )}
-                </Box>
-                <Backdrop
-                    sx={{
-                        backgroundColor: 'transparent',
-                        zIndex: (theme) => theme.zIndex.appBar - 40,
-                    }}
-                    open={open}
-                    onClick={toggle}
-                ></Backdrop>
-            </div>
-        ) : (
-            <Box sx={{ display: 'flex', marginLeft: '8px' }}>
-                |<Editor confirm={() => setOpen(true)} isOpen={open} />
+                ) : (
+                    <Box sx={{ visibility: 'hidden' }}>{note}</Box>
+                )}
             </Box>
-        )
-    ) : null;
+            <Backdrop
+                sx={{
+                    backgroundColor: 'transparent',
+                    zIndex: (theme) => theme.zIndex.appBar - 40,
+                }}
+                open={open}
+                onClick={toggle}
+            ></Backdrop>
+        </div>
+    ) : (
+        <Box sx={{ display: 'flex', marginLeft: '8px' }}>
+            |<Editor confirm={() => setOpen(true)} isOpen={open} />
+        </Box>
+    );
 };
 
 export default Notes;

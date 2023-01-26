@@ -132,7 +132,7 @@ function Recipe() {
                     color: (theme) => theme.palette.text.primary,
                     display: 'flex',
                     width:
-                        !formular && user && recipe.note !== null
+                        !formular && user && (recipe.note || recipe.note === '')
                             ? {
                                   xs: 'calc(100% - 100px)',
                                   sm: 'calc(100% - 130px)',
@@ -416,7 +416,9 @@ function Recipe() {
                 >
                     Arbeitsschritte{' '}
                 </Typography>
-                {!formular && user && recipe.note !== null ? <Notes /> : null}
+                {!formular && user && (recipe.note || recipe.note === '') ? (
+                    <Notes />
+                ) : null}
             </Box>
             <List
                 sx={{
