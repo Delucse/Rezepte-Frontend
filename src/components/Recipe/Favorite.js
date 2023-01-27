@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     deleteRecipeFavorite,
     setRecipeFavorite,
@@ -13,13 +13,15 @@ import Box from '@mui/material/Box';
 import Icon from '@mdi/react';
 import { mdiHeart, mdiHeartOutline } from '@mdi/js';
 
-function Favorite(props) {
+function Favorite() {
     const dispatch = useDispatch();
+
+    const check = useSelector((state) => state.recipe.favorite);
 
     return (
         <IconButton
             tooltipProps={{
-                title: props.check
+                title: check
                     ? 'aus meinem Kochbuch entfernen'
                     : 'zu meinem Kochbuch hinzufügen',
                 placement: 'right',
@@ -36,22 +38,16 @@ function Favorite(props) {
                 },
             }}
             onClick={
-                props.check
+                check
                     ? () => dispatch(deleteRecipeFavorite())
                     : () => dispatch(setRecipeFavorite())
             }
         >
             <Box id="heart" sx={{ display: 'flex' }}>
-                <Icon
-                    path={props.check ? mdiHeart : mdiHeartOutline}
-                    size={1}
-                />
+                <Icon path={check ? mdiHeart : mdiHeartOutline} size={1} />
             </Box>
             <Box id="heartHover" sx={{ display: 'none' }}>
-                <Icon
-                    path={props.check ? mdiHeartOutline : mdiHeart}
-                    size={1}
-                />
+                <Icon path={check ? mdiHeartOutline : mdiHeart} size={1} />
             </Box>
         </IconButton>
     );

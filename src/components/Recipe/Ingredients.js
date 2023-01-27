@@ -141,11 +141,11 @@ function Ingredients() {
     const settings = useSelector((state) => state.recipe.settings);
 
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} sx={{ marginBottom: '24px' }}>
             {ingredients.map((ingredient, index) => {
                 return (
                     <Grid item xs={12} sm={6} md={4} key={index}>
-                        <List sx={{ padding: 0, marginTop: '1px' }}>
+                        <List sx={{ padding: 0 }}>
                             <ListItem disablePadding>
                                 <Typography
                                     variant="body1"

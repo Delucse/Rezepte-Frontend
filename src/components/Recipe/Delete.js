@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setRoute } from '../../actions/recipeFilterActions';
 import { snackbarMessage } from '../../actions/messageActions';
 
@@ -18,10 +18,13 @@ import { mdiDelete } from '@mdi/js';
 
 import { Box, Typography } from '@mui/material';
 
-function Delete(props) {
+function Delete() {
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
+
+    const id = useSelector((state) => state.recipe.id);
+    const recipeTitle = useSelector((state) => state.recipe.title);
 
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
@@ -48,10 +51,7 @@ function Delete(props) {
             },
         };
         axios
-            .delete(
-                `${process.env.REACT_APP_API_URL}/recipe/${props.id}`,
-                config
-            )
+            .delete(`${process.env.REACT_APP_API_URL}/recipe/${id}`, config)
             .then((res) => {
                 res.config.success(res);
             })
@@ -98,7 +98,7 @@ function Delete(props) {
                             <div
                                 style={{ fontWeight: 700, display: 'contents' }}
                             >
-                                {props.title}
+                                {recipeTitle}
                             </div>{' '}
                             endgültig zu löschen.
                         </Typography>
@@ -121,7 +121,7 @@ function Delete(props) {
                         <Button
                             variant="contained"
                             onClick={deleteRecipe}
-                            disabled={props.title !== title}
+                            disabled={recipeTitle !== title}
                         >
                             Bestätigen
                         </Button>

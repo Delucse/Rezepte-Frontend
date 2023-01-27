@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 
 import Icon from '@mdi/react';
-import { mdiPencil, mdiCupcake, mdiRotateLeft } from '@mdi/js';
+import { mdiCupcake, mdiPencilOutline, mdiRotateLeft } from '@mdi/js';
 
 import bakewares from '../../data/bakeware.json';
 import {
@@ -215,10 +215,12 @@ function Portion() {
     const reset = () => {
         setCount(portion.count);
         setIndividualForm(
-            bakewares.filter(
-                (bake) =>
-                    JSON.stringify(bake.form) === JSON.stringify(portion.form)
-            ).length === 0
+            portion.form &&
+                bakewares.filter(
+                    (bake) =>
+                        JSON.stringify(bake.form) ===
+                        JSON.stringify(portion.form)
+                ).length === 0
         );
         setForm(portion.form);
     };
@@ -267,7 +269,7 @@ function Portion() {
 
     return (
         <div>
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', marginBottom: '24px' }}>
                 <Typography
                     sx={{
                         lineHeight: '24px',
@@ -275,7 +277,7 @@ function Portion() {
                     }}
                     variant="body1"
                 >
-                    für {settings.count.toLocaleString()}
+                    {settings.count.toLocaleString()}
                     {settings.form
                         ? ` ${
                               settings.form.length > 1
@@ -311,7 +313,7 @@ function Portion() {
                     color="primary"
                     onClick={() => setOpen(true)}
                 >
-                    <Icon path={mdiPencil} size={1} />
+                    <Icon path={mdiPencilOutline} size={'20px'} />
                 </IconButton>
             </div>
             <Dialog

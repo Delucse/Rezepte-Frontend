@@ -25,8 +25,7 @@ const PaperClip = ({ style }) => {
                     right: '2px',
                     top: '5px',
                     borderRadius: '10px',
-                    border: (theme) =>
-                        `2px solid ${theme.palette.primary.main}`,
+                    border: 'inherit',
                     borderBottom: 0,
                     borderBottomRightRadius: 0,
                     borderBottomLeftRadius: 0,

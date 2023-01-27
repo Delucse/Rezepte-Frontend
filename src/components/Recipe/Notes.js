@@ -64,15 +64,17 @@ const Editor = ({ confirm }) => {
                         cursor: 'pointer',
                         display: 'flex',
                         '&:hover': { textDecoration: 'underline' },
+                        lineHeight: '24px',
                     }}
                 >
                     <Icon
                         path={mdiNoteEditOutline}
-                        size={0.8}
+                        size={'19px'}
                         style={{
-                            marginTop: '2px',
+                            marginTop: '3px',
                             marginRight: '3px',
                             marginLeft: '8px',
+                            minHeight: '19px',
                         }}
                     />
                     Notiz

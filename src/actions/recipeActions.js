@@ -16,6 +16,7 @@ import {
 } from './progressActions';
 
 import axios from 'axios';
+import moment from 'moment';
 
 export const setRecipeSettings = (count, form, rounded) => (dispatch) => {
     var payload = { count, rounded };
@@ -64,6 +65,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
 
     var payload = {
         id: recipe.id,
+        date: moment().format(),
         user: getState().auth.user,
         title: recipeFormular.title,
         portion: recipeFormular.portion,
@@ -122,6 +124,7 @@ export const getRecipe =
             .then((res) => {
                 var payload = {
                     id: res.data._id,
+                    date: res.data.date,
                     user: res.data.user,
                     title: res.data.title,
                     portion: res.data.portion,
@@ -132,13 +135,15 @@ export const getRecipe =
                     pictures: res.data.pictures,
                     favorite: res.data.favorite,
                     note: res.data.note,
-                    settings: {
+                };
+                if (loadUi) {
+                    payload.settings = {
                         count: res.data.portion.count,
                         rounded: true,
-                    },
-                };
-                if (res.data.portion.form) {
-                    payload.settings.form = res.data.portion.form;
+                    };
+                    if (res.data.portion.form) {
+                        payload.settings.form = res.data.portion.form;
+                    }
                 }
                 dispatch({
                     type: GET_RECIPE,
@@ -160,6 +165,8 @@ export const resetRecipe = () => (dispatch) => {
         type: GET_RECIPE,
         payload: {
             id: null,
+            date: null,
+            user: null,
             title: null,
             portion: null,
             time: null,

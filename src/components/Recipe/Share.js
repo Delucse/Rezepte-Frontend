@@ -71,10 +71,13 @@ const actions = [
     },
 ];
 
-function Share(props) {
+function Share() {
     const dispatch = useDispatch();
 
-    const url = `${process.env.REACT_APP_SHARE_URL}/${props.id}`;
+    const id = useSelector((state) => state.recipe.id);
+    const title = useSelector((state) => state.recipe.title);
+
+    const url = `${process.env.REACT_APP_SHARE_URL}/${id}`;
     const type = useSelector((state) => state.message.type);
 
     const classes = useStyles(useTheme());
@@ -101,7 +104,7 @@ function Share(props) {
             }}
             onClick={() =>
                 navigator.share({
-                    title: props.title,
+                    title: title,
                     url,
                 })
             }
@@ -169,21 +172,15 @@ function Share(props) {
                         icon={action.icon}
                         tooltipTitle={action.name}
                         TooltipClasses={classes}
-                        href={
-                            action.href ? action.href(props.title, url) : null
-                        }
+                        href={action.href ? action.href(title, url) : null}
                         onClick={
                             action.onClick
                                 ? () =>
-                                      action.onClick(
-                                          props.title,
-                                          url,
-                                          (text) => {
-                                              dispatch(
-                                                  snackbarMessage(text, 'share')
-                                              );
-                                          }
-                                      )
+                                      action.onClick(title, url, (text) => {
+                                          dispatch(
+                                              snackbarMessage(text, 'share')
+                                          );
+                                      })
                                 : null
                         }
                     />

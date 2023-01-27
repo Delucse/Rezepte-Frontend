@@ -9,6 +9,7 @@ import {
 
 const initialState = {
     id: null,
+    date: null,
     user: null,
     title: null,
     portion: null,
