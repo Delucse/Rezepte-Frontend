@@ -99,7 +99,8 @@ function Overview(props) {
                     background: (theme) => theme.palette.action.hover,
                     boxShadow: props.fullscreen
                         ? 'none'
-                        : '0 1px 4px hsla(0,0%,0%,.25)',
+                        : (theme) =>
+                              `0 1px 4px ${theme.palette.action.disabled}`, // original: hsla(0,0%,0%,.25)
                     position: 'relative',
                     backgroundImage: (theme) =>
                         `radial-gradient(transparent 21%, transparent 21%), radial-gradient(transparent 10%, transparent 12%), linear-gradient(to top, hsla(0,0%,0%,0) 0%, hsla(0,0%,0%,0) 95%, ${rgbaToRgb(

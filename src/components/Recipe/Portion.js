@@ -309,6 +309,9 @@ function Portion() {
                         height: 'inherit',
                         width: '24px',
                         marginLeft: '5px',
+                        '&:hover': {
+                            color: (theme) => theme.palette.primary.light,
+                        },
                     }}
                     color="primary"
                     onClick={() => setOpen(true)}

@@ -269,7 +269,10 @@ const Notes = () => {
                     lineHeight: '24px',
                     fontSize: '.9rem',
                     // fontFamily: 'Lucida Handwriting',
-                    color: (theme) => theme.palette.text.primary,
+                    color: (theme) =>
+                        theme.palette.getContrastText(
+                            theme.palette.primary.light
+                        ),
 
                     '&:before': {
                         content: '""',
@@ -321,7 +324,13 @@ const Notes = () => {
             ></Backdrop>
         </div>
     ) : (
-        <Box sx={{ display: 'flex', marginLeft: '8px' }}>
+        <Box
+            sx={{
+                display: 'flex',
+                marginLeft: '8px',
+                color: (theme) => theme.palette.text.primary,
+            }}
+        >
             |<Editor confirm={() => setOpen(true)} isOpen={open} />
         </Box>
     );

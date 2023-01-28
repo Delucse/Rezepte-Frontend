@@ -15,27 +15,29 @@ Object.keys(params.filter).forEach((key) => {
 
 function Tag({ label, onClick }) {
     return (
-        <Chip
-            sx={{
-                marginTop: '4.4px',
-                marginRight: '5px',
-                height: '19px',
-                marginBottom: '-2px',
-                cursor: 'pointer',
-                background: (theme) => theme.palette.primary.light,
-                color: (theme) =>
-                    theme.palette.getContrastText(theme.palette.primary.light),
-                '&:hover': {
-                    background: (theme) => theme.palette.primary.main,
+        <div style={{ height: '24px' }}>
+            <Chip
+                sx={{
+                    marginRight: '5px',
+                    height: '19px',
+                    cursor: 'pointer',
+                    background: (theme) => theme.palette.primary.light,
                     color: (theme) =>
                         theme.palette.getContrastText(
-                            theme.palette.primary.main
+                            theme.palette.primary.light
                         ),
-                },
-            }}
-            label={label}
-            onClick={onClick}
-        />
+                    '&:hover': {
+                        background: (theme) => theme.palette.primary.main,
+                        color: (theme) =>
+                            theme.palette.getContrastText(
+                                theme.palette.primary.main
+                            ),
+                    },
+                }}
+                label={label}
+                onClick={onClick}
+            />
+        </div>
     );
 }
 
@@ -46,7 +48,11 @@ function Keywords() {
 
     return (
         <div
-            style={{ marginTop: '-2.6px', marginBottom: 'calc(24px + 2.6px)' }}
+            style={{
+                marginBottom: '24px',
+                display: 'flex',
+                flexFlow: 'wrap',
+            }}
         >
             {keywords.map((keyword, index) => {
                 return (

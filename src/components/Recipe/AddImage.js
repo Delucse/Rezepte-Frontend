@@ -180,7 +180,14 @@ function AddImage(props) {
     return user ? (
         <div>
             <Tooltip title="Bild hinzufügen" placement="left">
-                <Box sx={{ color: (theme) => theme.palette.primary.main }}>
+                <Box
+                    sx={{
+                        color: (theme) => theme.palette.primary.main,
+                        '&:hover': {
+                            color: (theme) => theme.palette.primary.light,
+                        },
+                    }}
+                >
                     <Icon
                         path={mdiCameraPlus}
                         size={1}

@@ -33,14 +33,16 @@ function Info() {
                     marginLeft: '16px',
                     lineHeight: '24px',
                     borderRadius: '2px',
-                    background: 'white',
+                    background: (theme) => theme.palette.background.default,
+                    color: (theme) => theme.palette.text.primary,
 
                     '&:before': {
                         content: '""',
                         position: 'absolute',
                         width: 'min(40%, 230px)',
                         height: '10px',
-                        boxShadow: '0 5px 14px rgba(0,0,0,.7)',
+                        boxShadow: (theme) =>
+                            `0 5px 14px ${theme.palette.text.secondary}`, // original:  rgba(0,0,0,.7)
                         zIndex: '-1',
                         transition: 'all .3s ease-in-out',
                         left: '15px',
@@ -53,7 +55,8 @@ function Info() {
                         position: 'absolute',
                         width: 'min(40%, 230px)',
                         height: '10px',
-                        boxShadow: '0 5px 14px rgba(0,0,0,.7)',
+                        boxShadow: (theme) =>
+                            `0 5px 14px ${theme.palette.text.secondary}`, // original:  rgba(0,0,0,.7)
                         zIndex: '-1',
                         transition: 'all .3s ease-in-out',
                         top: '10px',
@@ -62,12 +65,14 @@ function Info() {
                     },
 
                     '&:hover:before': {
-                        boxShadow: '0 2px 14px rgba(0,0,0,.4)',
+                        boxShadow: (theme) =>
+                            `0 2px 14px ${theme.palette.text.disabled}`, // original: rgba(0,0,0,.4)
                         left: '5px',
                     },
 
                     '&:hover:after': {
-                        boxShadow: '0 2px 14px rgba(0,0,0,.4)',
+                        boxShadow: (theme) =>
+                            `0 2px 14px ${theme.palette.text.disabled}`, // original: rgba(0,0,0,.4)
                         left: '5px',
                     },
                 }}

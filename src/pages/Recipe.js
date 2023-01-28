@@ -98,8 +98,11 @@ function Recipe() {
                             xs: 0,
                             md: recipe.pictures.length > 0 ? '20px' : 0,
                         },
-                        marginTop: { xs: '24px', md: 0 },
-                        zIndex: 0,
+                        marginTop: {
+                            xs: recipe.pictures.length > 0 ? '24px' : 0,
+                            md: 0,
+                        },
+                        zIndex: 1,
                     }}
                 >
                     <Portion />

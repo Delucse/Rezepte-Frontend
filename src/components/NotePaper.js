@@ -21,7 +21,8 @@ function NotePaper(props) {
                 sx={{
                     margin: '2px 0',
                     background: (theme) => theme.palette.action.hover,
-                    boxShadow: '0 1px 4px hsla(0,0%,0%,.25)',
+                    boxShadow: (theme) =>
+                        `0 1px 4px ${theme.palette.action.disabled}`, // original: hsla(0,0%,0%,.25),
                     position: 'relative',
                     backgroundImage: (theme) =>
                         `radial-gradient(${
