@@ -115,13 +115,12 @@ export const getRecipe =
             headers: {
                 'Content-Type': 'application/json',
             },
+            method: 'GET',
+            url: `${process.env.REACT_APP_API_URL}/recipe/${id}`,
             onDownloadProgress: (progressEvent) => {
                 // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
             },
-        };
-        axios
-            .get(`${process.env.REACT_APP_API_URL}/recipe/${id}`, config)
-            .then((res) => {
+            success: (res) => {
                 var payload = {
                     id: res.data._id,
                     date: res.data.date,
@@ -153,10 +152,18 @@ export const getRecipe =
                 if (setFormular) {
                     dispatch(setRecipeFormular());
                 }
-            })
-            .catch((err) => {
+            },
+            error: (err) => {
                 dispatch(setProgressError('recipe'));
                 console.error(err);
+            },
+        };
+        axios(config)
+            .then((res) => {
+                res.config.success(res);
+            })
+            .catch((err) => {
+                err.config.error(err);
             });
     };
 

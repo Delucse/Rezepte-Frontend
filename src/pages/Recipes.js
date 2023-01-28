@@ -74,8 +74,8 @@ function Recipes(props) {
     }, [search, props.route]);
 
     useEffect(() => {
-        if (user && user !== oldUser && route === '') {
-            dispatch(getRecipes());
+        if (user && user !== oldUser) {
+            dispatch(getRecipes(false));
         }
         setUser(user);
         // eslint-disable-next-line react-hooks/exhaustive-deps

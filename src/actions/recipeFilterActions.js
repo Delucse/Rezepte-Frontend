@@ -19,56 +19,63 @@ import {
 
 import axios from 'axios';
 
-export const getRecipes = () => (dispatch, getState) => {
-    const { word, sort, type, categories, route, author } =
-        getState().recipeFilter;
-    dispatch(setProgress('recipeFilter'));
-    const config = {
-        onDownloadProgress: (progressEvent) => {
-            // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
-        },
-        success: (res) => {
-            const recipes = res.data.map((recipe) => {
-                recipe.rotate =
-                    Math.floor(Math.random() * (10 - -10 + 1)) + -10;
-                return recipe;
+export const getRecipes =
+    (loadUi = true) =>
+    (dispatch, getState) => {
+        const { word, sort, type, categories, route, author, recipes } =
+            getState().recipeFilter;
+        if (loadUi) {
+            dispatch(setProgress('recipeFilter'));
+        }
+        const config = {
+            onDownloadProgress: (progressEvent) => {
+                // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
+            },
+            success: (res) => {
+                const newRecipes = res.data.map((recipe, index) => {
+                    recipe.rotate = loadUi
+                        ? Math.floor(Math.random() * (10 - -10 + 1)) + -10
+                        : recipes[index].rotate;
+                    return recipe;
+                });
+                dispatch({
+                    type: GET_RECIPES,
+                    payload: [...newRecipes],
+                });
+                dispatch(setProgressSuccess('recipeFilter'));
+            },
+            error: (err) => {
+                if (err.response.status !== 401) {
+                    dispatch(setProgressError('recipeFilter'));
+                }
+            },
+        };
+        axios
+            .get(
+                `${process.env.REACT_APP_API_URL}/recipe${
+                    route === 'favoriten'
+                        ? '/favorite'
+                        : route === 'nutzer'
+                        ? '/user'
+                        : route === 'kleinkind'
+                        ? '/baby'
+                        : route === 'basis'
+                        ? '/basic'
+                        : ''
+                }?search=${word}&type=${type}&keywords=${categories.join(
+                    ','
+                )}&author=${author}&sort=${sort.type}&ascending=${
+                    sort.ascending
+                }`,
+                config
+            )
+            .then((res) => {
+                res.config.success(res);
+            })
+            .catch((err) => {
+                err.config.error(err);
             });
-            dispatch({
-                type: GET_RECIPES,
-                payload: [...recipes],
-            });
-            dispatch(setProgressSuccess('recipeFilter'));
-        },
-        error: (err) => {
-            if (err.response.status !== 401) {
-                dispatch(setProgressError('recipeFilter'));
-            }
-        },
     };
-    axios
-        .get(
-            `${process.env.REACT_APP_API_URL}/recipe${
-                route === 'favoriten'
-                    ? '/favorite'
-                    : route === 'nutzer'
-                    ? '/user'
-                    : route === 'kleinkind'
-                    ? '/baby'
-                    : route === 'basis'
-                    ? '/basic'
-                    : ''
-            }?search=${word}&type=${type}&keywords=${categories.join(
-                ','
-            )}&author=${author}&sort=${sort.type}&ascending=${sort.ascending}`,
-            config
-        )
-        .then((res) => {
-            res.config.success(res);
-        })
-        .catch((err) => {
-            err.config.error(err);
-        });
-};
 
 export const setOpen = (bool) => (dispatch) => {
     dispatch({
