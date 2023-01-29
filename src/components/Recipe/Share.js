@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { snackbarMessage, resetMessage } from '../../actions/messageActions';
 
+import { useLocation } from 'react-router-dom';
+
 import IconButton from '../IconButton';
 import Tooltip from '../Tooltip';
 
@@ -77,7 +79,9 @@ function Share() {
     const id = useSelector((state) => state.recipe.id);
     const title = useSelector((state) => state.recipe.title);
 
-    const url = `${process.env.REACT_APP_SHARE_URL}/${id}`;
+    const url = `${process.env.REACT_APP_SHARE_URL}/${id}${
+        useLocation().search
+    }`;
     const type = useSelector((state) => state.message.type);
 
     const classes = useStyles(useTheme());

@@ -445,7 +445,7 @@ function Footer({ theme, qr, id }) {
                         }
                     />
                     <Link
-                        src={`${process.env.REACT_APP_BASE_URL}/rezepte/${id}`}
+                        src={`${process.env.REACT_APP_BASE_URL}/rezepte/${id}${window.location.search}`}
                         style={{ color: 'grey', textDecoration: 'none' }}
                     >
                         <Text>{`${process.env.REACT_APP_BASE_URL}/rezepte/${id}`}</Text>
@@ -528,7 +528,7 @@ function Pdf() {
     const generateQR = () => {
         try {
             return QRCode.toDataURL(
-                `${process.env.REACT_APP_BASE_URL}/rezepte/${recipe.id}`,
+                `${process.env.REACT_APP_BASE_URL}/rezepte/${recipe.id}${window.location.search}`,
                 {
                     type: 'svg',
                     margin: 0,

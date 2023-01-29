@@ -107,7 +107,7 @@ export const setRecipeId = (id) => (dispatch) => {
 
 export const getRecipe =
     (id, setFormular, loadUi = true) =>
-    (dispatch) => {
+    (dispatch, getState) => {
         if (loadUi) {
             dispatch(setProgress('recipe'));
         }
@@ -121,6 +121,8 @@ export const getRecipe =
                 // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
             },
             success: (res) => {
+                const { id, settings } = getState().recipe;
+
                 var payload = {
                     id: res.data._id,
                     date: res.data.date,
@@ -137,11 +139,17 @@ export const getRecipe =
                 };
                 if (loadUi) {
                     payload.settings = {
-                        count: res.data.portion.count,
+                        count:
+                            !id && settings.count
+                                ? settings.count
+                                : res.data.portion.count,
                         rounded: true,
                     };
                     if (res.data.portion.form) {
-                        payload.settings.form = res.data.portion.form;
+                        payload.settings.form =
+                            !id && settings.form
+                                ? settings.form
+                                : res.data.portion.form;
                     }
                 }
                 dispatch({

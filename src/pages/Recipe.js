@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { getRecipe, getRecipePreview } from '../actions/recipeActions';
+import {
+    getRecipe,
+    getRecipePreview,
+    resetRecipe,
+    setRecipeSettings,
+} from '../actions/recipeActions';
 import { setProgressError } from '../actions/progressActions';
 
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 
 import NotePaper from '../components/NotePaper';
 import Title from '../components/Recipe/Title';
@@ -39,7 +44,57 @@ function Recipe() {
     const error = useSelector(
         (state) => state.progress.error && state.progress.type === 'recipe'
     );
-    const formular = useLocation().pathname.includes('/formular');
+    const location = useLocation();
+    const formular = location.pathname.includes('/formular');
+
+    const [searchParams, setSearchParams] = useSearchParams();
+    const search = location.search;
+
+    useEffect(() => {
+        if (search !== '') {
+            // read url params
+            var urlCount = searchParams.get('portion');
+            var urlForm = searchParams.get('form');
+
+            dispatch(resetRecipe());
+
+            if (urlCount) {
+                urlCount = Math.abs(Number(urlCount));
+            }
+            if (urlForm) {
+                urlForm = urlForm.split(',').slice(0, 2);
+                console.log(urlForm);
+                const isValidForm =
+                    urlForm.map((n) => !isNaN(n)).filter((f) => f === false)
+                        .length === 0;
+                if (isValidForm) {
+                    urlForm = urlForm.map((n) => Math.abs(Number(n)));
+                } else {
+                    urlForm = null;
+                }
+            }
+            dispatch(setRecipeSettings(urlCount, urlForm, true));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (recipe.settings && recipe.portion) {
+            const newParams = {};
+            if (recipe.settings.count !== recipe.portion.count) {
+                newParams.portion = recipe.settings.count;
+            }
+            if (
+                recipe.settings.form &&
+                JSON.stringify(recipe.settings.form) !==
+                    JSON.stringify(recipe.portion.form)
+            ) {
+                newParams.form = recipe.settings.form.join(',');
+            }
+            setSearchParams(newParams);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [recipe.settings]);
 
     useEffect(() => {
         if (id) {
