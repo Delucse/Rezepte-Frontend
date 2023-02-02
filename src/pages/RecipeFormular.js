@@ -21,7 +21,7 @@ import Steps from '../components/RecipeFormular/Steps';
 import Preview from '../components/RecipeFormular/Preview';
 import Pictures from '../components/RecipeFormular/Pictures';
 import Stepper from '../components/RecipeFormular/Stepper';
-import Categories from '../components/RecipeFormular/Categories';
+import Keywords from '../components/RecipeFormular/Keywords';
 import Loader from '../components/Loader';
 
 import { Box } from '@mui/material';
@@ -34,8 +34,8 @@ const steps = [
     },
     {
         title: 'Kategorien',
-        help: 'Die Angabe von Kategorien dient einer besseren Beschreibung deines Rezepts und damit einer guten Such-und Filtermöglichkeit.',
-        content: <Categories />,
+        help: 'Die Angabe von Kategorien dient einer treffenden Beschreibung deines Rezepts und damit einer besseren Such-und Filtermöglichkeit.',
+        content: <Keywords />,
     },
     {
         title: 'Zutaten',

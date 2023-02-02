@@ -4,7 +4,6 @@ import {
     SET_RECIPE_TITLE,
     SET_RECIPE_PORTION,
     SET_RECIPE_TIME,
-    SET_RECIPE_CATEGORIES,
     ADD_RECIPE_KEYWORDS,
     REMOVE_RECIPE_KEYWORDS,
     SET_RECIPE_INGREDIENTS,
@@ -14,7 +13,6 @@ import {
     SET_RECIPE_FORMULAR_UPLOADED,
 } from '../actions/types';
 
-import params from '../data/params.json';
 import {
     singularUnitsDictionary,
     pluralUnitsDictionary,
@@ -67,14 +65,8 @@ const setError = (key, value) => (dispatch, getState) => {
                 error[key] = true;
             }
             break;
-        case 'categories':
-            var errCategory = false;
-            Object.values(value).forEach((val) => {
-                if (val && val.length === 0) {
-                    errCategory = true;
-                }
-            });
-            error[key] = errCategory;
+        case 'keywords':
+            error[key] = value.length < 3;
             break;
         case 'steps':
             var errSteps = false;
@@ -176,41 +168,70 @@ export const setRecipeTime = (time, type) => (dispatch, getState) => {
     }
 };
 
-export const setRecipeCategories = (category, type) => (dispatch, getState) => {
-    var categories = getState().recipeFormular.categories;
-    if (category) {
-        categories[type] = [...category];
-    } else {
-        categories[type] = category;
-    }
-    dispatch({
-        type: SET_RECIPE_CATEGORIES,
-        payload: { ...categories },
-    });
-    if (getState().recipeFormular.error.submit) {
-        dispatch(setError('categories', categories));
-    }
-};
-
-export const addRecipeKeyword = (keyword) => (dispatch, getState) => {
+export const addRecipeKeyword = (word) => (dispatch, getState) => {
     var keywords = getState().recipeFormular.keywords;
-    var filter = keywords.filter((key) => key === keyword);
+    var filter = keywords.filter((key) =>
+        new RegExp(`^${key}$`, 'i').test(word)
+    );
     if (filter.length === 0) {
-        keywords.push(keyword);
+        keywords.push(word);
     }
     dispatch({
         type: ADD_RECIPE_KEYWORDS,
-        payload: keywords,
+        payload: [...keywords],
     });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('keywords', keywords));
+    }
+};
+
+export const addRecipeKeywords = (words) => (dispatch, getState) => {
+    var keywords = getState().recipeFormular.keywords;
+    words.forEach((word) => {
+        var filter = keywords.filter((key) =>
+            new RegExp(`^${key}$`, 'i').test(word)
+        );
+        if (filter.length === 0) {
+            keywords.push(word);
+        }
+    });
+    dispatch({
+        type: ADD_RECIPE_KEYWORDS,
+        payload: [...keywords],
+    });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('keywords', keywords));
+    }
 };
 
 export const removeRecipeKeyword = (word) => (dispatch, getState) => {
     var keywords = getState().recipeFormular.keywords;
-    keywords = keywords.filter((keyword) => keyword !== word);
+    keywords = keywords.filter(
+        (keyword) => !new RegExp(`^${keyword}$`, 'i').test(word)
+    );
     dispatch({
         type: REMOVE_RECIPE_KEYWORDS,
-        payload: keywords,
+        payload: [...keywords],
     });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('keywords', keywords));
+    }
+};
+
+export const removeRecipeKeywords = (words) => (dispatch, getState) => {
+    var keywords = getState().recipeFormular.keywords;
+    words.forEach((word) => {
+        keywords = keywords.filter(
+            (keyword) => !new RegExp(`^${keyword}$`, 'i').test(word)
+        );
+    });
+    dispatch({
+        type: REMOVE_RECIPE_KEYWORDS,
+        payload: [...keywords],
+    });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('keywords', keywords));
+    }
 };
 
 export const changeIngredientsTitle =
@@ -546,12 +567,12 @@ export const changePicturePosition =
     };
 
 export const checkRecipeError = () => (dispatch, getState) => {
-    const { title, portion, time, categories, ingredients, steps } =
+    const { title, portion, time, keywords, ingredients, steps } =
         getState().recipeFormular;
     dispatch(setError('title', title));
     dispatch(setError('portion', portion));
     dispatch(setError('time', time));
-    dispatch(setError('categories', categories));
+    dispatch(setError('keywords', keywords));
     dispatch(setError('ingredients', ingredients));
     dispatch(setError('steps', steps));
     dispatch(setError('submit'));
@@ -578,14 +599,8 @@ const objectToFormData = (data, formData, subkey) => {
 
 export const submitRecipe = (id) => (dispatch, getState) => {
     dispatch(setProgress('recipeFormular'));
-    var { title, portion, time, categories, keywords, steps, pictures } =
+    var { title, portion, time, keywords, steps, pictures } =
         getState().recipeFormular;
-
-    Object.entries(categories).forEach(([key]) => {
-        if (categories[key]) {
-            keywords = keywords.concat(categories[key]);
-        }
-    });
 
     if (portion.form) {
         portion.form = portion.form.map((f) =>
@@ -678,12 +693,6 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
                 resting: 0,
                 baking: 0,
             },
-            categories: {
-                ingredients: [],
-                dish: [],
-                season: [],
-                heat: [],
-            },
             keywords: [],
             ingredients: [
                 {
@@ -704,6 +713,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
                 submit: false,
                 title: false,
                 portion: false,
+                keywords: false,
                 ingredients: [false],
                 steps: false,
             },
@@ -721,26 +731,7 @@ export const setBlocked = (bool) => (dispatch) => {
 export const setRecipeFormular = () => (dispatch, getState) => {
     const { title, portion, time, keywords, ingredients, steps, pictures } =
         getState().recipe;
-    const categories = {
-        ingredients: [],
-        dish: [],
-        season: [],
-        heat: [],
-    };
-    const otherKeywords = [];
-    keywords.forEach((word) => {
-        if (params.filter['Lebensmittel'].includes(word)) {
-            categories.ingredients.push(word);
-        } else if (params.filter['Gericht'].includes(word)) {
-            categories.dish.push(word);
-        } else if (params.filter['Saison'].includes(word)) {
-            categories.season.push(word);
-        } else if (params.filter['Wärmegrad'].includes(word)) {
-            categories.heat.push(word);
-        } else {
-            otherKeywords.push(word);
-        }
-    });
+
     const orderPicture = [];
     pictures.forEach((pic) =>
         orderPicture.push({ id: pic._id, url: pic.file, user: pic.user })
@@ -754,8 +745,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
             title,
             portion,
             time,
-            categories,
-            keywords: otherKeywords,
+            keywords,
             ingredients,
             steps,
             pictures: {

@@ -5,7 +5,6 @@ import {
     SET_RECIPE_TITLE,
     SET_RECIPE_PORTION,
     SET_RECIPE_TIME,
-    SET_RECIPE_CATEGORIES,
     ADD_RECIPE_KEYWORDS,
     REMOVE_RECIPE_KEYWORDS,
     SET_RECIPE_INGREDIENTS,
@@ -21,12 +20,6 @@ const initialState = {
         preparation: 0,
         resting: 0,
         baking: 0,
-    },
-    categories: {
-        ingredients: [],
-        dish: [],
-        season: [],
-        heat: [],
     },
     keywords: [],
     ingredients: [
@@ -51,7 +44,6 @@ const initialState = {
         keywords: false,
         ingredients: [false],
         steps: false,
-        pictures: false,
     },
     blocked: true,
     uploaded: false,
@@ -103,11 +95,6 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 time: action.payload,
-            };
-        case SET_RECIPE_CATEGORIES:
-            return {
-                ...state,
-                categories: action.payload,
             };
         case SET_RECIPE_FORMULAR:
             return {
