@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    addCategories,
+    addCategory,
+    removeCategories,
+    removeCategory,
     setCategories,
     setRoute,
     setType,
@@ -24,6 +28,22 @@ import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+
+function SearchCategories() {
+    const dispatch = useDispatch();
+
+    const categories = useSelector((state) => state.recipeFilter.categories);
+
+    return (
+        <Categories
+            values={categories}
+            onCheckedTitle={(e) => dispatch(addCategories(e))}
+            onUncheckedTitle={(e) => dispatch(removeCategories(e))}
+            onCheckedValue={(e) => dispatch(addCategory(e))}
+            onUncheckedValue={(e) => dispatch(removeCategory(e))}
+        />
+    );
+}
 
 function Search() {
     const dispatch = useDispatch();
@@ -180,6 +200,16 @@ function Search() {
                             </RadioGroup>
                         </FormControl>
                     </Box>
+                    <Typography
+                        variant="body1"
+                        sx={{
+                            fontWeight: 'bold',
+                            marginBottom: '20px',
+                            color: (theme) => theme.palette.text.primary,
+                        }}
+                    >
+                        Filter
+                    </Typography>
                 </Toolbar>
             </AppBar>
 
@@ -190,13 +220,7 @@ function Search() {
                     marginBottom: '-24px',
                 }}
             >
-                <Typography
-                    variant="body1"
-                    sx={{ fontWeight: 'bold', marginBottom: '20px' }}
-                >
-                    Filter
-                </Typography>
-                <Categories redux />
+                <SearchCategories />
                 <Author redux />
             </Box>
         </div>

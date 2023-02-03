@@ -11,21 +11,16 @@ import {
 import Alert from '../Alert';
 import Textfield from '../Textfield';
 import Button from '../Button';
+import Checkbox from '../Checkbox';
+import Categories from '../Recipes/Categories';
 
-import {
-    Box,
-    Checkbox,
-    FormControlLabel,
-    Divider,
-    Typography,
-    Chip,
-} from '@mui/material';
-import Masonry from '@mui/lab/Masonry';
+import { Box, Typography, Chip } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiKeyChain } from '@mdi/js';
 
 import params from '../../data/params.json';
+
 const paramKeywords = [];
 Object.entries(params.filter).forEach(([key, value]) => {
     paramKeywords.push(...value);
@@ -36,110 +31,31 @@ function Keyword({ label, value }) {
     const dispatch = useDispatch();
 
     const checked = useSelector((state) =>
-        state.recipeFormular.keywords.some((key) =>
-            new RegExp(`^${value}$`, 'i').test(key)
-        )
+        state.recipeFormular.keywords.includes(value)
     );
     const error = useSelector(
         (state) => state.recipeFormular.error.keywords && !checked
     );
 
-    const handleChange = (event) => {
-        if (event.target.checked) {
-            dispatch(addRecipeKeyword(event.target.value));
-        } else {
-            dispatch(removeRecipeKeyword(event.target.value));
-        }
-    };
-
     return (
-        <div>
-            <FormControlLabel
-                label={label}
-                sx={{ color: (theme) => theme.palette.text.primary }}
-                control={
-                    <Checkbox
-                        sx={
-                            error
-                                ? { color: (theme) => theme.palette.error.main }
-                                : {}
-                        }
-                        value={value}
-                        checked={checked}
-                        onChange={handleChange}
-                        disableRipple
-                    />
-                }
-            />
-        </div>
-    );
-}
-
-function Category({ title, tags }) {
-    const dispatch = useDispatch();
-
-    const keywords = useSelector((state) =>
-        state.recipeFormular.keywords.filter((key) =>
-            tags.some((t) => new RegExp(`^${key}$`, 'i').test(t))
-        )
-    );
-    const error = useSelector(
-        (state) => state.recipeFormular.error.keywords && keywords.length === 0
-    );
-
-    const handleChange = (event) => {
-        if (event.target.checked) {
-            dispatch(addRecipeKeywords(tags));
-        } else {
-            dispatch(removeRecipeKeywords(tags));
-        }
-    };
-
-    return (
-        <Box sx={{ marginBottom: '24px' }}>
-            <FormControlLabel
-                label={title}
-                sx={{ color: (theme) => theme.palette.text.primary }}
-                control={
-                    <Checkbox
-                        sx={
-                            error
-                                ? { color: (theme) => theme.palette.error.main }
-                                : {}
-                        }
-                        checked={keywords.length === tags.length}
-                        indeterminate={
-                            keywords.length > 0 &&
-                            keywords.length !== tags.length
-                        }
-                        onChange={handleChange}
-                        disableRipple
-                    />
-                }
-            />
-            <Divider
-                sx={{
-                    borderBottomWidth: 'small',
-                    borderColor: (theme) => theme.palette.primary.light,
-                }}
-            />
-            <Box sx={{ marginLeft: '20px' }}>
-                {tags.map((word, index) => (
-                    <Keyword label={word} value={word} key={index} />
-                ))}
-            </Box>
-        </Box>
+        <Checkbox
+            label={label}
+            value={value}
+            checked={checked}
+            error={error}
+            onChecked={(e) => dispatch(addRecipeKeyword(e))}
+            onUnchecked={(e) => dispatch(removeRecipeKeyword(e))}
+        />
     );
 }
 
 function IndividualKeywords() {
-    const [keyword, setKeyword] = useState('');
+    var [keyword, setKeyword] = useState('');
 
     const dispatch = useDispatch();
     const keywords = useSelector((state) =>
         state.recipeFormular.keywords.filter(
-            (word) =>
-                !paramKeywords.some((w) => new RegExp(`^${word}$`, 'i').test(w))
+            (word) => !paramKeywords.includes(word)
         )
     );
     const error = useSelector((state) => state.recipeFormular.error.keywords);
@@ -149,6 +65,12 @@ function IndividualKeywords() {
     };
 
     const addKeyword = () => {
+        var regExp = new RegExp(`^${keyword}$`, 'i');
+        paramKeywords.forEach((paramKey) => {
+            if (regExp.test(paramKey)) {
+                keyword = paramKey;
+            }
+        });
         dispatch(addRecipeKeyword(keyword));
         setKeyword('');
     };
@@ -205,6 +127,24 @@ function IndividualKeywords() {
     );
 }
 
+function KeywordCategories() {
+    const dispatch = useDispatch();
+
+    const keywords = useSelector((state) => state.recipeFormular.keywords);
+    const error = useSelector((state) => state.recipeFormular.error.keywords);
+
+    return (
+        <Categories
+            values={keywords}
+            error={error}
+            onCheckedTitle={(e) => dispatch(addRecipeKeywords(e))}
+            onUncheckedTitle={(e) => dispatch(removeRecipeKeywords(e))}
+            onCheckedValue={(e) => dispatch(addRecipeKeyword(e))}
+            onUncheckedValue={(e) => dispatch(removeRecipeKeyword(e))}
+        />
+    );
+}
+
 function Keywords() {
     const error = useSelector((state) => state.recipeFormular.error.keywords);
 
@@ -229,11 +169,7 @@ function Keywords() {
                 </Box>
             ) : null}
 
-            <Masonry columns={{ xs: 1, sm: 2, md: 3, xl: 4 }} spacing={4}>
-                {Object.entries(params.filter).map(([key, value]) => (
-                    <Category title={key} tags={value} />
-                ))}
-            </Masonry>
+            <KeywordCategories />
 
             <Keyword label={'als Basis-Rezept geeignet'} value={'Basic'} />
             <Keyword label={'für Kleinkinder geeignet'} value={'Baby'} />

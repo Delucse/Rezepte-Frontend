@@ -8,6 +8,7 @@ import Dialog from '../Dialog';
 import Autocomplete from '../Autocomplete';
 import Textfield from '../Textfield';
 import IconButton from '../IconButton';
+import Checkbox from '../Checkbox';
 import Help from '../Help';
 
 import {
@@ -15,7 +16,6 @@ import {
     Box,
     Alert,
     FormControlLabel,
-    Checkbox,
     RadioGroup,
     Radio,
 } from '@mui/material';
@@ -692,18 +692,12 @@ function Portion() {
                             </div>
                         ) : null}
                         <Box sx={{ display: 'flex', marginTop: '16px' }}>
-                            <FormControlLabel
+                            <Checkbox
                                 label={'Mengenangaben runden'}
-                                control={
-                                    <Checkbox
-                                        checked={rounded}
-                                        onChange={(e) =>
-                                            setRounded(e.target.checked)
-                                        }
-                                        disableRipple
-                                    />
-                                }
-                                sx={{ marginRight: '0px' }}
+                                checked={rounded}
+                                onChecked={() => setRounded(true)}
+                                onUnchecked={() => setRounded(false)}
+                                style={{ marginRight: 0 }}
                             />
                             <Help explanation="Findet ausschließlich Anwendung, sofern mindestens eine Portionsangabe vom Original abweicht." />
                         </Box>

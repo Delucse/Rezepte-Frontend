@@ -120,13 +120,37 @@ export const removeCategory = (category) => (dispatch, getState) => {
     categories = categories.filter((cat) => cat !== category);
     dispatch({
         type: SET_CATEGORIES,
-        payload: categories,
+        payload: [...categories],
+    });
+};
+
+export const removeCategories = (words) => (dispatch, getState) => {
+    var categories = getState().recipeFilter.categories;
+    words.forEach((word) => {
+        categories = categories.filter((cat) => cat !== word);
+    });
+    dispatch({
+        type: SET_CATEGORIES,
+        payload: [...categories],
     });
 };
 
 export const addCategory = (category) => (dispatch, getState) => {
     var categories = getState().recipeFilter.categories;
     categories.push(category);
+    dispatch({
+        type: SET_CATEGORIES,
+        payload: [...categories],
+    });
+};
+
+export const addCategories = (words) => (dispatch, getState) => {
+    var categories = getState().recipeFilter.categories;
+    words.forEach((word) => {
+        if (!categories.includes(word)) {
+            categories.push(word);
+        }
+    });
     dispatch({
         type: SET_CATEGORIES,
         payload: [...categories],

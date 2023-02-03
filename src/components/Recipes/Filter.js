@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
     removeCategory,
     setAuthor,
+    setCategories,
     setOpen,
 } from '../../actions/recipeFilterActions';
 
@@ -23,6 +24,7 @@ import Icon from '@mdi/react';
 import { mdiFilter } from '@mdi/js';
 
 const drawerBleeding = 50;
+const drawerBleedingOpen = drawerBleeding + 34;
 
 const Puller = styled(Box)(({ theme }) => ({
     width: 30,
@@ -33,6 +35,61 @@ const Puller = styled(Box)(({ theme }) => ({
     top: 8,
     left: 'calc(50% - 15px)',
 }));
+
+function FilterCategories() {
+    const dispatch = useDispatch();
+
+    const reduxCategories = useSelector(
+        (state) => state.recipeFilter.categories
+    );
+    const open = useSelector((state) => state.recipeFilter.open);
+
+    var [categories, setCategoriesState] = useState(reduxCategories);
+
+    const addCategoryState = (category) => {
+        categories.push(category);
+        setCategoriesState([...categories]);
+    };
+
+    const removeCategoryState = (category) => {
+        setCategoriesState(categories.filter((cat) => cat !== category));
+    };
+
+    const addCategoriesState = (words) => {
+        words.forEach((word) => {
+            if (!categories.includes(word)) {
+                categories.push(word);
+            }
+        });
+        setCategoriesState([...categories]);
+    };
+
+    const removeCategoriesState = (words) => {
+        words.forEach((word) => {
+            categories = categories.filter((cat) => cat !== word);
+        });
+        setCategoriesState([...categories]);
+    };
+
+    useEffect(() => {
+        if (open) {
+            setCategoriesState(reduxCategories);
+        } else {
+            dispatch(setCategories(categories));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open]);
+
+    return (
+        <Categories
+            values={categories}
+            onCheckedTitle={(e) => addCategoriesState(e)}
+            onUncheckedTitle={(e) => removeCategoriesState(e)}
+            onCheckedValue={(e) => addCategoryState(e)}
+            onUncheckedValue={(e) => removeCategoryState(e)}
+        />
+    );
+}
 
 function Filter() {
     const dispatch = useDispatch();
@@ -88,7 +145,9 @@ function Filter() {
             <Global
                 styles={{
                     '.MuiDrawer-root > .MuiPaper-root': {
-                        height: `calc(100% - 55px - 54px - 96px - ${drawerBleeding}px)`,
+                        height: `calc(100% - 55px - 54px - 96px - ${
+                            open ? drawerBleedingOpen : drawerBleeding
+                        }px)`,
                         overflow: 'visible',
                     },
                 }}
@@ -98,7 +157,7 @@ function Filter() {
                 open={open}
                 onClose={toggle}
                 onOpen={toggle}
-                swipeAreaWidth={drawerBleeding}
+                swipeAreaWidth={open ? drawerBleedingOpen : drawerBleeding}
                 disableSwipeToOpen={false}
                 ModalProps={{
                     keepMounted: true,
@@ -108,7 +167,7 @@ function Filter() {
                 <Box
                     sx={{
                         position: 'absolute',
-                        top: -drawerBleeding,
+                        top: open ? -drawerBleedingOpen : -drawerBleeding,
                         borderTopLeftRadius: 8,
                         borderTopRightRadius: 8,
                         visibility: 'visible',
@@ -116,7 +175,9 @@ function Filter() {
                         left: 0,
                         borderTop: (theme) =>
                             `1px solid ${theme.palette.primary.light}`,
-                        height: `${drawerBleeding}px`,
+                        height: `${
+                            open ? drawerBleedingOpen : drawerBleeding
+                        }px`,
                         background: (theme) => theme.palette.background.default,
                         backgroundImage:
                             'linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))',
@@ -189,6 +250,18 @@ function Filter() {
                             </Box>
                         </Box>
                     </Box>
+                    {open ? (
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                fontWeight: 'bold',
+                                // marginBottom: '20px',
+                                padding: '10px 24px 0px 24px',
+                            }}
+                        >
+                            Filter
+                        </Typography>
+                    ) : null}
                 </Box>
                 <Box
                     sx={{
@@ -196,13 +269,7 @@ function Filter() {
                         overflow: 'auto',
                     }}
                 >
-                    <Typography
-                        variant="body1"
-                        sx={{ fontWeight: 'bold', marginBottom: '20px' }}
-                    >
-                        Filter
-                    </Typography>
-                    <Categories />
+                    <FilterCategories />
                     <Author />
                     <Box
                         sx={{

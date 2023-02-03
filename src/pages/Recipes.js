@@ -20,10 +20,15 @@ import Loader from '../components/Loader';
 import SearchBar from '../components/Recipes/SearchBar';
 import Overview from '../components/Recipes/Overview';
 
-import params from '../data/params.json';
-
 import Box from '@mui/material/Box';
 import Masonry from '@mui/lab/Masonry';
+
+import params from '../data/params.json';
+
+const paramKeywords = [];
+Object.entries(params.filter).forEach(([key, value]) => {
+    paramKeywords.push(...value);
+});
 
 function Recipes(props) {
     const dispatch = useDispatch();
@@ -117,7 +122,16 @@ function Recipes(props) {
             if (filter) {
                 filter = filter /*.toLowerCase()*/
                     .split(',');
-                filter = filter.map((f) => f.trim());
+                filter = filter.map((f) => {
+                    f.trim();
+                    var regExp = new RegExp(`^${f}$`, 'i');
+                    paramKeywords.forEach((paramKey) => {
+                        if (regExp.test(paramKey)) {
+                            f = paramKey;
+                        }
+                    });
+                    return f;
+                });
                 dispatch(setCategories(filter));
             }
             dispatch(getRecipes());

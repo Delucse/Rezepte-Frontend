@@ -170,10 +170,7 @@ export const setRecipeTime = (time, type) => (dispatch, getState) => {
 
 export const addRecipeKeyword = (word) => (dispatch, getState) => {
     var keywords = getState().recipeFormular.keywords;
-    var filter = keywords.filter((key) =>
-        new RegExp(`^${key}$`, 'i').test(word)
-    );
-    if (filter.length === 0) {
+    if (!keywords.includes(word)) {
         keywords.push(word);
     }
     dispatch({
@@ -188,10 +185,7 @@ export const addRecipeKeyword = (word) => (dispatch, getState) => {
 export const addRecipeKeywords = (words) => (dispatch, getState) => {
     var keywords = getState().recipeFormular.keywords;
     words.forEach((word) => {
-        var filter = keywords.filter((key) =>
-            new RegExp(`^${key}$`, 'i').test(word)
-        );
-        if (filter.length === 0) {
+        if (!keywords.includes(word)) {
             keywords.push(word);
         }
     });
@@ -206,9 +200,7 @@ export const addRecipeKeywords = (words) => (dispatch, getState) => {
 
 export const removeRecipeKeyword = (word) => (dispatch, getState) => {
     var keywords = getState().recipeFormular.keywords;
-    keywords = keywords.filter(
-        (keyword) => !new RegExp(`^${keyword}$`, 'i').test(word)
-    );
+    keywords = keywords.filter((keyword) => keyword !== word);
     dispatch({
         type: REMOVE_RECIPE_KEYWORDS,
         payload: [...keywords],
@@ -221,9 +213,7 @@ export const removeRecipeKeyword = (word) => (dispatch, getState) => {
 export const removeRecipeKeywords = (words) => (dispatch, getState) => {
     var keywords = getState().recipeFormular.keywords;
     words.forEach((word) => {
-        keywords = keywords.filter(
-            (keyword) => !new RegExp(`^${keyword}$`, 'i').test(word)
-        );
+        keywords = keywords.filter((keyword) => keyword !== word);
     });
     dispatch({
         type: REMOVE_RECIPE_KEYWORDS,

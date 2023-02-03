@@ -1,98 +1,91 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
-import {
-    setCategories,
-    addCategory,
-    removeCategory,
-} from '../../actions/recipeFilterActions';
+import Checkbox from '../Checkbox';
+
+import { Box, Divider } from '@mui/material';
+import { Masonry } from '@mui/lab';
 
 import params from '../../data/params.json';
 
-import {
-    Grid,
-    Box,
-    Typography,
-    Checkbox,
-    FormControlLabel,
-} from '@mui/material';
-
-function Categories(props) {
-    const dispatch = useDispatch();
-
-    const reduxCategories = useSelector(
-        (state) => state.recipeFilter.categories
-    );
-    const open = useSelector((state) => state.recipeFilter.open);
-
-    const [categories, setCategoriesState] = useState(reduxCategories);
-
-    const addCategoryState = (category) => {
-        categories.push(category);
-        setCategoriesState([...categories]);
-    };
-
-    const removeCategoryState = (category) => {
-        setCategoriesState(categories.filter((cat) => cat !== category));
-    };
-
-    const handleChangeState = (e) => {
-        if (e.target.checked) {
-            addCategoryState(e.target.value);
-        } else {
-            removeCategoryState(e.target.value);
-        }
-    };
-
-    const handleChangeRedux = (e) => {
-        if (e.target.checked) {
-            dispatch(addCategory(e.target.value));
-        } else {
-            dispatch(removeCategory(e.target.value));
-        }
-    };
-
-    useEffect(() => {
-        if (open) {
-            setCategoriesState(reduxCategories);
-        } else {
-            dispatch(setCategories(categories));
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [open]);
+function Category({
+    title,
+    values,
+    tags,
+    error,
+    onCheckedTitle,
+    onUncheckedTitle,
+    onCheckedValue,
+    onUncheckedValue,
+}) {
+    values = values.filter((val) => tags.includes(val));
 
     return (
-        <Grid container spacing={3} sx={{ marginBottom: 3 }}>
-            {Object.keys(params.filter).map((key, index) => (
-                <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
-                    <Typography variant="body1">{key}</Typography>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                        {params.filter[key].map((item, index) => (
-                            <FormControlLabel
-                                key={index}
-                                label={item}
-                                control={
-                                    <Checkbox
-                                        checked={
-                                            props.redux
-                                                ? reduxCategories.includes(item)
-                                                : categories.includes(item)
-                                        }
-                                        value={item}
-                                        onChange={
-                                            props.redux
-                                                ? handleChangeRedux
-                                                : handleChangeState
-                                        }
-                                        disableRipple
-                                    />
-                                }
-                            />
-                        ))}
-                    </Box>
-                </Grid>
+        <Box sx={{ marginBottom: '24px' }}>
+            <Checkbox
+                label={title}
+                checked={values.length === tags.length}
+                indeterminate={
+                    values.length > 0 && values.length !== tags.length
+                }
+                error={error && values.length === 0}
+                onChecked={() => onCheckedTitle(tags)}
+                onUnchecked={() => onUncheckedTitle(tags)}
+            />
+            <Divider
+                sx={{
+                    borderBottomWidth: 'small',
+                    borderColor: (theme) => theme.palette.primary.light,
+                }}
+            />
+            <Box sx={{ marginLeft: '20px' }}>
+                {tags.map((word, index) => {
+                    const checked = values.some((tag) =>
+                        new RegExp(`^${word}$`, 'i').test(tag)
+                    );
+
+                    return (
+                        <Checkbox
+                            key={index}
+                            label={word}
+                            value={word}
+                            checked={checked}
+                            error={error && !checked}
+                            onChecked={onCheckedValue}
+                            onUnchecked={onUncheckedValue}
+                        />
+                    );
+                })}
+            </Box>
+        </Box>
+    );
+}
+
+function Categories({
+    values,
+    error,
+    indeterminate,
+    onCheckedTitle,
+    onUncheckedTitle,
+    onCheckedValue,
+    onUncheckedValue,
+}) {
+    return (
+        <Masonry columns={{ xs: 1, sm: 2, md: 3, xl: 4 }} spacing={4}>
+            {Object.entries(params.filter).map(([key, value]) => (
+                <Category
+                    key={key}
+                    title={key}
+                    values={values}
+                    tags={value}
+                    error={error}
+                    indeterminate={indeterminate}
+                    onCheckedTitle={onCheckedTitle}
+                    onUncheckedTitle={onUncheckedTitle}
+                    onCheckedValue={onCheckedValue}
+                    onUncheckedValue={onUncheckedValue}
+                />
             ))}
-        </Grid>
+        </Masonry>
     );
 }
 
