@@ -29,6 +29,7 @@ import {
 
 import Icon from '@mdi/react';
 import { mdiCameraPlus, mdiCamera, mdiDelete, mdiLoading } from '@mdi/js';
+import Checkbox from '../Checkbox';
 
 function AddImage(props) {
     const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function AddImage(props) {
     const [progress, setProgress] = useState(false);
     const [drag, setDrag] = useState(false);
     const [counter, setCounter] = useState(0);
+    const [confirmed, setConfirmed] = useState(false);
 
     const onHandleFileInput = async (targetFiles) => {
         targetFiles = [...targetFiles];
@@ -268,51 +270,65 @@ function AddImage(props) {
                                     </InputLabel>
                                 </div>
                             ) : (
-                                <ImageListItem
-                                    sx={{ height: '180px', width: '100%' }}
-                                >
-                                    <Box
-                                        sx={{
-                                            height: '180px',
-                                            backgroundImage: `url(${image.url})`,
-                                            backgroundSize: 'cover',
-                                            backgroundRepeat: 'no-repeat',
-                                            backgroundPosition: 'center center',
-                                        }}
+                                <>
+                                    <ImageListItem
+                                        sx={{ height: '180px', width: '100%' }}
+                                    >
+                                        <Box
+                                            sx={{
+                                                height: '180px',
+                                                backgroundImage: `url(${image.url})`,
+                                                backgroundSize: 'cover',
+                                                backgroundRepeat: 'no-repeat',
+                                                backgroundPosition:
+                                                    'center center',
+                                            }}
+                                        />
+                                        <ImageListItemBar
+                                            actionIcon={
+                                                !progress ? (
+                                                    <IconButton
+                                                        sx={{
+                                                            padding: '8px',
+                                                            color: 'white',
+                                                            '&:hover': {
+                                                                color: (
+                                                                    theme
+                                                                ) =>
+                                                                    theme
+                                                                        .palette
+                                                                        .primary
+                                                                        .main,
+                                                            },
+                                                        }}
+                                                        onClick={() => {
+                                                            setImage(null);
+                                                        }}
+                                                    >
+                                                        <Icon
+                                                            path={mdiDelete}
+                                                            size={1}
+                                                        />
+                                                    </IconButton>
+                                                ) : null
+                                            }
+                                            sx={{
+                                                background:
+                                                    'rgba(0, 0, 0, 0.25)',
+                                                '.MuiImageListItemBar-titleWrap':
+                                                    {
+                                                        padding: 0,
+                                                    },
+                                            }}
+                                        />
+                                    </ImageListItem>
+                                    <Checkbox
+                                        label="Ich bestätige, dass das neue Foto von mir ist und ich kein Urheberrecht Dritter verletze."
+                                        checked={confirmed}
+                                        onChecked={() => setConfirmed(true)}
+                                        onUnchecked={() => setConfirmed(false)}
                                     />
-                                    <ImageListItemBar
-                                        actionIcon={
-                                            !progress ? (
-                                                <IconButton
-                                                    sx={{
-                                                        padding: '8px',
-                                                        color: 'white',
-                                                        '&:hover': {
-                                                            color: (theme) =>
-                                                                theme.palette
-                                                                    .primary
-                                                                    .main,
-                                                        },
-                                                    }}
-                                                    onClick={() => {
-                                                        setImage(null);
-                                                    }}
-                                                >
-                                                    <Icon
-                                                        path={mdiDelete}
-                                                        size={1}
-                                                    />
-                                                </IconButton>
-                                            ) : null
-                                        }
-                                        sx={{
-                                            background: 'rgba(0, 0, 0, 0.25)',
-                                            '.MuiImageListItemBar-titleWrap': {
-                                                padding: 0,
-                                            },
-                                        }}
-                                    />
-                                </ImageListItem>
+                                </>
                             )
                         ) : (
                             <Alert
@@ -355,7 +371,7 @@ function AddImage(props) {
                                 Abbrechen
                             </Button>
                             <Button
-                                disabled={image === null}
+                                disabled={image === null || !confirmed}
                                 variant="contained"
                                 onClick={submit}
                             >

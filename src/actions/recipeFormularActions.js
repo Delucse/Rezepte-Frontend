@@ -117,6 +117,9 @@ const setError = (key, value) => (dispatch, getState) => {
             });
             error[key] = errIngredients;
             break;
+        case 'pictures':
+            error[key] = value.new.length > 0 && !value.confirmed;
+            break;
         case 'submit':
             error[key] = true;
             break;
@@ -516,6 +519,7 @@ export const changePictures = (files) => (dispatch, getState) => {
     // loop through files to prevent that an image is stored twice
     for (const key of Object.keys(files)) {
         var url = URL.createObjectURL(files[key]);
+        pictures.confirmed = false;
         pictures.new.push({ file: files[key], url });
         pictures.order.push({
             url,
@@ -526,6 +530,9 @@ export const changePictures = (files) => (dispatch, getState) => {
         type: SET_RECIPE_PICTURES,
         payload: pictures,
     });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('pictures', pictures));
+    }
 };
 
 export const removePicture = (url) => (dispatch, getState) => {
@@ -537,10 +544,16 @@ export const removePicture = (url) => (dispatch, getState) => {
         pictures.new = [...pictures.new].filter((pic) => pic.url !== url);
     }
     pictures.order = pictures.order.filter((el, idx) => index !== idx);
+    if (pictures.new.length === 0) {
+        pictures.confirmed = false;
+    }
     dispatch({
         type: SET_RECIPE_PICTURES,
         payload: pictures,
     });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('pictures', pictures));
+    }
 };
 
 export const changePicturePosition =
@@ -556,8 +569,20 @@ export const changePicturePosition =
         });
     };
 
+export const confirmPicture = (confirmed) => (dispatch, getState) => {
+    const pictures = getState().recipeFormular.pictures;
+    pictures.confirmed = confirmed;
+    dispatch({
+        type: SET_RECIPE_PICTURES,
+        payload: pictures,
+    });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('pictures', pictures));
+    }
+};
+
 export const checkRecipeError = () => (dispatch, getState) => {
-    const { title, portion, time, keywords, ingredients, steps } =
+    const { title, portion, time, keywords, ingredients, steps, pictures } =
         getState().recipeFormular;
     dispatch(setError('title', title));
     dispatch(setError('portion', portion));
@@ -565,6 +590,7 @@ export const checkRecipeError = () => (dispatch, getState) => {
     dispatch(setError('keywords', keywords));
     dispatch(setError('ingredients', ingredients));
     dispatch(setError('steps', steps));
+    dispatch(setError('pictures', pictures));
     dispatch(setError('submit'));
 };
 
@@ -695,6 +721,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
             ],
             steps: ['', '', ''],
             pictures: {
+                confirmed: false,
                 new: [],
                 removed: [],
                 order: [],
@@ -706,6 +733,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
                 keywords: false,
                 ingredients: [false],
                 steps: false,
+                pictures: false,
             },
         },
     });
@@ -739,6 +767,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
             ingredients,
             steps,
             pictures: {
+                confirmed: false,
                 new: [],
                 removed: [],
                 order: orderPicture,
@@ -747,6 +776,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
                 submit: false,
                 title: false,
                 portion: false,
+                keywords: false,
                 ingredients: ingredients.map((i) => false),
                 steps: false,
                 pictures: false,

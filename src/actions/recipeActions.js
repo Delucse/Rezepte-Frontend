@@ -32,12 +32,6 @@ export const setRecipeSettings = (count, form, rounded) => (dispatch) => {
 export const getRecipePreview = () => (dispatch, getState) => {
     const recipeFormular = getState().recipeFormular;
     const recipe = getState().recipe;
-    var keywords = recipeFormular.keywords;
-    Object.entries(recipeFormular.categories).forEach(([key]) => {
-        if (recipeFormular.categories[key]) {
-            keywords = keywords.concat(recipeFormular.categories[key]);
-        }
-    });
 
     var ingredients = [];
     recipeFormular.ingredients.forEach((ingredient) => {
@@ -70,7 +64,7 @@ export const getRecipePreview = () => (dispatch, getState) => {
         title: recipeFormular.title,
         portion: recipeFormular.portion,
         time: recipeFormular.time,
-        keywords: keywords,
+        keywords: recipeFormular.keywords,
         ingredients: ingredients,
         steps: recipeFormular.steps,
         pictures: recipeFormular.pictures.order.map((pic) => {

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
     changePicturePosition,
     changePictures,
+    confirmPicture,
     removePicture,
 } from '../../actions/recipeFormularActions';
 import { alertErrorMessage, resetMessage } from '../../actions/messageActions';
@@ -15,6 +16,7 @@ import { useInViewport } from '../../hooks/useInViewport';
 import ImageCarousel from '../ImageCarousel';
 import Alert from '../Alert';
 import IconButton from '../IconButton';
+import Checkbox from '../Checkbox';
 
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -203,6 +205,13 @@ function Pictures() {
     const pictures = useSelector(
         (state) => state.recipeFormular.pictures.order
     );
+    const newPictures = useSelector(
+        (state) => state.recipeFormular.pictures.new
+    );
+    const confirmed = useSelector(
+        (state) => state.recipeFormular.pictures.confirmed
+    );
+    const error = useSelector((state) => state.recipeFormular.error.pictures);
     const picturesUrl = pictures.map((picture) =>
         !picture.id
             ? picture.url
@@ -245,7 +254,7 @@ function Pictures() {
 
     return (
         <div>
-            {errorPictures ? (
+            {errorPictures || error ? (
                 <Box
                     sx={{
                         paddingBottom: '10px',
@@ -255,11 +264,39 @@ function Pictures() {
                         zIndex: 2,
                     }}
                 >
-                    <Alert type={'images'} style={{ marginBottom: 0 }} reset />
+                    {errorPictures ? (
+                        <Alert
+                            type={'images'}
+                            style={{ marginBottom: error ? '10px' : 0 }}
+                            reset
+                        />
+                    ) : null}
+                    {error ? (
+                        <Alert
+                            error
+                            message={`Bestätige die Herkunft ${
+                                newPictures.length > 1
+                                    ? 'der neuen Bilder'
+                                    : 'des neuen Bildes'
+                            }.`}
+                        />
+                    ) : null}
                 </Box>
             ) : null}
-            <div style={{ marginTop: '10px' }} />
             <Grid item xs={12}>
+                {newPictures.length > 0 ? (
+                    <Checkbox
+                        label={`Ich bestätige, dass ${
+                            newPictures.length > 1
+                                ? 'die neuen Fotos von mir sind'
+                                : 'das neue Foto von mir ist'
+                        } und ich kein Urheberrecht Dritter verletze.`}
+                        checked={confirmed}
+                        onChecked={() => dispatch(confirmPicture(true))}
+                        onUnchecked={() => dispatch(confirmPicture(false))}
+                        style={{ marginTop: '-9px', marginBottom: '10px' }}
+                    />
+                ) : null}
                 <PictureInput error={errorPictures} />
                 <div
                     ref={elemRef}

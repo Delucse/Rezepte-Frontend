@@ -24,7 +24,18 @@ function Checkbox({
         <div>
             <FormControlLabel
                 label={label}
-                sx={{ color: (theme) => theme.palette.text.primary, ...style }}
+                sx={{
+                    color: (theme) => theme.palette.text.primary,
+                    alignItems: 'start',
+                    ...style,
+                }}
+                componentsProps={{
+                    typography: {
+                        sx: {
+                            marginTop: '8px',
+                        },
+                    },
+                }}
                 control={
                     <MuiCheckbox
                         sx={

@@ -33,6 +33,7 @@ const initialState = {
     ],
     steps: ['', '', ''],
     pictures: {
+        confirmed: false,
         new: [],
         removed: [],
         order: [],
@@ -44,6 +45,7 @@ const initialState = {
         keywords: false,
         ingredients: [false],
         steps: false,
+        pictures: false,
     },
     blocked: true,
     uploaded: false,
