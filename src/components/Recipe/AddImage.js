@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 
 import imageCompression from 'browser-image-compression';
 
-import axios from 'axios';
+import api from '../../axiosInstance';
 
 import Dialog from '../Dialog';
 import Button from '../Button';
@@ -140,7 +140,7 @@ function AddImage(props) {
 
         const config = {
             method: 'POST',
-            url: `${process.env.REACT_APP_API_URL}/recipe/image/${id}`,
+            url: `/recipe/image/${id}`,
             data: body,
             headers: {
                 'Content-Type': 'multipart/form-data', // necessary to upload files
@@ -170,7 +170,7 @@ function AddImage(props) {
             },
         };
 
-        axios(config)
+        api(config)
             .then((res) => {
                 res.config.success(res);
             })

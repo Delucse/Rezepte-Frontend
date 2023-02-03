@@ -93,12 +93,14 @@ function SignOut() {
                         <StyledLink
                             to="/anmeldung"
                             onClick={onClose}
-                            state={{
-                                background:
-                                    location.state && location.state.background
-                                        ? location.state.background
-                                        : location,
-                            }}
+                            state={
+                                location.state
+                                    ? {
+                                          background: location.state.background,
+                                          auth: location.state.auth,
+                                      }
+                                    : {}
+                            }
                             replace
                             style={{ fontWeight: 'bold' }}
                         >

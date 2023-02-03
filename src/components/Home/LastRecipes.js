@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import axios from 'axios';
+import api from '../../axiosInstance';
 
 import Overview from '../Recipes/Overview';
 import IconButton from '../IconButton';
@@ -24,7 +24,7 @@ function LastRecipes() {
     useEffect(() => {
         const config = {
             method: 'GET',
-            url: `${process.env.REACT_APP_API_URL}/recipe?sort=date&ascending=false&limit=5`,
+            url: '/recipe?sort=date&ascending=false&limit=5',
             success: (res) => {
                 setRecipes(res.data);
                 setLoading(false);
@@ -35,7 +35,7 @@ function LastRecipes() {
             },
         };
 
-        axios(config)
+        api(config)
             .then((res) => {
                 res.config.success(res);
             })

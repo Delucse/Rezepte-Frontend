@@ -22,7 +22,7 @@ import {
     pluralUnitsAlimentDictionary,
 } from '../data/dictionaries';
 
-import axios from 'axios';
+import api from '../axiosInstance';
 
 import { setRecipeId } from './recipeActions';
 import { setRoute } from './recipeFilterActions';
@@ -648,7 +648,7 @@ export const submitRecipe = (id) => (dispatch, getState) => {
 
     const config = {
         method: id ? 'PUT' : 'POST',
-        url: `${process.env.REACT_APP_API_URL}/recipe${id ? `/${id}` : ''}`,
+        url: `/recipe${id ? `/${id}` : ''}`,
         data: body,
         headers: {
             'Content-Type': 'multipart/form-data', // necessary to upload files
@@ -689,7 +689,7 @@ export const submitRecipe = (id) => (dispatch, getState) => {
         },
     };
 
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })

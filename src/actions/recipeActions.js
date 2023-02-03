@@ -15,7 +15,8 @@ import {
     setProgressError,
 } from './progressActions';
 
-import axios from 'axios';
+import api from '../axiosInstance';
+
 import moment from 'moment';
 
 export const setRecipeSettings = (count, form, rounded) => (dispatch) => {
@@ -110,7 +111,7 @@ export const getRecipe =
                 'Content-Type': 'application/json',
             },
             method: 'GET',
-            url: `${process.env.REACT_APP_API_URL}/recipe/${id}`,
+            url: `/recipe/${id}`,
             onDownloadProgress: (progressEvent) => {
                 // console.info('Progress: ' + (Math.round(progressEvent.loaded / progressEvent.total * 100)) +' %');
             },
@@ -160,7 +161,7 @@ export const getRecipe =
                 console.error(err);
             },
         };
-        axios(config)
+        api(config)
             .then((res) => {
                 res.config.success(res);
             })
@@ -204,9 +205,7 @@ export const addPicture = (pic) => (dispatch) => {
 export const setRecipeFavorite = () => (dispatch, getState) => {
     const config = {
         method: 'POST',
-        url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${
-            getState().recipe.id
-        }`,
+        url: `/recipe/favorite/${getState().recipe.id}`,
         success: (res) => {
             dispatch({
                 type: SET_RECIPE_FAVORITE,
@@ -225,7 +224,7 @@ export const setRecipeFavorite = () => (dispatch, getState) => {
             console.error(err);
         },
     };
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })
@@ -237,9 +236,7 @@ export const setRecipeFavorite = () => (dispatch, getState) => {
 export const deleteRecipeFavorite = () => (dispatch, getState) => {
     const config = {
         method: 'DELETE',
-        url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${
-            getState().recipe.id
-        }`,
+        url: `/recipe/favorite/${getState().recipe.id}`,
         success: (res) => {
             dispatch({
                 type: SET_RECIPE_FAVORITE,
@@ -258,7 +255,7 @@ export const deleteRecipeFavorite = () => (dispatch, getState) => {
             console.error(err);
         },
     };
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })
@@ -270,9 +267,7 @@ export const deleteRecipeFavorite = () => (dispatch, getState) => {
 export const setRecipeNote = (note) => (dispatch, getState) => {
     const config = {
         method: 'POST',
-        url: `${process.env.REACT_APP_API_URL}/recipe/note/${
-            getState().recipe.id
-        }`,
+        url: `/recipe/note/${getState().recipe.id}`,
         data: { text: note },
         success: (res) => {
             dispatch({
@@ -284,7 +279,7 @@ export const setRecipeNote = (note) => (dispatch, getState) => {
             console.error(err);
         },
     };
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })
@@ -296,9 +291,7 @@ export const setRecipeNote = (note) => (dispatch, getState) => {
 export const deleteRecipeNote = () => (dispatch, getState) => {
     const config = {
         method: 'DELETE',
-        url: `${process.env.REACT_APP_API_URL}/recipe/note/${
-            getState().recipe.id
-        }`,
+        url: `/recipe/note/${getState().recipe.id}`,
         success: (res) => {
             dispatch({
                 type: SET_RECIPE_NOTE,
@@ -317,7 +310,7 @@ export const deleteRecipeNote = () => (dispatch, getState) => {
             console.error(err);
         },
     };
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })

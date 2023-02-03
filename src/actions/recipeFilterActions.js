@@ -17,7 +17,7 @@ import {
     setProgressSuccess,
 } from './progressActions';
 
-import axios from 'axios';
+import api from '../axiosInstance';
 
 export const getRecipes =
     (loadUi = true) =>
@@ -50,25 +50,22 @@ export const getRecipes =
                 }
             },
         };
-        axios
-            .get(
-                `${process.env.REACT_APP_API_URL}/recipe${
-                    route === 'favoriten'
-                        ? '/favorite'
-                        : route === 'nutzer'
-                        ? '/user'
-                        : route === 'kleinkind'
-                        ? '/baby'
-                        : route === 'basis'
-                        ? '/basic'
-                        : ''
-                }?search=${word}&type=${type}&keywords=${categories.join(
-                    ','
-                )}&author=${author}&sort=${sort.type}&ascending=${
-                    sort.ascending
-                }`,
-                config
-            )
+        api.get(
+            `/recipe${
+                route === 'favoriten'
+                    ? '/favorite'
+                    : route === 'nutzer'
+                    ? '/user'
+                    : route === 'kleinkind'
+                    ? '/baby'
+                    : route === 'basis'
+                    ? '/basic'
+                    : ''
+            }?search=${word}&type=${type}&keywords=${categories.join(
+                ','
+            )}&author=${author}&sort=${sort.type}&ascending=${sort.ascending}`,
+            config
+        )
             .then((res) => {
                 res.config.success(res);
             })
@@ -192,7 +189,7 @@ export const setRoute = (route) => (dispatch) => {
 export const setRecipesFavorite = (id) => (dispatch, getState) => {
     const config = {
         method: 'POST',
-        url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${id}`,
+        url: `/recipe/favorite/${id}`,
         success: (res) => {
             const recipes = getState().recipeFilter.recipes;
             const index = recipes.findIndex((recipe) => recipe._id === id);
@@ -212,7 +209,7 @@ export const setRecipesFavorite = (id) => (dispatch, getState) => {
             console.error(err);
         },
     };
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })
@@ -224,7 +221,7 @@ export const setRecipesFavorite = (id) => (dispatch, getState) => {
 export const deleteRecipesFavorite = (id) => (dispatch, getState) => {
     const config = {
         method: 'DELETE',
-        url: `${process.env.REACT_APP_API_URL}/recipe/favorite/${id}`,
+        url: `/recipe/favorite/${id}`,
         success: (res) => {
             var recipes = getState().recipeFilter.recipes;
             const index = recipes.findIndex((recipe) => recipe._id === id);
@@ -249,7 +246,7 @@ export const deleteRecipesFavorite = (id) => (dispatch, getState) => {
             console.error(err);
         },
     };
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })

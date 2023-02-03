@@ -9,7 +9,7 @@ import {
 
 import { useLocation, Link } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../axiosInstance';
 
 import Dialog from '../components/Dialog';
 import DelucseLogo from '../components/DelucseLogo';
@@ -74,12 +74,7 @@ function ResetPassword() {
             const body = {
                 username: username,
             };
-            axios
-                .post(
-                    `${process.env.REACT_APP_API_URL}/user/password`,
-                    body,
-                    config
-                )
+            api.post('/user/password', body, config)
                 .then((res) => {
                     dispatch(
                         alertMessage(

@@ -6,7 +6,7 @@ import { snackbarMessage } from '../../actions/messageActions';
 
 import { useNavigate } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../../axiosInstance';
 
 import IconButton from '../IconButton';
 import Button from '../Button';
@@ -50,8 +50,7 @@ function Delete() {
                 console.log(err);
             },
         };
-        axios
-            .delete(`${process.env.REACT_APP_API_URL}/recipe/${id}`, config)
+        api.delete(`/recipe/${id}`, config)
             .then((res) => {
                 res.config.success(res);
             })

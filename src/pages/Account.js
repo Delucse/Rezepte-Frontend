@@ -25,8 +25,9 @@ import {
     setProgressError,
     setProgressSuccess,
 } from '../actions/progressActions';
-import axios from 'axios';
 import { resetSignout, signoutIntern } from '../actions/authActions';
+
+import api from '../axiosInstance';
 
 function Account() {
     return (
@@ -104,7 +105,7 @@ function NewPassword() {
         } else {
             const config = {
                 method: 'PUT',
-                url: `${process.env.REACT_APP_API_URL}/user/password`,
+                url: '/user/password',
                 data: { password: password, confirmPassword: confirmPassword },
                 success: (res) => {
                     setPassword('');
@@ -129,7 +130,7 @@ function NewPassword() {
                     }
                 },
             };
-            axios(config)
+            api(config)
                 .then((res) => {
                     res.config.success(res);
                 })
@@ -239,7 +240,7 @@ function DeleteAccount() {
         dispatch(setProgress('deleteUser'));
         const config = {
             method: 'DELETE',
-            url: `${process.env.REACT_APP_API_URL}/user`,
+            url: '/user',
             success: (res) => {
                 dispatch(signoutIntern());
                 dispatch(
@@ -264,7 +265,7 @@ function DeleteAccount() {
                 }
             },
         };
-        axios(config)
+        api(config)
             .then((res) => {
                 res.config.success(res);
             })

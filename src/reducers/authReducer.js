@@ -11,12 +11,19 @@ import {
     REFRESH_TOKEN_SUCCESS,
 } from '../actions/types';
 
+import store from '../store';
+import { signoutIntern } from '../actions/authActions';
+
 const initialState = {
     token: localStorage.getItem('token'),
     refreshToken: localStorage.getItem('refresh-token'),
     user: null,
     last: null,
 };
+
+var logoutTimerId;
+const timeToLogout =
+    Number(process.env.REACT_APP_API_TOKEN_EXPIRATION) * 1000 * 0.99; // nearly xx minutes correspondign to the API
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -32,6 +39,12 @@ const reducer = (state = initialState, action) => {
             };
         case LOGIN_SUCCESS:
         case REFRESH_TOKEN_SUCCESS:
+            clearTimeout(logoutTimerId);
+            const logoutTimer = () =>
+                setTimeout(() => {
+                    store.dispatch(signoutIntern());
+                }, timeToLogout);
+            logoutTimerId = logoutTimer();
             localStorage.setItem('token', action.payload.token);
             localStorage.setItem('refresh-token', action.payload.refreshToken);
             return {
@@ -43,6 +56,7 @@ const reducer = (state = initialState, action) => {
         case REGISTER_FAIL:
         case LOGOUT_SUCCESS:
         case LOGOUT_FAIL:
+            clearTimeout(logoutTimerId);
             localStorage.removeItem('token');
             localStorage.removeItem('refresh-token');
             return {

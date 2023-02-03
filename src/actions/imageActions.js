@@ -7,13 +7,13 @@ import {
     setProgressSuccess,
 } from './progressActions';
 
-import axios from 'axios';
+import api from '../axiosInstance';
 
 export const getImages = () => (dispatch) => {
     dispatch(setProgress('images'));
     const config = {
         method: 'GET',
-        url: `${process.env.REACT_APP_API_URL}/recipe/image`,
+        url: '/recipe/image',
         success: (res) => {
             dispatch({
                 type: SET_IMAGES,
@@ -27,7 +27,7 @@ export const getImages = () => (dispatch) => {
         },
     };
 
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })
@@ -40,7 +40,7 @@ export const deleteImage = (id) => (dispatch, getState) => {
     dispatch(setProgress(`image-${id}`));
     const config = {
         method: 'DELETE',
-        url: `${process.env.REACT_APP_API_URL}/recipe/image/${id}`,
+        url: `/recipe/image/${id}`,
         success: (res) => {
             dispatch({
                 type: SET_IMAGES,
@@ -62,7 +62,7 @@ export const deleteImage = (id) => (dispatch, getState) => {
         },
     };
 
-    axios(config)
+    api(config)
         .then((res) => {
             res.config.success(res);
         })

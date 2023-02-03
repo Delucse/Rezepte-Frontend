@@ -9,7 +9,7 @@ import {
 
 import { useNavigate, Link, useParams } from 'react-router-dom';
 
-import axios from 'axios';
+import api from '../axiosInstance';
 
 import Dialog from '../components/Dialog';
 import DelucseLogo from '../components/DelucseLogo';
@@ -112,12 +112,7 @@ function SetPassword() {
                 password: password,
                 confirmPassword: confirmPassword,
             };
-            axios
-                .put(
-                    `${process.env.REACT_APP_API_URL}/user/password/${id}`,
-                    body,
-                    config
-                )
+            api.put(`/user/password/${id}`, body, config)
                 .then((res) => {
                     dispatch(
                         alertMessage(

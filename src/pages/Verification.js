@@ -7,7 +7,7 @@ import {
     resetMessage,
 } from '../actions/messageActions';
 
-import axios from 'axios';
+import api from '../axiosInstance';
 
 import { useNavigate, useParams, Link } from 'react-router-dom';
 
@@ -43,12 +43,7 @@ function Verification() {
         };
         // Request Body
         const body = { token: token };
-        axios
-            .post(
-                `${process.env.REACT_APP_API_URL}/auth/verification`,
-                body,
-                config
-            )
+        api.post('/auth/verification', body, config)
             .then((res) => {
                 dispatch(
                     alertMessage(
