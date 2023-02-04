@@ -51,7 +51,10 @@ function NewPassword() {
     );
 
     const passwordRef = useRef();
+    const confirmPasswordRef = useRef();
 
+    const [oldPassword, setOldPassword] = useState('');
+    const [showOldPassword, setShowOldPassword] = useState(false);
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -72,13 +75,25 @@ function NewPassword() {
         setShowPassword(!showPassword);
     };
 
+    const handleClickShowOldPassword = () => {
+        setShowOldPassword(!showOldPassword);
+    };
+
     const handleMouseDownPassword = (e) => {
         e.preventDefault();
     };
 
     const resetPassword = () => {
         dispatch(setProgress('newPassword'));
-        if (password.trim().length < 8) {
+        if (oldPassword.trim().length === 0) {
+            dispatch(
+                alertErrorMessage(
+                    'Gib dein aktuelles Passwort an.',
+                    'newPassword'
+                )
+            );
+            dispatch(setProgressError('newPassword'));
+        } else if (password.trim().length < 8) {
             dispatch(
                 alertErrorMessage(
                     'Es muss ein Passwort angegeben sein (mindestens 8 Zeichen).',
@@ -106,8 +121,13 @@ function NewPassword() {
             const config = {
                 method: 'PUT',
                 url: '/user/password',
-                data: { password: password, confirmPassword: confirmPassword },
+                data: {
+                    oldPassword: oldPassword,
+                    password: password,
+                    confirmPassword: confirmPassword,
+                },
                 success: (res) => {
+                    setOldPassword('');
                     setPassword('');
                     setConfirmPassword('');
                     dispatch(
@@ -120,12 +140,24 @@ function NewPassword() {
                 },
                 error: (err) => {
                     if (err.response.status !== 401) {
-                        dispatch(
-                            alertErrorMessage(
-                                'Passwort verändern ist fehlgeschlagen: Interner Server-Fehler. Probiere es bitte zu einem späteren Zeitpunkt erneut.',
-                                'newPassword'
-                            )
-                        );
+                        switch (err.response.status) {
+                            case 500:
+                                dispatch(
+                                    alertErrorMessage(
+                                        'Passwort verändern ist fehlgeschlagen: Interner Server-Fehler. Probiere es bitte zu einem späteren Zeitpunkt erneut.',
+                                        'newPassword'
+                                    )
+                                );
+                                break;
+                            default:
+                                dispatch(
+                                    alertErrorMessage(
+                                        'Du bist dazu nicht authorisiert.',
+                                        'newPassword'
+                                    )
+                                );
+                                break;
+                        }
                         dispatch(setProgressError('newPassword'));
                     }
                 },
@@ -144,13 +176,43 @@ function NewPassword() {
         <div style={{ marginTop: '10px' }}>
             <Alert type={'newPassword'} style={{ marginBottom: '20px' }} />
             <Textfield
+                type={showOldPassword ? 'text' : 'password'}
+                label="aktuelles Passwort"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                        passwordRef.current.focus();
+                    }
+                }}
+                end={
+                    <IconButton
+                        onClick={handleClickShowOldPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        sx={{
+                            '&:hover': {
+                                color: (theme) => theme.palette.primary.main,
+                            },
+                        }}
+                    >
+                        <Icon
+                            path={showOldPassword ? mdiEyeOff : mdiEye}
+                            size={1}
+                        />
+                    </IconButton>
+                }
+                fullWidth
+                margin
+            />
+            <Textfield
+                inputRef={passwordRef}
                 type={showPassword ? 'text' : 'password'}
                 label="Passwort"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onKeyDown={(event) => {
                     if (event.key === 'Enter') {
-                        passwordRef.current.focus();
+                        confirmPasswordRef.current.focus();
                     }
                 }}
                 end={
@@ -173,7 +235,7 @@ function NewPassword() {
                 margin
             />
             <Textfield
-                inputRef={passwordRef}
+                inputRef={confirmPasswordRef}
                 label="Passwort bestätigen"
                 type="password"
                 value={confirmPassword}
@@ -217,7 +279,8 @@ function DeleteAccount() {
     const username = useSelector((state) => state.auth.user);
 
     const [open, setOpen] = useState(false);
-    const [user, setUser] = useState('');
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         if (error) {
@@ -229,10 +292,18 @@ function DeleteAccount() {
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [user]);
+    }, [password]);
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const handleMouseDownPassword = (e) => {
+        e.preventDefault();
+    };
 
     const cancel = () => {
-        setUser('');
+        setPassword('');
         setOpen(false);
     };
 
@@ -241,11 +312,12 @@ function DeleteAccount() {
         const config = {
             method: 'DELETE',
             url: '/user',
+            data: { password: password },
             success: (res) => {
                 dispatch(signoutIntern());
                 dispatch(
                     snackbarMessage(
-                        `Nutzer "${user}" wurde erfolgreich gelöscht.`,
+                        `Nutzer wurde erfolgreich gelöscht.`,
                         'user'
                     )
                 );
@@ -255,12 +327,24 @@ function DeleteAccount() {
             },
             error: (err) => {
                 if (err.response.status !== 401) {
-                    dispatch(
-                        alertErrorMessage(
-                            'Nutzerkonto löschen ist fehlgeschlagen: Interner Server-Fehler. Probiere es bitte zu einem späteren Zeitpunkt erneut.',
-                            'deleteUser'
-                        )
-                    );
+                    switch (err.response.status) {
+                        case 500:
+                            dispatch(
+                                alertErrorMessage(
+                                    'Nutzerkonto löschen ist fehlgeschlagen: Interner Server-Fehler. Probiere es bitte zu einem späteren Zeitpunkt erneut.',
+                                    'deleteUser'
+                                )
+                            );
+                            break;
+                        default:
+                            dispatch(
+                                alertErrorMessage(
+                                    'Du bist dazu nicht authorisiert.',
+                                    'deleteUser'
+                                )
+                            );
+                            break;
+                    }
                     dispatch(setProgressError('deleteUser'));
                 }
             },
@@ -288,11 +372,7 @@ function DeleteAccount() {
                 onClick={() => setOpen(true)}
                 disabled={progress}
             >
-                {!progress ? (
-                    'Nutzerkonto löschen'
-                ) : (
-                    <CircularProgress size={24.5} />
-                )}
+                Nutzerkonto löschen
             </Button>
             <Dialog
                 open={open}
@@ -315,7 +395,8 @@ function DeleteAccount() {
                                 variant="fullWidth"
                                 sx={{ margin: '10px 0' }}
                             />
-                            Gib als Bestätigung deinen Nutzernamen{' '}
+                            Gib als Bestätigung dein Passwort zum zugehörigen
+                            Nutzernamen{' '}
                             <div
                                 style={{ fontWeight: 700, display: 'contents' }}
                             >
@@ -324,9 +405,29 @@ function DeleteAccount() {
                             an, um dein Nutzerkonto endgültig zu löschen.
                         </Typography>
                         <Textfield
-                            value={user}
-                            label="Nutzername"
-                            onChange={(e) => setUser(e.target.value)}
+                            type={showPassword ? 'text' : 'password'}
+                            label="aktuelles Passwort"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            end={
+                                <IconButton
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    sx={{
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.main,
+                                        },
+                                    }}
+                                >
+                                    <Icon
+                                        path={showPassword ? mdiEyeOff : mdiEye}
+                                        size={1}
+                                    />
+                                </IconButton>
+                            }
+                            fullWidth
+                            margin
                         />
                     </Box>
                 }
@@ -343,7 +444,7 @@ function DeleteAccount() {
                             <Button
                                 variant="contained"
                                 onClick={deleteMe}
-                                disabled={user !== username}
+                                disabled={password.length === 0}
                             >
                                 {!progress ? (
                                     'Bestätigen'
