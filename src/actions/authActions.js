@@ -1,5 +1,5 @@
 import {
-    USER_LOADED,
+    REFRESH_TOKEN_SUCCESS,
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -24,50 +24,37 @@ import {
 import api from '../axiosInstance';
 
 // check token & load user
-export const loadUser = () => (dispatch, getState) => {
+export const refreshAuth = () => (dispatch, getState) => {
     // user loading
-    dispatch(setProgress('user'));
-    const config = {
-        success: (res) => {
-            dispatch({
-                type: LAST_SIGNIN,
-                payload: Date.now(),
+    if (getState().auth.token) {
+        dispatch(setProgress('user'));
+        api.post('/auth/refresh')
+            .then((res) => {
+                dispatch({
+                    type: REFRESH_TOKEN_SUCCESS,
+                    payload: res.data,
+                });
+                dispatch({
+                    type: LAST_SIGNIN,
+                    payload: Date.now(),
+                });
+                dispatch(setProgressSuccess('user'));
+                dispatch(
+                    snackbarMessage(
+                        `Herzlich Willkommen, ${res.data.user}!`,
+                        'user'
+                    )
+                );
+            })
+            .catch((err) => {
+                dispatch({
+                    type: AUTH_ERROR,
+                });
+                dispatch(setProgressError('user'));
             });
-            dispatch({
-                type: USER_LOADED,
-                payload: res.data.username,
-            });
-            dispatch(setProgressSuccess('user'));
-            dispatch(
-                snackbarMessage(
-                    `Herzlich Willkommen, ${res.data.username}!`,
-                    'user'
-                )
-            );
-        },
-        error: (err) => {
-            if (err.response) {
-                if (
-                    err.response.status !== 401 ||
-                    !getState().auth.refreshToken
-                ) {
-                    dispatch({
-                        type: AUTH_ERROR,
-                    });
-                    dispatch(setProgressError('user'));
-                }
-            } else {
-                dispatch(loadUser());
-            }
-        },
-    };
-    api.get('/user', config)
-        .then((res) => {
-            res.config.success(res);
-        })
-        .catch((err) => {
-            err.config.error(err);
-        });
+    } else {
+        dispatch(setProgressSuccess('user'));
+    }
 };
 
 // register User
@@ -222,31 +209,24 @@ export const resetSignout = () => (dispatch) => {
 };
 
 // Logout User
-export const signout = () => (dispatch, getState) => {
-    const config = {
-        success: (res) => {
+export const signout = () => (dispatch) => {
+    api.post('/auth/signout')
+        .then((res) => {
             dispatch({
                 type: LOGOUT_SUCCESS,
             });
             dispatch(setProgressSuccess('auth'));
-            dispatch(snackbarMessage(`Auf Wiedersehen!`, 'user'));
+
             dispatch(resetSignout());
-        },
-        error: (err) => {
+        })
+        .catch((err) => {
             dispatch({
                 type: LOGOUT_FAIL,
             });
             dispatch(setProgressError('auth'));
             dispatch(resetSignout());
-        },
-    };
-    api.post('/auth/signout', { token: getState().auth.refreshToken }, config)
-        .then((res) => {
-            res.config.success(res);
-        })
-        .catch((err) => {
-            err.config.error(err);
         });
+    dispatch(snackbarMessage(`Auf Wiedersehen!`, 'user'));
 };
 
 export const signoutIntern = () => (dispatch) => {

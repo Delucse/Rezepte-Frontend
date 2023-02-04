@@ -4,7 +4,7 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { loadUser } from './actions/authActions';
+import { refreshAuth } from './actions/authActions';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -78,7 +78,7 @@ function App() {
     const background = location.state && location.state.background;
 
     useEffect(() => {
-        dispatch(loadUser());
+        dispatch(refreshAuth());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

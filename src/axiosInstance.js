@@ -5,6 +5,7 @@ import store from './store';
 
 const api = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
+    withCredentials: true,
 });
 
 // Add a request interceptor
@@ -32,8 +33,8 @@ api.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        const refreshToken = store.getState().auth.refreshToken;
-        if (refreshToken) {
+        const token = store.getState().auth.token;
+        if (token) {
             // try to refresh the token failed
             if (error.response.status === 401 && originalRequest._retry) {
                 return Promise.reject(error);
@@ -41,11 +42,8 @@ api.interceptors.response.use(
             // token was not valid and 1st try to refresh the token
             if (error.response.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
-                const refreshToken = store.getState().auth.refreshToken;
                 // request to refresh the token, in request-body is the refreshToken
-                api.post('/auth/refresh', {
-                    token: refreshToken,
-                })
+                api.post('/auth/refresh')
                     .then((res) => {
                         if (res.status === 200) {
                             store.dispatch({
@@ -54,16 +52,6 @@ api.interceptors.response.use(
                             });
                             api.defaults.headers.common['Authorization'] =
                                 'Bearer ' + res.data.token;
-                            // request was successfull, new request with the old parameters and the refreshed token
-                            if (
-                                originalRequest.data &&
-                                originalRequest.data.includes &&
-                                originalRequest.data.includes('token')
-                            ) {
-                                originalRequest.data = JSON.stringify({
-                                    token: res.data.refreshToken,
-                                });
-                            }
                             return api(originalRequest)
                                 .then((res) => {
                                     originalRequest.success(res);
