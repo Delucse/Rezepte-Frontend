@@ -4,14 +4,14 @@
         "titel": "title",
         "zutaten": "ingredients",
         "schlüsselwort": "keywords",
-        "arbteitsschritte": "steps"
+        "arbeitsschritte": "steps"
     },
     "type": {
         "all": "alle",
         "title": "titel",
         "ingredients": "zutaten",
         "keywords": "schlüsselwort",
-        "steps": "arbteitsschritte"
+        "steps": "arbeitsschritte"
     },
     "sortierung": {
         "relevanz": "score",

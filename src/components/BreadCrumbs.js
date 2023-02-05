@@ -68,7 +68,7 @@ function SearchLink({ pathname }) {
             : type === 'steps'
             ? 'Arbeitsschrittsuche'
             : 'Suche'
-    }${' '}${word !== '' ? ` von "${word}"` : ''}`;
+    }${pathname ? `${' '}${word !== '' ? ` von "${word}"` : ''}` : ''}`;
 
     return <Link pathname={pathname ? '/suche' : null} title={title} />;
 }

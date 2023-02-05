@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { useDispatch } from 'react-redux';
-import { setRoute } from '../actions/recipeFilterActions';
+import { setRoute, resetFilterSettings } from '../actions/recipeFilterActions';
 
 import { Link } from 'react-router-dom';
 
@@ -27,13 +27,20 @@ function Square(props) {
                     borderColor: (theme) => theme.palette.primary.main,
                 },
             }}
+            onClick={props.onClick}
         >
             {props.children}
         </Box>
     );
     return (
         <Grid item xs={12} sm={6} md={4} lg={3}>
-            {props.link ? <Link to={props.link}>{boxSquare}</Link> : boxSquare}
+            {props.link ? (
+                <Link to={props.link} onClick={props.onClick}>
+                    {boxSquare}
+                </Link>
+            ) : (
+                boxSquare
+            )}
         </Grid>
     );
 }
@@ -41,11 +48,20 @@ function Square(props) {
 const themes = [
     {
         link: '/rezepte',
+        onClickDispatch: resetFilterSettings,
         component: <RecipeLogo style={{ height: '100%', width: '100%' }} />,
     },
-    { component: <LastRecipes />, noPadding: true },
+    {
+        component: <LastRecipes />,
+        onClickDispatch: resetFilterSettings,
+        noPadding: true,
+    },
     // { component: <Statistics /> },
-    { link: '/rezepte/basis', component: <HowTo /> },
+    {
+        link: '/rezepte/basis',
+        onClickDispatch: resetFilterSettings,
+        component: <HowTo />,
+    },
     {
         link: '/faq',
         component: (
@@ -88,6 +104,11 @@ function Home() {
                             link={theme.link}
                             title={theme.title}
                             noPadding={theme.noPadding}
+                            onClick={
+                                theme.onClickDispatch
+                                    ? () => dispatch(theme.onClickDispatch())
+                                    : null
+                            }
                         >
                             {theme.component}
                         </Square>

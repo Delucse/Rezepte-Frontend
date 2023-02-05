@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setWord, setType } from '../../actions/recipeFilterActions';
 
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 import IconButton from '../IconButton';
@@ -54,7 +54,7 @@ function Search(props) {
     const setParams = () => {
         var newParams = '';
         if (word !== '') {
-            newParams += `&wort=${word}`;
+            newParams += `&wort=${search}`;
         }
         if (type !== 'all') {
             newParams += `&typ=${params.type[type.toLowerCase()]}`;
@@ -81,7 +81,7 @@ function Search(props) {
     return (
         <div style={{ display: 'flex', width: '100%' }}>
             <Textfield
-                value={props.redux ? word : search}
+                value={search}
                 placeholder={
                     type === 'all'
                         ? 'Suche ...'
@@ -95,21 +95,18 @@ function Search(props) {
                         ? 'Arbeitsschrittsuche ...'
                         : 'Suche ...'
                 }
-                onChange={(e) =>
-                    props.redux
-                        ? dispatch(setWord(e.target.value))
-                        : setSearch(e.target.value)
-                }
+                onChange={(e) => setSearch(e.target.value)}
                 onKeyDown={(event) => {
                     if (event.key === 'Enter') {
-                        props.redux
-                            ? navigate(
-                                  `/rezepte${
-                                      route !== '' ? `/${route}` : ''
-                                  }${setParams()}`,
-                                  { exact: true }
-                              )
-                            : dispatch(setWord(search));
+                        dispatch(setWord(search.trim()));
+                        if (props.redux) {
+                            navigate(
+                                `/rezepte${
+                                    route !== '' ? `/${route}` : ''
+                                }${setParams()}`,
+                                { exact: true }
+                            );
+                        }
                     }
                 }}
                 start={
@@ -124,26 +121,7 @@ function Search(props) {
                     </IconButton>
                 }
                 end={
-                    props.redux ? (
-                        word !== '' ? (
-                            <IconButton
-                                tooltipProps={{ title: 'Löschen' }}
-                                sx={{
-                                    padding: '4px',
-                                    marginRight: '-8px',
-                                    '&:hover': {
-                                        color: (theme) =>
-                                            theme.palette.primary.main,
-                                    },
-                                    color: (theme) =>
-                                        theme.palette.text.secondary,
-                                }}
-                                onClick={() => dispatch(setWord(''))}
-                            >
-                                <Icon path={mdiClose} size={1} />
-                            </IconButton>
-                        ) : null
-                    ) : search !== '' ? (
+                    search !== '' ? (
                         <IconButton
                             tooltipProps={{ title: 'Löschen' }}
                             sx={{
@@ -164,41 +142,31 @@ function Search(props) {
                     ) : null
                 }
             />
-            {props.redux ? (
-                <Button
-                    tooltipProps={{ title: 'Rezepte durchsuchen' }}
-                    component={NavLink}
-                    exact="true"
-                    to={`/rezepte${
-                        route !== '' ? `/${route}` : ''
-                    }${setParams()}`}
-                    sx={{
-                        height: '56px',
-                        minWidth: '56px',
-                        width: '56px',
-                        padding: 0,
-                        color: (theme) => theme.palette.background.default,
-                    }}
-                    variant="contained"
-                >
-                    <Icon path={mdiMagnify} size={1.2} />
-                </Button>
-            ) : (
-                <Button
-                    tooltipProps={{ title: 'Rezepte durchsuchen' }}
-                    sx={{
-                        height: '56px',
-                        minWidth: '56px',
-                        width: '56px',
-                        padding: 0,
-                        color: (theme) => theme.palette.background.default,
-                    }}
-                    variant="contained"
-                    onClick={() => dispatch(setWord(search))}
-                >
-                    <Icon path={mdiMagnify} size={1.2} />
-                </Button>
-            )}
+
+            <Button
+                tooltipProps={{ title: 'Rezepte durchsuchen' }}
+                sx={{
+                    height: '56px',
+                    minWidth: '56px',
+                    width: '56px',
+                    padding: 0,
+                    color: (theme) => theme.palette.background.default,
+                }}
+                variant="contained"
+                onClick={() => {
+                    dispatch(setWord(search.trim()));
+                    if (props.redux) {
+                        navigate(
+                            `/rezepte${
+                                route !== '' ? `/${route}` : ''
+                            }${setParams()}`,
+                            { exact: true }
+                        );
+                    }
+                }}
+            >
+                <Icon path={mdiMagnify} size={1.2} />
+            </Button>
             <Menu
                 anchorEl={anchorEl}
                 open={open}
