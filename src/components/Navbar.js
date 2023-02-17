@@ -180,6 +180,9 @@ const userMenue = [
 function Navbar() {
     const user = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
+
+    const pathname = useLocation().pathname;
+
     const isAuthenticated = user !== null;
 
     const [open, setOpen] = useState(false);
@@ -252,7 +255,12 @@ function Navbar() {
                                     alignItems: 'center',
                                     display: 'flex',
                                 }}
-                                onClick={() => setOpen(false)}
+                                onClick={() => {
+                                    setOpen(false);
+                                    if (pathname !== '/suche') {
+                                        dispatch(resetFilterSettings());
+                                    }
+                                }}
                             >
                                 <Box
                                     sx={{
