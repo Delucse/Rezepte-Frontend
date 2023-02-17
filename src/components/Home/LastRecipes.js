@@ -9,7 +9,7 @@ import SwipeableViews from 'react-swipeable-views';
 import { virtualize } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 
-import { Box } from '@mui/material';
+import { Box, LinearProgress, Typography } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
@@ -186,7 +186,29 @@ function LastRecipes() {
         ) : (
             'keine Rezepte vorhanden'
         )
-    ) : loading ? null : (
+    ) : loading ? (
+        <Box
+            sx={{
+                height: '100%',
+                position: 'relative',
+                margin: '0 15%',
+            }}
+        >
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '100%',
+                }}
+            >
+                <LinearProgress sx={{ marginBottom: '10px' }} />
+                <Typography variant="body2" sx={{ textAlign: 'center' }}>
+                    neueste Rezepte werden geladen
+                </Typography>
+            </Box>
+        </Box>
+    ) : (
         'Fehler'
     );
 }
