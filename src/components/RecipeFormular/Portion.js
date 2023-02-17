@@ -275,7 +275,8 @@ function Portion() {
                                         dispatch(
                                             setRecipePortion(
                                                 e.target.value,
-                                                form
+                                                form,
+                                                getArt(e.target.value, art)
                                             )
                                         );
                                     }
