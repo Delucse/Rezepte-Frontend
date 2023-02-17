@@ -8,13 +8,12 @@ import { Link } from 'react-router-dom';
 import HowTo from '../components/Home/HowTo';
 import RecipeLogo from '../components/RecipeLogo';
 import LastRecipes from '../components/Home/LastRecipes';
+import LastPictures from '../components/Home/LastPictures';
 
 import { Grid, Box } from '@mui/material';
-// import Statistics from '../components/Home/Statistics';
 
 import Icon from '@mdi/react';
-import { mdiFrequentlyAskedQuestions } from '@mdi/js';
-import LastPictures from '../components/Home/LastPictures';
+import { mdiPoll, mdiFrequentlyAskedQuestions } from '@mdi/js';
 
 function Square(props) {
     const boxSquare = (
@@ -57,7 +56,6 @@ const themes = [
         onClickDispatch: resetFilterSettings,
         noPadding: true,
     },
-    // { component: <Statistics /> },
     {
         link: '/rezepte/basis',
         onClickDispatch: resetFilterSettings,
@@ -66,6 +64,23 @@ const themes = [
     {
         component: <LastPictures />,
         noPadding: true,
+    },
+    {
+        link: '/statistiken',
+        component: (
+            <Box
+                sx={{
+                    width: '100%',
+                    height: '100%',
+                    color: (theme) => theme.palette.primary.main,
+                    display: 'grid',
+                    justifyItems: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <Icon path={mdiPoll} size={'80%'} />
+            </Box>
+        ),
     },
     {
         link: '/faq',

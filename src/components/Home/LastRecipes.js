@@ -203,7 +203,11 @@ function LastRecipes() {
                 }}
             >
                 <LinearProgress sx={{ marginBottom: '10px' }} />
-                <Typography variant="body2" sx={{ textAlign: 'center' }}>
+                <Typography
+                    variant="body2"
+                    sx={{ textAlign: 'center' }}
+                    color="text.secondary"
+                >
                     neueste Rezepte werden geladen
                 </Typography>
             </Box>

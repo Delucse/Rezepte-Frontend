@@ -118,6 +118,8 @@ function LastPictures() {
                         </div>
                     }
                     sx={{
+                        top: 0,
+                        bottom: 'unset',
                         background: 'rgba(0, 0, 0, 0.25)',
                         '.MuiImageListItemBar-titleWrap': {
                             padding: 0,
@@ -259,7 +261,11 @@ function LastPictures() {
                 }}
             >
                 <LinearProgress sx={{ marginBottom: '10px' }} />
-                <Typography variant="body2" sx={{ textAlign: 'center' }}>
+                <Typography
+                    variant="body2"
+                    sx={{ textAlign: 'center' }}
+                    color="text.secondary"
+                >
                     neueste Bilder werden geladen
                 </Typography>
             </Box>

@@ -208,6 +208,10 @@ const routes = [
         breadcrumbs: [<Link title="FAQ" />],
     },
     {
+        pathname: /^\/statistiken$/i,
+        breadcrumbs: [<Link title="Statistiken" />],
+    },
+    {
         pathname: /^\/qr$/i,
         breadcrumbs: [<Link title="QR-Code auslesen" />],
     },

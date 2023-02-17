@@ -26,6 +26,7 @@ import Account from './pages/Account';
 import Verification from './pages/Verification';
 import SetPassword from './pages/SetPassword';
 import ResetPassword from './pages/ResetPassword';
+import Statistics from './components/Home/Statistics';
 
 function App() {
     const dispatch = useDispatch();
@@ -158,6 +159,7 @@ function App() {
                     />
                     <Route path="einstellungen" element={<Settings />} />
                     <Route path="faq" element={<Faq />} />
+                    <Route path="statistiken" element={<Statistics />} />
                     <Route path="qr" element={<Qr />} />
                     {!background && (
                         <Route path="anmeldung" element={<SignIn />} />
