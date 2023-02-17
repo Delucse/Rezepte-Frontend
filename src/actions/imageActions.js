@@ -13,7 +13,7 @@ export const getImages = () => (dispatch) => {
     dispatch(setProgress('images'));
     const config = {
         method: 'GET',
-        url: '/recipe/image',
+        url: '/recipe/image/user',
         success: (res) => {
             dispatch({
                 type: SET_IMAGES,

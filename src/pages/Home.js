@@ -14,6 +14,7 @@ import { Grid, Box } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiFrequentlyAskedQuestions } from '@mdi/js';
+import LastPictures from '../components/Home/LastPictures';
 
 function Square(props) {
     const boxSquare = (
@@ -61,6 +62,10 @@ const themes = [
         link: '/rezepte/basis',
         onClickDispatch: resetFilterSettings,
         component: <HowTo />,
+    },
+    {
+        component: <LastPictures />,
+        noPadding: true,
     },
     {
         link: '/faq',
