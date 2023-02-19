@@ -6,8 +6,6 @@ import store from './store';
 
 import './index.css';
 
-import { BrowserRouter as Router } from 'react-router-dom';
-
 import App from './App';
 
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
@@ -16,11 +14,9 @@ import reportWebVitals from './reportWebVitals';
 const container = document.getElementById('delucse');
 const root = createRoot(container);
 root.render(
-    <Router>
-        <Provider store={store}>
-            <App />
-        </Provider>
-    </Router>
+    <Provider store={store}>
+        <App />
+    </Provider>
 );
 
 // If you want your app to work offline and load faster, you can change

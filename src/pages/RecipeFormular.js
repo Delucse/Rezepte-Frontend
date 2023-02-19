@@ -12,7 +12,7 @@ import { setProgressError } from '../actions/progressActions';
 
 import { useParams } from 'react-router-dom';
 
-import { usePrompt } from '../hooks/usePrompt';
+import usePrompt from '../hooks/usePrompt';
 import NavigationPrompt from '../components/NavigationPrompt';
 
 import General from '../components/RecipeFormular/General';
