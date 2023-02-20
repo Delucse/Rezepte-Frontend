@@ -18,9 +18,18 @@ import {
 } from '@mui/material';
 
 function rgbaToRgb(rgb, alpha) {
-    return `rgb(${(1 - alpha) * 255 + alpha * rgb.r}, ${
-        (1 - alpha) * 255 + alpha * rgb.g
-    }, ${(1 - alpha) * 255 + alpha * rgb.b})`;
+    return {
+        r: parseInt((1 - alpha) * 255 + alpha * rgb.r),
+        g: parseInt((1 - alpha) * 255 + alpha * rgb.g),
+        b: parseInt((1 - alpha) * 255 + alpha * rgb.b),
+    };
+}
+
+function rgbToHex({ r, g, b }) {
+    r = r.toString(16);
+    g = g.toString(16);
+    b = b.toString(16);
+    return '#' + r.padStart(2, '0') + g.padStart(2, '0') + b.padStart(2, '0');
 }
 
 function Settings() {
@@ -44,7 +53,7 @@ function Settings() {
 
     const onChangeColor = (color) => {
         setMainColor(color.hex);
-        setLightColor(rgbaToRgb(color.rgb, 0.5));
+        setLightColor(rgbToHex(rgbaToRgb(color.rgb, 0.5)));
     };
 
     const submit = () => {
@@ -54,6 +63,7 @@ function Settings() {
     return (
         <div>
             <Typography
+                component="div"
                 variant="body1"
                 sx={{
                     display: 'flex',
@@ -142,6 +152,7 @@ function Settings() {
                 </Button>
             </ButtonGroup>
             <Typography
+                component="div"
                 variant="body1"
                 sx={{
                     display: 'flex',

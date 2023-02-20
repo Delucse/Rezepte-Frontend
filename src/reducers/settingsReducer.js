@@ -2,11 +2,8 @@ import { SET_COLOR } from '../actions/types';
 
 const initialState = {
     color: {
-        main:
-            localStorage.getItem('palette.primary.main') || 'rgb(11, 102, 35)',
-        light:
-            localStorage.getItem('palette.primary.light') ||
-            'rgb(133, 179, 145)',
+        main: localStorage.getItem('palette.primary.main') || '#0b6623', // 'rgb(11, 102, 35)',
+        light: localStorage.getItem('palette.primary.light') || '#85B291', // 'rgb(133, 179, 145)',
         mode: localStorage.getItem('palette.mode') || 'light',
     },
 };

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import Link from '../components/Link';
+
 import MuiAccordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
-import { Box, Link } from '@mui/material';
+import { Box } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiSilverwareVariant } from '@mdi/js';
@@ -80,7 +82,7 @@ const themes = [
                         ist es möglich die Webseite wie eine native App zu
                         nutzen (
                         <Link
-                            href="https://de.wikipedia.org/wiki/Progressive_Web_App"
+                            to="https://de.wikipedia.org/wiki/Progressive_Web_App"
                             target="_blank"
                             alt="PWA"
                         >
@@ -93,7 +95,8 @@ const themes = [
                         <ul>
                             <li>
                                 <Link
-                                    href={`${process.env.PUBLIC_URL}/Delucse.apk`}
+                                    to={`${process.env.PUBLIC_URL}/Delucse.apk`}
+                                    target="_blank"
                                     alt="Android"
                                 >
                                     Android
@@ -101,7 +104,8 @@ const themes = [
                             </li>
                             <li>
                                 <Link
-                                    href={`${process.env.PUBLIC_URL}/Delucse.ps1`}
+                                    to={`${process.env.PUBLIC_URL}/Delucse.ps1`}
+                                    target="_blank"
                                     alt="Windows"
                                 >
                                     Windows

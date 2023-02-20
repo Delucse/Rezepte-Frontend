@@ -4,156 +4,492 @@ import api from '../../axiosInstance';
 
 import Chart from 'react-apexcharts';
 
-import { Box, Typography, LinearProgress, useTheme } from '@mui/material';
+import Link from '../Link';
+
+import {
+    Box,
+    Typography,
+    LinearProgress,
+    useTheme,
+    Grid,
+    List,
+    ListItem as MuiListItem,
+    ListItemText,
+    ListItemIcon,
+    Divider,
+} from '@mui/material';
 
 import moment from 'moment';
 import 'moment/locale/de';
 moment.locale('de');
 
-const accumulateValuesAndFillGaps = (array) => {
+const fillGaps = (array) => {
     var lastDate = moment('2022-08', 'YYYY-MM');
     var lastValue = 0;
-    const resultArray = [];
+    const accumulateArray = [];
+    const originArray = [];
     array.forEach((a) => {
         var date = moment(
-            `${a._id.year}-${a._id.month.toString().padStart(2, '0')}`,
+            `${a.year}-${a.month.toString().padStart(2, '0')}`,
             'YYYY-MM'
         );
         const monthsTillNextDate = date.diff(lastDate, 'M', false);
         for (let index = 0; index < monthsTillNextDate; index++) {
             if (
-                resultArray.length === 0 ||
-                lastDate !== resultArray[resultArray.length - 1][0]
+                accumulateArray.length === 0 ||
+                lastDate !== accumulateArray[accumulateArray.length - 1][0]
             ) {
-                resultArray.push([lastDate, lastValue]);
+                accumulateArray.push([lastDate, lastValue]);
+                originArray.push([lastDate, 0]);
             }
             lastDate = moment(lastDate).add(1, 'month');
         }
         lastValue = lastValue + a.count;
         lastDate = date;
-        resultArray.push([lastDate, lastValue]);
+        accumulateArray.push([lastDate, lastValue]);
+        originArray.push([lastDate, a.count]);
     });
     var now = moment();
     const monthsTillNow = now.diff(lastDate, 'M', false);
     for (let index = 0; index < monthsTillNow; index++) {
         lastDate = moment(lastDate).add(1, 'month');
-        resultArray.push([lastDate, lastValue]);
+        accumulateArray.push([lastDate, lastValue]);
+        originArray.push([lastDate, 0]);
     }
-    return resultArray;
+    return {
+        accumulate: accumulateArray,
+        origin: originArray,
+        total: lastValue,
+    };
+};
+
+const ListItem = ({ children, sub }) => {
+    return (
+        <MuiListItem
+            disablePadding
+            sx={{
+                alignItems: 'baseline',
+                marginLeft: sub ? '25px' : 0,
+                width: sub ? 'calc(100% - 25px)' : '100%',
+            }}
+        >
+            <ListItemIcon
+                sx={{
+                    minWidth: '25px',
+                    color: (theme) => theme.palette.text.primary,
+                }}
+            >
+                {sub ? '-' : '•'}
+            </ListItemIcon>
+            <ListItemText
+                sx={{
+                    margin: 0,
+                    color: (theme) => theme.palette.text.primary,
+                }}
+                primaryTypographyProps={{
+                    sx: {
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        fontWeight: sub ? 'inherit' : 450,
+                    },
+                }}
+            >
+                {children}
+            </ListItemText>
+        </MuiListItem>
+    );
+};
+
+const Heading = ({ text }) => {
+    return (
+        <Typography
+            variant="body1"
+            color="text.primary"
+            sx={{
+                fontWeight: 'bold',
+            }}
+        >
+            {text}
+        </Typography>
+    );
+};
+
+const Graph = ({ type, series, legend, color, stroke, width, height }) => {
+    const theme = useTheme();
+
+    return (
+        <Chart
+            options={{
+                legend: {
+                    show: legend ? legend : true,
+                    position: 'top',
+                    horizontalAlign: 'left',
+                    formatter: function (value) {
+                        return value;
+                    },
+                    fontSize: '14px',
+                    fontFamily: 'Arial',
+                    fontWeight: 400,
+                    onItemClick: false,
+                    onItemHover: {
+                        highlightDataSeries: true,
+                    },
+                },
+                chart: {
+                    toolbar: {
+                        show: false,
+                    },
+                    width: '100%',
+                    stacked: false,
+                    background: theme.palette.background.default,
+                },
+                stroke: stroke ? stroke : {},
+                colors: color
+                    ? [theme.palette.primary[color]]
+                    : [
+                          theme.palette.primary.dark,
+                          theme.palette.primary.main,
+                          theme.palette.primary.light,
+                      ],
+                xaxis: {
+                    type: 'datetime',
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function (value) {
+                            return value.toFixed(0);
+                        },
+                    },
+                },
+                theme: {
+                    mode: theme.palette.mode,
+                },
+                tooltip: {
+                    theme: theme.palette.mode,
+                },
+            }}
+            series={series}
+            type={type}
+            width={width ? width : '100%'}
+            height={height ? height : '100%'}
+        />
+    );
 };
 
 function Statistics() {
-    const theme = useTheme();
-
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const config = {
-            method: 'GET',
-            url: '/stats',
-            success: (res) => {
+        api.get('/stats')
+            .then((res) => {
                 setStats({
-                    users: accumulateValuesAndFillGaps(res.data.users),
-                    recipes: accumulateValuesAndFillGaps(res.data.recipes),
-                    images: accumulateValuesAndFillGaps(res.data.images),
+                    ...res.data,
+                    users: {
+                        ...res.data.users,
+                        count: fillGaps(res.data.users.count),
+                    },
+                    recipes: {
+                        ...res.data.recipes,
+                        count: fillGaps(res.data.recipes.count),
+                    },
+                    images: {
+                        ...res.data.recipes,
+                        count: fillGaps(res.data.images.count),
+                    },
                 });
                 setLoading(false);
-            },
-            error: (err) => {
-                console.error(err.message);
-                setLoading(false);
-            },
-        };
-
-        api(config)
-            .then((res) => {
-                res.config.success(res);
             })
             .catch((err) => {
-                err.config.error(err);
+                console.error(err.message);
+                setLoading(false);
             });
     }, []);
 
     return !loading && stats ? (
-        <Box sx={{ width: '100%', height: 'calc(100vh - 55px - 78px - 24px)' }}>
-            <Chart
-                options={{
-                    legend: {
-                        show: true,
-                        position: 'top',
-                        horizontalAlign: 'left',
-                        formatter: function (value) {
-                            const obj = {
-                                Nutzer: 'users',
-                                Rezepte: 'recipes',
-                                Bilder: 'images',
-                            };
-                            const data = stats[obj[value]];
-                            return `${value} (${data[data.length - 1][1]})`;
-                        },
-                        fontSize: '14px',
-                        fontFamily: 'Arial',
-                        fontWeight: 400,
-                        onItemClick: false,
-                        onItemHover: {
-                            highlightDataSeries: true,
-                        },
-                    },
-                    chart: {
-                        toolbar: {
-                            show: false,
-                        },
-                        width: '100%',
-                        stacked: false,
-                    },
-                    stroke: {
-                        width: 5,
-                        curve: 'smooth',
-                    },
-                    colors: [
-                        theme.palette.primary.dark,
-                        theme.palette.primary.main,
-                        theme.palette.action.disabled,
-                    ],
-                    xaxis: {
-                        tickAmount: 'dataPoints',
-                        tickPlacement: 'on',
-                        labels: {
-                            formatter: function (value) {
-                                const date = moment(value);
-                                const month = date.format('MMM');
-                                if (month === 'Jan.') {
-                                    return `${month} '${date.format('YY')}`;
-                                }
-                                return month;
+        <>
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
+                    <Divider
+                        absolute
+                        sx={{
+                            borderColor: (theme) =>
+                                theme.palette.action.disabled,
+                            bottom: '-8px',
+                            left: '16px',
+                            right: '0px',
+                            width: {
+                                xs: 'calc(100% - 16px)',
+                                md: 'calc(100% - 24px)',
                             },
-                        },
-                        type: 'datetime',
-                    },
-                    tooltip: {
-                        theme: theme.palette.mode,
-                    },
+                        }}
+                    />
+                    <Divider
+                        orientation="vertical"
+                        absolute
+                        sx={{
+                            borderColor: (theme) =>
+                                theme.palette.action.disabled,
+                            display: { xs: 'none', md: 'inherit' },
+                            bottom: '-8px',
+                            top: '16px',
+                            left: '16px',
+                            width: 'calc(100% - 8px)',
+                            height: 'calc(100% - 16px - 8px)',
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            marginRight: { xs: 0, md: '8px' },
+                            marginBottom: '8px',
+                        }}
+                    >
+                        <Heading text="Zahlen & Fakten" />
+                        <List>
+                            <ListItem>Nutzer</ListItem>
+                            <ListItem sub>
+                                Gesamtanzahl: {stats.users.count.total}
+                            </ListItem>
+                            <ListItem>Rezepte</ListItem>
+                            <ListItem sub>
+                                Gesamtanzahl: {stats.recipes.count.total}
+                            </ListItem>
+                            <ListItem sub>
+                                <div>
+                                    fleißigster Autor ist{' '}
+                                    <Link
+                                        to={`/rezepte?autor=${stats.recipes.user.name}`}
+                                    >
+                                        {stats.recipes.user.name}
+                                    </Link>
+                                </div>
+                            </ListItem>
+                            <ListItem sub>
+                                Ø{' '}
+                                {(
+                                    stats.recipes.count.total /
+                                    stats.images.count.total
+                                ).toLocaleString('de-De', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 2,
+                                })}{' '}
+                                Rezepte pro Nutzer
+                            </ListItem>
+                            <ListItem>Favoriten</ListItem>
+                            <ListItem sub>
+                                Gesamtanzahl: {stats.favorites.total}
+                            </ListItem>
+                            <ListItem sub>
+                                größtes Kochbuch besitzt{' '}
+                                {stats.favorites.user.name} (
+                                {stats.favorites.user.count} Rezepte)
+                            </ListItem>
+                            <ListItem sub>
+                                <div>
+                                    Lieblingsrezept ist{' '}
+                                    <Link
+                                        to={`/rezepte/${stats.favorites.recipe._id}`}
+                                    >
+                                        {stats.favorites.recipe.title}
+                                    </Link>{' '}
+                                    ({stats.favorites.recipe.count} Nutzer)
+                                </div>
+                            </ListItem>
+                            <ListItem>Bilder</ListItem>
+                            <ListItem sub>
+                                Gesamtanzahl: {stats.images.count.total}
+                            </ListItem>
+                            <ListItem sub>
+                                der heimliche Star-Food-Fotograph ist{' '}
+                                {stats.images.user.name} (
+                                {stats.images.user.count} Bilder){' '}
+                            </ListItem>
+                            <ListItem sub>
+                                Ø{' '}
+                                {(
+                                    stats.images.count.total /
+                                    stats.users.count.total
+                                ).toLocaleString('de-De', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 2,
+                                })}{' '}
+                                hochgeladene Bilder pro Nutzer
+                            </ListItem>
+                            <ListItem sub>
+                                Ø{' '}
+                                {(
+                                    stats.images.count.total /
+                                    stats.recipes.count.total
+                                ).toLocaleString('de-De', {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 2,
+                                })}{' '}
+                                hochgeladene Bilder pro Rezept
+                            </ListItem>
+                        </List>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
+                    <Divider
+                        absolute
+                        sx={{
+                            borderColor: (theme) =>
+                                theme.palette.action.disabled,
+                            bottom: '-8px',
+                            left: { xs: '16px', md: '24px' },
+                            right: '8px',
+                            width: {
+                                xs: 'calc(100% - 16px)',
+                                md: 'calc(100% - 24px)',
+                            },
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            marginLeft: { xs: 0, md: '8px' },
+                            marginBottom: '8px',
+                            marginTop: { xs: '8px', md: 0 },
+                        }}
+                    >
+                        <Heading text="Nutzer" />
+                        <Graph
+                            legend={false}
+                            color="dark"
+                            series={[
+                                {
+                                    name: 'Nutzer',
+                                    data: stats.users.count.origin,
+                                },
+                            ]}
+                            type="bar"
+                            height="400px"
+                        />
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
+                    <Divider
+                        orientation="vertical"
+                        absolute
+                        sx={{
+                            borderColor: (theme) =>
+                                theme.palette.action.disabled,
+                            display: { xs: 'none', md: 'inherit' },
+                            bottom: '-8px',
+                            top: '24px',
+                            left: '16px',
+                            width: 'calc(100% - 8px)',
+                            height: 'calc(100% - 24px - 16px)',
+                        }}
+                    />
+                    <Divider
+                        absolute
+                        sx={{
+                            borderColor: (theme) =>
+                                theme.palette.action.disabled,
+                            bottom: '0px',
+                            left: '16px',
+                            right: '0px',
+                            width: {
+                                xs: 'calc(100% - 16px)',
+                                md: 'calc(100% - 8px)',
+                            },
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            marginRight: { xs: 0, md: '8px' },
+                            marginBottom: '16px',
+                            marginTop: '8px',
+                        }}
+                    >
+                        <Heading text="Rezepte" />
+                        <Graph
+                            legend={false}
+                            color="main"
+                            series={[
+                                {
+                                    name: 'Rezepte',
+                                    data: stats.recipes.count.origin,
+                                },
+                            ]}
+                            type="bar"
+                            height="400px"
+                        />
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
+                    <Divider
+                        absolute
+                        sx={{
+                            borderColor: (theme) =>
+                                theme.palette.action.disabled,
+                            bottom: '0px',
+                            left: { xs: '16px', md: '8px' },
+                            right: '0px',
+                            width: {
+                                xs: 'calc(100% - 16px)',
+                                md: 'calc(100% - 8px)',
+                            },
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            marginLeft: { xs: 0, md: '8px' },
+                            marginBottom: '16px',
+                            marginTop: { xs: 0, md: '8px' },
+                        }}
+                    >
+                        <Heading text="Bilder" />
+                        <Graph
+                            legend={false}
+                            color="light"
+                            series={[
+                                {
+                                    name: 'Bilder',
+                                    data: stats.images.count.origin,
+                                },
+                            ]}
+                            type="bar"
+                            height="400px"
+                        />
+                    </Box>
+                </Grid>
+            </Grid>
+            <Box
+                sx={{
+                    paddingTop: '16px',
                 }}
-                series={[
-                    {
-                        name: 'Nutzer',
-                        data: stats.users,
-                    },
-                    {
-                        name: 'Rezepte',
-                        data: stats.recipes,
-                    },
-                    {
-                        name: 'Bilder',
-                        data: stats.images,
-                    },
-                ]}
-                type="line"
-                width="100%"
-                height="100%"
-            />
-        </Box>
+            >
+                <Heading text="Gesamtentwicklung" />
+                <Box
+                    sx={{
+                        width: '100%',
+                        height: 'calc(100vh - 55px - 78px - 24px - 24px)',
+                        marginBottom: 2,
+                    }}
+                >
+                    <Graph
+                        legend
+                        stroke={{ width: 5, curve: 'smooth' }}
+                        series={[
+                            {
+                                name: 'Nutzer',
+                                data: stats.users.count.accumulate,
+                            },
+                            {
+                                name: 'Rezepte',
+                                data: stats.recipes.count.accumulate,
+                            },
+                            {
+                                name: 'Bilder',
+                                data: stats.images.count.accumulate,
+                            },
+                        ]}
+                        type="line"
+                    />
+                </Box>
+            </Box>
+        </>
     ) : loading ? (
         <Box
             sx={{

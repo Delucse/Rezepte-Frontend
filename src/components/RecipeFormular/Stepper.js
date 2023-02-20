@@ -34,6 +34,7 @@ function Content(props) {
             }}
         >
             <Typography
+                component="div"
                 variant="body1"
                 sx={{
                     display: 'flex',
