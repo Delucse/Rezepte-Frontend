@@ -194,7 +194,7 @@ function Statistics() {
                         count: fillGaps(res.data.recipes.count),
                     },
                     images: {
-                        ...res.data.recipes,
+                        ...res.data.images,
                         count: fillGaps(res.data.images.count),
                     },
                 });
@@ -254,78 +254,96 @@ function Statistics() {
                             <ListItem sub>
                                 Gesamtanzahl: {stats.recipes.count.total}
                             </ListItem>
-                            <ListItem sub>
-                                <div>
-                                    fleißigster Autor ist{' '}
-                                    <Link
-                                        to={`/rezepte?autor=${stats.recipes.user.name}`}
-                                    >
-                                        {stats.recipes.user.name}
-                                    </Link>
-                                </div>
-                            </ListItem>
-                            <ListItem sub>
-                                Ø{' '}
-                                {(
-                                    stats.recipes.count.total /
-                                    stats.images.count.total
-                                ).toLocaleString('de-De', {
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 2,
-                                })}{' '}
-                                Rezepte pro Nutzer
-                            </ListItem>
+                            {stats.recipes.user.count > 0 ? (
+                                <ListItem sub>
+                                    <div>
+                                        fleißigster Autor ist{' '}
+                                        <Link
+                                            to={`/rezepte?autor=${stats.recipes.user.name}`}
+                                        >
+                                            {stats.recipes.user.name}
+                                        </Link>{' '}
+                                        ({stats.recipes.user.count} Rezepte)
+                                    </div>
+                                </ListItem>
+                            ) : null}
+                            {stats.recipes.count.total > 0 &&
+                            stats.users.count.total > 0 ? (
+                                <ListItem sub>
+                                    Ø{' '}
+                                    {(
+                                        stats.recipes.count.total /
+                                        stats.users.count.total
+                                    ).toLocaleString('de-De', {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 2,
+                                    })}{' '}
+                                    Rezepte pro Nutzer
+                                </ListItem>
+                            ) : null}
                             <ListItem>Favoriten</ListItem>
                             <ListItem sub>
                                 Gesamtanzahl: {stats.favorites.total}
                             </ListItem>
-                            <ListItem sub>
-                                größtes Kochbuch besitzt{' '}
-                                {stats.favorites.user.name} (
-                                {stats.favorites.user.count} Rezepte)
-                            </ListItem>
-                            <ListItem sub>
-                                <div>
-                                    Lieblingsrezept ist{' '}
-                                    <Link
-                                        to={`/rezepte/${stats.favorites.recipe._id}`}
-                                    >
-                                        {stats.favorites.recipe.title}
-                                    </Link>{' '}
-                                    ({stats.favorites.recipe.count} Nutzer)
-                                </div>
-                            </ListItem>
+                            {stats.favorites.user.count > 0 ? (
+                                <ListItem sub>
+                                    größtes Kochbuch besitzt{' '}
+                                    {stats.favorites.user.name} (
+                                    {stats.favorites.user.count} Rezepte)
+                                </ListItem>
+                            ) : null}
+                            {stats.favorites.recipe.count > 0 ? (
+                                <ListItem sub>
+                                    <div>
+                                        Lieblingsrezept ist{' '}
+                                        <Link
+                                            to={`/rezepte/${stats.favorites.recipe._id}`}
+                                        >
+                                            {stats.favorites.recipe.title}
+                                        </Link>{' '}
+                                        ({stats.favorites.recipe.count} Nutzer)
+                                    </div>
+                                </ListItem>
+                            ) : null}
                             <ListItem>Bilder</ListItem>
                             <ListItem sub>
                                 Gesamtanzahl: {stats.images.count.total}
                             </ListItem>
-                            <ListItem sub>
-                                der heimliche Star-Food-Fotograph ist{' '}
-                                {stats.images.user.name} (
-                                {stats.images.user.count} Bilder){' '}
-                            </ListItem>
-                            <ListItem sub>
-                                Ø{' '}
-                                {(
-                                    stats.images.count.total /
-                                    stats.users.count.total
-                                ).toLocaleString('de-De', {
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 2,
-                                })}{' '}
-                                hochgeladene Bilder pro Nutzer
-                            </ListItem>
-                            <ListItem sub>
-                                Ø{' '}
-                                {(
-                                    stats.images.count.total /
-                                    stats.recipes.count.total
-                                ).toLocaleString('de-De', {
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 2,
-                                })}{' '}
-                                hochgeladene Bilder pro Rezept
-                            </ListItem>
+                            {stats.images.user.count > 0 ? (
+                                <ListItem sub>
+                                    der heimliche Star-Food-Fotograph ist{' '}
+                                    {stats.images.user.name} (
+                                    {stats.images.user.count} Bilder){' '}
+                                </ListItem>
+                            ) : null}
+                            {stats.images.count.total > 0 &&
+                            stats.users.count.total > 0 ? (
+                                <ListItem sub>
+                                    Ø{' '}
+                                    {(
+                                        stats.images.count.total /
+                                        stats.users.count.total
+                                    ).toLocaleString('de-De', {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 2,
+                                    })}{' '}
+                                    hochgeladene Bilder pro Nutzer
+                                </ListItem>
+                            ) : null}
+                            {stats.images.count.total > 0 &&
+                            stats.recipes.count.total > 0 ? (
+                                <ListItem sub>
+                                    Ø{' '}
+                                    {(
+                                        stats.images.count.total /
+                                        stats.recipes.count.total
+                                    ).toLocaleString('de-De', {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 2,
+                                    })}{' '}
+                                    hochgeladene Bilder pro Rezept
+                                </ListItem>
+                            ) : null}
                         </List>
                     </Box>
                 </Grid>
@@ -352,18 +370,24 @@ function Statistics() {
                         }}
                     >
                         <Heading text="Nutzer" />
-                        <Graph
-                            legend={false}
-                            color="dark"
-                            series={[
-                                {
-                                    name: 'Nutzer',
-                                    data: stats.users.count.origin,
-                                },
-                            ]}
-                            type="bar"
-                            height="400px"
-                        />
+                        {stats.users.count.total > 0 ? (
+                            <Graph
+                                legend={false}
+                                color="dark"
+                                series={[
+                                    {
+                                        name: 'Nutzer',
+                                        data: stats.users.count.origin,
+                                    },
+                                ]}
+                                type="bar"
+                                height="400px"
+                            />
+                        ) : (
+                            <Typography variant="body2" color="text.primary">
+                                keine Daten verfügbar
+                            </Typography>
+                        )}
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
@@ -403,18 +427,24 @@ function Statistics() {
                         }}
                     >
                         <Heading text="Rezepte" />
-                        <Graph
-                            legend={false}
-                            color="main"
-                            series={[
-                                {
-                                    name: 'Rezepte',
-                                    data: stats.recipes.count.origin,
-                                },
-                            ]}
-                            type="bar"
-                            height="400px"
-                        />
+                        {stats.recipes.count.total > 0 ? (
+                            <Graph
+                                legend={false}
+                                color="main"
+                                series={[
+                                    {
+                                        name: 'Rezepte',
+                                        data: stats.recipes.count.origin,
+                                    },
+                                ]}
+                                type="bar"
+                                height="400px"
+                            />
+                        ) : (
+                            <Typography variant="body2" color="text.primary">
+                                keine Daten verfügbar
+                            </Typography>
+                        )}
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={6} sx={{ position: 'relative' }}>
@@ -440,18 +470,24 @@ function Statistics() {
                         }}
                     >
                         <Heading text="Bilder" />
-                        <Graph
-                            legend={false}
-                            color="light"
-                            series={[
-                                {
-                                    name: 'Bilder',
-                                    data: stats.images.count.origin,
-                                },
-                            ]}
-                            type="bar"
-                            height="400px"
-                        />
+                        {stats.images.count.total > 0 ? (
+                            <Graph
+                                legend={false}
+                                color="light"
+                                series={[
+                                    {
+                                        name: 'Bilder',
+                                        data: stats.images.count.origin,
+                                    },
+                                ]}
+                                type="bar"
+                                height="400px"
+                            />
+                        ) : (
+                            <Typography variant="body2" color="text.primary">
+                                keine Daten verfügbar
+                            </Typography>
+                        )}
                     </Box>
                 </Grid>
             </Grid>
@@ -517,7 +553,10 @@ function Statistics() {
             </Box>
         </Box>
     ) : (
-        'Die aktuellen Statistiken können gerade nicht abgerufen werden. Versuche es einfach zu einem späteren Zeitpunkt erneut.'
+        <Typography variant="body2" color="text.primary">
+            Die aktuellen Statistiken können gerade nicht abgerufen werden.
+            Versuche es einfach zu einem späteren Zeitpunkt erneut.
+        </Typography>
     );
 }
 
