@@ -12,6 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { Typography } from '@mui/material';
 
 import Layout from './components/Layout';
+import Loader from './components/Loader';
 
 const Home = lazy(() => import('./pages/Home'));
 const Error = lazy(() => import('./pages/Error'));
@@ -88,144 +89,166 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <Suspense fallback={<Layout />}>
-                <Routes location={background || location}>
-                    <Route path="/" element={<Layout />}>
-                        <Route
-                            errorElement={
-                                <Typography color="text.primary">
-                                    Interner Fehler: Sorry, Luc hat es verbockt.
-                                </Typography>
-                            }
-                        >
-                            <Route index element={<Home />} />
-                            <Route path="rezepte">
-                                <Route exact path="formular">
-                                    <Route
-                                        index
-                                        element={
-                                            <PrivateRoute>
-                                                <RecipeFormular />
-                                            </PrivateRoute>
-                                        }
-                                    />
+            {process.env.REACT_APP_PROGRESS === 'true' ? (
+                <Loader />
+            ) : (
+                <Suspense fallback={<Layout />}>
+                    <Routes location={background || location}>
+                        <Route path="/" element={<Layout />}>
+                            <Route
+                                errorElement={
+                                    <Typography color="text.primary">
+                                        Interner Fehler: Sorry, Luc hat es
+                                        verbockt.
+                                    </Typography>
+                                }
+                            >
+                                <Route index element={<Home />} />
+                                <Route path="rezepte">
+                                    <Route exact path="formular">
+                                        <Route
+                                            index
+                                            element={
+                                                <PrivateRoute>
+                                                    <RecipeFormular />
+                                                </PrivateRoute>
+                                            }
+                                        />
+                                        <Route
+                                            exact
+                                            path=":id"
+                                            element={
+                                                <PrivateRoute>
+                                                    <RecipeFormular />
+                                                </PrivateRoute>
+                                            }
+                                        />
+                                    </Route>
                                     <Route
                                         exact
                                         path=":id"
+                                        element={<Recipe />}
+                                    />
+                                    <Route
+                                        exact
+                                        path="favoriten"
                                         element={
                                             <PrivateRoute>
-                                                <RecipeFormular />
+                                                <Recipes route="favoriten" />
                                             </PrivateRoute>
                                         }
                                     />
-                                </Route>
-                                <Route exact path=":id" element={<Recipe />} />
-                                <Route
-                                    exact
-                                    path="favoriten"
-                                    element={
-                                        <PrivateRoute>
-                                            <Recipes route="favoriten" />
-                                        </PrivateRoute>
-                                    }
-                                />
-                                <Route
-                                    exact
-                                    path="nutzer"
-                                    element={
-                                        <PrivateRoute>
-                                            <Recipes route="nutzer" />
-                                        </PrivateRoute>
-                                    }
-                                />
-                                <Route
-                                    exact
-                                    path="kleinkind"
-                                    element={<Recipes route="kleinkind" />}
-                                />
-                                <Route
-                                    exact
-                                    path="basis"
-                                    element={<Recipes route="basis" />}
-                                />
-                                <Route index element={<Recipes route="" />} />
-                            </Route>
-                            <Route exact path="suche" element={<Search />} />
-                            <Route
-                                exact
-                                path="bilder"
-                                element={
-                                    <PrivateRoute>
-                                        <Images />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                path="konto"
-                                element={
-                                    <PrivateRoute>
-                                        <Account />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                path="einstellungen"
-                                element={<Settings />}
-                            />
-                            <Route path="faq" element={<Faq />} />
-                            <Route
-                                path="statistiken"
-                                element={<Statistics />}
-                            />
-                            <Route path="qr" element={<Qr />} />
-                            {!background && (
-                                <Route path="anmeldung" element={<SignIn />} />
-                            )}
-                            {!background && (
-                                <Route
-                                    path="registrierung"
-                                    element={<SignUp />}
-                                />
-                            )}
-                            {!background && (
-                                <Route
-                                    path="verifizierung/:token"
-                                    element={<Verification />}
-                                />
-                            )}
-                            {!background && (
-                                <Route path="passwort">
                                     <Route
                                         exact
-                                        path=":id/:token"
-                                        element={<SetPassword />}
+                                        path="nutzer"
+                                        element={
+                                            <PrivateRoute>
+                                                <Recipes route="nutzer" />
+                                            </PrivateRoute>
+                                        }
                                     />
-                                    <Route index element={<ResetPassword />} />
+                                    <Route
+                                        exact
+                                        path="kleinkind"
+                                        element={<Recipes route="kleinkind" />}
+                                    />
+                                    <Route
+                                        exact
+                                        path="basis"
+                                        element={<Recipes route="basis" />}
+                                    />
+                                    <Route
+                                        index
+                                        element={<Recipes route="" />}
+                                    />
                                 </Route>
-                            )}
-                            <Route path="*" element={<Error />} />
-                        </Route>
-                    </Route>
-                </Routes>
-                {background && (
-                    <Routes>
-                        <Route path="anmeldung" element={<SignIn />} />
-                        <Route path="registrierung" element={<SignUp />} />
-                        <Route
-                            path="verifizierung/:token"
-                            element={<Verification />}
-                        />
-                        <Route path="passwort">
-                            <Route
-                                exact
-                                path=":id/:token"
-                                element={<SetPassword />}
-                            />
-                            <Route index element={<ResetPassword />} />
+                                <Route
+                                    exact
+                                    path="suche"
+                                    element={<Search />}
+                                />
+                                <Route
+                                    exact
+                                    path="bilder"
+                                    element={
+                                        <PrivateRoute>
+                                            <Images />
+                                        </PrivateRoute>
+                                    }
+                                />
+                                <Route
+                                    path="konto"
+                                    element={
+                                        <PrivateRoute>
+                                            <Account />
+                                        </PrivateRoute>
+                                    }
+                                />
+                                <Route
+                                    path="einstellungen"
+                                    element={<Settings />}
+                                />
+                                <Route path="faq" element={<Faq />} />
+                                <Route
+                                    path="statistiken"
+                                    element={<Statistics />}
+                                />
+                                <Route path="qr" element={<Qr />} />
+                                {!background && (
+                                    <Route
+                                        path="anmeldung"
+                                        element={<SignIn />}
+                                    />
+                                )}
+                                {!background && (
+                                    <Route
+                                        path="registrierung"
+                                        element={<SignUp />}
+                                    />
+                                )}
+                                {!background && (
+                                    <Route
+                                        path="verifizierung/:token"
+                                        element={<Verification />}
+                                    />
+                                )}
+                                {!background && (
+                                    <Route path="passwort">
+                                        <Route
+                                            exact
+                                            path=":id/:token"
+                                            element={<SetPassword />}
+                                        />
+                                        <Route
+                                            index
+                                            element={<ResetPassword />}
+                                        />
+                                    </Route>
+                                )}
+                                <Route path="*" element={<Error />} />
+                            </Route>
                         </Route>
                     </Routes>
-                )}
-            </Suspense>
+                    {background && (
+                        <Routes>
+                            <Route path="anmeldung" element={<SignIn />} />
+                            <Route path="registrierung" element={<SignUp />} />
+                            <Route
+                                path="verifizierung/:token"
+                                element={<Verification />}
+                            />
+                            <Route path="passwort">
+                                <Route
+                                    exact
+                                    path=":id/:token"
+                                    element={<SetPassword />}
+                                />
+                                <Route index element={<ResetPassword />} />
+                            </Route>
+                        </Routes>
+                    )}
+                </Suspense>
+            )}
         </ThemeProvider>
     );
 }
