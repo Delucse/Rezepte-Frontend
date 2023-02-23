@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-import api from '../../axiosInstance';
+import api from '../axiosInstance';
 
 import Chart from 'react-apexcharts';
 
-import Link from '../Link';
+import Link from '../components/Link';
 
 import {
     Box,
