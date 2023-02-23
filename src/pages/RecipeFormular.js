@@ -2,18 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
-    resetRecipeFormular,
-    setBlocked,
     setRecipeFormular,
     setUploaded,
+    setBlocked,
 } from '../actions/recipeFormularActions';
 import { getRecipe } from '../actions/recipeActions';
 import { setProgressError } from '../actions/progressActions';
 
 import { useParams } from 'react-router-dom';
-
-import usePrompt from '../hooks/usePrompt';
-import NavigationPrompt from '../components/NavigationPrompt';
 
 import General from '../components/RecipeFormular/General';
 import Ingredients from '../components/RecipeFormular/Ingredients';
@@ -23,8 +19,9 @@ import Pictures from '../components/RecipeFormular/Pictures';
 import Stepper from '../components/RecipeFormular/Stepper';
 import Keywords from '../components/RecipeFormular/Keywords';
 import Loader from '../components/Loader';
+import Link from '../components/Link';
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 const steps = [
     {
@@ -61,9 +58,15 @@ const steps = [
 
 function RecipeFormular() {
     const dispatch = useDispatch();
-    const blocked = useSelector((state) => state.recipeFormular.blocked);
     const recipeId = useSelector((state) => state.recipe.id);
     const recipePictures = useSelector((state) => state.recipe.pictures);
+
+    const error = useSelector(
+        (state) => state.progress.error && state.progress.type === 'recipe'
+    );
+    const internalError = useSelector(
+        (state) => state.progress.error && state.progress.type === 'recipeError'
+    );
 
     const { id } = useParams();
 
@@ -82,7 +85,7 @@ function RecipeFormular() {
                 if (/^.{24}$/.test(id)) {
                     dispatch(getRecipe(id, true));
                 } else {
-                    dispatch(setProgressError('recipeFormular'));
+                    dispatch(setProgressError('recipe'));
                 }
             } else {
                 dispatch(setRecipeFormular());
@@ -101,10 +104,7 @@ function RecipeFormular() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wait]);
 
-    const [showDialogLeavingPage, confirmNavigation, cancelNavigation] =
-        usePrompt(blocked);
-
-    return (
+    return !(error || internalError) ? (
         <div>
             {wait < 1 && id ? (
                 <>
@@ -128,16 +128,18 @@ function RecipeFormular() {
                 </>
             ) : null}
             <Stepper steps={steps} />
-            <NavigationPrompt
-                open={showDialogLeavingPage}
-                closePrompt={(bool) => dispatch(setBlocked(bool))}
-                confirmNavigation={() => {
-                    dispatch(resetRecipeFormular());
-                    confirmNavigation();
-                }}
-                cancelNavigation={cancelNavigation}
-            />
         </div>
+    ) : error ? (
+        <Typography color="text.primary" variant="body2">
+            Oops, das Rezept existiert nicht (mehr). Zurück zu deinen{' '}
+            <Link to="/rezepte/nutzer">Rezepten</Link>.
+        </Typography>
+    ) : (
+        <Typography color="text.primary" variant="body2">
+            Dein Rezept kann gerade nicht abgerufen und daher auch nicht
+            bearbeitet werden. Versuche es einfach zu einem späteren Zeitpunkt
+            erneut.
+        </Typography>
     );
 }
 

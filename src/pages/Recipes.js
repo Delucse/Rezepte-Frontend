@@ -22,6 +22,7 @@ import Overview from '../components/Recipes/Overview';
 
 import Box from '@mui/material/Box';
 import Masonry from '@mui/lab/Masonry';
+import { Typography } from '@mui/material';
 
 import params from '../data/params.json';
 
@@ -301,7 +302,10 @@ function Recipes(props) {
                         </Box>
                     )
                 ) : error ? (
-                    <div>Error</div>
+                    <Typography variant="body2" color="text.primary">
+                        Die Rezept-Übersicht kann gerade nicht abgerufen werden.
+                        Versuche es einfach zu einem späteren Zeitpunkt erneut.
+                    </Typography>
                 ) : (
                     <Loader top={189} transparent />
                 )}

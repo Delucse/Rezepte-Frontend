@@ -157,7 +157,11 @@ export const getRecipe =
                 }
             },
             error: (err) => {
-                dispatch(setProgressError('recipe'));
+                if (!err.response || err.response.status === 500) {
+                    dispatch(setProgressError('recipeError'));
+                } else {
+                    dispatch(setProgressError('recipe'));
+                }
                 console.error(err);
             },
         };

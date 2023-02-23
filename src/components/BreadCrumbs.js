@@ -46,7 +46,19 @@ function RecipeLink({ formular }) {
     const { id } = useParams();
 
     const title = useSelector((state) => state.recipe.title);
-    const result = title ? title : 'lädt ...';
+    const error = useSelector(
+        (state) => state.progress.error && state.progress.type === 'recipe'
+    );
+    const internalError = useSelector(
+        (state) => state.progress.error && state.progress.type === 'recipeError'
+    );
+    const result = title
+        ? title
+        : error
+        ? 'Unbekannt'
+        : internalError
+        ? 'Fehler'
+        : 'lädt ...';
 
     return (
         <Link title={result} pathname={formular ? `/rezepte/${id}` : null} />
@@ -145,7 +157,24 @@ const routes = [
         ],
     },
     {
-        pathname: /^\/rezepte\/.{24}$/i,
+        pathname: /^\/rezepte\/formular$/i,
+        breadcrumbs: [
+            <Link pathname="/rezepte" title="Rezepte" />,
+            <Link pathname="/rezepte/nutzer" title="Nutzer" />,
+            <Link title="Formular" />,
+        ],
+    },
+    {
+        pathname: /^\/rezepte\/formular\/.*$/i,
+        breadcrumbs: [
+            <Link pathname="/rezepte" title="Rezepte" />,
+            <Link pathname="/rezepte/nutzer" title="Nutzer" />,
+            <RecipeLink formular />,
+            <Link title="Formular" />,
+        ],
+    },
+    {
+        pathname: /^\/rezepte\/.*$/i,
         breadcrumbs: [
             <SearchLink pathname />,
             <RecipesOverviewLink pathname="/rezepte" title="Rezepte" />,
@@ -170,21 +199,6 @@ const routes = [
                 condition="basis"
             />,
             <RecipeLink />,
-        ],
-    },
-    {
-        pathname: /^\/rezepte\/formular$/i,
-        breadcrumbs: [
-            <Link pathname="/rezepte" title="Rezepte" />,
-            <Link title="Formular" />,
-        ],
-    },
-    {
-        pathname: /^\/rezepte\/formular\/.{24}$/i,
-        breadcrumbs: [
-            <Link pathname="/rezepte" title="Rezepte" />,
-            <RecipeLink formular />,
-            <Link title="Formular" />,
         ],
     },
     {
@@ -217,7 +231,7 @@ const routes = [
     },
     {
         pathname: /^.*$/i,
-        breadcrumbs: [<Link title="Error" />],
+        breadcrumbs: [<Link title="Unbekannt" />],
     },
 ];
 

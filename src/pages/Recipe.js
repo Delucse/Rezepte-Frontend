@@ -28,8 +28,9 @@ import Steps from '../components/Recipe/Steps';
 import Keywords from '../components/Recipe/Keywords';
 import Edit from '../components/Recipe/Edit';
 import Date from '../components/Recipe/Date';
+import Link from '../components/Link';
 
-import { Grid, Box } from '@mui/material';
+import { Grid, Box, Typography } from '@mui/material';
 
 function Recipe() {
     const { id } = useParams();
@@ -43,6 +44,9 @@ function Recipe() {
     );
     const error = useSelector(
         (state) => state.progress.error && state.progress.type === 'recipe'
+    );
+    const internalError = useSelector(
+        (state) => state.progress.error && state.progress.type === 'recipeError'
     );
     const location = useLocation();
     const formular = location.pathname.includes('/formular');
@@ -125,7 +129,7 @@ function Recipe() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user]);
 
-    return !loading && !error && recipe.title ? (
+    return !loading && !(error || internalError) && recipe.title ? (
         <NotePaper>
             <Title />
 
@@ -210,8 +214,18 @@ function Recipe() {
                 </>
             ) : null}
         </NotePaper>
-    ) : error ? (
-        <div>Error</div>
+    ) : error || internalError ? (
+        error ? (
+            <Typography color="text.primary" variant="body2">
+                Oops, das Rezept existiert nicht (mehr). Zurück zur{' '}
+                <Link to="/rezepte">Übersicht</Link>.
+            </Typography>
+        ) : (
+            <Typography color="text.primary" variant="body2">
+                Das Rezept kann gerade nicht abgerufen werden. Versuche es
+                einfach zu einem späteren Zeitpunkt erneut.
+            </Typography>
+        )
     ) : (
         <Loader />
     );

@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { checkRecipeError } from '../../actions/recipeFormularActions';
+import {
+    checkRecipeError,
+    resetRecipeFormular,
+    setBlocked,
+} from '../../actions/recipeFormularActions';
 import { resetMessage } from '../../actions/messageActions';
 
 import { useParams } from 'react-router-dom';
 
 import SwipeableViews from 'react-swipeable-views';
+
+import usePrompt from '../../hooks/usePrompt';
+import NavigationPrompt from '../NavigationPrompt';
 
 import IconButton from '../IconButton';
 import Help from '../Help';
@@ -157,8 +164,21 @@ function Stepper(props) {
         setActiveStep(step);
     };
 
+    const blocked = useSelector((state) => state.recipeFormular.blocked);
+    const [showDialogLeavingPage, confirmNavigation, cancelNavigation] =
+        usePrompt(blocked);
+
     return (
         <div>
+            <NavigationPrompt
+                open={showDialogLeavingPage}
+                closePrompt={(bool) => dispatch(setBlocked(bool))}
+                confirmNavigation={() => {
+                    dispatch(resetRecipeFormular());
+                    confirmNavigation();
+                }}
+                cancelNavigation={cancelNavigation}
+            />
             {loading ? (
                 <Box
                     id="load"

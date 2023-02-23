@@ -83,43 +83,56 @@ export const register =
                 cb();
             })
             .catch((err) => {
-                if (err.response.status !== 401) {
-                    if (err.response.status === 500) {
-                        dispatch(
-                            alertErrorMessage('Interner Server-Fehler.', 'user')
-                        );
-                    } else {
-                        if (
-                            err.response.data.message === 'email already exists'
-                        ) {
+                if (err.response) {
+                    if (err.response.status !== 401) {
+                        if (err.response.status === 500) {
                             dispatch(
                                 alertErrorMessage(
-                                    'E-Mail-Adresse ist bereits vorhanden.',
+                                    'Interner Server-Fehler.',
                                     'user'
                                 )
                             );
-                        } else if (
-                            err.response.data.message ===
-                            'invalid email address'
-                        ) {
-                            dispatch(
-                                alertErrorMessage(
-                                    'E-Mail-Adresse ist nicht valide.',
-                                    'user'
-                                )
-                            );
-                        } else if (
-                            err.response.data.message ===
-                            'username already exists'
-                        ) {
-                            dispatch(
-                                alertErrorMessage(
-                                    'Nutzername ist bereits vorhanden.',
-                                    'user'
-                                )
-                            );
+                        } else {
+                            if (
+                                err.response.data.message ===
+                                'email already exists'
+                            ) {
+                                dispatch(
+                                    alertErrorMessage(
+                                        'E-Mail-Adresse ist bereits vorhanden.',
+                                        'user'
+                                    )
+                                );
+                            } else if (
+                                err.response.data.message ===
+                                'invalid email address'
+                            ) {
+                                dispatch(
+                                    alertErrorMessage(
+                                        'E-Mail-Adresse ist nicht valide.',
+                                        'user'
+                                    )
+                                );
+                            } else if (
+                                err.response.data.message ===
+                                'username already exists'
+                            ) {
+                                dispatch(
+                                    alertErrorMessage(
+                                        'Nutzername ist bereits vorhanden.',
+                                        'user'
+                                    )
+                                );
+                            }
                         }
                     }
+                } else {
+                    dispatch(
+                        alertErrorMessage(
+                            'Server ist zurzeit nicht erreichbar.',
+                            'user'
+                        )
+                    );
                 }
                 dispatch({
                     type: REGISTER_FAIL,
@@ -167,32 +180,43 @@ export const login = (username, password) => (dispatch) => {
                 );
             })
             .catch((err) => {
-                if (err.response.status === 500) {
-                    dispatch(
-                        alertErrorMessage('Interner Server-Fehler.', 'user')
-                    );
-                } else {
-                    if (
-                        err.response.data.message ===
-                        'username or password is wrong.'
-                    ) {
+                if (err.response) {
+                    if (err.response.status === 500) {
                         dispatch(
-                            alertErrorMessage(
-                                'Benutzername oder Passwort ist nicht korrekt.',
-                                'user'
-                            )
+                            alertErrorMessage('Interner Server-Fehler.', 'user')
                         );
-                    } else if (
-                        err.response.data.message === 'user is not verified.'
-                    ) {
-                        dispatch(
-                            alertErrorMessage(
-                                'Nutzer-Konto ist nicht verifiziert.',
-                                'user'
-                            )
-                        );
+                    } else {
+                        if (
+                            err.response.data.message ===
+                            'username or password is wrong.'
+                        ) {
+                            dispatch(
+                                alertErrorMessage(
+                                    'Benutzername oder Passwort ist nicht korrekt.',
+                                    'user'
+                                )
+                            );
+                        } else if (
+                            err.response.data.message ===
+                            'user is not verified.'
+                        ) {
+                            dispatch(
+                                alertErrorMessage(
+                                    'Nutzer-Konto ist nicht verifiziert.',
+                                    'user'
+                                )
+                            );
+                        }
                     }
+                } else {
+                    dispatch(
+                        alertErrorMessage(
+                            'Server ist zurzeit nicht erreichbar.',
+                            'user'
+                        )
+                    );
                 }
+
                 dispatch({
                     type: LOGIN_FAIL,
                 });

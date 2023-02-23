@@ -45,7 +45,7 @@ export const getRecipes =
                 dispatch(setProgressSuccess('recipeFilter'));
             },
             error: (err) => {
-                if (err.response.status !== 401) {
+                if (!err.response || err.response.status !== 401) {
                     dispatch(setProgressError('recipeFilter'));
                 }
             },
