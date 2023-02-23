@@ -3,11 +3,15 @@
 // https://codesandbox.io/s/navigating-prompt-forked-eqi9ff?file=/src/Components/DialogLeavingPage.js
 
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-import { unstable_useBlocker as useBlocker } from 'react-router-dom';
+
+import { useLocation, useNavigate } from 'react-router';
+
+import useBlocker from './useBlocker';
 
 export default function usePrompt(canShowDialogPrompt) {
     const navigate = useNavigate();
+
+    const currentLocation = useLocation();
 
     const [showDialogPrompt, setShowDialogPrompt] = useState(false);
     const [wantToNavigateTo, setWantToNavigateTo] = useState(null);
@@ -17,14 +21,13 @@ export default function usePrompt(canShowDialogPrompt) {
         (locationToNavigateTo) => {
             if (
                 !isNavigationConfirmed &&
-                locationToNavigateTo.nextLocation.pathname !==
-                    locationToNavigateTo.currentLocation.pathname
+                locationToNavigateTo.pathname !== currentLocation.pathname
             ) {
                 setShowDialogPrompt(true);
-                setWantToNavigateTo(locationToNavigateTo.nextLocation);
-                return true;
+                setWantToNavigateTo(locationToNavigateTo);
+                return false;
             }
-            return false;
+            return true;
         },
         [isNavigationConfirmed]
     );
@@ -37,6 +40,15 @@ export default function usePrompt(canShowDialogPrompt) {
     const confirmNavigation = useCallback(() => {
         setIsNavigationConfirmed(true);
         setShowDialogPrompt(false);
+    }, []);
+
+    useEffect(() => {
+        if (canShowDialogPrompt) {
+            window.onbeforeunload = () => true;
+        }
+        return () => {
+            window.onbeforeunload = undefined;
+        };
     }, []);
 
     useEffect(() => {

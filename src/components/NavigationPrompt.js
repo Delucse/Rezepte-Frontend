@@ -19,7 +19,7 @@ function NavigationPrompt(props) {
                     einher, dass alle gemachten Eingaben unwiderruflich gelöscht
                     werden.
                     <br />
-                    Bist Du also sicher die Seite verlassen zu wollen?
+                    Bist Du dir also sicher die Seite verlassen zu wollen?
                 </div>
             }
             actions={
