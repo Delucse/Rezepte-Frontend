@@ -14,6 +14,7 @@ import {
 } from '../actions/types';
 
 const initialState = {
+    id: null,
     title: '',
     portion: {},
     time: {

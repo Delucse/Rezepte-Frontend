@@ -123,7 +123,7 @@ function Recipe() {
 
     useEffect(() => {
         if (id && user && user !== oldUser) {
-            dispatch(getRecipe(id, null, false));
+            dispatch(getRecipe(id, false));
         }
         setUser(user);
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -613,9 +613,9 @@ const objectToFormData = (data, formData, subkey) => {
     return formData;
 };
 
-export const submitRecipe = (id) => (dispatch, getState) => {
+export const submitRecipe = () => (dispatch, getState) => {
     dispatch(setProgress('recipeFormular'));
-    var { title, portion, time, keywords, steps, pictures } =
+    var { id, title, portion, time, keywords, steps, pictures } =
         getState().recipeFormular;
 
     if (portion.form) {
@@ -702,6 +702,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
     dispatch({
         type: SET_RECIPE_FORMULAR,
         payload: {
+            id: null,
             title: '',
             portion: {},
             time: {
@@ -747,7 +748,7 @@ export const setBlocked = (bool) => (dispatch) => {
 };
 
 export const setRecipeFormular = () => (dispatch, getState) => {
-    const { title, portion, time, keywords, ingredients, steps, pictures } =
+    const { id, title, portion, time, keywords, ingredients, steps, pictures } =
         getState().recipe;
 
     const orderPicture = [];
@@ -760,6 +761,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
     dispatch({
         type: SET_RECIPE_FORMULAR,
         payload: {
+            id,
             title,
             portion,
             time,

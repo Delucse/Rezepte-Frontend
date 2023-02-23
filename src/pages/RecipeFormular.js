@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -59,7 +59,8 @@ const steps = [
 function RecipeFormular() {
     const dispatch = useDispatch();
     const recipeId = useSelector((state) => state.recipe.id);
-    const recipePictures = useSelector((state) => state.recipe.pictures);
+    const formularId = useSelector((state) => state.recipeFormular.id);
+    // const recipePictures = useSelector((state) => state.recipe.pictures);
 
     const error = useSelector(
         (state) => state.progress.error && state.progress.type === 'recipe'
@@ -79,11 +80,12 @@ function RecipeFormular() {
     useEffect(() => {
         if (id) {
             if (
-                id !== recipeId ||
-                recipePictures.filter((pic) => !pic._id).length > 0
+                id !== recipeId
+                //  ||
+                // recipePictures.filter((pic) => !pic._id).length > 0
             ) {
                 if (/^.{24}$/.test(id)) {
-                    dispatch(getRecipe(id, true));
+                    dispatch(getRecipe(id));
                 } else {
                     dispatch(setProgressError('recipe'));
                 }
@@ -94,41 +96,29 @@ function RecipeFormular() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeId]);
 
-    const [wait, setWait] = useState(0);
-    useEffect(() => {
-        if (wait < 1) {
-            setTimeout(() => {
-                setWait(wait + 1);
-            }, 1000);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [wait]);
-
     return !(error || internalError) ? (
-        <div>
-            {wait < 1 && id ? (
-                <>
-                    <Box
-                        sx={{
-                            background: (theme) =>
-                                theme.palette.background.default,
-                            color: (theme) => theme.palette.text.primary,
-                            height: '100%',
-                            position: 'absolute',
-                            zIndex: 4,
-                            width: {
-                                xs: 'calc(100% - 2 * 24px)',
-                                md: 'calc(100% - 2 * 15px - 1px)',
-                            },
-                        }}
-                    >
-                        Daten werden geladen ...
-                    </Box>
-                    <Loader top={109} transparent />
-                </>
-            ) : null}
+        id && formularId && id !== formularId ? (
+            <>
+                <Box
+                    sx={{
+                        background: (theme) => theme.palette.background.default,
+                        color: (theme) => theme.palette.text.primary,
+                        height: '100%',
+                        position: 'absolute',
+                        zIndex: 4,
+                        width: {
+                            xs: 'calc(100% - 2 * 24px)',
+                            md: 'calc(100% - 2 * 15px - 1px)',
+                        },
+                    }}
+                >
+                    Daten werden geladen ...
+                </Box>
+                <Loader top={109} transparent />
+            </>
+        ) : (
             <Stepper steps={steps} />
-        </div>
+        )
     ) : error ? (
         <Typography color="text.primary" variant="body2">
             Oops, das Rezept existiert nicht (mehr). Zurück zu deinen{' '}

@@ -7,7 +7,6 @@ import {
     ADD_RECIPE_PICTURE,
 } from '../actions/types';
 
-import { setRecipeFormular } from './recipeFormularActions';
 import { snackbarMessage } from './messageActions';
 import {
     setProgress,
@@ -101,7 +100,7 @@ export const setRecipeId = (id) => (dispatch) => {
 };
 
 export const getRecipe =
-    (id, setFormular, loadUi = true) =>
+    (id, loadUi = true) =>
     (dispatch, getState) => {
         if (loadUi) {
             dispatch(setProgress('recipe'));
@@ -152,9 +151,6 @@ export const getRecipe =
                     payload: payload,
                 });
                 dispatch(setProgressSuccess('recipe'));
-                if (setFormular) {
-                    dispatch(setRecipeFormular());
-                }
             },
             error: (err) => {
                 if (!err.response || err.response.status === 500) {

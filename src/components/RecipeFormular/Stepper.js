@@ -145,12 +145,9 @@ function Stepper(props) {
         if (activeStep === maxSteps) {
             dispatch(checkRecipeError());
         }
+        window.scrollTo(0, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeStep, maxSteps]);
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [activeStep]);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);

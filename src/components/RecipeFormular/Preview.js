@@ -85,7 +85,7 @@ function Preview() {
                             <Button
                                 variant="contained"
                                 sx={{ mt: '20px' }}
-                                onClick={() => dispatch(submitRecipe(id))}
+                                onClick={() => dispatch(submitRecipe())}
                             >
                                 Rezept{' '}
                                 {id ? 'aktualisieren' : 'veröffentlichen'}
