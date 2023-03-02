@@ -52,13 +52,6 @@ Font.register({
     ],
 });
 
-const rgbToHex = (rgb) => {
-    rgb = rgb.slice(rgb.indexOf('(') + 1, rgb.indexOf(')')).split(', ');
-    return `#${rgb
-        .map((x) => parseInt(x).toString(16).padStart(2, '0'))
-        .join('')}`;
-};
-
 const msToReadableTime = (time) => {
     const minute = 60 * 1000;
     const hour = 60 * minute;
@@ -288,9 +281,7 @@ function Header({ theme, title, portion, time }) {
             style={{
                 marginBottom: '20px',
                 paddingBottom: '3px',
-                borderBottom: `2px solid ${rgbToHex(
-                    theme.palette.primary.light
-                )}`,
+                borderBottom: `2px solid ${theme.palette.primary.light}`,
             }}
         >
             <Text
@@ -498,9 +489,7 @@ function PdfDocument({ theme, qr, recipe }) {
                             paddingRight: '10px',
                             borderRight: '1px',
                             borderRightStyle: 'solid',
-                            borderRightColor: rgbToHex(
-                                theme.palette.primary.light
-                            ),
+                            borderRightColor: theme.palette.primary.light,
                         }}
                     />
                     <Steps
@@ -534,7 +523,7 @@ function Pdf() {
                     margin: 0,
                     color: {
                         light: '#fff',
-                        dark: rgbToHex(theme.palette.primary.light),
+                        dark: theme.palette.primary.light,
                     },
                 }
             );
