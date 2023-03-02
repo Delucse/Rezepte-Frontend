@@ -32,6 +32,10 @@ const SetPassword = lazy(() => import('./pages/SetPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Statistics = lazy(() => import('./pages/Statistics'));
 
+const SuspenseRoute = ({ children }) => {
+    return <Suspense fallback={<></>}>{children}</Suspense>;
+};
+
 function App() {
     const dispatch = useDispatch();
     const color = useSelector((state) => state.settings.color);
@@ -92,7 +96,7 @@ function App() {
             {process.env.REACT_APP_PROGRESS === 'true' ? (
                 <Loader />
             ) : (
-                <Suspense fallback={<Layout />}>
+                <>
                     <Routes location={background || location}>
                         <Route path="/" element={<Layout />}>
                             <Route
@@ -103,113 +107,186 @@ function App() {
                                     </Typography>
                                 }
                             >
-                                <Route index element={<Home />} />
+                                <Route
+                                    index
+                                    element={
+                                        <SuspenseRoute>
+                                            <Home />
+                                        </SuspenseRoute>
+                                    }
+                                />
                                 <Route path="rezepte">
                                     <Route exact path="formular">
                                         <Route
                                             index
                                             element={
-                                                <PrivateRoute>
-                                                    <RecipeFormular />
-                                                </PrivateRoute>
+                                                <SuspenseRoute>
+                                                    <PrivateRoute>
+                                                        <RecipeFormular />
+                                                    </PrivateRoute>
+                                                </SuspenseRoute>
                                             }
                                         />
                                         <Route
                                             exact
                                             path=":id"
                                             element={
-                                                <PrivateRoute>
-                                                    <RecipeFormular />
-                                                </PrivateRoute>
+                                                <SuspenseRoute>
+                                                    <PrivateRoute>
+                                                        <RecipeFormular />
+                                                    </PrivateRoute>
+                                                </SuspenseRoute>
                                             }
                                         />
                                     </Route>
                                     <Route
                                         exact
                                         path=":id"
-                                        element={<Recipe />}
+                                        element={
+                                            <SuspenseRoute>
+                                                <Recipe />
+                                            </SuspenseRoute>
+                                        }
                                     />
                                     <Route
                                         exact
                                         path="favoriten"
                                         element={
-                                            <PrivateRoute>
-                                                <Recipes route="favoriten" />
-                                            </PrivateRoute>
+                                            <SuspenseRoute>
+                                                <PrivateRoute>
+                                                    <Recipes route="favoriten" />
+                                                </PrivateRoute>
+                                            </SuspenseRoute>
                                         }
                                     />
                                     <Route
                                         exact
                                         path="nutzer"
                                         element={
-                                            <PrivateRoute>
-                                                <Recipes route="nutzer" />
-                                            </PrivateRoute>
+                                            <SuspenseRoute>
+                                                <PrivateRoute>
+                                                    <Recipes route="nutzer" />
+                                                </PrivateRoute>
+                                            </SuspenseRoute>
                                         }
                                     />
                                     <Route
                                         exact
                                         path="kleinkind"
-                                        element={<Recipes route="kleinkind" />}
+                                        element={
+                                            <SuspenseRoute>
+                                                <Recipes route="kleinkind" />
+                                            </SuspenseRoute>
+                                        }
                                     />
                                     <Route
                                         exact
                                         path="basis"
-                                        element={<Recipes route="basis" />}
+                                        element={
+                                            <SuspenseRoute>
+                                                <Recipes route="basis" />
+                                            </SuspenseRoute>
+                                        }
                                     />
                                     <Route
                                         index
-                                        element={<Recipes route="" />}
+                                        element={
+                                            <SuspenseRoute>
+                                                <Recipes route="" />
+                                            </SuspenseRoute>
+                                        }
                                     />
                                 </Route>
                                 <Route
                                     exact
                                     path="suche"
-                                    element={<Search />}
+                                    element={
+                                        <SuspenseRoute>
+                                            <Search />
+                                        </SuspenseRoute>
+                                    }
                                 />
                                 <Route
                                     exact
                                     path="bilder"
                                     element={
-                                        <PrivateRoute>
-                                            <Images />
-                                        </PrivateRoute>
+                                        <SuspenseRoute>
+                                            <PrivateRoute>
+                                                <Images />
+                                            </PrivateRoute>
+                                        </SuspenseRoute>
                                     }
                                 />
                                 <Route
                                     path="konto"
                                     element={
-                                        <PrivateRoute>
-                                            <Account />
-                                        </PrivateRoute>
+                                        <SuspenseRoute>
+                                            <PrivateRoute>
+                                                <Account />
+                                            </PrivateRoute>
+                                        </SuspenseRoute>
                                     }
                                 />
                                 <Route
                                     path="einstellungen"
-                                    element={<Settings />}
+                                    element={
+                                        <SuspenseRoute>
+                                            <Settings />
+                                        </SuspenseRoute>
+                                    }
                                 />
-                                <Route path="faq" element={<Faq />} />
+                                <Route
+                                    path="faq"
+                                    element={
+                                        <SuspenseRoute>
+                                            <Faq />
+                                        </SuspenseRoute>
+                                    }
+                                />
                                 <Route
                                     path="statistiken"
-                                    element={<Statistics />}
+                                    element={
+                                        <SuspenseRoute>
+                                            <Statistics />
+                                        </SuspenseRoute>
+                                    }
                                 />
-                                <Route path="qr" element={<Qr />} />
+                                <Route
+                                    path="qr"
+                                    element={
+                                        <SuspenseRoute>
+                                            <Qr />
+                                        </SuspenseRoute>
+                                    }
+                                />
                                 {!background && (
                                     <Route
                                         path="anmeldung"
-                                        element={<SignIn />}
+                                        element={
+                                            <SuspenseRoute>
+                                                <SignIn />
+                                            </SuspenseRoute>
+                                        }
                                     />
                                 )}
                                 {!background && (
                                     <Route
                                         path="registrierung"
-                                        element={<SignUp />}
+                                        element={
+                                            <SuspenseRoute>
+                                                <SignUp />
+                                            </SuspenseRoute>
+                                        }
                                     />
                                 )}
                                 {!background && (
                                     <Route
                                         path="verifizierung/:token"
-                                        element={<Verification />}
+                                        element={
+                                            <SuspenseRoute>
+                                                <Verification />
+                                            </SuspenseRoute>
+                                        }
                                     />
                                 )}
                                 {!background && (
@@ -217,37 +294,81 @@ function App() {
                                         <Route
                                             exact
                                             path=":id/:token"
-                                            element={<SetPassword />}
+                                            element={
+                                                <SuspenseRoute>
+                                                    <SetPassword />
+                                                </SuspenseRoute>
+                                            }
                                         />
                                         <Route
                                             index
-                                            element={<ResetPassword />}
+                                            element={
+                                                <SuspenseRoute>
+                                                    <ResetPassword />
+                                                </SuspenseRoute>
+                                            }
                                         />
                                     </Route>
                                 )}
-                                <Route path="*" element={<Error />} />
+                                <Route
+                                    path="*"
+                                    element={
+                                        <SuspenseRoute>
+                                            <Error />
+                                        </SuspenseRoute>
+                                    }
+                                />
                             </Route>
                         </Route>
                     </Routes>
                     {background && (
                         <Routes>
-                            <Route path="anmeldung" element={<SignIn />} />
-                            <Route path="registrierung" element={<SignUp />} />
+                            <Route
+                                path="anmeldung"
+                                element={
+                                    <SuspenseRoute>
+                                        <SignIn />
+                                    </SuspenseRoute>
+                                }
+                            />
+                            <Route
+                                path="registrierung"
+                                element={
+                                    <SuspenseRoute>
+                                        <SignUp />
+                                    </SuspenseRoute>
+                                }
+                            />
                             <Route
                                 path="verifizierung/:token"
-                                element={<Verification />}
+                                element={
+                                    <SuspenseRoute>
+                                        <Verification />
+                                    </SuspenseRoute>
+                                }
                             />
                             <Route path="passwort">
                                 <Route
                                     exact
                                     path=":id/:token"
-                                    element={<SetPassword />}
+                                    element={
+                                        <SuspenseRoute>
+                                            <SetPassword />
+                                        </SuspenseRoute>
+                                    }
                                 />
-                                <Route index element={<ResetPassword />} />
+                                <Route
+                                    index
+                                    element={
+                                        <SuspenseRoute>
+                                            <ResetPassword />
+                                        </SuspenseRoute>
+                                    }
+                                />
                             </Route>
                         </Routes>
                     )}
-                </Suspense>
+                </>
             )}
         </ThemeProvider>
     );
