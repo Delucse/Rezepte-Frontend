@@ -91,6 +91,13 @@ function App() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'instant',
+        });
+    }, [location.pathname]);
+
     return (
         <ThemeProvider theme={theme}>
             {process.env.REACT_APP_PROGRESS === 'true' ? (
