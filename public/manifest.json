@@ -3,7 +3,7 @@
     "dir": "ltr",
     "short_name": "Delucse",
     "name": "Deine Plattform für Rezepte",
-    "description": "Rezepte entdecken und teilen",
+    "description": "Rezept finden, Portionsumfang einstellen, Zutaten zusammenstellen und kochen - Guten Appetit!",
     "icons": [
         {
             "src": "favicon.ico",
@@ -31,7 +31,6 @@
     ],
     "start_url": ".",
     "display": "standalone",
-    "orientation": "any",
     "theme_color": "#000000",
     "background_color": "#E85917"
 }

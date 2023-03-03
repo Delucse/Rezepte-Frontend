@@ -104,13 +104,13 @@ const themes = [
                             </li>
                             <li>
                                 <Link
-                                    to={`${process.env.PUBLIC_URL}/Delucse.ps1`}
+                                    to={`${process.env.PUBLIC_URL}/Delucse_Windows.zip`}
                                     target="_blank"
                                     alt="Windows"
                                 >
                                     Windows
                                 </Link>{' '}
-                                (mit PowerShell ausführen)
+                                ('install.ps1' mit PowerShell ausführen)
                             </li>
                             <li>iOS folgt zu einem späteren Zeitpunkt</li>
                         </ul>

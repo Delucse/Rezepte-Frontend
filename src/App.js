@@ -13,6 +13,8 @@ import { Typography } from '@mui/material';
 
 import Layout from './components/Layout';
 import Loader from './components/Loader';
+import SetPassword from './pages/SetPassword';
+import Verification from './pages/Verification';
 
 const Home = lazy(() => import('./pages/Home'));
 const Error = lazy(() => import('./pages/Error'));
@@ -27,8 +29,6 @@ const Images = lazy(() => import('./pages/Images'));
 const Faq = lazy(() => import('./pages/Faq'));
 const Qr = lazy(() => import('./pages/Qr'));
 const Account = lazy(() => import('./pages/Account'));
-const Verification = lazy(() => import('./pages/Verification'));
-const SetPassword = lazy(() => import('./pages/SetPassword'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Statistics = lazy(() => import('./pages/Statistics'));
 
@@ -289,11 +289,7 @@ function App() {
                                 {!background && (
                                     <Route
                                         path="verifizierung/:token"
-                                        element={
-                                            <SuspenseRoute>
-                                                <Verification />
-                                            </SuspenseRoute>
-                                        }
+                                        element={<Verification />}
                                     />
                                 )}
                                 {!background && (
@@ -301,11 +297,7 @@ function App() {
                                         <Route
                                             exact
                                             path=":id/:token"
-                                            element={
-                                                <SuspenseRoute>
-                                                    <SetPassword />
-                                                </SuspenseRoute>
-                                            }
+                                            element={<SetPassword />}
                                         />
                                         <Route
                                             index
@@ -348,21 +340,13 @@ function App() {
                             />
                             <Route
                                 path="verifizierung/:token"
-                                element={
-                                    <SuspenseRoute>
-                                        <Verification />
-                                    </SuspenseRoute>
-                                }
+                                element={<Verification />}
                             />
                             <Route path="passwort">
                                 <Route
                                     exact
                                     path=":id/:token"
-                                    element={
-                                        <SuspenseRoute>
-                                            <SetPassword />
-                                        </SuspenseRoute>
-                                    }
+                                    element={<SetPassword />}
                                 />
                                 <Route
                                     index
