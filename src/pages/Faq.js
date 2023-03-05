@@ -95,7 +95,7 @@ const themes = [
                         <ul>
                             <li>
                                 <Link
-                                    to={`${process.env.PUBLIC_URL}/Delucse.apk`}
+                                    to={`${process.env.PUBLIC_URL}/datei/Delucse.apk`}
                                     target="_blank"
                                     alt="Android"
                                 >
@@ -104,7 +104,7 @@ const themes = [
                             </li>
                             <li>
                                 <Link
-                                    to={`${process.env.PUBLIC_URL}/Delucse_Windows.zip`}
+                                    to={`${process.env.PUBLIC_URL}/datei/Delucse_Windows.zip`}
                                     target="_blank"
                                     alt="Windows"
                                 >
