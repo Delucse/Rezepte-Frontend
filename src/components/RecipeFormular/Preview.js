@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { submitRecipe } from '../../actions/recipeFormularActions';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Alert from '../Alert';
 import Button from '../Button';
@@ -30,6 +30,8 @@ function Preview() {
             error.ingredients.includes(true) ||
             error.steps ||
             error.pictures);
+
+    const { id } = useParams();
 
     useEffect(() => {
         if (!blocked && recipeId && uploaded) {
@@ -87,7 +89,9 @@ function Preview() {
                                 onClick={() => dispatch(submitRecipe())}
                             >
                                 Rezept{' '}
-                                {recipeId ? 'aktualisieren' : 'veröffentlichen'}
+                                {id && recipeId
+                                    ? 'aktualisieren'
+                                    : 'veröffentlichen'}
                             </Button>
                         </div>
                     </div>

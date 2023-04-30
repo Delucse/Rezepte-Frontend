@@ -105,7 +105,7 @@ function RecipeFormular() {
     }, [recipeId, prototypeId]);
 
     return !(error || internalError) ? (
-        id && formularId && id !== formularId ? (
+        id && formularId && id !== formularId && recipeId !== formularId ? (
             <>
                 <Box
                     sx={{
