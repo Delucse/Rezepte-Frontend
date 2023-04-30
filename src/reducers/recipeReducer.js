@@ -20,6 +20,7 @@ const initialState = {
     pictures: null,
     favorite: null,
     note: null,
+    prototype: null,
     settings: {
         count: 0,
         rounded: true,

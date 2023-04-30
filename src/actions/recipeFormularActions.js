@@ -11,6 +11,7 @@ import {
     SET_RECIPE_PICTURES,
     SET_RECIPE_FORMULAR,
     SET_RECIPE_FORMULAR_UPLOADED,
+    SET_SAVED_RECIPE_FORMULAR,
 } from '../actions/types';
 
 import {
@@ -32,6 +33,7 @@ import {
     setProgressError,
     setProgressSuccess,
 } from './progressActions';
+import { resetSaveRecipeFormular } from './savedRecipeFormularActions';
 
 export const isFoodAmountError = (amount) => {
     var amountDecimal = amount;
@@ -631,6 +633,7 @@ export const submitRecipe = () => (dispatch, getState) => {
         keywords,
         ingredients: getState().recipe.ingredients,
         steps,
+        prototype: getState().savedRecipeFormular.id,
     };
     if (id) {
         data.removedPictures = pictures.removed;
@@ -665,6 +668,7 @@ export const submitRecipe = () => (dispatch, getState) => {
             dispatch(setBlocked(false));
             dispatch(setUploaded(true));
             dispatch(resetRecipeFormular());
+            dispatch(resetSaveRecipeFormular());
             dispatch(
                 snackbarMessage(
                     `Dein Rezept "${title}" wurde erfolgreich ${
@@ -704,7 +708,9 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
         payload: {
             id: null,
             title: '',
-            portion: {},
+            portion: {
+                count: 0,
+            },
             time: {
                 preparation: 0,
                 resting: 0,
@@ -748,8 +754,17 @@ export const setBlocked = (bool) => (dispatch) => {
 };
 
 export const setRecipeFormular = () => (dispatch, getState) => {
-    const { id, title, portion, time, keywords, ingredients, steps, pictures } =
-        getState().recipe;
+    const {
+        id,
+        title,
+        portion,
+        time,
+        keywords,
+        ingredients,
+        steps,
+        pictures,
+        prototype,
+    } = getState().recipe;
 
     const orderPicture = [];
     pictures.forEach((pic) =>
@@ -758,6 +773,19 @@ export const setRecipeFormular = () => (dispatch, getState) => {
     if (!portion.art && !portion.form) {
         portion.art = null;
     }
+    dispatch({
+        type: SET_SAVED_RECIPE_FORMULAR,
+        payload: {
+            id: prototype,
+            recipe: id,
+            title,
+            portion,
+            time,
+            keywords,
+            ingredients,
+            steps,
+        },
+    });
     dispatch({
         type: SET_RECIPE_FORMULAR,
         payload: {

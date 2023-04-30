@@ -7,6 +7,7 @@ import recipeReducer from './recipeReducer';
 import imageReducer from './imageReducer';
 import recipeFilterReducer from './recipeFilterReducer';
 import recipeFormularReducer from './recipeFormularReducer';
+import savedRecipeFormularReducer from './savedRecipeFormularReducer';
 
 export default combineReducers({
     auth: authReducer,
@@ -17,4 +18,5 @@ export default combineReducers({
     image: imageReducer,
     recipeFilter: recipeFilterReducer,
     recipeFormular: recipeFormularReducer,
+    savedRecipeFormular: savedRecipeFormularReducer,
 });

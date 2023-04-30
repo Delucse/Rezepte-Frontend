@@ -172,7 +172,7 @@ function Keywords() {
             <KeywordCategories />
 
             <Keyword label={'als Basis-Rezept geeignet'} value={'Basic'} />
-            <Keyword label={'für Kleinkinder geeignet'} value={'Baby'} />
+            {/* <Keyword label={'für Kleinkinder geeignet'} value={'Baby'} /> */}
 
             <IndividualKeywords />
         </div>

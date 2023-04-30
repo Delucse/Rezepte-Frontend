@@ -16,7 +16,9 @@ import {
 const initialState = {
     id: null,
     title: '',
-    portion: {},
+    portion: {
+        count: 0,
+    },
     time: {
         preparation: 0,
         resting: 0,

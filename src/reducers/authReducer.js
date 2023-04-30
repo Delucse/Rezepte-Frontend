@@ -21,7 +21,7 @@ const initialState = {
 
 var logoutTimerId;
 const timeToLogout =
-    Number(process.env.REACT_APP_API_TOKEN_EXPIRATION) * 1000 * 0.99; // nearly xx minutes correspondign to the API
+    Number(process.env.REACT_APP_API_TOKEN_EXPIRATION) * 1000 * 0.99 * 200; // nearly xx minutes correspondign to the API
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {

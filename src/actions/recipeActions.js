@@ -130,6 +130,7 @@ export const getRecipe =
                     pictures: res.data.pictures,
                     favorite: res.data.favorite,
                     note: res.data.note,
+                    prototype: res.data.prototype,
                 };
                 if (loadUi) {
                     payload.settings = {
@@ -170,6 +171,63 @@ export const getRecipe =
             });
     };
 
+export const getRecipePrototype = (id) => (dispatch) => {
+    const config = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        method: 'GET',
+        url: `/recipe/prototype/${id}`,
+        success: (res) => {
+            dispatch({
+                type: GET_RECIPE,
+                payload: {
+                    id: res.data.recipe,
+                    date: res.data.date,
+                    user: res.data.user,
+                    title: res.data.title,
+                    portion: res.data.portion,
+                    time: res.data.time,
+                    keywords: res.data.keywords,
+                    ingredients: res.data.ingredients,
+                    steps: res.data.steps,
+                    pictures: res.data.pictures,
+                    favorite: res.data.favorite,
+                    note: res.data.note,
+                    prototype: res.data._id,
+                    settings: {
+                        count:
+                            res.data.portion && res.data.portion.count
+                                ? res.data.portion.count
+                                : 0,
+                        rounded: true,
+                        form:
+                            res.data.portion && res.data.portion.form
+                                ? res.data.portion.form
+                                : null,
+                    },
+                },
+            });
+            dispatch(setProgressSuccess('recipe'));
+        },
+        error: (err) => {
+            if (!err.response || err.response.status === 500) {
+                dispatch(setProgressError('recipeError'));
+            } else {
+                dispatch(setProgressError('recipe'));
+            }
+            console.error(err);
+        },
+    };
+    api(config)
+        .then((res) => {
+            res.config.success(res);
+        })
+        .catch((err) => {
+            err.config.error(err);
+        });
+};
+
 export const resetRecipe = () => (dispatch) => {
     dispatch({
         type: GET_RECIPE,
@@ -186,6 +244,7 @@ export const resetRecipe = () => (dispatch) => {
             pictures: null,
             favorite: null,
             note: null,
+            prototype: null,
             settings: {
                 count: 0,
                 rounded: true,

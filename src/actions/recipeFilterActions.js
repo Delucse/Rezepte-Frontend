@@ -60,6 +60,8 @@ export const getRecipes =
                     ? '/baby'
                     : route === 'basis'
                     ? '/basic'
+                    : route === 'vorlage'
+                    ? '/prototype'
                     : ''
             }?search=${word}&type=${type}&keywords=${categories.join(
                 ','
@@ -257,4 +259,38 @@ export const deleteRecipesFavorite = (id) => (dispatch, getState) => {
 
 export const resetRecipes = () => (dispatch) => {
     dispatch({ type: GET_RECIPES, payload: null });
+};
+
+export const deleteRecipePrototype = (id) => (dispatch, getState) => {
+    const config = {
+        method: 'DELETE',
+        url: `/recipe/prototype/${id}`,
+        success: (res) => {
+            var recipes = getState().recipeFilter.recipes;
+            const index = recipes.findIndex((recipe) => recipe._id === id);
+            const title = recipes[index].title;
+            recipes = recipes.filter((recipe) => recipe._id !== id);
+            dispatch({
+                type: GET_RECIPES,
+                payload: [...recipes],
+            });
+            dispatch(
+                snackbarMessage(
+                    `Rezeptvorlage "${title}" wurde erfolgreich gelöscht.`,
+                    'recipe'
+                )
+            );
+        },
+        error: (err) => {
+            console.error(err);
+        },
+    };
+    api(config)
+        .then((res) => {
+            res.config.success(res);
+        })
+        .catch((err) => {
+            console.log(err);
+            err.config.error(err);
+        });
 };

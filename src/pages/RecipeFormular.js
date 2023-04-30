@@ -6,10 +6,10 @@ import {
     setUploaded,
     setBlocked,
 } from '../actions/recipeFormularActions';
-import { getRecipe } from '../actions/recipeActions';
+import { getRecipe, getRecipePrototype } from '../actions/recipeActions';
 import { setProgressError } from '../actions/progressActions';
 
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import General from '../components/RecipeFormular/General';
 import Ingredients from '../components/RecipeFormular/Ingredients';
@@ -59,6 +59,7 @@ const steps = [
 function RecipeFormular() {
     const dispatch = useDispatch();
     const recipeId = useSelector((state) => state.recipe.id);
+    const prototypeId = useSelector((state) => state.recipe.prototype);
     const formularId = useSelector((state) => state.recipeFormular.id);
     // const recipePictures = useSelector((state) => state.recipe.pictures);
 
@@ -70,6 +71,7 @@ function RecipeFormular() {
     );
 
     const { id } = useParams();
+    const { pathname } = useLocation();
 
     useEffect(() => {
         dispatch(setBlocked(true));
@@ -80,12 +82,18 @@ function RecipeFormular() {
     useEffect(() => {
         if (id) {
             if (
-                id !== recipeId
-                //  ||
-                // recipePictures.filter((pic) => !pic._id).length > 0
+                (!pathname.includes('vorlage') && id !== recipeId) ||
+                (pathname.includes('vorlage') && id !== prototypeId)
             ) {
                 if (/^.{24}$/.test(id)) {
-                    dispatch(getRecipe(id));
+                    if (
+                        pathname.replace(`/${id}`, '') ===
+                        '/rezepte/formular/vorlage'
+                    ) {
+                        dispatch(getRecipePrototype(id));
+                    } else {
+                        dispatch(getRecipe(id));
+                    }
                 } else {
                     dispatch(setProgressError('recipe'));
                 }
@@ -94,7 +102,7 @@ function RecipeFormular() {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [recipeId]);
+    }, [recipeId, prototypeId]);
 
     return !(error || internalError) ? (
         id && formularId && id !== formularId ? (

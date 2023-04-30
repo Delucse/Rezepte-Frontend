@@ -217,6 +217,8 @@ function Recipes(props) {
                                     ? 'eigenen Rezepte'
                                     : route === 'basis'
                                     ? 'Grundrezepte'
+                                    : route === 'vorlage'
+                                    ? 'Rezeptvorlagen'
                                     : 'Rezepte'
                             } ${author !== '' ? `von "${author}"` : ''} ${
                                 word !== ''
@@ -235,7 +237,7 @@ function Recipes(props) {
                                       } "${categories.join('", "')}"`
                                     : ''
                             } gefunden werden.`}
-                            {user ? (
+                            {user && route !== 'vorlage' ? (
                                 route !== 'favoriten' ? (
                                     <Box
                                         sx={{

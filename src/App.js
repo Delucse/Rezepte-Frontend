@@ -136,6 +136,17 @@ function App() {
                                         />
                                         <Route
                                             exact
+                                            path="vorlage/:id"
+                                            element={
+                                                <SuspenseRoute>
+                                                    <PrivateRoute>
+                                                        <RecipeFormular />
+                                                    </PrivateRoute>
+                                                </SuspenseRoute>
+                                            }
+                                        />
+                                        <Route
+                                            exact
                                             path=":id"
                                             element={
                                                 <SuspenseRoute>
@@ -192,6 +203,17 @@ function App() {
                                         element={
                                             <SuspenseRoute>
                                                 <Recipes route="basis" />
+                                            </SuspenseRoute>
+                                        }
+                                    />
+                                    <Route
+                                        exact
+                                        path="vorlage"
+                                        element={
+                                            <SuspenseRoute>
+                                                <PrivateRoute>
+                                                    <Recipes route="vorlage" />
+                                                </PrivateRoute>
                                             </SuspenseRoute>
                                         }
                                     />

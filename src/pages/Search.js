@@ -160,7 +160,7 @@ function Search() {
                                     label="Grundrezepte"
                                     sx={{ mr: '20px' }}
                                 />
-                                <FormControlLabel
+                                {/* <FormControlLabel
                                     value={'kleinkind'}
                                     control={
                                         <Radio
@@ -170,7 +170,7 @@ function Search() {
                                     }
                                     label="Kleinkinderrezepte"
                                     sx={{ mr: '20px' }}
-                                />
+                                /> */}
                                 {user ? (
                                     <FormControlLabel
                                         value={'favoriten'}

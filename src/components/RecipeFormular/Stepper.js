@@ -27,13 +27,18 @@ import { CircularProgress, Typography } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
+import Save from './Save';
+import {
+    resetSaveRecipeFormular,
+    saveRecipeFormular,
+} from '../../actions/savedRecipeFormularActions';
 
 function Content(props) {
     return (
         <Box
             sx={{
                 margin: '0 24px',
-                paddingBottom: '10px',
+                paddingBottom: 'calc(10px + 40px + 20px)',
                 minHeight: {
                     xs: `calc(100vh - 55px - 78px - 24px - 36px - 10px)`,
                     md: `calc(100vh - 55px - 78px - 24px - 70px - 10px)`,
@@ -146,6 +151,9 @@ function Stepper(props) {
             dispatch(checkRecipeError());
         }
         window.scrollTo(0, 0);
+        if (activeStep < maxSteps) {
+            dispatch(saveRecipeFormular());
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeStep, maxSteps]);
 
@@ -172,6 +180,7 @@ function Stepper(props) {
                 closePrompt={(bool) => dispatch(setBlocked(bool))}
                 confirmNavigation={() => {
                     dispatch(resetRecipeFormular());
+                    dispatch(resetSaveRecipeFormular());
                     confirmNavigation();
                 }}
                 cancelNavigation={cancelNavigation}
@@ -325,6 +334,7 @@ function Stepper(props) {
                     zIndex: 2,
                 }}
             >
+                {activeStep < maxSteps - 1 ? <Save /> : null}
                 <MuiStepper
                     nonLinear
                     activeStep={activeStep}

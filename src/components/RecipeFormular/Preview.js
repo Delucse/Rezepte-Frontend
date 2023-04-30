@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { submitRecipe } from '../../actions/recipeFormularActions';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Alert from '../Alert';
 import Button from '../Button';
@@ -13,7 +13,6 @@ import Recipe from '../../pages/Recipe';
 
 function Preview() {
     const navigate = useNavigate();
-    const { id } = useParams();
     const dispatch = useDispatch();
     const blocked = useSelector((state) => state.recipeFormular.blocked);
     const error = useSelector((state) => state.recipeFormular.error);
@@ -88,7 +87,7 @@ function Preview() {
                                 onClick={() => dispatch(submitRecipe())}
                             >
                                 Rezept{' '}
-                                {id ? 'aktualisieren' : 'veröffentlichen'}
+                                {recipeId ? 'aktualisieren' : 'veröffentlichen'}
                             </Button>
                         </div>
                     </div>

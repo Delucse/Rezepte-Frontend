@@ -38,7 +38,8 @@ import {
     mdiImageMultipleOutline,
     mdiChefHat,
     mdiFrequentlyAskedQuestions,
-    mdiBabyBottle,
+    // mdiBabyBottle,
+    mdiReceiptTextEditOutline,
 } from '@mdi/js';
 
 function NavListItem(props) {
@@ -123,12 +124,12 @@ const menue = [
         onClickDispatch: resetFilterSettings,
         icon: mdiFood,
     },
-    {
-        text: 'Baby- & Kleinkinderrezepte',
-        link: '/rezepte/kleinkind',
-        onClickDispatch: resetFilterSettings,
-        icon: mdiBabyBottle,
-    },
+    // {
+    //     text: 'Baby- & Kleinkinderrezepte',
+    //     link: '/rezepte/kleinkind',
+    //     onClickDispatch: resetFilterSettings,
+    //     icon: mdiBabyBottle,
+    // },
     {
         text: 'Grundrezepte',
         link: '/rezepte/basis',
@@ -157,6 +158,13 @@ const userMenue = [
         link: '/rezepte/formular',
         auth: true,
         icon: mdiFoodForkDrink,
+    },
+    {
+        text: 'Vorlagen',
+        link: '/rezepte/vorlage',
+        auth: true,
+        onClickDispatch: resetFilterSettings,
+        icon: mdiReceiptTextEditOutline,
     },
     {
         text: 'Meine Bilder',
