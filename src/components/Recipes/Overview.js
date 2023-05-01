@@ -118,7 +118,7 @@ function Overview(props) {
                         `/rezepte/${
                             route !== 'vorlage'
                                 ? props.id
-                                : `formular/vorlage/${props.id}`
+                                : `formular/vorlagen/${props.id}`
                         }`
                     )
                 }

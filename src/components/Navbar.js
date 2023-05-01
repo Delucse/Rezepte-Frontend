@@ -161,7 +161,7 @@ const userMenue = [
     },
     {
         text: 'Vorlagen',
-        link: '/rezepte/vorlage',
+        link: '/rezepte/vorlagen',
         auth: true,
         onClickDispatch: resetFilterSettings,
         icon: mdiReceiptTextEditOutline,

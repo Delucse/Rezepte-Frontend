@@ -82,13 +82,13 @@ function RecipeFormular() {
     useEffect(() => {
         if (id) {
             if (
-                (!pathname.includes('vorlage') && id !== recipeId) ||
-                (pathname.includes('vorlage') && id !== prototypeId)
+                (!pathname.includes('vorlagen') && id !== recipeId) ||
+                (pathname.includes('vorlagen') && id !== prototypeId)
             ) {
                 if (/^.{24}$/.test(id)) {
                     if (
                         pathname.replace(`/${id}`, '') ===
-                        '/rezepte/formular/vorlage'
+                        '/rezepte/formular/vorlagen'
                     ) {
                         dispatch(getRecipePrototype(id));
                     } else {

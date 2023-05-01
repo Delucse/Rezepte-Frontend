@@ -157,7 +157,7 @@ const routes = [
         ],
     },
     {
-        pathname: /^\/rezepte\/vorlage$/i,
+        pathname: /^\/rezepte\/vorlagen$/i,
         breadcrumbs: [
             <Link pathname="/rezepte" title="Rezepte" />,
             <Link pathname="/rezepte/nutzer" title="Nutzer" />,
@@ -173,11 +173,11 @@ const routes = [
         ],
     },
     {
-        pathname: /^\/rezepte\/formular\/vorlage\/.*$/i,
+        pathname: /^\/rezepte\/formular\/vorlagen\/.*$/i,
         breadcrumbs: [
             <Link pathname="/rezepte" title="Rezepte" />,
             <Link pathname="/rezepte/nutzer" title="Nutzer" />,
-            <Link pathname="/rezepte/vorlage" title="Vorlagen" />,
+            <Link pathname="/rezepte/vorlagen" title="Vorlagen" />,
             <Link title="Formular" />,
         ],
     },

@@ -86,7 +86,7 @@ function Edit() {
                 </MenuItem>
                 <MenuItem
                     onClick={() =>
-                        navigate(`/rezepte/formular/vorlage/${prototype}`)
+                        navigate(`/rezepte/formular/vorlagen/${prototype}`)
                     }
                     sx={{
                         '&:hover': {

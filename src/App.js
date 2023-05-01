@@ -136,7 +136,7 @@ function App() {
                                         />
                                         <Route
                                             exact
-                                            path="vorlage/:id"
+                                            path="vorlagen/:id"
                                             element={
                                                 <SuspenseRoute>
                                                     <PrivateRoute>
@@ -208,7 +208,7 @@ function App() {
                                     />
                                     <Route
                                         exact
-                                        path="vorlage"
+                                        path="vorlagen"
                                         element={
                                             <SuspenseRoute>
                                                 <PrivateRoute>
