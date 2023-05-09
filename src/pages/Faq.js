@@ -224,11 +224,12 @@ const themes = (state) => {
                             ) : (
                                 'Passwort vergessen?'
                             )}
-                            " und gib Deinen Nutzernamen in das vorgesehene Feld
-                            ein und klicke auf "Passwort vergessen".
-                            Anschließend erhälst Du eine E-Mail an die von Dir
-                            hinterlegte E-Mail-Adresse mit einem Link, der es
-                            Dir ermöglicht ein neues Passwort zu vergeben.
+                            " und gib Deinen Nutzernamen oder Deine hinterlegte
+                            E-Mail-Adresse in das vorgesehene Feld ein und
+                            klicke auf "Passwort vergessen". Anschließend
+                            erhälst Du eine E-Mail an die von Dir hinterlegte
+                            E-Mail-Adresse mit einem Link, der es Dir ermöglicht
+                            ein neues Passwort zu vergeben.
                         </div>
                     ),
                 },

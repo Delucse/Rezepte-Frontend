@@ -61,7 +61,10 @@ function ResetPassword() {
         dispatch(setProgress('resetPassword'));
         if (username.trim() === '') {
             dispatch(
-                alertErrorMessage('Gib einen Nutzernamen an.', 'password')
+                alertErrorMessage(
+                    'Gib Deinen Nutzernamen oder Deine E-Mail an.',
+                    'password'
+                )
             );
             dispatch(setProgressError('resetPasswort'));
         } else {
@@ -78,7 +81,7 @@ function ResetPassword() {
                 .then((res) => {
                     dispatch(
                         alertMessage(
-                            'Sofern der Benutzername existiert, wurde dir eine E-Mail mit weiteren Instruktionen zugesendet.',
+                            'Sofern der Benutzername oder die E-Mail existiert, wurde dir eine E-Mail mit weiteren Instruktionen zugesendet.',
                             'password'
                         )
                     );
@@ -135,7 +138,7 @@ function ResetPassword() {
                             />
                             <Textfield
                                 autoFocus
-                                label="Nutzername"
+                                label="Nutzername oder E-Mail"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
                                 onKeyDown={(event) => {
