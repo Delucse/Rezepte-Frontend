@@ -633,8 +633,10 @@ export const submitRecipe = () => (dispatch, getState) => {
         keywords,
         ingredients: getState().recipe.ingredients,
         steps,
-        prototype: getState().savedRecipeFormular.id,
     };
+    if (getState().savedRecipeFormular.id) {
+        data.prototype = getState().savedRecipeFormular.id;
+    }
     if (id) {
         data.removedPictures = pictures.removed;
         data.picturesOrder = pictures.order.map((order) => order.id);
@@ -710,6 +712,7 @@ export const resetRecipeFormular = () => (dispatch, getState) => {
             title: '',
             portion: {
                 count: 0,
+                art: null,
             },
             time: {
                 preparation: 0,

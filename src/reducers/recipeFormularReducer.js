@@ -18,6 +18,7 @@ const initialState = {
     title: '',
     portion: {
         count: 0,
+        art: null,
     },
     time: {
         preparation: 0,
