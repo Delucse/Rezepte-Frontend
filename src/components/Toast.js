@@ -40,16 +40,16 @@ function Toast() {
     return (
         <ToastContainer
             position="bottom-left"
-            autoClose={3000}
+            autoClose={type === 'updateApp' ? false : 3000}
             limit={4}
             hideProgressBar={false}
             newestOnTop={true}
-            closeOnClick
+            closeOnClick={type !== 'updateApp'}
             rtl={false}
             pauseOnFocusLoss
             draggable
             pauseOnHover
-            closeButton={CloseButton}
+            closeButton={type !== 'updateApp' ? CloseButton : <></>}
             style={{
                 '--toastify-z-index': 1299,
                 '--toastify-color-light': theme.palette.primary.main,

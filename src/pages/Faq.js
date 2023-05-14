@@ -134,6 +134,11 @@ const themes = (state) => {
                         </div>
                     ),
                 },
+                {
+                    hash: '#version',
+                    question: 'Habe ich die aktuellste Version?',
+                    answer: 'In der Regel solltest Du immer auf dem aktuellsten Entwicklungsstand sein. Sobald neue Funktionen oder Änderungen verfügbar sind, wird Dir dies angezeigt und Du hast die Möglichkeit die Anwendung noch einmal neu zu laden, damit Du direkt in den Genuss der aktuellsten Version kommst. Andernfalls aktualisiert sich die Anwendung beim nächsten Aufruf.',
+                },
             ],
         },
         {
