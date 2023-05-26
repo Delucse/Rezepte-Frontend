@@ -171,6 +171,10 @@ export const getRecipe =
             });
     };
 
+const transformToNumber = (number) => {
+    return isNaN(number) ? number : Number(number);
+};
+
 export const getRecipePrototype = (id) => (dispatch) => {
     const config = {
         headers: {
@@ -179,6 +183,10 @@ export const getRecipePrototype = (id) => (dispatch) => {
         method: 'GET',
         url: `/recipe/prototype/${id}`,
         success: (res) => {
+            const portion = res.data.portion;
+            if (res.data.portion.form) {
+                portion.form = portion.form.map((f) => transformToNumber(f));
+            }
             dispatch({
                 type: GET_RECIPE,
                 payload: {
@@ -186,8 +194,14 @@ export const getRecipePrototype = (id) => (dispatch) => {
                     date: res.data.date,
                     user: res.data.user,
                     title: res.data.title,
-                    portion: res.data.portion,
-                    time: res.data.time,
+                    portion: portion,
+                    time: {
+                        preparation: transformToNumber(
+                            res.data.time.preparation
+                        ),
+                        resting: transformToNumber(res.data.time.resting),
+                        baking: transformToNumber(res.data.time.baking),
+                    },
                     keywords: res.data.keywords,
                     ingredients: res.data.ingredients,
                     steps: res.data.steps,
