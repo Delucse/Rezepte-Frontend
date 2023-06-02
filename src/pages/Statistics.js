@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import api from '../axiosInstance';
 
 import Chart from 'react-apexcharts';
+import de from 'apexcharts/dist/locales/de.json';
 
 import Link from '../components/Link';
 
@@ -124,9 +125,6 @@ const Graph = ({ type, series, legend, color, stroke, width, height }) => {
                     show: legend ? legend : true,
                     position: 'top',
                     horizontalAlign: 'left',
-                    formatter: function (value) {
-                        return value;
-                    },
                     fontSize: '14px',
                     fontFamily: 'Arial',
                     fontWeight: 400,
@@ -136,6 +134,8 @@ const Graph = ({ type, series, legend, color, stroke, width, height }) => {
                     },
                 },
                 chart: {
+                    locales: [de],
+                    defaultLocale: 'de',
                     toolbar: {
                         show: false,
                     },
@@ -166,6 +166,12 @@ const Graph = ({ type, series, legend, color, stroke, width, height }) => {
                 },
                 tooltip: {
                     theme: theme.palette.mode,
+                    x: {
+                        show: true,
+                        formatter: function (value) {
+                            return moment(value).format('MMMM');
+                        },
+                    },
                 },
             }}
             series={series}
