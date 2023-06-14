@@ -243,6 +243,10 @@ const routes = [
         breadcrumbs: [<Link title="Impressum" />],
     },
     {
+        pathname: /^\/datenschutz$/i,
+        breadcrumbs: [<Link title="Datenschutz" />],
+    },
+    {
         pathname: /^\/statistiken$/i,
         breadcrumbs: [<Link title="Statistiken" />],
     },

@@ -6,6 +6,7 @@ function Checkbox({
     label,
     value,
     checked,
+    size,
     indeterminate,
     onChecked,
     onUnchecked,
@@ -14,9 +15,9 @@ function Checkbox({
 }) {
     const handleChange = (event) => {
         if (event.target.checked) {
-            onChecked(event.target.value);
+            onChecked(value ? event.target.value : event.target.checked);
         } else {
-            onUnchecked(event.target.value);
+            onUnchecked(value ? event.target.value : event.target.checked);
         }
     };
 
@@ -48,6 +49,7 @@ function Checkbox({
                         indeterminate={indeterminate}
                         onChange={handleChange}
                         disableRipple
+                        size={size}
                     />
                 }
             />

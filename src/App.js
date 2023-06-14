@@ -16,6 +16,7 @@ import Loader from './components/Loader';
 import SetPassword from './pages/SetPassword';
 import Verification from './pages/Verification';
 import LegalNotice from './pages/LegalNotice';
+import Privacy from './pages/Privacy';
 
 const Home = lazy(() => import('./pages/Home'));
 const Error = lazy(() => import('./pages/Error'));
@@ -128,6 +129,14 @@ function App() {
                                     element={
                                         <SuspenseRoute>
                                             <LegalNotice />
+                                        </SuspenseRoute>
+                                    }
+                                />
+                                <Route
+                                    path="datenschutz"
+                                    element={
+                                        <SuspenseRoute>
+                                            <Privacy />
                                         </SuspenseRoute>
                                     }
                                 />

@@ -12,9 +12,16 @@ const StyledLink = styled(RouterLink)(({ theme }) => ({
     },
 }));
 
-const Link = ({ children, to, target, alt }) => {
+const Link = ({ children, to, target, alt, state, replace, style }) => {
     return (
-        <StyledLink to={to} target={target} alt={alt}>
+        <StyledLink
+            to={to}
+            target={target}
+            alt={alt}
+            state={state}
+            replace={replace}
+            style={style}
+        >
             {children}
         </StyledLink>
     );

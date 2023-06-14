@@ -23,7 +23,9 @@ function Accordion(props) {
             sx={{
                 '&:not(:last-child)': {
                     borderBottom: (theme) =>
-                        `1px solid ${theme.palette.divider}`,
+                        props.divider
+                            ? `1px solid ${theme.palette.divider}`
+                            : 'none',
                 },
                 '&:before': {
                     display: 'none',
@@ -33,6 +35,8 @@ function Accordion(props) {
             <AccordionSummary
                 expandIcon={<Icon path={props.icon} size={1} />}
                 sx={{
+                    paddingRight: props.divider ? '16px' : 0,
+                    paddingLeft: props.divider ? '16px' : 0,
                     flexDirection: 'row-reverse',
                     '& .MuiAccordionSummary-content': {
                         marginLeft: (theme) => theme.spacing(1),
@@ -49,10 +53,19 @@ function Accordion(props) {
                     },
                 }}
             >
-                <Typography>{props.question}</Typography>
+                <Typography
+                    sx={{ fontWeight: props.divider ? 'normal' : 'bold' }}
+                >
+                    {props.question}
+                </Typography>
             </AccordionSummary>
             <AccordionDetails
-                sx={{ marginBottom: '10px', fontStyle: 'italic' }}
+                sx={{
+                    marginBottom: '10px',
+                    fontStyle: props.divider ? 'italic' : 'normal',
+                    paddingRight: props.divider ? '16px' : 0,
+                    paddingLeft: props.divider ? '16px' : 0,
+                }}
             >
                 <Typography>{props.answer}</Typography>
             </AccordionDetails>
@@ -90,34 +103,50 @@ function Questions({ themes, icon, rotation, style }) {
 
     return (
         <Box sx={style}>
-            {themes(state).map((theme, index) => (
-                <Box
-                    key={theme.hash}
-                    sx={{ marginTop: index === 0 ? 0 : '20px' }}
-                >
-                    <Typography
-                        id={theme.hash}
-                        color="text.primary"
-                        sx={{ fontWeight: 'bold', marginBottom: '10px' }}
+            {themes(state).map((theme, index) =>
+                theme.title ? (
+                    <Box
+                        key={theme.hash}
+                        sx={{ marginTop: index === 0 ? 0 : '20px' }}
                     >
-                        {theme.title}
-                    </Typography>
-                    {theme.questions.map((q) => (
-                        <Accordion
-                            id={q.hash}
-                            key={q.hash}
-                            expanded={expanded === q.hash}
-                            icon={icon}
-                            rotation={rotation}
-                            question={q.question}
-                            answer={q.answer}
-                            onChange={(event, newExpanded) =>
-                                handleChange(newExpanded, q.hash)
-                            }
-                        />
-                    ))}
-                </Box>
-            ))}
+                        <Typography
+                            id={theme.hash}
+                            color="text.primary"
+                            sx={{ fontWeight: 'bold', marginBottom: '10px' }}
+                        >
+                            {theme.title}
+                        </Typography>
+                        {theme.questions.map((q) => (
+                            <Accordion
+                                id={q.hash}
+                                key={q.hash}
+                                expanded={expanded === q.hash}
+                                icon={icon}
+                                rotation={rotation}
+                                question={q.question}
+                                answer={q.answer}
+                                divider
+                                onChange={(event, newExpanded) =>
+                                    handleChange(newExpanded, q.hash)
+                                }
+                            />
+                        ))}
+                    </Box>
+                ) : (
+                    <Accordion
+                        id={theme.hash}
+                        key={theme.hash}
+                        expanded={expanded === theme.hash}
+                        icon={icon}
+                        rotation={rotation}
+                        question={theme.question}
+                        answer={theme.answer}
+                        onChange={(event, newExpanded) =>
+                            handleChange(newExpanded, theme.hash)
+                        }
+                    />
+                )
+            )}
         </Box>
     );
 }

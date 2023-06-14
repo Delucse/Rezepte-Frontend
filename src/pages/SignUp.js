@@ -5,28 +5,21 @@ import { register } from '../actions/authActions';
 import { alertErrorMessage, resetMessage } from '../actions/messageActions';
 import { setProgress, setProgressError } from '../actions/progressActions';
 
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
+import Link from '../components/Link';
 import Dialog from '../components/Dialog';
 import DelucseLogo from '../components/DelucseLogo';
 import Alert from '../components/Alert';
 import Textfield from '../components/Textfield';
 import Button from '../components/Button';
 import IconButton from '../components/IconButton';
+import Checkbox from '../components/Checkbox';
 
-import { styled } from '@mui/material/styles';
 import { Divider, CircularProgress } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiEye, mdiEyeOff } from '@mdi/js';
-
-const StyledLink = styled(Link)(({ theme }) => ({
-    color: theme.palette.primary.main,
-    textDecoration: 'none',
-    '&:hover': {
-        textDecoration: 'underline',
-    },
-}));
 
 function SignUp() {
     const location = useLocation();
@@ -48,6 +41,7 @@ function SignUp() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [privacy, setPrivacy] = useState(false);
 
     const pathname =
         location.state && location.state.background
@@ -115,6 +109,14 @@ function SignUp() {
             dispatch(
                 alertErrorMessage(
                     'Die Passwörter stimmen nicht überein.',
+                    'user'
+                )
+            );
+        } else if (!privacy) {
+            dispatch(setProgressError('signup'));
+            dispatch(
+                alertErrorMessage(
+                    'Akzeptiere die Datenschutzbestimmungen.',
                     'user'
                 )
             );
@@ -265,6 +267,22 @@ function SignUp() {
                             }}
                             fullWidth
                         />
+                        <Checkbox
+                            label={
+                                <div style={{ fontSize: '14px' }}>
+                                    Ich habe die{' '}
+                                    <Link to="/datenschutz">
+                                        Datenschutzbestimmungen
+                                    </Link>{' '}
+                                    gelesen und akzeptiere diese.
+                                </div>
+                            }
+                            size={'small'}
+                            checked={privacy}
+                            onChecked={setPrivacy}
+                            onUnchecked={setPrivacy}
+                            style={{ marginTop: '10px' }}
+                        />
                         <p style={{ marginTop: '20px' }}>
                             <Button
                                 variant="contained"
@@ -290,7 +308,7 @@ function SignUp() {
                         }}
                     >
                         Du hast bereits ein Konto?{' '}
-                        <StyledLink
+                        <Link
                             to="/anmeldung"
                             state={
                                 location.state
@@ -304,7 +322,7 @@ function SignUp() {
                             style={{ fontWeight: 'bold' }}
                         >
                             Anmelden
-                        </StyledLink>
+                        </Link>
                     </p>
                 </div>
             }
