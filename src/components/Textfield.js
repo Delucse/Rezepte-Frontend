@@ -16,6 +16,7 @@ function Textfield(props) {
             <InputLabel
                 htmlFor={props.property}
                 color={props.error ? 'error' : null}
+                sx={props.labelStyle}
             >
                 {props.label}
             </InputLabel>
@@ -27,6 +28,7 @@ function Textfield(props) {
                         props.disabled && props.error
                             ? `1px solid ${theme.palette.error.main}`
                             : 'inherit',
+                    ...props.style,
                 }}
                 inputRef={props.inputRef}
                 autoFocus={props.autoFocus}
@@ -46,7 +48,6 @@ function Textfield(props) {
                 maxRows={props.maxRows}
                 inputProps={props.inputProps}
                 placeholder={props.placeholder}
-                style={props.style}
                 startAdornment={
                     props.start ? (
                         <InputAdornment

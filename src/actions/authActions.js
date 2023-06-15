@@ -109,7 +109,7 @@ export const register =
                             ) {
                                 dispatch(
                                     alertErrorMessage(
-                                        'E-Mail-Adresse ist nicht valide.',
+                                        'E-Mail-Adresse ist nicht gültig.',
                                         'user'
                                     )
                                 );

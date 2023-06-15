@@ -15,8 +15,6 @@ import Layout from './components/Layout';
 import Loader from './components/Loader';
 import SetPassword from './pages/SetPassword';
 import Verification from './pages/Verification';
-import LegalNotice from './pages/LegalNotice';
-import Privacy from './pages/Privacy';
 
 const Home = lazy(() => import('./pages/Home'));
 const Error = lazy(() => import('./pages/Error'));
@@ -33,6 +31,9 @@ const Qr = lazy(() => import('./pages/Qr'));
 const Account = lazy(() => import('./pages/Account'));
 const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const Statistics = lazy(() => import('./pages/Statistics'));
+const LegalNotice = lazy(() => import('./pages/LegalNotice'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Contact = lazy(() => import('./pages/Contact'));
 
 const SuspenseRoute = ({ children }) => {
     return <Suspense fallback={<></>}>{children}</Suspense>;
@@ -137,6 +138,14 @@ function App() {
                                     element={
                                         <SuspenseRoute>
                                             <Privacy />
+                                        </SuspenseRoute>
+                                    }
+                                />
+                                <Route
+                                    path="kontakt"
+                                    element={
+                                        <SuspenseRoute>
+                                            <Contact />
                                         </SuspenseRoute>
                                     }
                                 />
