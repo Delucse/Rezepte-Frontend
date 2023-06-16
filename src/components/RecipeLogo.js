@@ -4,9 +4,15 @@ import { useTheme } from '@mui/material';
 
 function RecipeLogo(props) {
     const theme = useTheme();
-    const main = theme.palette.primary.main;
-    const light = theme.palette.primary.light;
-    const grey = theme.palette.action.disabled;
+    const main = props.plainColor
+        ? theme.palette.getContrastText(theme.palette.primary.light)
+        : theme.palette.primary.main;
+    const light = props.plainColor
+        ? theme.palette.getContrastText(theme.palette.primary.light)
+        : theme.palette.primary.light;
+    const grey = props.plainColor
+        ? theme.palette.getContrastText(theme.palette.primary.light)
+        : theme.palette.action.disabled;
 
     return (
         <div style={props.style}>

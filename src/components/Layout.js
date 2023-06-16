@@ -9,6 +9,7 @@ import Navbar from './Navbar';
 import BreadCrumbs from './BreadCrumbs';
 import Toast from './Toast';
 import SignOut from '../pages/SignOut';
+import Footer from './Footer';
 
 import Box from '@mui/material/Box';
 
@@ -41,8 +42,11 @@ function Layout() {
                         `0 ${theme.spacing(3)} ${theme.spacing(
                             0
                         )} ${theme.spacing(3)}`,
-                    minHeight: (theme) =>
-                        `calc(100vh - 55px - ${theme.spacing(3)} - 78px)`,
+                    minHeight: {
+                        xxs: `calc(100vh - 55px - 24px - 78px - 261px)`,
+                        xs: `calc(100vh - 55px - 24px - 78px - 178px)`,
+                        sm: `calc(100vh - 55px - 24px - 78px - 113px)`,
+                    },
                     background: (theme) => theme.palette.background.default,
                 }}
             >
@@ -63,8 +67,7 @@ function Layout() {
                             .default /*'linear-gradient(transparent 0%, white 40%)'*/,
                 }}
             />
-            {/* Impressum */}
-            {/* <div style={{height: '30px', background: 'lightgrey'}}>Impressum</div> */}
+            <Footer />
         </Box>
     );
 }
