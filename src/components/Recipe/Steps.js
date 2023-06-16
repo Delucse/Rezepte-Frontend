@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment, createElement } from 'react';
 
 import { useSelector } from 'react-redux';
 
@@ -14,6 +14,18 @@ import {
     ListItemText,
     Typography,
 } from '@mui/material';
+
+const addBreaks = (text) => {
+    const children = [];
+    const splittedText = text.split('\n');
+    splittedText.forEach((t, i) => {
+        if (i > 0) {
+            children.push(<br />);
+        }
+        children.push(t);
+    });
+    return createElement(Fragment, null, children);
+};
 
 function Steps() {
     const user = useSelector((state) => state.auth.user);
@@ -69,7 +81,7 @@ function Steps() {
                                     color: (theme) =>
                                         theme.palette.text.primary,
                                 }}
-                                primary={step}
+                                primary={addBreaks(step)}
                             />
                         </ListItem>
                     );
