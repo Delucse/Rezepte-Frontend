@@ -183,7 +183,7 @@ function Search(props) {
                 PaperProps={{ sx: { borderRadius: 0 } }}
                 sx={{
                     '&.MuiMenu-root': {
-                        zIndex: (theme) => theme.zIndex.appBar,
+                        zIndex: (theme) => theme.zIndex.search,
                     },
                 }}
             >

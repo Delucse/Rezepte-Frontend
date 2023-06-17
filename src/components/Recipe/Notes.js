@@ -241,7 +241,7 @@ const Notes = () => {
                         left: { xs: 40, sm: 70, md: 100 },
                         transition: 'transform 1s',
                         transform: `rotate(${open ? 3 : 15}deg)`,
-                        zIndex: (theme) => theme.zIndex.appBar - 30 + 1,
+                        zIndex: (theme) => theme.zIndex.paperclip,
                     }}
                 />
             </div>
@@ -249,7 +249,7 @@ const Notes = () => {
                 onClick={!open ? toggle : null}
                 sx={{
                     cursor: open ? 'default' : 'pointer',
-                    zIndex: (theme) => theme.zIndex.appBar - 30,
+                    zIndex: (theme) => theme.zIndex.notes,
                     transition: 'all 1s ease-in-out',
                     transform: `rotate(${open ? 3 : 15}deg)`,
                     width: open
@@ -316,7 +316,7 @@ const Notes = () => {
             <Backdrop
                 sx={{
                     backgroundColor: 'transparent',
-                    zIndex: (theme) => theme.zIndex.appBar - 40,
+                    zIndex: (theme) => theme.zIndex.content,
                 }}
                 open={open}
                 onClick={toggle}

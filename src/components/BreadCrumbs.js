@@ -315,7 +315,7 @@ function BreadCrumbs() {
                         width: (theme) =>
                             `calc(100% - 2 * ${theme.spacing(3)})`,
                         overflowY: 'hidden',
-                        zIndex: (theme) => theme.zIndex.appBar - 20,
+                        zIndex: (theme) => theme.zIndex.breadcrumbs,
                         position: 'fixed',
                         top: '55px',
                     }}
@@ -373,7 +373,7 @@ function BreadCrumbs() {
                         breadcrumbs.length > 0
                             ? 'calc(55px + 30px + 24px)'
                             : '55px',
-                    zIndex: (theme) => theme.zIndex.appBar - 40,
+                    zIndex: (theme) => theme.zIndex.breadcrumbs,
                     width: '100%',
                 }}
             />

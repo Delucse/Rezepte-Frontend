@@ -22,6 +22,7 @@ function Footer() {
                 color: color,
                 display: { xs: 'inherit', sm: 'flex' },
                 padding: 3,
+                zIndex: (theme) => theme.zIndex.footer,
             }}
         >
             <Box

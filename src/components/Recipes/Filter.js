@@ -108,7 +108,7 @@ export function Filter() {
                 open={open}
                 onClick={() => dispatch(setOpen(!open))}
                 sx={{
-                    zIndex: (theme) => theme.zIndex.appBar - 10,
+                    zIndex: (theme) => theme.zIndex.filter,
                     overflow: 'hidden',
                 }}
             />
@@ -119,7 +119,7 @@ export function Filter() {
                     width: 'calc(100% + 2 * 24px)',
                     marginLeft: '-24px',
                     marginBottom: '-70px',
-                    zIndex: (theme) => theme.zIndex.appBar - 10,
+                    zIndex: (theme) => theme.zIndex.filter,
                 }}
             >
                 {open ? null : (

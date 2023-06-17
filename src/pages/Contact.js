@@ -147,7 +147,7 @@ function Contact() {
         <Box
             sx={{
                 marginTop: '-10px',
-                zIndex: (theme) => theme.zIndex.appBar - 40,
+                zIndex: (theme) => theme.zIndex.content,
                 position: 'relative',
             }}
         >

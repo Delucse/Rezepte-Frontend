@@ -175,7 +175,7 @@ function NewPassword() {
     return (
         <Box
             sx={{
-                zIndex: (theme) => theme.zIndex.appBar - 40,
+                zIndex: (theme) => theme.zIndex.content,
                 position: 'relative',
             }}
         >

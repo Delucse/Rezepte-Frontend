@@ -51,7 +51,20 @@ function App() {
     const systemModeIsDark = useMediaQuery('(prefers-color-scheme: dark)');
 
     const themeConfig = {
-        zIndex: { appBar: 1301 },
+        zIndex: {
+            dialog: 1320,
+            navbar: 1310,
+            search: 1310,
+            menu: 1300,
+            filter: 1290,
+            paperclip: 1280,
+            notes: 1270,
+            breadcrumbs: 1260,
+            content: 1250,
+            loader: 1210,
+            searchbar: 1100,
+            footer: 3,
+        },
         palette: {
             primary: {
                 main: color.main,

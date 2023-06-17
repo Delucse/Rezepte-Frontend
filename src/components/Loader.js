@@ -13,7 +13,7 @@ function Loader(props) {
             id="Loader"
             sx={{
                 backgroundColor: (theme) => theme.palette.background.default,
-                zIndex: (theme) => theme.zIndex.drawer + 1,
+                zIndex: (theme) => theme.zIndex.loader,
                 top: 0,
                 ...props.style,
             }}

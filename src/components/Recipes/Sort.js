@@ -132,7 +132,7 @@ function Sort() {
                 PaperProps={{ sx: { borderRadius: 0, marginTop: '5px' } }}
                 sx={{
                     '&.MuiMenu-root': {
-                        zIndex: (theme) => theme.zIndex.appBar,
+                        zIndex: (theme) => theme.zIndex.search,
                     },
                 }}
             >

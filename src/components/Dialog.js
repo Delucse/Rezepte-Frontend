@@ -77,7 +77,7 @@ function Dialog(props) {
             maxWidth={props.maxWidth}
             onClose={props.onClose}
             sx={{
-                zIndex: (theme) => theme.zIndex.modal + 2,
+                zIndex: (theme) => theme.zIndex.dialog,
             }}
         >
             <DialogTitle

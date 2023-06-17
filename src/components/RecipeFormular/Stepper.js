@@ -331,7 +331,7 @@ function Stepper(props) {
                     height: { xs: '26px', md: '60px' },
                     bottom: (theme) => theme.spacing(3),
                     paddingTop: '10px',
-                    zIndex: 2,
+                    zIndex: 4,
                 }}
             >
                 {activeStep < maxSteps - 1 ? <Save /> : null}
