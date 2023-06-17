@@ -25,6 +25,7 @@ import Masonry from '@mui/lab/Masonry';
 import { Typography } from '@mui/material';
 
 import params from '../data/params.json';
+import { Filter } from '../components/Recipes/Filter';
 
 const paramKeywords = [];
 Object.entries(params.filter).forEach(([key, value]) => {
@@ -176,141 +177,205 @@ function Recipes(props) {
                 }}
             >
                 <SearchBar />
-                {!loading && !error && recipes ? (
-                    recipes.length > 0 ? (
-                        <Masonry
-                            columns={{ xs: 1, sm: 2, md: 3, lg: 4, xl: 6 }}
-                            spacing={3}
+                {!loading ? (
+                    !error && recipes ? (
+                        recipes.length > 0 ? (
+                            <Masonry
+                                columns={{
+                                    xs: 1,
+                                    sm: 2,
+                                    md: 3,
+                                    lg: 4,
+                                    xl: 6,
+                                }}
+                                spacing={3}
+                                sx={{
+                                    width: 'calc(100% + 24px)',
+                                    marginLeft: '-12px',
+                                    minHeight: {
+                                        xxs: 'calc(100vh - 55px - 78px - 76px - 50px - 261px)',
+                                        xs: 'calc(100vh - 55px - 78px - 76px - 50px - 178px)',
+                                        sm: 'calc(100vh - 55px - 78px - 76px - 50px - 113px)',
+                                    },
+                                }}
+                            >
+                                {recipes.map((recipe) => (
+                                    <Overview
+                                        key={recipe._id}
+                                        id={recipe._id}
+                                        title={recipe.title}
+                                        picture={
+                                            recipe.picture
+                                                ? `${process.env.REACT_APP_IMAGE_URL}/${recipe.picture}`
+                                                : null
+                                        }
+                                        keywords={recipe.keywords}
+                                        time={recipe.time}
+                                        date={recipe.date}
+                                        rotate={recipe.rotate}
+                                        favorite={recipe.favorite}
+                                    />
+                                ))}
+                            </Masonry>
+                        ) : (
+                            <Box
+                                sx={{
+                                    color: (theme) =>
+                                        theme.palette.text.primary,
+                                    minHeight: {
+                                        xxs: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 261px)',
+                                        xs: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 178px)',
+                                        sm: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 113px)',
+                                    },
+                                }}
+                            >
+                                {`Es konnten keine ${
+                                    route === 'favoriten'
+                                        ? 'Favoriten'
+                                        : route === 'nutzer'
+                                        ? 'eigenen Rezepte'
+                                        : route === 'basis'
+                                        ? 'Grundrezepte'
+                                        : route === 'vorlage'
+                                        ? 'Rezeptvorlagen'
+                                        : 'Rezepte'
+                                } ${author !== '' ? `von "${author}"` : ''} ${
+                                    word !== ''
+                                        ? `mit dem angegebenen Suchwort "${word}"`
+                                        : ''
+                                } ${
+                                    word !== '' && categories.length > 0
+                                        ? 'und'
+                                        : ''
+                                } ${
+                                    categories.length > 0
+                                        ? `mit ${
+                                              categories.length === 1
+                                                  ? 'dem angegebenen Filter'
+                                                  : 'den angegebenen Filtern'
+                                          } "${categories.join('", "')}"`
+                                        : ''
+                                } gefunden werden.`}
+                                {user && route !== 'vorlage' ? (
+                                    route !== 'favoriten' ? (
+                                        <Box
+                                            sx={{
+                                                color: (theme) =>
+                                                    theme.palette.text.primary,
+                                                display: 'contents',
+                                            }}
+                                        >
+                                            {' '}
+                                            Sei der erste und{' '}
+                                            <Box
+                                                sx={{
+                                                    color: (theme) =>
+                                                        theme.palette.primary
+                                                            .main,
+                                                    display: 'contents',
+                                                }}
+                                            >
+                                                <Link
+                                                    to={'/rezepte/formular'}
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                        color: 'inherit',
+                                                    }}
+                                                >
+                                                    erstelle
+                                                </Link>
+                                            </Box>{' '}
+                                            gleich ein passendes Rezept.
+                                        </Box>
+                                    ) : (
+                                        <Box
+                                            sx={{
+                                                color: (theme) =>
+                                                    theme.palette.text.primary,
+                                                display: 'contents',
+                                            }}
+                                        >
+                                            {' '}
+                                            Wähle zwischen den{' '}
+                                            <Box
+                                                sx={{
+                                                    color: (theme) =>
+                                                        theme.palette.primary
+                                                            .main,
+                                                    display: 'contents',
+                                                }}
+                                            >
+                                                <Link
+                                                    to={{
+                                                        pathname: '/rezepte',
+                                                        search: search,
+                                                    }}
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                        color: 'inherit',
+                                                    }}
+                                                >
+                                                    Rezepten
+                                                </Link>
+                                            </Box>{' '}
+                                            aus und ergänze dein Kochbuch.
+                                        </Box>
+                                    )
+                                ) : null}
+                            </Box>
+                        )
+                    ) : error ? (
+                        <Typography
+                            variant="body2"
+                            color="text.primary"
                             sx={{
-                                width: 'calc(100% + 24px)',
-                                marginLeft: '-12px',
+                                minHeight: {
+                                    xxs: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 261px)',
+                                    xs: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 178px)',
+                                    sm: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 113px)',
+                                },
                             }}
                         >
-                            {recipes.map((recipe) => (
-                                <Overview
-                                    key={recipe._id}
-                                    id={recipe._id}
-                                    title={recipe.title}
-                                    picture={
-                                        recipe.picture
-                                            ? `${process.env.REACT_APP_IMAGE_URL}/${recipe.picture}`
-                                            : null
-                                    }
-                                    keywords={recipe.keywords}
-                                    time={recipe.time}
-                                    date={recipe.date}
-                                    rotate={recipe.rotate}
-                                    favorite={recipe.favorite}
-                                />
-                            ))}
-                        </Masonry>
+                            Die Rezept-Übersicht kann gerade nicht abgerufen
+                            werden. Versuche es einfach zu einem späteren
+                            Zeitpunkt erneut.
+                        </Typography>
                     ) : (
                         <Box
                             sx={{
-                                color: (theme) => theme.palette.text.primary,
+                                minHeight: {
+                                    xxs: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 261px)',
+                                    xs: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 178px)',
+                                    sm: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 113px)',
+                                },
                             }}
-                        >
-                            {`Es konnten keine ${
-                                route === 'favoriten'
-                                    ? 'Favoriten'
-                                    : route === 'nutzer'
-                                    ? 'eigenen Rezepte'
-                                    : route === 'basis'
-                                    ? 'Grundrezepte'
-                                    : route === 'vorlage'
-                                    ? 'Rezeptvorlagen'
-                                    : 'Rezepte'
-                            } ${author !== '' ? `von "${author}"` : ''} ${
-                                word !== ''
-                                    ? `mit dem angegebenen Suchwort "${word}"`
-                                    : ''
-                            } ${
-                                word !== '' && categories.length > 0
-                                    ? 'und'
-                                    : ''
-                            } ${
-                                categories.length > 0
-                                    ? `mit ${
-                                          categories.length === 1
-                                              ? 'dem angegebenen Filter'
-                                              : 'den angegebenen Filtern'
-                                      } "${categories.join('", "')}"`
-                                    : ''
-                            } gefunden werden.`}
-                            {user && route !== 'vorlage' ? (
-                                route !== 'favoriten' ? (
-                                    <Box
-                                        sx={{
-                                            color: (theme) =>
-                                                theme.palette.text.primary,
-                                            display: 'contents',
-                                        }}
-                                    >
-                                        {' '}
-                                        Sei der erste und{' '}
-                                        <Box
-                                            sx={{
-                                                color: (theme) =>
-                                                    theme.palette.primary.main,
-                                                display: 'contents',
-                                            }}
-                                        >
-                                            <Link
-                                                to={'/rezepte/formular'}
-                                                style={{
-                                                    textDecoration: 'none',
-                                                    color: 'inherit',
-                                                }}
-                                            >
-                                                erstelle
-                                            </Link>
-                                        </Box>{' '}
-                                        gleich ein passendes Rezept.
-                                    </Box>
-                                ) : (
-                                    <Box
-                                        sx={{
-                                            color: (theme) =>
-                                                theme.palette.text.primary,
-                                            display: 'contents',
-                                        }}
-                                    >
-                                        {' '}
-                                        Wähle zwischen den{' '}
-                                        <Box
-                                            sx={{
-                                                color: (theme) =>
-                                                    theme.palette.primary.main,
-                                                display: 'contents',
-                                            }}
-                                        >
-                                            <Link
-                                                to={{
-                                                    pathname: '/rezepte',
-                                                    search: search,
-                                                }}
-                                                style={{
-                                                    textDecoration: 'none',
-                                                    color: 'inherit',
-                                                }}
-                                            >
-                                                Rezepten
-                                            </Link>
-                                        </Box>{' '}
-                                        aus und ergänze dein Kochbuch.
-                                    </Box>
-                                )
-                            ) : null}
-                        </Box>
+                        />
                     )
-                ) : error ? (
-                    <Typography variant="body2" color="text.primary">
-                        Die Rezept-Übersicht kann gerade nicht abgerufen werden.
-                        Versuche es einfach zu einem späteren Zeitpunkt erneut.
-                    </Typography>
                 ) : (
-                    <Loader top={189} transparent />
+                    <>
+                        <Loader
+                            style={{
+                                backgroundColor: 'transparent',
+                                top: 'calc(55px + 78px + 56px)',
+                                bottom: {
+                                    xxs: 'calc(261px + 56px)',
+                                    xs: 'calc(178px + 56px)',
+                                    sm: 'calc(113px + 56px)',
+                                },
+                            }}
+                        />
+                        <Box
+                            sx={{
+                                minHeight: {
+                                    xxs: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 261px)',
+                                    xs: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 178px)',
+                                    sm: 'calc(100vh - 55px - 78px - 76px - 50px - 24px - 113px)',
+                                },
+                            }}
+                        />
+                    </>
                 )}
+                <Filter />
             </div>
         </div>
     );

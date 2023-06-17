@@ -20,15 +20,22 @@ function Layout() {
 
     return loading ? (
         <Loader
-            info={
-                'Es kann ggf. zu einer kurzen Verzögerung kommen, bis alle Daten geladen sind.'
-            }
+        // info={
+        //     'Es kann ggf. zu einer kurzen Verzögerung kommen, bis alle Daten geladen sind.'
+        // }
         />
     ) : (
         <Box
             sx={{
-                minHeight: '100vh',
                 background: (theme) => theme.palette.background.default,
+                minHeight: {
+                    xxs: 'calc(100vh - 261px)',
+                    xs: 'calc(100vh - 178px)',
+                    sm: 'calc(100vh - 113px)',
+                },
+                display: 'block',
+                position: 'relative',
+                paddingBottom: { xxs: '261px', xs: '178px', sm: '113px' },
             }}
         >
             <SignOut />
@@ -42,11 +49,6 @@ function Layout() {
                         `0 ${theme.spacing(3)} ${theme.spacing(
                             0
                         )} ${theme.spacing(3)}`,
-                    minHeight: {
-                        xxs: `calc(100vh - 55px - 24px - 78px - 261px)`,
-                        xs: `calc(100vh - 55px - 24px - 78px - 178px)`,
-                        sm: `calc(100vh - 55px - 24px - 78px - 113px)`,
-                    },
                     background: (theme) => theme.palette.background.default,
                 }}
             >
@@ -62,9 +64,7 @@ function Layout() {
                         )} 0px ${theme.spacing(3)}`,
                     position: 'sticky',
                     bottom: 0,
-                    background: (theme) =>
-                        theme.palette.background
-                            .default /*'linear-gradient(transparent 0%, white 40%)'*/,
+                    background: (theme) => theme.palette.background.default,
                 }}
             />
             <Footer />

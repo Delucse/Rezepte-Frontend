@@ -173,8 +173,16 @@ function NewPassword() {
     };
 
     return (
-        <div style={{ marginTop: '10px' }}>
-            <Alert type={'newPassword'} style={{ marginBottom: '20px' }} />
+        <Box
+            sx={{
+                zIndex: (theme) => theme.zIndex.appBar - 40,
+                position: 'relative',
+            }}
+        >
+            <Alert
+                type={'newPassword'}
+                style={{ marginTop: '10px', marginBottom: '20px' }}
+            />
             <Textfield
                 type={showOldPassword ? 'text' : 'password'}
                 label="aktuelles Passwort"
@@ -185,6 +193,7 @@ function NewPassword() {
                         passwordRef.current.focus();
                     }
                 }}
+                sx={{ marginTop: '10px' }}
                 end={
                     <IconButton
                         onClick={handleClickShowOldPassword}
@@ -261,7 +270,7 @@ function NewPassword() {
                     )}
                 </Button>
             </p>
-        </div>
+        </Box>
     );
 }
 

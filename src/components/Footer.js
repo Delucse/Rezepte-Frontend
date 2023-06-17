@@ -15,7 +15,9 @@ function Footer() {
     return (
         <Box
             sx={{
-                position: 'relative',
+                position: 'absolute',
+                bottom: 0,
+                width: 'calc(100% - 2 * 24px)',
                 background: (theme) => theme.palette.primary.light,
                 color: color,
                 display: { xs: 'inherit', sm: 'flex' },

@@ -4,11 +4,10 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
-import Box from '@mui/material/Box';
 
 import Sort from './Sort';
-import Filter from './Filter';
 import Search from './Search';
+import { FilterButton } from './Filter';
 
 function HideOnScroll(props) {
     const { children } = props;
@@ -42,24 +41,12 @@ function SearchBar(props) {
                     >
                         <div style={{ display: 'flex', paddingBottom: '20px' }}>
                             <Search />
-                            <Filter />
+                            <FilterButton />
                             <Sort />
                         </div>
                     </Toolbar>
                 </AppBar>
             </HideOnScroll>
-            <Box
-                sx={{
-                    position: 'fixed',
-                    bottom: '48px' /* drawerBleeding - 2px */,
-                    left: 0,
-                    backgroundColor: (theme) =>
-                        theme.palette.background.default,
-                    height: '22px',
-                    width: '100%',
-                    zIndex: 2,
-                }}
-            />
         </div>
     );
 }

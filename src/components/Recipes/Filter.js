@@ -8,17 +8,16 @@ import {
     setOpen,
 } from '../../actions/recipeFilterActions';
 
+import Button from '../Button';
 import Categories from './Categories';
 import Author from './Author';
-import Button from '../Button';
 
-import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Badge from '@mui/material/Badge';
 import Chip from '@mui/material/Chip';
+import { Backdrop } from '@mui/material';
+import Badge from '@mui/material/Badge';
 
 import Icon from '@mdi/react';
 import { mdiFilter } from '@mdi/js';
@@ -91,96 +90,60 @@ function FilterCategories() {
     );
 }
 
-function Filter() {
+export function Filter() {
     const dispatch = useDispatch();
 
     const open = useSelector((state) => state.recipeFilter.open);
     const recipes = useSelector((state) => state.recipeFilter.recipes);
     const categories = useSelector((state) => state.recipeFilter.categories);
     const author = useSelector((state) => state.recipeFilter.author);
-
-    const toggle = () => {
-        dispatch(setOpen(!open));
-    };
+    const error = useSelector(
+        (state) =>
+            state.progress.error && state.progress.type === 'recipeFilter'
+    );
 
     return (
-        <div>
-            <Button
-                tooltipProps={{ title: 'Filter öffnen' }}
+        <>
+            <Backdrop
+                open={open}
+                onClick={() => dispatch(setOpen(!open))}
                 sx={{
-                    margin: '0 5px',
-                    height: '56px',
-                    minWidth: '56px',
-                    padding: 0,
-                    color: (theme) => theme.palette.background.default,
-                }}
-                variant="contained"
-                onClick={toggle}
-            >
-                <Badge
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}
-                    badgeContent={categories.length + (author !== '' ? 1 : 0)}
-                    componentsProps={{
-                        badge: {
-                            sx: {
-                                backgroundColor: (theme) =>
-                                    theme.palette.background.default,
-                                color: (theme) => theme.palette.primary.main,
-                                minWidth: '15px',
-                                height: '15px',
-                                padding: '0 3px',
-                                fontSize: '10px',
-                            },
-                        },
-                    }}
-                    max={9}
-                >
-                    <Icon path={mdiFilter} size={1.1} />
-                </Badge>
-            </Button>
-
-            <Global
-                styles={{
-                    '.MuiDrawer-root > .MuiPaper-root': {
-                        height: `calc(100% - 55px - 54px - 96px - ${
-                            open ? drawerBleedingOpen : drawerBleeding
-                        }px)`,
-                        overflow: 'visible',
-                    },
+                    zIndex: (theme) => theme.zIndex.appBar - 10,
+                    overflow: 'hidden',
                 }}
             />
-            <SwipeableDrawer
-                anchor="bottom"
-                open={open}
-                onClose={toggle}
-                onOpen={toggle}
-                swipeAreaWidth={open ? drawerBleedingOpen : drawerBleeding}
-                disableSwipeToOpen={false}
-                ModalProps={{
-                    keepMounted: true,
+            <Box
+                sx={{
+                    position: 'sticky',
+                    bottom: 0,
+                    width: 'calc(100% + 2 * 24px)',
+                    marginLeft: '-24px',
+                    marginBottom: '-70px',
+                    zIndex: (theme) => theme.zIndex.appBar - 10,
                 }}
-                sx={{ zIndex: (theme) => theme.zIndex.appBar - 5 }}
             >
+                {open ? null : (
+                    <Box
+                        sx={{
+                            backgroundColor: (theme) =>
+                                theme.palette.background.default,
+                            height: '22px',
+                            width: '100%',
+                        }}
+                    />
+                )}
                 <Box
                     sx={{
-                        position: 'absolute',
-                        top: open ? -drawerBleedingOpen : -drawerBleeding,
+                        position: 'relative',
                         borderTopLeftRadius: 8,
                         borderTopRightRadius: 8,
                         visibility: 'visible',
-                        right: 0,
-                        left: 0,
                         borderTop: (theme) =>
                             `1px solid ${theme.palette.primary.light}`,
                         height: `${
                             open ? drawerBleedingOpen : drawerBleeding
                         }px`,
                         background: (theme) => theme.palette.background.default,
-                        backgroundImage:
-                            'linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.15))',
                     }}
                 >
                     <Puller />
@@ -190,9 +153,12 @@ function Filter() {
                             sx={{
                                 padding: (theme) => `0 ${theme.spacing(3)}`,
                                 color: 'text.secondary',
+                                minWidth: '78px',
                             }}
                         >
-                            {recipes
+                            {error
+                                ? 'Fehler'
+                                : recipes
                                 ? `${recipes.length} Rezept${
                                       recipes.length !== 1 ? 'e' : ''
                                   }`
@@ -263,10 +229,14 @@ function Filter() {
                         </Typography>
                     ) : null}
                 </Box>
+
                 <Box
                     sx={{
                         padding: (theme) => `0 ${theme.spacing(3)}`,
                         overflow: 'auto',
+                        background: (theme) => theme.palette.background.default,
+                        height: '60vh',
+                        display: open ? 'inherit' : 'none',
                     }}
                 >
                     <FilterCategories />
@@ -285,9 +255,66 @@ function Filter() {
                         }}
                     />
                 </Box>
-            </SwipeableDrawer>
-        </div>
+            </Box>
+        </>
     );
 }
 
-export default Filter;
+export function FilterButton() {
+    const dispatch = useDispatch();
+
+    const open = useSelector((state) => state.recipeFilter.open);
+    const categories = useSelector((state) => state.recipeFilter.categories);
+    const author = useSelector((state) => state.recipeFilter.author);
+
+    const toggle = () => {
+        dispatch(setOpen(!open));
+    };
+
+    useEffect(() => {
+        if (open) {
+            document.body.style.setProperty('overflow', 'hidden');
+        } else {
+            document.body.style.removeProperty('overflow');
+        }
+    }, [open]);
+
+    return (
+        <Button
+            tooltipProps={{ title: 'Filter öffnen' }}
+            sx={{
+                margin: '0 5px',
+                height: '56px',
+                minWidth: '56px',
+                padding: 0,
+                color: (theme) => theme.palette.background.default,
+            }}
+            variant="contained"
+            onClick={toggle}
+        >
+            <Badge
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                badgeContent={categories.length + (author !== '' ? 1 : 0)}
+                componentsProps={{
+                    badge: {
+                        sx: {
+                            backgroundColor: (theme) =>
+                                theme.palette.background.default,
+                            color: (theme) => theme.palette.primary.main,
+                            minWidth: '15px',
+                            height: '15px',
+                            padding: '0 3px',
+                            fontSize: '10px',
+                        },
+                    },
+                }}
+                max={9}
+            >
+                <Icon path={mdiFilter} size={1.1} />
+            </Badge>
+        </Button>
+    );
+}

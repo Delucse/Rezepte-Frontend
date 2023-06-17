@@ -10,12 +10,12 @@ import { mdiInformation } from '@mdi/js';
 function Loader(props) {
     return (
         <Backdrop
+            id="Loader"
             sx={{
-                backgroundColor: props.transparent
-                    ? 'transparent'
-                    : (theme) => theme.palette.background.default,
+                backgroundColor: (theme) => theme.palette.background.default,
                 zIndex: (theme) => theme.zIndex.drawer + 1,
-                top: props.top ? `${props.top}px` : 0,
+                top: 0,
+                ...props.style,
             }}
             open={true}
         >

@@ -90,7 +90,7 @@ function Sort() {
                     height: '56px',
                     minWidth: '56px',
                     padding: '16px',
-                    display: { xs: 'none', sm: 'initial' },
+                    display: { xxs: 'none', sm: 'initial' },
                 }}
                 variant="outlined"
                 onClick={handleClick}
@@ -110,7 +110,7 @@ function Sort() {
                     height: '56px',
                     minWidth: '20px',
                     padding: 0,
-                    display: { xs: 'initial', sm: 'none' },
+                    display: { xxs: 'initial', sm: 'none' },
                 }}
                 onClick={handleClick}
             >

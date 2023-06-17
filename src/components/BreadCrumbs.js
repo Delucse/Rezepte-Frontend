@@ -295,7 +295,13 @@ function BreadCrumbs() {
         );
 
     return (
-        <>
+        <Box
+            id="Breadcrumbs"
+            sx={{
+                position: 'relative',
+                height: breadcrumbs.length > 0 ? '78px' : '24px',
+            }}
+        >
             <DocumentTitle title={'Delucse'} />
             {breadcrumbs.length > 0 ? (
                 <Box
@@ -310,7 +316,7 @@ function BreadCrumbs() {
                             `calc(100% - 2 * ${theme.spacing(3)})`,
                         overflowY: 'hidden',
                         zIndex: (theme) => theme.zIndex.appBar - 20,
-                        position: 'sticky',
+                        position: 'fixed',
                         top: '55px',
                     }}
                 >
@@ -324,7 +330,6 @@ function BreadCrumbs() {
                         <Breadcrumbs
                             separator="›"
                             sx={{
-                                marginBottom: '10px',
                                 '.MuiBreadcrumbs-ol': {
                                     flexWrap: 'nowrap',
                                 },
@@ -363,15 +368,16 @@ function BreadCrumbs() {
                     background: (theme) =>
                         theme.palette.background
                             .default /*'linear-gradient(white 0%, transparent 60%)'*/,
-                    position: 'sticky',
+                    position: 'fixed',
                     top:
                         breadcrumbs.length > 0
                             ? 'calc(55px + 30px + 24px)'
                             : '55px',
                     zIndex: (theme) => theme.zIndex.appBar - 40,
+                    width: '100%',
                 }}
             />
-        </>
+        </Box>
     );
 }
 

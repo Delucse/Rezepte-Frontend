@@ -122,7 +122,13 @@ function RecipeFormular() {
                 >
                     Daten werden geladen ...
                 </Box>
-                <Loader top={109} transparent />
+                <Loader
+                    style={{
+                        backgroundColor: 'transparent',
+                        top: 'calc(55px + 78px)',
+                        bottom: { xxs: '261px', xs: '178px', sm: '113px' },
+                    }}
+                />
             </>
         ) : (
             <Stepper steps={steps} />

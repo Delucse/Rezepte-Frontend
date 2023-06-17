@@ -227,7 +227,12 @@ function Recipe() {
             </Typography>
         )
     ) : (
-        <Loader />
+        <Loader
+            style={{
+                top: 'calc(55px + 78px)',
+                bottom: { xxs: '261px', xs: '178px', sm: '113px' },
+            }}
+        />
     );
 }
 
