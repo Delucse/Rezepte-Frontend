@@ -60,7 +60,7 @@ function App() {
             paperclip: 1280,
             notes: 1270,
             breadcrumbs: 1260,
-            content: 1250,
+            content: 1260,
             loader: 1210,
             searchbar: 1100,
             footer: 3,
