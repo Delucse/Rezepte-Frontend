@@ -141,7 +141,7 @@ function LastRecipes() {
                 <Box
                     id="sliderCount"
                     sx={{
-                        visibility: 'hidden',
+                        visibility: 'visible',
                         position: 'absolute',
                         bottom: 8,
                         height: '7px',

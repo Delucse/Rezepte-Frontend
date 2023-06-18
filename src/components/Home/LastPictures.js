@@ -68,7 +68,19 @@ function LastPictures() {
     const slideRenderer = ({ index, key }) => {
         index = mod(index, pictures.length);
         return (
-            <ImageListItem sx={{ height: '100% !important' }} key={key}>
+            <ImageListItem
+                sx={{
+                    height: '100% !important',
+                    color: 'white',
+                    '&:hover': {
+                        color: (theme) => theme.palette.primary.light,
+                    },
+                }}
+                key={key}
+                onClick={() =>
+                    navigate(`/rezepte/${pictures[index].recipe._id}`)
+                }
+            >
                 <Box
                     sx={{
                         height: '100%',
@@ -100,17 +112,7 @@ function LastPictures() {
                                         fontWeight: 'bold',
                                         textOverflow: 'ellipsis',
                                         overflow: 'hidden',
-                                        color: 'white',
-                                        '&:hover': {
-                                            color: (theme) =>
-                                                theme.palette.primary.main,
-                                        },
                                     }}
-                                    onClick={() =>
-                                        navigate(
-                                            `/rezepte/${pictures[index].recipe._id}`
-                                        )
-                                    }
                                 >
                                     {pictures[index].recipe.title}
                                 </Box>
@@ -198,7 +200,7 @@ function LastPictures() {
                 <Box
                     id="sliderCount"
                     sx={{
-                        visibility: 'hidden',
+                        visibility: 'visible',
                         position: 'absolute',
                         bottom: 8,
                         height: '7px',
