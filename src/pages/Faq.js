@@ -147,9 +147,9 @@ const themes = (state) => {
                         <div>
                             Nach erfolgreicher Registrierung erhälst Du eine
                             E-Mail an die hinterlegte E-Mail-Adresse mit einem
-                            Link. Nach Betätigung des Links wird Dein
-                            Nutzerkonto freigeschaltet und Du kannst dich normal
-                            anmelden. Falls der Link bereits abgelaufen ist,
+                            Link (überprüfe ggf. deinen Spam-Ordner). Durch
+                            Betätigung des Links wird Dein Nutzerkonto
+                            verifiziert. Falls der Link bereits abgelaufen ist,
                             musst Du dich einfach nochmal{' '}
                             {!state.auth.user ? (
                                 <Link to="/registrierung">registrieren</Link>
@@ -158,6 +158,13 @@ const themes = (state) => {
                             )}
                             . (Hintergrund dessen ist, dass man auf diese Art
                             und Weise Deine E-Mail-Adresse validieren kann.)
+                            <br />
+                            In einem zweiten Schritt entscheidet der Admin, ob
+                            Du ein Teil der Community sein darfst. (Dies soll
+                            dazu dienen Kontrolle über den Nutzerkreis zu
+                            behalten.) Du erhälst im Anschluss umgehend eine
+                            E-Mail und kannst Dich nun bei erfolgreicher
+                            Authorisierung normal anmelden.
                         </div>
                     ),
                 },

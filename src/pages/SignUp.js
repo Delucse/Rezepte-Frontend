@@ -35,12 +35,14 @@ function SignUp() {
     const emailRef = useRef();
     const passwordRef = useRef();
     const confirmPasswordRef = useRef();
+    const relationRef = useRef();
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [relation, setRelation] = useState('');
     const [privacy, setPrivacy] = useState(false);
 
     const pathname =
@@ -58,12 +60,12 @@ function SignUp() {
             dispatch(resetMessage());
         }
         return () => {
-            if (error) {
+            if (error && type !== 'verification') {
                 dispatch(resetMessage());
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [username, password, email]);
+    }, [username, confirmPassword, password, email, relation, privacy]);
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -112,6 +114,14 @@ function SignUp() {
                     'user'
                 )
             );
+        } else if (relation.trim().length < 3) {
+            dispatch(setProgressError('signup'));
+            dispatch(
+                alertErrorMessage(
+                    'Es muss eine Beziehung zum Admin oder zu einem bereits registrierten Nutzer angegeben sein (mindestens 3 Zeichen).',
+                    'user'
+                )
+            );
         } else if (!privacy) {
             dispatch(setProgressError('signup'));
             dispatch(
@@ -122,17 +132,24 @@ function SignUp() {
             );
         } else {
             dispatch(
-                register(username, email, password, confirmPassword, () => {
-                    navigate('/anmeldung', {
-                        state: location.state
-                            ? {
-                                  background: location.state.background,
-                                  auth: location.state.auth,
-                              }
-                            : {},
-                        replace: true,
-                    });
-                })
+                register(
+                    username,
+                    email,
+                    password,
+                    confirmPassword,
+                    relation,
+                    () => {
+                        navigate('/anmeldung', {
+                            state: location.state
+                                ? {
+                                      background: location.state.background,
+                                      auth: location.state.auth,
+                                  }
+                                : {},
+                            replace: true,
+                        });
+                    }
+                )
             );
         }
     };
@@ -261,11 +278,26 @@ function SignUp() {
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
                             onKeyDown={(event) => {
+                                if (event.key === 'Enter') {
+                                    relationRef.current.focus();
+                                }
+                            }}
+                            fullWidth
+                            margin
+                        />
+                        <Textfield
+                            inputRef={relationRef}
+                            label="Beziehung zum Admin oder anderen registrierten Nutzer"
+                            value={relation}
+                            onChange={(e) => setRelation(e.target.value)}
+                            onKeyDown={(event) => {
                                 if (event.key === 'Enter' && !progress) {
                                     registerCheck();
                                 }
                             }}
                             fullWidth
+                            multiline
+                            minRows={1}
                         />
                         <Checkbox
                             label={

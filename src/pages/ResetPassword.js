@@ -7,7 +7,7 @@ import {
     alertErrorMessage,
 } from '../actions/messageActions';
 
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 import api from '../axiosInstance';
 
@@ -35,6 +35,7 @@ const StyledLink = styled(Link)(({ theme }) => ({
 
 function ResetPassword() {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     const message = useSelector((state) => state.message);
@@ -45,12 +46,22 @@ function ResetPassword() {
 
     const [username, setUsername] = useState('');
 
+    const pathname =
+        location.state && location.state.background
+            ? location.state.background.state &&
+              location.state.background.state.background
+                ? location.state.background.state.background.pathname +
+                  location.state.background.state.background.search
+                : location.state.background.pathname +
+                  location.state.background.search
+            : '/';
+
     useEffect(() => {
         if (message.error && message.type !== 'setPassword') {
             dispatch(resetMessage());
         }
         return () => {
-            if (message.art === 'alert') {
+            if (message.error && message.type !== 'setPassword') {
                 dispatch(resetMessage());
             }
         };
@@ -104,6 +115,7 @@ function ResetPassword() {
             maxWidth={'sm'}
             fullWidth
             open
+            onClose={() => navigate(pathname, { replace: true })}
             title={
                 <div style={{ justifyItems: 'center', display: 'grid' }}>
                     <Link to="/">

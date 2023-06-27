@@ -35,8 +35,6 @@ function SetPassword() {
     const dispatch = useDispatch();
     const user = useSelector((state) => state.auth.user);
     const error = useSelector((state) => state.message.error);
-    const art = useSelector((state) => state.message.art);
-    const type = useSelector((state) => state.message.type);
     const progress = useSelector(
         (state) =>
             state.progress.loading && state.progress.type === 'setPassword'
@@ -59,7 +57,7 @@ function SetPassword() {
             dispatch(resetMessage());
         }
         return () => {
-            if (art === 'alert' && type === 'password') {
+            if (error) {
                 dispatch(resetMessage());
             }
         };

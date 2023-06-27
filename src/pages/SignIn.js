@@ -35,7 +35,6 @@ function SignIn() {
     const user = useSelector((state) => state.auth.user);
     const last = useSelector((state) => state.auth.last);
     const error = useSelector((state) => state.message.error);
-    const art = useSelector((state) => state.message.art);
     const progress = useSelector(
         (state) => state.progress.loading && state.progress.type === 'signin'
     );
@@ -67,7 +66,7 @@ function SignIn() {
             dispatch(resetMessage());
         }
         return () => {
-            if (art === 'alert') {
+            if (error) {
                 dispatch(resetMessage());
             }
         };

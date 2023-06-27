@@ -23,6 +23,8 @@ import {
 
 import api from '../axiosInstance';
 
+import Link from '../components/Link';
+
 // check token & load user
 export const refreshAuth = () => (dispatch, getState) => {
     // user loading
@@ -59,7 +61,8 @@ export const refreshAuth = () => (dispatch, getState) => {
 
 // register User
 export const register =
-    (username, email, password, confirmPassword, cb) => (dispatch) => {
+    (username, email, password, confirmPassword, relation, cb) =>
+    (dispatch) => {
         // Headers
         const config = {
             headers: {
@@ -67,7 +70,7 @@ export const register =
             },
         };
         // Request Body
-        const body = { username, email, password, confirmPassword };
+        const body = { username, email, password, confirmPassword, relation };
         api.post('/auth/signup', body, config)
             .then((res) => {
                 dispatch(
@@ -202,7 +205,31 @@ export const login = (username, password) => (dispatch) => {
                         ) {
                             dispatch(
                                 alertErrorMessage(
-                                    'Nutzer-Konto ist nicht verifiziert.',
+                                    <div>
+                                        Dein Nutzer-Konto ist nicht verifiziert
+                                        -{' '}
+                                        <Link to="/faq#anmeldung">
+                                            mehr Infos
+                                        </Link>
+                                        .
+                                    </div>,
+                                    'user'
+                                )
+                            );
+                        } else if (
+                            err.response.data.message ===
+                            'user is not authorized.'
+                        ) {
+                            dispatch(
+                                alertErrorMessage(
+                                    <div>
+                                        Dein Nutzer-Konto ist noch nicht vom
+                                        Admin authorisiert -{' '}
+                                        <Link to="/faq#anmeldung">
+                                            mehr Infos
+                                        </Link>
+                                        .
+                                    </div>,
                                     'user'
                                 )
                             );
