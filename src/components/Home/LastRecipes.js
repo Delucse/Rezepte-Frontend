@@ -62,16 +62,16 @@ function LastRecipes() {
             <Overview
                 key={key}
                 fullscreen
-                id={recipes[index]._id}
-                title={recipes[index].title}
+                id={recipes[index]?._id}
+                title={recipes[index]?.title}
                 picture={
-                    recipes[index].picture
-                        ? `${process.env.REACT_APP_IMAGE_URL}/${recipes[index].picture}`
+                    recipes[index]?.picture
+                        ? `${process.env.REACT_APP_IMAGE_URL}/${recipes[index]?.picture}`
                         : null
                 }
-                keywords={recipes[index].keywords}
-                time={recipes[index].time}
-                date={recipes[index].date}
+                keywords={recipes[index]?.keywords}
+                time={recipes[index]?.time}
+                date={recipes[index]?.date}
             />
         );
     };

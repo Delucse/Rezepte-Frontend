@@ -237,11 +237,11 @@ function Images() {
             >
                 {images.map((image, idx) => (
                     <Image
-                        key={image._id}
-                        file={image.file}
-                        imageId={image._id}
-                        recipeId={image.recipe._id}
-                        title={image.recipe.title}
+                        key={image?._id}
+                        file={image?.file}
+                        imageId={image?._id}
+                        recipeId={image?.recipe?._id}
+                        title={image?.recipe?.title}
                         openCarousel={() => handleOpen(idx)}
                     />
                 ))}

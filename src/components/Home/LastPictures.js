@@ -78,7 +78,7 @@ function LastPictures() {
                 }}
                 key={key}
                 onClick={() =>
-                    navigate(`/rezepte/${pictures[index].recipe._id}`)
+                    navigate(`/rezepte/${pictures[index]?.recipe._id}`)
                 }
             >
                 <Box
@@ -114,7 +114,7 @@ function LastPictures() {
                                         overflow: 'hidden',
                                     }}
                                 >
-                                    {pictures[index].recipe.title}
+                                    {pictures[index]?.recipe?.title}
                                 </Box>
                             </div>
                         </div>
