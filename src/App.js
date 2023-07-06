@@ -57,13 +57,13 @@ function App() {
             search: 1310,
             menu: 1300,
             filter: 1290,
+            footer: 1290,
             paperclip: 1280,
             notes: 1270,
             breadcrumbs: 1260,
             content: 1260,
             loader: 1210,
             searchbar: 1100,
-            footer: 3,
         },
         palette: {
             primary: {
