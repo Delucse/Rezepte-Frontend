@@ -73,7 +73,7 @@ function Accordion(props) {
     );
 }
 
-function Questions({ themes, icon, rotation, style }) {
+function Questions({ themes, icon, rotation, style, initial }) {
     const navigate = useNavigate();
     const location = useLocation();
     const hash = location.hash;
@@ -95,7 +95,7 @@ function Questions({ themes, icon, rotation, style }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const [expanded, setExpanded] = useState(null);
+    const [expanded, setExpanded] = useState(initial);
 
     const handleChange = (newExpanded, panel) => {
         setExpanded(newExpanded ? panel : false);
