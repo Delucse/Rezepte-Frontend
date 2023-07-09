@@ -13,15 +13,17 @@ import {
 import store from '../store';
 import { signoutIntern } from '../actions/authActions';
 
+import { getCookie, removeCookie, setCookie } from '../cookies';
+
 const initialState = {
-    token: localStorage.getItem('token'),
+    token: getCookie('auth'),
     user: null,
     last: null,
 };
 
 var logoutTimerId;
 const timeToLogout =
-    Number(process.env.REACT_APP_API_TOKEN_EXPIRATION) * 1000 * 0.99 * 200; // nearly xx minutes correspondign to the API
+    (Number(process.env.REACT_APP_API_TOKEN_EXPIRATION) - 10) * 1000; // nearly xx minutes correspondign to the API
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -38,7 +40,7 @@ const reducer = (state = initialState, action) => {
                     store.dispatch(signoutIntern());
                 }, timeToLogout);
             logoutTimerId = logoutTimer();
-            localStorage.setItem('token', true);
+            setCookie('auth', true, timeToLogout);
             return {
                 ...state,
                 ...action.payload,
@@ -49,7 +51,7 @@ const reducer = (state = initialState, action) => {
         case LOGOUT_SUCCESS:
         case LOGOUT_FAIL:
             clearTimeout(logoutTimerId);
-            localStorage.removeItem('token');
+            removeCookie('auth');
             return {
                 ...state,
                 token: null,

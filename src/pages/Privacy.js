@@ -421,6 +421,306 @@ const themes = () => {
             ),
         },
         {
+            hash: '#cookies',
+            question: 'Einsatz von Cookies',
+            answer: (
+                <>
+                    <p style={{ marginTop: 0 }}>
+                        Cookies sind kleine Textdateien, bzw. sonstige
+                        Speichervermerke, die Informationen auf Endgeräten
+                        speichern und Informationen aus den Endgeräten auslesen.
+                        Z.B. um den Login-Status in einem Nutzerkonto, die
+                        aufgerufenen Inhalte oder verwendete Funktionen eines
+                        Onlineangebotes zu speichern. Cookies können ferner zu
+                        unterschiedlichen Zwecken eingesetzt werden, z.B. zu
+                        Zwecken der Funktionsfähigkeit, Sicherheit und Komfort
+                        von Onlineangeboten sowie der Erstellung von Analysen
+                        der Besucherströme.
+                    </p>
+                    <ul>
+                        <StyledList>
+                            <b>Hinweise zur Einwilligung</b>
+                            <ul
+                                style={{
+                                    listStyleType: '"– "',
+                                    marginLeft: '-25px',
+                                }}
+                            >
+                                <li>
+                                    Wir setzen Cookies im Einklang mit den
+                                    gesetzlichen Vorschriften ein. Daher holen
+                                    wir von den Nutzern eine vorhergehende
+                                    Einwilligung ein, außer wenn diese
+                                    gesetzlich nicht gefordert ist.
+                                </li>
+                                <li>
+                                    Eine Einwilligung ist insbesondere nicht
+                                    notwendig, wenn das Speichern und das
+                                    Auslesen der Informationen, also auch von
+                                    Cookies, unbedingt erforderlich sind, um dem
+                                    den Nutzern einen von ihnen ausdrücklich
+                                    gewünschten Telemediendienst (also unser
+                                    Onlineangebot) zur Verfügung zu stellen. Zu
+                                    den unbedingt erforderlichen Cookies gehören
+                                    in der Regel Cookies mit Funktionen, die der
+                                    Anzeige und Lauffähigkeit des
+                                    Onlineangebotes, dem Lastausgleich, der
+                                    Sicherheit, der Speicherung der Präferenzen
+                                    und Auswahlmöglichkeiten der Nutzer oder
+                                    ähnlichen mit der Bereitstellung der Haupt-
+                                    und Nebenfunktionen des von den Nutzern
+                                    angeforderten Onlineangebotes
+                                    zusammenhängenden Zwecken dienen.
+                                </li>
+                                <li>
+                                    Die widerrufliche Einwilligung wird
+                                    gegenüber den Nutzern deutlich kommuniziert
+                                    und enthält die Informationen zu der
+                                    jeweiligen Cookie-Nutzung.
+                                </li>
+                            </ul>
+                        </StyledList>
+                        <StyledList>
+                            <b>
+                                Hinweise zu datenschutzrechtlichen
+                                Rechtsgrundlagen
+                            </b>
+                            <ul
+                                style={{
+                                    listStyleType: '"– "',
+                                    marginLeft: '-25px',
+                                }}
+                            >
+                                <li>
+                                    Auf welcher datenschutzrechtlichen
+                                    Rechtsgrundlage wir die personenbezogenen
+                                    Daten der Nutzer mit Hilfe von Cookies
+                                    verarbeiten, hängt davon ab, ob wir Nutzer
+                                    um eine Einwilligung bitten. Falls die
+                                    Nutzer einwilligen, ist die Rechtsgrundlage
+                                    der Verarbeitung Ihrer Daten die erklärte
+                                    Einwilligung. Andernfalls werden die
+                                    mithilfe von Cookies verarbeiteten Daten auf
+                                    Grundlage unserer berechtigten Interessen
+                                    (z.B. an einem betriebswirtschaftlichen
+                                    Betrieb unseres Onlineangebotes und
+                                    Verbesserung seiner Nutzbarkeit) verarbeitet
+                                    oder, wenn dies im Rahmen der Erfüllung
+                                    unserer vertraglichen Pflichten erfolgt,
+                                    wenn der Einsatz von Cookies erforderlich
+                                    ist, um unsere vertraglichen Verpflichtungen
+                                    zu erfüllen. Zu welchen Zwecken die Cookies
+                                    von uns verarbeitet werden, darüber klären
+                                    wir im Laufe dieser Datenschutzerklärung
+                                    oder im Rahmen von unseren Einwilligungs-
+                                    und Verarbeitungsprozessen auf.
+                                </li>
+                            </ul>
+                        </StyledList>
+                        <StyledList>
+                            <b>Speicherdauer</b>
+                            <ul
+                                style={{
+                                    listStyleType: '"– "',
+                                    marginLeft: '-25px',
+                                }}
+                            >
+                                <li>
+                                    Im Hinblick auf die Speicherdauer werden die
+                                    folgenden Arten von Cookies unterschieden:
+                                </li>
+                            </ul>
+                            <ul>
+                                <StyledList>
+                                    <b>
+                                        Temporäre Cookies (auch: Session- oder
+                                        Sitzungs-Cookies)
+                                    </b>
+                                    <ul
+                                        style={{
+                                            listStyleType: '"– "',
+                                            marginLeft: '-25px',
+                                        }}
+                                    >
+                                        <li>
+                                            Temporäre Cookies werden spätestens
+                                            gelöscht, nachdem ein Nutzer ein
+                                            Online-Angebot verlassen und sein
+                                            Endgerät (z.B. Browser oder mobile
+                                            Applikation) geschlossen hat.
+                                        </li>
+                                    </ul>
+                                </StyledList>
+                                <StyledList>
+                                    <b>Permanente Cookies</b>
+                                    <ul
+                                        style={{
+                                            listStyleType: '"– "',
+                                            marginLeft: '-25px',
+                                        }}
+                                    >
+                                        <li>
+                                            Permanente Cookies bleiben auch nach
+                                            dem Schließen des Endgerätes
+                                            gespeichert. So können
+                                            beispielsweise der Login-Status
+                                            gespeichert oder bevorzugte Inhalte
+                                            direkt angezeigt werden, wenn der
+                                            Nutzer eine Website erneut besucht.
+                                            Ebenso können die mit Hilfe von
+                                            Cookies erhobenen Daten der Nutzer
+                                            zur Reichweitenmessung verwendet
+                                            werden.
+                                        </li>
+                                        <li>
+                                            Sofern wir Nutzern keine expliziten
+                                            Angaben zur Art und Speicherdauer
+                                            von Cookies mitteilen (z. B. im
+                                            Rahmen der Einholung der
+                                            Einwilligung), sollten Nutzer davon
+                                            ausgehen, dass Cookies permanent
+                                            sind und die Speicherdauer bis zu
+                                            zwei Jahre betragen kann.
+                                        </li>
+                                    </ul>
+                                </StyledList>
+                            </ul>
+                        </StyledList>
+                        <StyledList>
+                            <b>
+                                Allgemeine Hinweise zum Widerruf und Widerspruch
+                                (sog. "Opt-Out")
+                            </b>
+                            <ul
+                                style={{
+                                    listStyleType: '"– "',
+                                    marginLeft: '-25px',
+                                }}
+                            >
+                                <li>
+                                    Nutzer können die von ihnen abgegebenen
+                                    Einwilligungen jederzeit widerrufen und der
+                                    Verarbeitung entsprechend den gesetzlichen
+                                    Vorgaben widersprechen. Hierzu können Nutzer
+                                    unter anderem die Verwendung von Cookies in
+                                    den Einstellungen ihres Browsers
+                                    einschränken (wobei dadurch auch die
+                                    Funktionalität unseres Onlineangebotes
+                                    eingeschränkt sein kann). Ein Widerspruch
+                                    gegen die Verwendung von Cookies zu
+                                    Online-Marketing-Zwecken kann auch über die
+                                    Websites{' '}
+                                    <Link
+                                        to="https://optout.aboutads.info"
+                                        target="_blank"
+                                    >
+                                        https://optout.aboutads.info
+                                    </Link>{' '}
+                                    und{' '}
+                                    <Link
+                                        to="https://www.youronlinechoices.com/"
+                                        target="_blank"
+                                    >
+                                        https://www.youronlinechoices.com
+                                    </Link>{' '}
+                                    erklärt werden.
+                                </li>
+                            </ul>
+                            <ul>
+                                <StyledList>
+                                    <b>Rechtsgrundlagen</b>
+                                    <ul
+                                        style={{
+                                            listStyleType: '"– "',
+                                            marginLeft: '-25px',
+                                        }}
+                                    >
+                                        <li>
+                                            Berechtigte Interessen (Art. 6 Abs.
+                                            1 S. 1 lit. f) DSGVO)
+                                        </li>
+                                        <li>
+                                            Einwilligung (Art. 6 Abs. 1 S. 1
+                                            lit. a) DSGVO)
+                                        </li>
+                                    </ul>
+                                </StyledList>
+                            </ul>
+                        </StyledList>
+                    </ul>
+                    <p>
+                        <i>
+                            Weitere Hinweise zu Verarbeitungsprozessen,
+                            Verfahren und Diensten:
+                        </i>
+                    </p>
+                    <ul style={{ marginBottom: 0 }}>
+                        <StyledList>
+                            <b>
+                                Verarbeitung von Cookie-Daten auf Grundlage
+                                einer Einwilligung
+                            </b>
+                            <ul
+                                style={{
+                                    listStyleType: '"– "',
+                                    marginLeft: '-25px',
+                                }}
+                            >
+                                <li>
+                                    Wir setzen ein Verfahren zum
+                                    Cookie-Einwilligungs-Management ein, in
+                                    dessen Rahmen die Einwilligungen der Nutzer
+                                    in den Einsatz von Cookies, bzw. der im
+                                    Rahmen des
+                                    Cookie-Einwilligungs-Management-Verfahrens
+                                    genannten Verarbeitungen und Anbieter
+                                    eingeholt sowie von den Nutzern verwaltet
+                                    und widerrufen werden können. Hierbei wird
+                                    die Einwilligungserklärung gespeichert, um
+                                    deren Abfrage nicht erneut wiederholen zu
+                                    müssen und die Einwilligung entsprechend der
+                                    gesetzlichen Verpflichtung nachweisen zu
+                                    können. Die Speicherung kann serverseitig
+                                    und/oder in einem Cookie (sogenanntes
+                                    Opt-In-Cookie, bzw. mithilfe vergleichbarer
+                                    Technologien) erfolgen, um die Einwilligung
+                                    einem Nutzer, bzw. dessen Gerät zuordnen zu
+                                    können. Vorbehaltlich individueller Angaben
+                                    zu den Anbietern von
+                                    Cookie-Management-Diensten, gelten die
+                                    folgenden Hinweise: Die Dauer der
+                                    Speicherung der Einwilligung kann bis zu
+                                    zwei Jahren betragen. Hierbei wird ein
+                                    pseudonymer Nutzer-Identifikator gebildet
+                                    und mit dem Zeitpunkt der Einwilligung,
+                                    Angaben zur Reichweite der Einwilligung (z.
+                                    B. welche Kategorien von Cookies und/oder
+                                    Diensteanbieter) sowie dem Browser, System
+                                    und verwendeten Endgerät gespeichert.
+                                </li>
+                            </ul>
+                            <ul>
+                                <StyledList>
+                                    <b>Rechtsgrundlagen</b>
+                                    <ul
+                                        style={{
+                                            listStyleType: '"– "',
+                                            marginLeft: '-25px',
+                                        }}
+                                    >
+                                        <li>
+                                            Einwilligung (Art. 6 Abs. 1 S. 1
+                                            lit. a) DSGVO)
+                                        </li>
+                                    </ul>
+                                </StyledList>
+                            </ul>
+                        </StyledList>
+                    </ul>
+                </>
+            ),
+        },
+        {
             hash: '#loeschung',
             question: 'Löschung von Daten',
             answer: (
@@ -1324,7 +1624,10 @@ const themes = () => {
                                             }}
                                         >
                                             <li>
-                                                <Link to="https://www.ionos.de">
+                                                <Link
+                                                    to="https://www.ionos.de"
+                                                    target="_blank"
+                                                >
                                                     https://www.ionos.de
                                                 </Link>
                                             </li>
@@ -1340,7 +1643,10 @@ const themes = () => {
                                         }}
                                     >
                                         <li>
-                                            <Link to="https://www.ionos.de/terms-gtc/terms-privacy">
+                                            <Link
+                                                to="https://www.ionos.de/terms-gtc/terms-privacy"
+                                                target="_blank"
+                                            >
                                                 https://www.ionos.de/terms-gtc/terms-privacy
                                             </Link>
                                         </li>
@@ -1355,7 +1661,10 @@ const themes = () => {
                                         }}
                                     >
                                         <li>
-                                            <Link to="https://www.ionos.de/terms-gtc/avv/">
+                                            <Link
+                                                to="https://www.ionos.de/terms-gtc/avv/"
+                                                target="_blank"
+                                            >
                                                 https://www.ionos.de/terms-gtc/avv
                                             </Link>
                                         </li>
@@ -1393,7 +1702,7 @@ const themes = () => {
                         Pixel-Tags (unsichtbare Grafiken, auch als "Web Beacons"
                         bezeichnet) für statistische oder Marketingzwecke
                         verwenden. Durch die "Pixel-Tags" können Informationen,
-                        wie der Besucherverkehr auf den Seiten dieser Webseite,
+                        wie der Besucherverkehr auf den Seiten dieser Website,
                         ausgewertet werden. Die pseudonymen Informationen können
                         ferner in Cookies auf dem Gerät der Nutzer gespeichert
                         werden und unter anderem technische Informationen zum

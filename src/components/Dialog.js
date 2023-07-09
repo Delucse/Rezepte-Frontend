@@ -70,6 +70,7 @@ function Dialog(props) {
                         : props.fullWidth
                         ? '100%'
                         : 'unset',
+                    margin: props.position ? '24px' : '32px',
                 },
             }}
             fullScreen={props.fullScreen}
@@ -78,6 +79,10 @@ function Dialog(props) {
             onClose={props.onClose}
             sx={{
                 zIndex: (theme) => theme.zIndex.dialog,
+                top: props.position?.includes('bottom') ? 'unset' : 0,
+                right: props.position?.includes('left') ? 'unset' : 0,
+                bottom: props.position?.includes('top') ? 'unset' : 0,
+                left: props.position?.includes('right') ? 'unset' : 0,
             }}
         >
             <DialogTitle

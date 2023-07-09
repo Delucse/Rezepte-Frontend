@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { useDispatch } from 'react-redux';
+import { setCookiesOpen } from '../actions/settingsActions';
+
 import moment from 'moment';
 
 import Link from './Link';
@@ -11,6 +14,8 @@ import { useTheme } from '@emotion/react';
 function Footer() {
     const theme = useTheme();
     const color = theme.palette.getContrastText(theme.palette.primary.light);
+
+    const dispatch = useDispatch();
 
     return (
         <Box
@@ -44,12 +49,20 @@ function Footer() {
                     >
                         Datenschutz
                     </Link>
-                    <Link
-                        to="/kontakt"
-                        style={{ display: 'block', color: color }}
+                    <Box
+                        onClick={() => dispatch(setCookiesOpen(true))}
+                        sx={{
+                            display: 'block',
+                            color: color,
+                            cursor: 'pointer',
+                            textDecoration: 'none',
+                            '&:hover': {
+                                textDecoration: 'underline',
+                            },
+                        }}
                     >
-                        Kontakt
-                    </Link>
+                        Cookies
+                    </Box>
                 </Box>
                 <Box
                     sx={{
@@ -62,6 +75,12 @@ function Footer() {
                         style={{ display: 'block', color: color }}
                     >
                         Statistiken
+                    </Link>
+                    <Link
+                        to="/kontakt"
+                        style={{ display: 'block', color: color }}
+                    >
+                        Kontakt
                     </Link>
                     <Link to="/faq" style={{ display: 'block', color: color }}>
                         FAQ

@@ -32,9 +32,8 @@ function SignOut() {
             !user &&
             last &&
             last +
-                Number(process.env.REACT_APP_API_TOKEN_EXPIRATION) *
-                    1000 *
-                    0.99 <
+                (Number(process.env.REACT_APP_API_TOKEN_EXPIRATION) - 10) *
+                    1000 <
                 Date.now()
         ) {
             setOpen(true);

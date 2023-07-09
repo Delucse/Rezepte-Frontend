@@ -10,6 +10,7 @@ import BreadCrumbs from './BreadCrumbs';
 import Toast from './Toast';
 import SignOut from '../pages/SignOut';
 import Footer from './Footer';
+import Cookies from './Cookies';
 
 import Box from '@mui/material/Box';
 
@@ -38,6 +39,7 @@ function Layout() {
                 paddingBottom: { xxs: '261px', xs: '178px', sm: '113px' },
             }}
         >
+            <Cookies />
             <SignOut />
             <Navbar />
             <BreadCrumbs />

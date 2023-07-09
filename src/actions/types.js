@@ -21,6 +21,8 @@ export const LOADING_ERROR = 'LOADING_ERROR';
 
 // Settings
 export const SET_COLOR = 'SET_COLOR';
+export const SET_COOKIES = 'SET_COOKIES';
+export const SET_COOKIES_OPEN = 'SET_COOKIES_OPEN';
 
 // Recipe
 export const GET_RECIPE = 'GET_RECIPE';

@@ -40,7 +40,7 @@ const themes = (state) => {
                         <div>
                             Jein. Die Anwendung ist eine klassische
                             "Singe-Page-Application" basierend auf React.
-                            Allerdings ist es Dir möglich die Webseite wie eine
+                            Allerdings ist es Dir möglich die Website wie eine
                             native App zu nutzen (
                             <Link
                                 to="https://de.wikipedia.org/wiki/Progressive_Web_App"
@@ -49,7 +49,7 @@ const themes = (state) => {
                             >
                                 PWA
                             </Link>
-                            ). D.h. Du kannst Dir die Webseite zum Homescreen
+                            ). D.h. Du kannst Dir die Website zum Homescreen
                             hinzufügen oder alternativ eine der folgenden
                             Dateien herunterladen und auf Deinem Gerät
                             installieren, damit Du in den Genuss einer

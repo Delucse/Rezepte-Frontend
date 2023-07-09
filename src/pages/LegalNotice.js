@@ -40,7 +40,7 @@ const themes = () => {
                     question: 'Haftung für Links',
                     answer: (
                         <div>
-                            Diese Website enthält Links zu externen Webseiten
+                            Diese Website enthält Links zu externen Websiten
                             Dritter, auf deren Inhalte kein Einfluss genommen
                             werden kann. Deshalb kann für diese fremden Inhalte
                             auch keine Gewähr übernommen werden. Für die Inhalte
