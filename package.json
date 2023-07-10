@@ -51,6 +51,10 @@
         "workbox-strategies": "^5.1.4",
         "workbox-streams": "^5.1.4"
     },
+    "devDependencies": {
+        "webpack": ">=5.76.0",
+        "nth-check": ">=2.0.1"
+    },
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
