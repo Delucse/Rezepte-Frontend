@@ -60,6 +60,7 @@ const DialogTitle = (props) => {
 function Dialog(props) {
     return (
         <MuiDialog
+            disableScrollLock
             open={props.open}
             PaperProps={{
                 sx: {

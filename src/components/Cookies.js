@@ -3,9 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCookies, setCookiesOpen } from '../actions/settingsActions';
 
+import { useLocation } from 'react-router-dom';
+
 import Dialog from './Dialog';
 import Button from './Button';
 import Help from './Help';
+import Link from './Link';
 
 import { Box, Divider, FormControlLabel, Switch } from '@mui/material';
 
@@ -13,6 +16,8 @@ import { mdiCookie } from '@mdi/js';
 import Icon from '@mdi/react';
 
 const Cookies = () => {
+    const location = useLocation();
+
     const dispatch = useDispatch();
 
     const open = useSelector((state) => state.settings.cookies.open);
@@ -53,7 +58,12 @@ const Cookies = () => {
 
     return (
         <Dialog
-            open={open || !necessary}
+            open={
+                open ||
+                (!necessary &&
+                    location.pathname !== '/impressum' &&
+                    location.pathname !== '/datenschutz')
+            }
             onClose={open ? () => close() : null}
             closeIcon={open}
             maxWidth={'xs'}
@@ -76,8 +86,8 @@ const Cookies = () => {
                     </Box>
                     <Box>
                         Wir verwenden Cookies, um einerseits sicherzustellen,
-                        dass die Grundfunktionen der Website ordnungsgemäß
-                        funktionieren und um andererseits die Möglichkeit
+                        dass alle Grundfunktionen der Website ordnungsgemäß
+                        funktionieren und um andererseits Dir die Möglichkeit
                         anbieten zu können, die Anzeige zu personalisieren.
                     </Box>
                     <Divider style={{ margin: '15px 0' }} />
@@ -156,24 +166,52 @@ const Cookies = () => {
                 </div>
             }
             actions={
-                <Box>
-                    <Button
-                        variant="outlined"
-                        sx={{ mr: 1, mt: 1 }}
-                        onClick={deny}
-                    >
-                        Ablehnen
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        sx={{ mr: 1, mt: 1 }}
-                        onClick={confirm}
-                    >
-                        Bestätigen
-                    </Button>
-                    <Button variant="contained" sx={{ mt: 1 }} onClick={allow}>
-                        alle zulassen
-                    </Button>
+                <Box sx={{ width: '100%' }}>
+                    <Box sx={{ textAlign: 'right' }}>
+                        <Button
+                            variant="outlined"
+                            sx={{ mt: 1 }}
+                            onClick={deny}
+                        >
+                            Ablehnen
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            sx={{ ml: 1, mt: 1 }}
+                            onClick={confirm}
+                        >
+                            Bestätigen
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{ ml: 1, mt: 1 }}
+                            onClick={allow}
+                        >
+                            alle zulassen
+                        </Button>
+                    </Box>
+                    {!necessary ? (
+                        <Box
+                            sx={{
+                                width: 'calc(100% + 2 * 16px)',
+                                background: (theme) =>
+                                    theme.palette.primary.light + '44',
+                                margin: '16px 0px -16px -16px',
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    padding: '8px 16px',
+                                    fontSize: '13px',
+                                    color: (theme) =>
+                                        theme.palette.primary.main,
+                                }}
+                            >
+                                <Link to="/datenschutz">Datenschutz</Link> |{' '}
+                                <Link to="/impressum">Impressum</Link>
+                            </Box>
+                        </Box>
+                    ) : null}
                 </Box>
             }
         />
