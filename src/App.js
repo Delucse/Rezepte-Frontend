@@ -178,7 +178,9 @@ function App() {
                                             index
                                             element={
                                                 <SuspenseRoute>
-                                                    <PrivateRoute>
+                                                    <PrivateRoute
+                                                        location={location}
+                                                    >
                                                         <RecipeFormular />
                                                     </PrivateRoute>
                                                 </SuspenseRoute>
@@ -189,7 +191,9 @@ function App() {
                                             path="vorlagen/:id"
                                             element={
                                                 <SuspenseRoute>
-                                                    <PrivateRoute>
+                                                    <PrivateRoute
+                                                        location={location}
+                                                    >
                                                         <RecipeFormular />
                                                     </PrivateRoute>
                                                 </SuspenseRoute>
@@ -200,7 +204,9 @@ function App() {
                                             path=":id"
                                             element={
                                                 <SuspenseRoute>
-                                                    <PrivateRoute>
+                                                    <PrivateRoute
+                                                        location={location}
+                                                    >
                                                         <RecipeFormular />
                                                     </PrivateRoute>
                                                 </SuspenseRoute>
@@ -221,7 +227,9 @@ function App() {
                                         path="favoriten"
                                         element={
                                             <SuspenseRoute>
-                                                <PrivateRoute>
+                                                <PrivateRoute
+                                                    location={location}
+                                                >
                                                     <Recipes route="favoriten" />
                                                 </PrivateRoute>
                                             </SuspenseRoute>
@@ -232,7 +240,9 @@ function App() {
                                         path="nutzer"
                                         element={
                                             <SuspenseRoute>
-                                                <PrivateRoute>
+                                                <PrivateRoute
+                                                    location={location}
+                                                >
                                                     <Recipes route="nutzer" />
                                                 </PrivateRoute>
                                             </SuspenseRoute>
@@ -261,7 +271,9 @@ function App() {
                                         path="vorlagen"
                                         element={
                                             <SuspenseRoute>
-                                                <PrivateRoute>
+                                                <PrivateRoute
+                                                    location={location}
+                                                >
                                                     <Recipes route="vorlage" />
                                                 </PrivateRoute>
                                             </SuspenseRoute>
@@ -290,7 +302,7 @@ function App() {
                                     path="bilder"
                                     element={
                                         <SuspenseRoute>
-                                            <PrivateRoute>
+                                            <PrivateRoute location={location}>
                                                 <Images />
                                             </PrivateRoute>
                                         </SuspenseRoute>
@@ -300,7 +312,7 @@ function App() {
                                     path="konto"
                                     element={
                                         <SuspenseRoute>
-                                            <PrivateRoute>
+                                            <PrivateRoute location={location}>
                                                 <Account />
                                             </PrivateRoute>
                                         </SuspenseRoute>

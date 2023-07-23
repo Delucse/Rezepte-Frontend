@@ -1,11 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 function PrivateRoute(props) {
-    const location = useLocation();
-
     const loading = useSelector(
         (state) => state.progress.loading && state.progress.type === 'user'
     );
@@ -19,7 +17,8 @@ function PrivateRoute(props) {
         ) : (
             <Navigate
                 to={'/anmeldung'}
-                state={{ background: location, auth: true }}
+                state={{ background: props.location, auth: true }}
+                replace
             />
         )
     ) : null;
