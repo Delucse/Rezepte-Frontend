@@ -95,7 +95,7 @@ function Recipe() {
             ) {
                 newParams.form = recipe.settings.form.join(',');
             }
-            setSearchParams(newParams);
+            setSearchParams(newParams, { replace: true });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipe.settings]);

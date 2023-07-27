@@ -165,7 +165,7 @@ function Recipes(props) {
         if (categories.length > 0) {
             newParams.filter = categories.join(',');
         }
-        setSearchParams(newParams);
+        setSearchParams(newParams, { replace: true });
     };
 
     return (
