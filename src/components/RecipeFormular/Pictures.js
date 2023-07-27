@@ -276,8 +276,8 @@ function Pictures() {
                             error
                             message={`Bestätige die Herkunft ${
                                 newPictures.length > 1
-                                    ? 'der neuen Bilder'
-                                    : 'des neuen Bildes'
+                                    ? 'deiner neuen Bilder'
+                                    : 'deines neuen Bildes'
                             }.`}
                         />
                     ) : null}
@@ -286,6 +286,7 @@ function Pictures() {
             <Grid item xs={12}>
                 {newPictures.length > 0 ? (
                     <Checkbox
+                        error={error}
                         label={`Ich bestätige, dass ${
                             newPictures.length > 1
                                 ? 'die neuen Fotos von mir sind'

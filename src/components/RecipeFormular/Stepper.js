@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
+    setActiveStep,
     checkRecipeError,
     resetRecipeFormular,
     setBlocked,
@@ -110,6 +111,7 @@ function Stepper(props) {
         (state) =>
             state.progress.loading && state.progress.type === 'recipeFormular'
     );
+    const activeStep = useSelector((state) => state.recipeFormular.activeStep);
 
     const [actions, setActions] = useState();
 
@@ -143,7 +145,6 @@ function Stepper(props) {
         actions,
     ]);
 
-    const [activeStep, setActiveStep] = useState(0);
     const maxSteps = props.steps.length - 1;
 
     useEffect(() => {
@@ -158,15 +159,15 @@ function Stepper(props) {
     }, [activeStep, maxSteps]);
 
     const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        dispatch(setActiveStep(activeStep + 1));
     };
 
     const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+        dispatch(setActiveStep(activeStep - 1));
     };
 
     const handleStep = (step) => {
-        setActiveStep(step);
+        dispatch(setActiveStep(step));
     };
 
     const blocked = useSelector((state) => state.recipeFormular.blocked);

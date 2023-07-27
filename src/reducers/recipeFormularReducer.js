@@ -11,9 +11,11 @@ import {
     SET_RECIPE_STEPS,
     SET_RECIPE_PICTURES,
     SET_RECIPE_FORMULAR,
+    SET_ACTIVE_STEP,
 } from '../actions/types';
 
 const initialState = {
+    activeStep: 0,
     id: null,
     title: '',
     portion: {
@@ -57,6 +59,11 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case SET_ACTIVE_STEP:
+            return {
+                ...state,
+                activeStep: action.payload,
+            };
         case SET_RECIPE_TITLE:
             return {
                 ...state,

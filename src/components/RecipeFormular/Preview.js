@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { submitRecipe } from '../../actions/recipeFormularActions';
+import {
+    setActiveStep,
+    submitRecipe,
+} from '../../actions/recipeFormularActions';
 
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -26,7 +29,7 @@ function Preview() {
         (error.title ||
             error.portion ||
             error.time ||
-            error.categories ||
+            error.keywords ||
             error.ingredients.includes(true) ||
             error.steps ||
             error.pictures);
@@ -57,7 +60,114 @@ function Preview() {
                         <Alert
                             error
                             message={
-                                'Es wurden noch nicht alle Pflichtfelder ausgefüllt. Gehe zurück, um nachzusehen welche Felder nicht vollständig sind.'
+                                <div>
+                                    Du hast leider noch nicht alle Pflichtfelder
+                                    (korrekt) ausgefüllt:
+                                    <ul style={{ marginBottom: 0 }}>
+                                        {error.title ||
+                                        error.portion ||
+                                        error.time ? (
+                                            <Box
+                                                component="li"
+                                                sx={{
+                                                    maxWidth: 'max-content',
+                                                    textDecoration: 'underline',
+                                                    cursor: 'pointer',
+                                                    '&:hover': {
+                                                        textDecoration: 'none',
+                                                    },
+                                                }}
+                                                onClick={() =>
+                                                    dispatch(setActiveStep(0))
+                                                }
+                                            >
+                                                Allgemein
+                                            </Box>
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {error.keywords ? (
+                                            <Box
+                                                component="li"
+                                                sx={{
+                                                    maxWidth: 'max-content',
+                                                    textDecoration: 'underline',
+                                                    cursor: 'pointer',
+                                                    '&:hover': {
+                                                        textDecoration: 'none',
+                                                    },
+                                                }}
+                                                onClick={() =>
+                                                    dispatch(setActiveStep(1))
+                                                }
+                                            >
+                                                Kategorien
+                                            </Box>
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {error.ingredients.includes(true) ? (
+                                            <Box
+                                                component="li"
+                                                sx={{
+                                                    maxWidth: 'max-content',
+                                                    textDecoration: 'underline',
+                                                    cursor: 'pointer',
+                                                    '&:hover': {
+                                                        textDecoration: 'none',
+                                                    },
+                                                }}
+                                                onClick={() =>
+                                                    dispatch(setActiveStep(2))
+                                                }
+                                            >
+                                                Zutaten
+                                            </Box>
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {error.steps ? (
+                                            <Box
+                                                component="li"
+                                                sx={{
+                                                    maxWidth: 'max-content',
+                                                    textDecoration: 'underline',
+                                                    cursor: 'pointer',
+                                                    '&:hover': {
+                                                        textDecoration: 'none',
+                                                    },
+                                                }}
+                                                onClick={() =>
+                                                    dispatch(setActiveStep(3))
+                                                }
+                                            >
+                                                Arbeitsschritte
+                                            </Box>
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {error.pictures ? (
+                                            <Box
+                                                component="li"
+                                                sx={{
+                                                    maxWidth: 'max-content',
+                                                    textDecoration: 'underline',
+                                                    cursor: 'pointer',
+                                                    '&:hover': {
+                                                        textDecoration: 'none',
+                                                    },
+                                                }}
+                                                onClick={() =>
+                                                    dispatch(setActiveStep(4))
+                                                }
+                                            >
+                                                Bilder
+                                            </Box>
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </ul>
+                                </div>
                             }
                         />
                     </Box>

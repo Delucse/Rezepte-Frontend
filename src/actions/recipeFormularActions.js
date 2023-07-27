@@ -12,6 +12,7 @@ import {
     SET_RECIPE_FORMULAR,
     SET_RECIPE_FORMULAR_UPLOADED,
     SET_SAVED_RECIPE_FORMULAR,
+    SET_ACTIVE_STEP,
 } from '../actions/types';
 
 import {
@@ -34,6 +35,13 @@ import {
     setProgressSuccess,
 } from './progressActions';
 import { resetSaveRecipeFormular } from './savedRecipeFormularActions';
+
+export const setActiveStep = (step) => (dispatch) => {
+    dispatch({
+        type: SET_ACTIVE_STEP,
+        payload: step,
+    });
+};
 
 export const isFoodAmountError = (amount) => {
     var amountDecimal = amount;
@@ -704,10 +712,11 @@ export const submitRecipe = () => (dispatch, getState) => {
         });
 };
 
-export const resetRecipeFormular = () => (dispatch, getState) => {
+export const resetRecipeFormular = () => (dispatch) => {
     dispatch({
         type: SET_RECIPE_FORMULAR,
         payload: {
+            activeStep: 0,
             id: null,
             title: '',
             portion: {

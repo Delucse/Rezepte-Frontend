@@ -102,7 +102,7 @@ export const saveRecipeFormular = () => (dispatch, getState) => {
     }
 };
 
-export const resetSaveRecipeFormular = () => (dispatch, getState) => {
+export const resetSaveRecipeFormular = () => (dispatch) => {
     dispatch({
         type: SET_SAVED_RECIPE_FORMULAR,
         payload: {

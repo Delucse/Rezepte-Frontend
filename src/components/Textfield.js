@@ -28,6 +28,9 @@ function Textfield(props) {
                         props.disabled && props.error
                             ? `1px solid ${theme.palette.error.main}`
                             : 'inherit',
+                    background: props.error
+                        ? 'rgba(253, 237, 237, 0.5)'
+                        : 'inherit',
                     ...props.style,
                 }}
                 inputRef={props.inputRef}

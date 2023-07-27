@@ -353,7 +353,16 @@ function Ingredients() {
                     <Alert
                         error
                         message={
-                            'Es muss mindestens eine ausgefüllte Zutatenliste geben. Überflüssige Listen und Zutaten bitte löschen.'
+                            <div>
+                                Gib mindestens eine vollständig ausgefüllte
+                                Zutatenliste an (überflüssige Listen und Zutaten
+                                bitte löschen).
+                                <br />
+                                Beachte dabei, dass Mengenangaben ausschließlich
+                                Zahlen enthalten dürfen, um später
+                                sicherzustellen, dass man dein Rezept auf andere
+                                Portionsgrößen umrechnen kann.
+                            </div>
                         }
                     />
                 </Box>

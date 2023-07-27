@@ -39,25 +39,18 @@ function General() {
                     }}
                 >
                     {errorTitle ? (
-                        <Alert
-                            error
-                            message={'Es muss ein Titel gewählt werden.'}
-                        />
+                        <Alert error message={'Gib einen Titel an.'} />
                     ) : null}
                     {errorPortion ? (
                         <Alert
                             error
-                            message={
-                                'Es muss eine Portionsangabe gemacht werden.'
-                            }
+                            message={'Mach eine Angabe zu den Portionen.'}
                         />
                     ) : null}
                     {errorTime ? (
                         <Alert
                             error
-                            message={
-                                'Es muss mindestens eine Zeitangabe gemacht werden.'
-                            }
+                            message={'Gib mindestens eine Zeitangabe an.'}
                         />
                     ) : null}
                 </Box>

@@ -109,6 +109,9 @@ function Autocomplete(props) {
                 '.MuiAutocomplete-inputRoot': {
                     borderRadius: '0px',
                     height: '56px',
+                    background: props.error
+                        ? 'rgba(253, 237, 237, 0.5)'
+                        : 'inherit',
                 },
                 '.MuiAutocomplete-popupIndicator': {
                     '&:hover': {
