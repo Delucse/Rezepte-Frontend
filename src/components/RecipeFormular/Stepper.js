@@ -50,7 +50,7 @@ function Content(props) {
                 component="div"
                 variant="body1"
                 sx={{
-                    display: 'flex',
+                    display: 'block',
                     fontWeight: 'bold',
                     paddingBottom: '10px',
                     position: 'sticky',
@@ -61,7 +61,7 @@ function Content(props) {
                 }}
             >
                 {props.title}
-                <Help explanation={props.help} />
+                <Help explanation={props.help} formular />
             </Typography>
             {props.step}
         </Box>
