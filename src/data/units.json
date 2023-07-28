@@ -3,13 +3,13 @@
     {
         "singular": "mg",
         "information": "Milligramm",
-        "aliment": "singular",
+        "aliment": "plural",
         "group": "Masse"
     },
     {
         "singular": "g",
         "information": "Gramm",
-        "aliment": "singular",
+        "aliment": "plural",
         "group": "Masse"
     },
     {
@@ -20,7 +20,7 @@
     {
         "singular": "kg",
         "information": "Kilogramm",
-        "aliment": "singular",
+        "aliment": "plural",
         "group": "Masse"
     },
     {
