@@ -2,12 +2,15 @@ import React from 'react';
 
 import { useSelector } from 'react-redux';
 
+import Link from '../Link';
+
 import moment from 'moment';
 
 import { Typography } from '@mui/material';
 
 function Date() {
     const date = useSelector((state) => state.recipe.date);
+    const user = useSelector((state) => state.recipe.user);
 
     return (
         <Typography
@@ -18,7 +21,10 @@ function Date() {
                 lineHeight: '24px',
             }}
         >
-            {`erstellt am ${moment(date).format('DD.MM.YYYY, HH:mm')} Uhr`}
+            <div>
+                erstellt von <Link to={`/rezepte?autor=${user}`}>{user}</Link>{' '}
+                am {moment(date).format('DD.MM.YYYY, HH:mm')} Uhr
+            </div>
         </Typography>
     );
 }

@@ -44,7 +44,6 @@ function Tag({ label, onClick }) {
 function Keywords() {
     const navigate = useNavigate();
     const keywords = useSelector((state) => state.recipe.keywords);
-    const user = useSelector((state) => state.recipe.user);
 
     return (
         <div
@@ -75,10 +74,6 @@ function Keywords() {
                     />
                 );
             })}
-            <Tag
-                label={user}
-                onClick={() => navigate(`/rezepte?autor=${user}`)}
-            />
         </div>
     );
 }
