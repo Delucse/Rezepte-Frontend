@@ -29,8 +29,11 @@ function Textfield(props) {
                             ? `1px solid ${theme.palette.error.main}`
                             : 'inherit',
                     background: props.error
-                        ? 'rgba(253, 237, 237, 0.5)'
+                        ? 'rgba(253, 237, 237, 0.7)'
                         : 'inherit',
+                    '.MuiOutlinedInput-notchedOutline': {
+                        borderWidth: props.error ? '2px' : '1px',
+                    },
                     ...props.style,
                 }}
                 inputRef={props.inputRef}
