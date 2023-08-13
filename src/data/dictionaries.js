@@ -2664,4 +2664,4 @@ const createAllDictionaries = () => {
     createAlimentDictionaries();
     createInfoDictionaries();
 };
-createAllDictionaries();
+// createAllDictionaries();

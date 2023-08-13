@@ -350,6 +350,9 @@ function Portion() {
                                         )
                                     }
                                     freeSolo
+                                    error={
+                                        art && art.trim() === '' && errorPortion
+                                    }
                                 />
                             ) : null}
                         </Box>

@@ -116,7 +116,7 @@ function Title(props) {
                                 )
                             )
                         }
-                        error={props.title === '' && props.error}
+                        error={props.title.trim() === '' && props.error}
                         margin
                         label="Titel"
                         start={<Icon path={mdiTextShadow} size={1} />}
@@ -308,7 +308,7 @@ function Food(props) {
                         fullWidth
                         onChange={setAliment}
                         freeSolo
-                        error={props.aliment === '' && props.error}
+                        error={props.aliment.trim() === '' && props.error}
                         start={<Icon path={mdiFoodVariant} size={1} />}
                     />
                 </Box>

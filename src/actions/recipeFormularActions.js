@@ -58,7 +58,7 @@ const setError = (key, value) => (dispatch, getState) => {
     var error = getState().recipeFormular.error;
     switch (key) {
         case 'title':
-            if (value === '') {
+            if (value.trim() === '') {
                 error[key] = true;
             } else {
                 error[key] = false;
@@ -81,7 +81,7 @@ const setError = (key, value) => (dispatch, getState) => {
         case 'steps':
             var errSteps = false;
             value.forEach((val) => {
-                if (val === '') {
+                if (val.trim() === '') {
                     errSteps = true;
                 }
             });
@@ -101,7 +101,8 @@ const setError = (key, value) => (dispatch, getState) => {
                 (value.form &&
                     value.form.length === 2 &&
                     (isNaN(value.form[1].toString().replace(',', '.')) ||
-                        value.form[1].toString().replace(',', '.') <= 0))
+                        value.form[1].toString().replace(',', '.') <= 0)) ||
+                (value.art !== null && value.art.trim() === '')
             ) {
                 error[key] = true;
             } else {
@@ -110,7 +111,7 @@ const setError = (key, value) => (dispatch, getState) => {
             break;
         case 'ingredients':
             var errIngredients = value.map((val) => {
-                if (val.title && val.title === '') {
+                if (val.title && val.title.trim() === '') {
                     return true;
                 }
                 if (
@@ -118,7 +119,7 @@ const setError = (key, value) => (dispatch, getState) => {
                         (f) =>
                             isFoodAmountError(f.amount) ||
                             f.unit === '' ||
-                            f.aliment === ''
+                            f.aliment.trim() === ''
                     ).length > 0
                 ) {
                     return true;
@@ -633,14 +634,26 @@ export const submitRecipe = () => (dispatch, getState) => {
             Number(f.toString().replace(',', '.'))
         );
     }
+    if (portion.art) {
+        portion.art = portion.art.trim();
+    }
 
     var data = {
-        title,
+        title: title.trim(),
         portion,
         time,
         keywords,
-        ingredients: getState().recipe.ingredients,
-        steps,
+        ingredients: getState().recipe.ingredients.map((i) => {
+            if (i.title) {
+                i.title = i.title.trim();
+            }
+            i.food = i.food.map((f) => {
+                f.aliment = f.aliment.trim();
+                return f;
+            });
+            return i;
+        }),
+        steps: steps.map((s) => s.trim()),
     };
     if (getState().savedRecipeFormular.id) {
         data.prototype = getState().savedRecipeFormular.id;

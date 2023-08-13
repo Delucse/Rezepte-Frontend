@@ -107,7 +107,7 @@ function IndividualKeywords() {
                     sx={{ height: '56px' }}
                     variant="contained"
                     onClick={addKeyword}
-                    disabled={keyword.length === 0}
+                    disabled={keyword.trim().length === 0}
                 >
                     hinzufügen
                 </Button>

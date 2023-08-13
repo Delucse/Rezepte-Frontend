@@ -81,7 +81,7 @@ function Step(props) {
                 onChange={(e) =>
                     dispatch(changeStep(props.index, e.target.value))
                 }
-                error={props.step.length === 0 && props.error}
+                error={props.step.trim().length === 0 && props.error}
                 label={`Schritt ${props.index + 1}`}
                 start={`${props.index + 1}.`}
             />
