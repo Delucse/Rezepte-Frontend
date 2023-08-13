@@ -40,12 +40,14 @@ function AddImage(props) {
 
     const [open, setOpen] = useState(false);
     const [image, setImage] = useState(null);
+    const [showImageProgress, setShowImageProgress] = useState(false);
     const [progress, setProgress] = useState(false);
     const [drag, setDrag] = useState(false);
     const [counter, setCounter] = useState(0);
     const [confirmed, setConfirmed] = useState(false);
 
     const onHandleFileInput = async (targetFiles) => {
+        setShowImageProgress(true);
         targetFiles = [...targetFiles];
 
         var error = false;
@@ -91,6 +93,7 @@ function AddImage(props) {
         });
         const files = await Promise.all(promises);
         changeImage(files[0]);
+        setShowImageProgress(false);
     };
 
     const handleDrag = (e) => {
@@ -262,9 +265,16 @@ function AddImage(props) {
                                                 <Icon
                                                     path={mdiCamera}
                                                     size={2}
+                                                    spin={
+                                                        showImageProgress
+                                                            ? 0.9
+                                                            : 0
+                                                    }
                                                 />
                                                 <br />
-                                                Bilder wählen
+                                                {!showImageProgress
+                                                    ? 'Bild wählen'
+                                                    : 'Bild lädt'}
                                             </div>
                                         </Box>
                                     </InputLabel>

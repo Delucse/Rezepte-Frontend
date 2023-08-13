@@ -47,8 +47,10 @@ function PictureInput(props) {
 
     const [drag, setDrag] = useState(false);
     const [counter, setCounter] = useState(0);
+    const [showImageProgress, setShowImageProgress] = useState(false);
 
     const onHandleFileInput = async (targetFiles) => {
+        setShowImageProgress(true);
         targetFiles = [...targetFiles];
         const picturesLength = pictures.filter(
             (pic) => pic.user === user
@@ -108,6 +110,7 @@ function PictureInput(props) {
         });
         const files = await Promise.all(promises);
         dispatch(changePictures(files));
+        setShowImageProgress(false);
     };
 
     const handleDrag = (e) => {
@@ -189,9 +192,13 @@ function PictureInput(props) {
                     }}
                 >
                     <div style={{ textAlign: 'center' }}>
-                        <Icon path={mdiCamera} size={2} />
+                        <Icon
+                            path={mdiCamera}
+                            size={2}
+                            spin={showImageProgress ? 0.9 : 0}
+                        />
                         <br />
-                        Bilder wählen
+                        {!showImageProgress ? 'Bilder wählen' : 'Bilder laden'}
                     </div>
                 </Box>
             </InputLabel>
