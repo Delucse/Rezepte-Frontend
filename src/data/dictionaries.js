@@ -4,9 +4,8 @@ import portions from './portions.json';
 
 export const singularUnits = [
     {
-        description: '  (ohne Einheit)',
+        description: 'ohne Einheit',
         unit: ' ',
-        group: 'Ausnahme',
     },
     {
         description: 'Becher',
@@ -172,29 +171,30 @@ export const singularUnits = [
 const createSingularUnits = () => {
     console.log(
         'singularUnits',
-        units
-            .map((unit) => {
-                return {
-                    description: `${
-                        unit.singular ? unit.singular : unit.plural
-                    }${unit.information ? ` (${unit.information})` : ''}`,
-                    unit: unit.singular ? unit.singular : unit.plural,
-                    group: unit.group,
-                };
-            })
-            .sort(
-                (a, b) =>
-                    a.group.localeCompare(b.group) ||
-                    a.unit.localeCompare(b.unit)
-            )
+        [{ description: 'ohne Einheit', unit: ' ' }].concat(
+            units
+                .map((unit) => {
+                    return {
+                        description: `${
+                            unit.singular ? unit.singular : unit.plural
+                        }${unit.information ? ` (${unit.information})` : ''}`,
+                        unit: unit.singular ? unit.singular : unit.plural,
+                        group: unit.group,
+                    };
+                })
+                .sort(
+                    (a, b) =>
+                        a.group.localeCompare(b.group) ||
+                        a.unit.localeCompare(b.unit)
+                )
+        )
     );
 };
 
 export const pluralUnits = [
     {
-        description: '  (ohne Einheit)',
+        description: 'ohne Einheit',
         unit: ' ',
-        group: 'Ausnahme',
     },
     {
         description: 'Becher',
@@ -360,21 +360,23 @@ export const pluralUnits = [
 const createPluralUnits = () => {
     console.log(
         'pluralUnits',
-        units
-            .map((unit) => {
-                return {
-                    description: `${unit.plural ? unit.plural : unit.singular}${
-                        unit.information ? ` (${unit.information})` : ''
-                    }`,
-                    unit: unit.plural ? unit.plural : unit.singular,
-                    group: unit.group,
-                };
-            })
-            .sort(
-                (a, b) =>
-                    a.group.localeCompare(b.group) ||
-                    a.unit.localeCompare(b.unit)
-            )
+        [{ description: 'ohne Einheit', unit: ' ' }].concat(
+            units
+                .map((unit) => {
+                    return {
+                        description: `${
+                            unit.plural ? unit.plural : unit.singular
+                        }${unit.information ? ` (${unit.information})` : ''}`,
+                        unit: unit.plural ? unit.plural : unit.singular,
+                        group: unit.group,
+                    };
+                })
+                .sort(
+                    (a, b) =>
+                        a.group.localeCompare(b.group) ||
+                        a.unit.localeCompare(b.unit)
+                )
+        )
     );
 };
 
@@ -2662,4 +2664,4 @@ const createAllDictionaries = () => {
     createAlimentDictionaries();
     createInfoDictionaries();
 };
-// createAllDictionaries();
+createAllDictionaries();
