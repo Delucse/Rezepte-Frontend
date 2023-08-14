@@ -68,7 +68,12 @@ export const getRecipePreview = () => (dispatch, getState) => {
         ingredients: ingredients,
         steps: recipeFormular.steps,
         pictures: recipeFormular.pictures.order.map((pic) => {
-            return { _id: pic.id, file: pic.url };
+            return {
+                _id: pic.id,
+                file: pic.url,
+                user: pic.user,
+                date: pic.date,
+            };
         }),
         settings: {
             count: recipeFormular.portion.count,

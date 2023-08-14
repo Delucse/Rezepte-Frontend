@@ -793,7 +793,12 @@ export const setRecipeFormular = () => (dispatch, getState) => {
 
     const orderPicture = [];
     pictures.forEach((pic) =>
-        orderPicture.push({ id: pic._id, url: pic.file, user: pic.user })
+        orderPicture.push({
+            id: pic._id,
+            url: pic.file,
+            user: pic.user,
+            date: pic.date,
+        })
     );
     if (!portion.art && !portion.form) {
         portion.art = null;

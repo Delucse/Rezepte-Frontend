@@ -22,8 +22,8 @@ function Date() {
             }}
         >
             <div>
-                erstellt von <Link to={`/rezepte?autor=${user}`}>{user}</Link>{' '}
-                am {moment(date).format('DD.MM.YYYY, HH:mm')} Uhr
+                von <Link to={`/rezepte?autor=${user}`}>{user}</Link> am{' '}
+                {moment(date).format('DD.MM.YYYY [um] HH:mm')} Uhr erstellt
             </div>
         </Typography>
     );

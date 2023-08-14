@@ -49,16 +49,17 @@ function ImageCarousel(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.open]);
 
-    const slideRenderer = ({ index, key }) => {
-        index = mod(index, props.images.length);
+    const slideRenderer = (object) => {
+        const idx = mod(object.index, props.images.length);
         return (
             <Box
-                key={key}
+                key={object.key}
                 sx={{
-                    width: 'calc(100% - 2 * 24px)',
                     height: '100%',
-                    margin: '0 24px',
-                    backgroundImage: `url(${props.images[index]})`,
+                    transition: 'all .5s ease',
+                    transform:
+                        index === object.index ? 'scale(1)' : 'scale(0.8)',
+                    backgroundImage: `url(${props.images[idx]})`,
                     backgroundSize: 'contain',
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center center',
@@ -69,6 +70,7 @@ function ImageCarousel(props) {
 
     const theme = useTheme();
     const sm = useMediaQuery(theme.breakpoints.up('sm'));
+    const modIndex = mod(index, props.images.length);
 
     return (
         <Dialog
@@ -83,27 +85,47 @@ function ImageCarousel(props) {
             <DialogTitle
                 sx={{
                     padding: '7.5px 16px 7.5px 24px',
-                    height: '40px',
+                    minHeight: '40px',
                     display: 'flex',
                 }}
             >
-                <Typography
+                <Box
                     sx={{
                         flexGrow: 1,
                         color: 'white',
-                        lineHeight: 'inherit',
-                        fontSize: '1.5rem',
-                        fontWeight: 'bold',
-                        textOverflow: 'ellipsis',
-                        overflow: 'hidden',
-                        whiteSpace: 'nowrap',
+                        width: 'calc(100% - 45px)',
                     }}
                 >
-                    {props.title}
-                </Typography>
-                <IconButton style={{ color: 'white' }} onClick={handleClose}>
-                    <Icon path={mdiClose} size={1.7} />
-                </IconButton>
+                    <Typography
+                        sx={{
+                            lineHeight: 'inherit',
+                            fontSize: '1.5rem',
+                            fontWeight: 'bold',
+                            textOverflow: 'ellipsis',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                        }}
+                    >
+                        {props.title}
+                    </Typography>
+                    <Typography
+                        sx={{
+                            fontSize: '13px',
+                            color: 'white',
+                            fontStyle: 'italic',
+                        }}
+                    >
+                        {props.authors[modIndex]}
+                    </Typography>
+                </Box>
+                <Box>
+                    <IconButton
+                        style={{ color: 'white' }}
+                        onClick={handleClose}
+                    >
+                        <Icon path={mdiClose} size={1.7} />
+                    </IconButton>
+                </Box>
             </DialogTitle>
             <DialogContent style={{ padding: '0px' }}>
                 <Box sx={{ display: 'flex', height: 'calc(100% - 50px)' }}>
@@ -192,7 +214,6 @@ function ImageCarousel(props) {
                     }}
                 >
                     {props.images.map((image, idx) => {
-                        const modIndex = mod(index, props.images.length);
                         return (
                             <Box
                                 key={idx}

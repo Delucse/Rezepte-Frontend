@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
+import { useSelector } from 'react-redux';
+
+import moment from 'moment';
+
 import Tape from '../Tape';
 import ImageCarousel from '../ImageCarousel';
 import AddImage from './AddImage';
@@ -18,9 +22,19 @@ const CircularSwipeableViews = virtualize(SwipeableViews);
 
 function Images({ pictures, title, add }) {
     const [open, setOpen] = useState(false);
+    const user = useSelector((state) => state.auth.user);
 
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = pictures.length;
+    const authors = pictures.map((pic) =>
+        !pic._id
+            ? `von ${user} am ${moment().format(
+                  'DD.MM.YYYY [um] HH:mm'
+              )} Uhr hochgeladen`
+            : `von ${pic.user} am ${moment(pic.date).format(
+                  'DD.MM.YYYY [um] HH:mm'
+              )} Uhr hochgeladen`
+    );
     pictures = pictures.map((pic) =>
         !pic._id ? pic.file : `${process.env.REACT_APP_IMAGE_URL}/${pic.file}`
     );
@@ -193,6 +207,7 @@ function Images({ pictures, title, add }) {
             </Box>
             <ImageCarousel
                 images={pictures}
+                authors={authors}
                 title={title}
                 open={open}
                 index={activeStep}

@@ -9,6 +9,8 @@ import {
 } from '../../actions/recipeFormularActions';
 import { alertErrorMessage, resetMessage } from '../../actions/messageActions';
 
+import moment from 'moment';
+
 import imageCompression from 'browser-image-compression';
 
 import { useInViewport } from '../../hooks/useInViewport';
@@ -218,14 +220,23 @@ function Pictures() {
     const confirmed = useSelector(
         (state) => state.recipeFormular.pictures.confirmed
     );
+    const user = useSelector((state) => state.auth.user);
     const error = useSelector((state) => state.recipeFormular.error.pictures);
+    const authors = pictures.map((picture) =>
+        !picture.id
+            ? `von ${user} am ${moment().format(
+                  'DD.MM.YYYY [um] HH:mm'
+              )} Uhr hochgeladen`
+            : `von ${picture.user} am ${moment(picture.date).format(
+                  'DD.MM.YYYY [um] HH:mm'
+              )} Uhr hochgeladen`
+    );
     const picturesUrl = pictures.map((picture) =>
         !picture.id
             ? picture.url
             : `${process.env.REACT_APP_IMAGE_URL}/${picture.url}`
     );
     const title = useSelector((state) => state.recipeFormular.title);
-    const user = useSelector((state) => state.auth.user);
     const errorPictures = useSelector(
         (state) => state.message.error && state.message.type === 'images'
     );
@@ -470,6 +481,7 @@ function Pictures() {
                     })}
                     <ImageCarousel
                         images={picturesUrl}
+                        authors={authors}
                         title={title}
                         open={open}
                         index={index}

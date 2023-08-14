@@ -3,6 +3,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteImage, getImages } from '../actions/imageActions';
 
+import moment from 'moment';
+
 import { useNavigate } from 'react-router-dom';
 
 import { useInViewport } from '../hooks/useInViewport';
@@ -249,6 +251,12 @@ function Images() {
                     images={images.map(
                         (img) =>
                             `${process.env.REACT_APP_IMAGE_URL}/${img.file}`
+                    )}
+                    authors={images.map(
+                        (img) =>
+                            `am ${moment(img.date).format(
+                                'DD.MM.YYYY [um] HH:mm'
+                            )} Uhr hochgeladen`
                     )}
                     title={'Meine Bilder'}
                     open={open}
