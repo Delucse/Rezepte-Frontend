@@ -102,7 +102,7 @@ const setError = (key, value) => (dispatch, getState) => {
                     value.form.length === 2 &&
                     (isNaN(value.form[1].toString().replace(',', '.')) ||
                         value.form[1].toString().replace(',', '.') <= 0)) ||
-                (value.art !== null && value.art.trim() === '')
+                (value.art && value.art.trim() === '')
             ) {
                 error[key] = true;
             } else {
