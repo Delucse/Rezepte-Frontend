@@ -3,7 +3,12 @@ import React, { useState } from 'react';
 import MuiAutocomplete, {
     createFilterOptions,
 } from '@mui/material/Autocomplete';
-import { TextField, InputAdornment, Popper } from '@mui/material';
+import {
+    TextField,
+    InputAdornment,
+    Popper,
+    CircularProgress,
+} from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiChevronDown, mdiClose } from '@mdi/js';
@@ -35,6 +40,9 @@ function Autocomplete(props) {
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
+                if (props.onInputChange) {
+                    props.onInputChange(newInputValue);
+                }
             }}
             options={props.options}
             getOptionLabel={(option) => {
@@ -96,6 +104,17 @@ function Autocomplete(props) {
                                 {props.start}
                             </InputAdornment>
                         ) : null,
+                        endAdornment: (
+                            <>
+                                {props.loading ? (
+                                    <CircularProgress
+                                        color="primary"
+                                        size={20}
+                                    />
+                                ) : null}
+                                {params.InputProps.endAdornment}
+                            </>
+                        ),
                     }}
                 />
             )}
@@ -105,6 +124,7 @@ function Autocomplete(props) {
             clearOnBlur
             handleHomeEndKeys
             openOnFocus
+            loading={props.loading}
             sx={{
                 '.MuiAutocomplete-inputRoot': {
                     borderRadius: '0px',
@@ -156,6 +176,7 @@ function Autocomplete(props) {
             closeText="schließen"
             openText="öffnen"
             noOptionsText="keine Ergebnisse"
+            loadingText="lädt ..."
             style={props.style}
         />
     );

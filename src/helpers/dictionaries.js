@@ -1,6 +1,6 @@
-import units from './units.json';
-import aliments from './aliments.json';
-import portions from './portions.json';
+import units from '../data/units.json';
+import aliments from '../data/aliments.json';
+import portions from '../data/portions.json';
 
 export const singularUnits = [
     {

@@ -22,7 +22,7 @@ import {
     pluralAlimentsDictionary,
     singularUnitsAlimentDictionary,
     pluralUnitsAlimentDictionary,
-} from '../data/dictionaries';
+} from '../helpers/dictionaries';
 
 import api from '../axiosInstance';
 
@@ -389,9 +389,32 @@ export const changeAliment =
         }
     };
 
+export const addOtherIngredients = (newIngredients) => (dispatch, getState) => {
+    var ingredients = getState().recipeFormular.ingredients;
+    if (!ingredients[0].title) {
+        ingredients[0].title = '';
+    }
+    newIngredients = newIngredients.map((i) => {
+        if (!i.title) {
+            i.title = '';
+        }
+        return i;
+    });
+    ingredients = ingredients.concat(newIngredients);
+    dispatch({
+        type: SET_RECIPE_INGREDIENTS,
+        payload: [...ingredients],
+    });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('ingredients', ingredients));
+    }
+};
+
 export const addIngredients = (index) => (dispatch, getState) => {
     var ingredients = getState().recipeFormular.ingredients;
-    ingredients[0].title = '';
+    if (!ingredients[0].title) {
+        ingredients[0].title = '';
+    }
     var ingredient = {
         title: '',
         food: [

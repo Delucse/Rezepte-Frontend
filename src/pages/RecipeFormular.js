@@ -12,7 +12,7 @@ import { setProgressError } from '../actions/progressActions';
 import { useLocation, useParams } from 'react-router-dom';
 
 import General from '../components/RecipeFormular/General';
-import Ingredients from '../components/RecipeFormular/Ingredients';
+import NewIngredients from '../components/RecipeFormular/Ingredients';
 import Steps from '../components/RecipeFormular/Steps';
 import Preview from '../components/RecipeFormular/Preview';
 import Pictures from '../components/RecipeFormular/Pictures';
@@ -37,7 +37,7 @@ const steps = [
     {
         title: 'Zutaten',
         help: 'Die Angaben von Zutaten können in thematischen Blöcken erfolgen (z.B. Unterscheidung von Teig und Belag). Jeder Zutatenblock enthält einen Titel und mindestens eine Zutatenangabe.',
-        content: <Ingredients />,
+        content: <NewIngredients />,
     },
     {
         title: 'Arbeitsschritte',

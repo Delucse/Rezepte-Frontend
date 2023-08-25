@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -13,14 +13,26 @@ import {
     removeFood,
     changeFoodPosition,
     removeIngredients,
+    addOtherIngredients,
 } from '../../actions/recipeFormularActions';
+import { alertErrorMessage, resetMessage } from '../../actions/messageActions';
+import {
+    setProgress,
+    setProgressError,
+    setProgressSuccess,
+} from '../../actions/progressActions';
 
+import Tape from '../Tape';
+import Ripped from '../Recipes/Ripped';
+import Portion from '../Recipe/Portion';
+import Ingredients from '../Recipe/Ingredients';
 import Textfield from '../Textfield';
 import Autocomplete from '../Autocomplete';
 import Alert from '../Alert';
 import Button from '../Button';
+import Dialog from '../Dialog';
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import Icon from '@mdi/react';
 import {
@@ -32,6 +44,8 @@ import {
     mdiTextShadow,
 } from '@mdi/js';
 
+import api from '../../axiosInstance';
+
 import {
     singularUnits,
     pluralUnits,
@@ -39,7 +53,8 @@ import {
     pluralAliments,
     singularUnitsAlimentDictionary,
     pluralUnitsAlimentDictionary,
-} from '../../data/dictionaries';
+} from '../../helpers/dictionaries';
+import { getAmount, getUnit, getAliment } from '../../helpers/portion';
 
 function Title(props) {
     const dispatch = useDispatch();
@@ -330,7 +345,276 @@ function Food(props) {
     );
 }
 
-function Ingredients() {
+function ExistingIngredients() {
+    const dispatch = useDispatch();
+
+    const [open, setOpen] = useState(false);
+    const [recipes, setRecipes] = useState([]);
+    const [ingredients, setIngredients] = useState([]);
+    const [portion, setPortion] = useState({});
+    const [settings, setSettings] = useState({});
+
+    const recipesLoading = useSelector(
+        (state) =>
+            state.progress.loading && state.progress.type === 'recipesLoading'
+    );
+    const ingredientsLoading = useSelector(
+        (state) =>
+            state.progress.loading &&
+            state.progress.type === 'ingredientsLoading'
+    );
+
+    useEffect(() => {
+        if (open && recipes.length === 0) {
+            getRecipes();
+        }
+    }, [open, recipes]);
+
+    useEffect(() => {
+        if (!open) {
+            setIngredients([]);
+            setPortion({});
+            setSettings({});
+            dispatch(setProgressSuccess('recipesLoading'));
+            dispatch(setProgressSuccess('ingredientsLoading'));
+            dispatch(resetMessage());
+        }
+    }, [open]);
+
+    const toggleDialog = () => {
+        setOpen(!open);
+    };
+
+    const getRecipes = () => {
+        dispatch(setProgress('recipesLoading'));
+        const config = {
+            success: (res) => {
+                setRecipes(res.data);
+                dispatch(setProgressSuccess('recipesLoading'));
+            },
+            error: (err) => {
+                dispatch(
+                    alertErrorMessage(
+                        'Server ist zurzeit nicht erreichbar.',
+                        'recipesLoading'
+                    )
+                );
+                dispatch(setProgressError('recipesLoading'));
+            },
+        };
+        api.get(`/recipe?sort=title&ascending=true`, config)
+            .then((res) => {
+                res.config.success(res);
+            })
+            .catch((err) => {
+                if (err.config) {
+                    err.config.error(err);
+                } else {
+                    config.error();
+                }
+            });
+    };
+
+    const getRecipe = (id) => {
+        if (id) {
+            dispatch(setProgress('ingredientsLoading'));
+            dispatch(resetMessage());
+            const config = {
+                success: (res) => {
+                    setIngredients(res.data.ingredients);
+                    setPortion(res.data.portion);
+                    setSettings({ ...res.data.portion });
+                    dispatch(setProgressSuccess('ingredientsLoading'));
+                },
+                error: (err) => {
+                    setIngredients([]);
+                    dispatch(
+                        alertErrorMessage(
+                            'Server ist zurzeit nicht erreichbar.',
+                            'ingredientsLoading'
+                        )
+                    );
+                    dispatch(setProgressError('ingredientsLoading'));
+                },
+            };
+            api.get(`/recipe/${id}`, config)
+                .then((res) => {
+                    res.config.success(res);
+                })
+                .catch((err) => {
+                    if (err.config) {
+                        err.config.error(err);
+                    } else {
+                        config.error();
+                    }
+                });
+        } else {
+            setIngredients([]);
+            setPortion({});
+            setSettings({});
+        }
+    };
+
+    const submit = () => {
+        var calculatedIngredients = ingredients.map((i) => {
+            var calculatedFood = i.food.map((f) => {
+                f.amount = getAmount(f.amount, portion, settings).replace(
+                    '.',
+                    ''
+                );
+                f.unit = getUnit(f.amount, f.unit);
+                f.aliment = getAliment(f.amount, f.unit, f.aliment);
+                return f;
+            });
+            i.food = calculatedFood;
+            return i;
+        });
+        dispatch(addOtherIngredients(calculatedIngredients));
+        toggleDialog();
+    };
+
+    return (
+        <>
+            <Typography
+                sx={{
+                    fontStyle: 'italic',
+                    color: (theme) => theme.palette.text.primary,
+                    marginBottom: '20px',
+                }}
+            >
+                Zutaten aus bestehendem Rezept{' '}
+                <Box
+                    onClick={toggleDialog}
+                    sx={{
+                        display: 'inline',
+                        cursor: 'pointer',
+                        color: (theme) => theme.palette.primary.main,
+                        '&:hover': { textDecoration: 'underline' },
+                    }}
+                >
+                    hinzufügen
+                </Box>
+                .
+            </Typography>
+
+            <Dialog
+                open={open}
+                onClose={toggleDialog}
+                closeIcon
+                title={'Zutaten aus bestehendem Rezept hinzufügen'}
+                fullWidth
+                content={
+                    <div>
+                        <Alert
+                            type={'recipesLoading'}
+                            style={{ marginBottom: '20px' }}
+                        />
+                        <Alert
+                            type={'ingredientsLoading'}
+                            style={{ marginBottom: '20px' }}
+                        />
+                        <Autocomplete
+                            disabled={ingredientsLoading}
+                            loading={recipesLoading}
+                            options={recipes}
+                            optionLabel={'title'}
+                            optionChange={'_id'}
+                            label="Rezept wählen"
+                            fullWidth
+                            onChange={(id) => getRecipe(id)}
+                            style={{ marginTop: '5px' }}
+                        />
+                        {ingredientsLoading ? (
+                            <Box sx={{ marginTop: '20px' }}>
+                                Zutaten werden geladen ...
+                            </Box>
+                        ) : ingredients && ingredients.length > 0 ? (
+                            <div
+                                style={{
+                                    position: 'relative',
+                                    marginTop: '20px',
+                                }}
+                            >
+                                <Typography sx={{ fontStyle: 'italic' }}>
+                                    <Portion
+                                        portion={portion}
+                                        settings={settings}
+                                        onSubmit={(number, form) => {
+                                            setSettings({
+                                                count: number,
+                                                form: form,
+                                            });
+                                        }}
+                                        start="Alle angezeigten Zutaten beziehen sich auf "
+                                        end=" und können bei Übernahme im Anschluss noch
+                                        beliebig verändert oder gelöscht werden."
+                                    />
+                                </Typography>
+                                <Tape
+                                    rotate={
+                                        Math.floor(
+                                            Math.random() * (10 - -10 + 1)
+                                        ) + -10
+                                    }
+                                    top
+                                />
+                                <Box sx={{ position: 'relative' }}>
+                                    <Ripped />
+                                </Box>
+                                <Box
+                                    sx={{
+                                        height: 'inherit',
+                                        margin: 0,
+                                        background: (theme) =>
+                                            theme.palette.action.hover,
+                                        boxShadow: (theme) =>
+                                            `0 4px 4px ${theme.palette.action.disabled}`, // original: hsla(0,0%,0%,.25)
+                                        position: 'relative',
+                                        backgroundImage: (theme) =>
+                                            `radial-gradient(transparent 21%, transparent 21%), radial-gradient(transparent 10%, transparent 12%), linear-gradient(to top, hsla(0,0%,0%,0) 0%, hsla(0,0%,0%,0) 95%, ${`${theme.palette.primary.light}33`} 95%, ${`${theme.palette.primary.light}33`} 100%)`,
+                                        backgroundPosition:
+                                            '0px 6px, 6px 5px, 50% 18px',
+                                        backgroundRepeat:
+                                            'repeat-y, repeat-y, repeat',
+                                        backgroundSize:
+                                            '48px 48px, 48px 48px, 24px 24px',
+                                        paddingLeft: '24px',
+                                        marginTop: '24px',
+                                        paddingBottom: '6px',
+                                    }}
+                                >
+                                    <Box sx={{ marginTop: '-10px' }}>
+                                        <Ingredients
+                                            ingredients={ingredients}
+                                            portion={portion}
+                                            settings={settings}
+                                        />
+                                    </Box>
+                                </Box>
+                            </div>
+                        ) : null}
+                    </div>
+                }
+                actions={
+                    <div style={{ paddingTop: '16px' }}>
+                        <Button
+                            variant="outlined"
+                            onClick={toggleDialog}
+                            sx={{ mr: 1 }}
+                        >
+                            Abbrechen
+                        </Button>
+                        <Button variant="contained" onClick={submit}>
+                            Zutaten übernehmen
+                        </Button>
+                    </div>
+                }
+            />
+        </>
+    );
+}
+
+function NewIngredients() {
     const ingredients = useSelector(
         (state) => state.recipeFormular.ingredients
     );
@@ -367,7 +651,7 @@ function Ingredients() {
                     />
                 </Box>
             ) : null}
-            <div style={{ marginTop: '10px' }} />
+            <ExistingIngredients />
             {ingredients.map((ingredient, iIndex) => (
                 <div
                     key={iIndex}
@@ -447,4 +731,4 @@ function Ingredients() {
     );
 }
 
-export default Ingredients;
+export default NewIngredients;

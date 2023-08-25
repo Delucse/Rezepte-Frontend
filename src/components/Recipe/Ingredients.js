@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { useSelector } from 'react-redux';
+import {
+    getAmount,
+    getUnit,
+    getAliment,
+    getInformationAbout,
+} from '../../helpers/portion';
 
 import Wikipedia from './Wikipedia';
 
@@ -13,133 +18,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import {
-    singularUnitsAlimentDictionary,
-    pluralUnitsAlimentDictionary,
-    singularUnitsDictionary,
-    pluralUnitsDictionary,
-    singularAlimentsDictionary,
-    pluralAlimentsDictionary,
-    singularInfoDictionary,
-    pluralInfoDictionary,
-} from '../../data/dictionaries';
-
-const calculateArea = (form) => {
-    if (form.length > 1) {
-        return form[0] * form[1];
-    } else {
-        return Math.PI * Math.pow(form[0] / 2, 2);
-    }
-};
-
-const getAmount = (amount, portion, settings) => {
-    var calculatedAmount = amount * (settings.count / portion.count);
-    if (portion.form) {
-        calculatedAmount =
-            calculatedAmount *
-            (calculateArea(settings.form) / calculateArea(portion.form));
-    }
-    if (settings.rounded) {
-        var int = amount.toString().split('.')[0];
-        var decimal = amount.toString().split('.')[1];
-        var intDigits = int && int.length === 1 ? 2 : int.length === 2 ? 1 : 0;
-        var decimalDigits = decimal ? decimal.length + 1 : 0;
-        return calculatedAmount.toLocaleString('de-De', {
-            minimumFractionDigits: 0,
-            maximumFractionDigits: Math.max(intDigits, decimalDigits),
-        });
-    }
-    return calculatedAmount.toLocaleString('de-De', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 20,
-    });
-};
-
-const getUnit = (amount, unit) => {
-    if (amount === 1 || amount === 0) {
-        if (pluralUnitsDictionary[unit]) {
-            return pluralUnitsDictionary[unit];
-        }
-    } else {
-        if (singularUnitsDictionary[unit]) {
-            return singularUnitsDictionary[unit];
-        }
-    }
-    return unit;
-};
-
-const getAliment = (amount, unit, aliment) => {
-    if (amount === 0) {
-        return aliment;
-    } else if (amount === 1) {
-        const singularInfo = singularUnitsAlimentDictionary[unit];
-        if (singularInfo) {
-            if (singularInfo === 'singular') {
-                if (pluralAlimentsDictionary[aliment]) {
-                    return pluralAlimentsDictionary[aliment];
-                }
-            } else {
-                if (singularAlimentsDictionary[aliment]) {
-                    return singularAlimentsDictionary[aliment];
-                }
-            }
-        } else {
-            if (pluralAlimentsDictionary[aliment]) {
-                return pluralAlimentsDictionary[aliment];
-            }
-        }
-    } else {
-        const pluralInfo = pluralUnitsAlimentDictionary[unit];
-        if (pluralInfo) {
-            if (pluralInfo === 'singular') {
-                if (pluralAlimentsDictionary[aliment]) {
-                    return pluralAlimentsDictionary[aliment];
-                }
-            } else {
-                if (singularAlimentsDictionary[aliment]) {
-                    return singularAlimentsDictionary[aliment];
-                }
-            }
-        } else {
-            if (singularAlimentsDictionary[aliment]) {
-                return singularAlimentsDictionary[aliment];
-            }
-        }
-    }
-    return aliment;
-};
-
-const getInformationAbout = (amount, unit, aliment) => {
-    if (amount === 0 || amount === 1) {
-        const singularInfo = singularUnitsAlimentDictionary[unit];
-        if (singularInfo) {
-            if (singularInfo === 'singular') {
-                return singularInfoDictionary[aliment];
-            } else {
-                return pluralInfoDictionary[aliment];
-            }
-        } else {
-            return singularInfoDictionary[aliment];
-        }
-    } else {
-        const pluralInfo = pluralUnitsAlimentDictionary[unit];
-        if (pluralInfo) {
-            if (pluralInfo === 'singular') {
-                return singularInfoDictionary[aliment];
-            } else {
-                return pluralInfoDictionary[aliment];
-            }
-        } else {
-            return pluralInfoDictionary[aliment];
-        }
-    }
-};
-
-function Ingredients() {
-    const ingredients = useSelector((state) => state.recipe.ingredients);
-    const portion = useSelector((state) => state.recipe.portion);
-    const settings = useSelector((state) => state.recipe.settings);
-
+function Ingredients({ ingredients, portion, settings, info }) {
     return (
         <Grid container spacing={3} sx={{ marginBottom: '24px' }}>
             {ingredients.map((ingredient, index) => {
@@ -241,7 +120,7 @@ function Ingredients() {
                                             >
                                                 {aliment}
                                             </Typography>
-                                            {information ? (
+                                            {info && information ? (
                                                 <Wikipedia info={information} />
                                             ) : null}
                                         </ListItemText>

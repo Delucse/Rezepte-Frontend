@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { setRecipeSettings } from '../../actions/recipeActions';
-
 import Button from '../Button';
 import Dialog from '../Dialog';
 import Autocomplete from '../Autocomplete';
@@ -27,7 +24,7 @@ import bakewares from '../../data/bakeware.json';
 import {
     singularPortionsDictionary,
     pluralPortionsDictionary,
-} from '../../data/dictionaries';
+} from '../../helpers/dictionaries';
 
 const getPortion = (count, portion) => {
     if (count === 1) {
@@ -42,11 +39,7 @@ const getPortion = (count, portion) => {
     return portion;
 };
 
-function Portion() {
-    const dispatch = useDispatch();
-    const portion = useSelector((state) => state.recipe.portion);
-    const settings = useSelector((state) => state.recipe.settings);
-
+function Portion({ portion, settings, onSubmit, style, start, end }) {
     const [open, setOpen] = useState(false);
     const [count, setCount] = useState(settings.count);
     const [errorCount, setErrorCount] = useState(false);
@@ -234,18 +227,16 @@ function Portion() {
         if (typeof countDecimal === 'string') {
             countDecimal = countDecimal.replace(',', '.');
         }
-        dispatch(
-            setRecipeSettings(
-                Number(countDecimal),
-                form &&
-                    form.map((f) => {
-                        if (typeof f === 'string') {
-                            f = f.replace(',', '.');
-                        }
-                        return Number(f);
-                    }),
-                rounded
-            )
+        onSubmit(
+            Number(countDecimal),
+            form &&
+                form.map((f) => {
+                    if (typeof f === 'string') {
+                        f = f.replace(',', '.');
+                    }
+                    return Number(f);
+                }),
+            rounded
         );
         setOpen(false);
     };
@@ -268,41 +259,36 @@ function Portion() {
     };
 
     return (
-        <div>
-            <div style={{ display: 'flex', marginBottom: '24px' }}>
-                <Typography
-                    sx={{
-                        lineHeight: '24px',
-                        color: (theme) => theme.palette.text.primary,
-                    }}
-                    variant="body1"
-                >
-                    {settings.count.toLocaleString()}
-                    {settings.form
-                        ? ` ${
-                              settings.form.length > 1
-                                  ? `${
-                                        settings.form[0] < 15 ||
-                                        settings.form[1] < 15
-                                            ? `Kastenform${
-                                                  settings.count !== 1
-                                                      ? 'en'
-                                                      : ''
-                                              }`
-                                            : `Backblech${
-                                                  settings.count !== 1
-                                                      ? 'e'
-                                                      : ''
-                                              }`
-                                    } ${settings.form[0].toLocaleString()} cm x ${settings.form[1].toLocaleString()} cm`
-                                  : `Springform${
-                                        settings.count !== 1 ? 'en' : ''
-                                    } Ø ${settings.form[0].toLocaleString()} cm`
-                          }`
-                        : portion.art
-                        ? ` ${getPortion(settings.count, portion.art)}`
-                        : ` Portion${settings.count !== 1 ? 'en' : ''}`}
-                </Typography>
+        <div style={style}>
+            <Typography
+                sx={{
+                    lineHeight: '24px',
+                    color: (theme) => theme.palette.text.primary,
+                }}
+                variant="body1"
+            >
+                {start}
+                {settings.count.toLocaleString()}
+                {settings.form
+                    ? ` ${
+                          settings.form.length > 1
+                              ? `${
+                                    settings.form[0] < 15 ||
+                                    settings.form[1] < 15
+                                        ? `Kastenform${
+                                              settings.count !== 1 ? 'en' : ''
+                                          }`
+                                        : `Backblech${
+                                              settings.count !== 1 ? 'e' : ''
+                                          }`
+                                } ${settings.form[0].toLocaleString()} cm x ${settings.form[1].toLocaleString()} cm`
+                              : `Springform${
+                                    settings.count !== 1 ? 'en' : ''
+                                } Ø ${settings.form[0].toLocaleString()} cm`
+                      }`
+                    : portion.art
+                    ? ` ${getPortion(settings.count, portion.art)}`
+                    : ` Portion${settings.count !== 1 ? 'en' : ''}`}
                 <IconButton
                     tooltipProps={{ title: 'Portionsangabe ändern' }}
                     sx={{
@@ -318,7 +304,8 @@ function Portion() {
                 >
                     <Icon path={mdiPencilOutline} size={'20px'} />
                 </IconButton>
-            </div>
+                {end}
+            </Typography>
             <Dialog
                 open={open}
                 onClose={cancel}
@@ -691,16 +678,18 @@ function Portion() {
                                 </Box>
                             </div>
                         ) : null}
-                        <Box sx={{ display: 'flex', marginTop: '16px' }}>
-                            <Checkbox
-                                label={'Mengenangaben runden'}
-                                checked={rounded}
-                                onChecked={() => setRounded(true)}
-                                onUnchecked={() => setRounded(false)}
-                                style={{ marginRight: 0 }}
-                            />
-                            <Help explanation="Findet ausschließlich Anwendung, sofern mindestens eine Portionsangabe vom Original abweicht." />
-                        </Box>
+                        {settings.hasOwnProperty('rounded') ? (
+                            <Box sx={{ display: 'flex', marginTop: '16px' }}>
+                                <Checkbox
+                                    label={'Mengenangaben runden'}
+                                    checked={rounded}
+                                    onChecked={() => setRounded(true)}
+                                    onUnchecked={() => setRounded(false)}
+                                    style={{ marginRight: 0 }}
+                                />
+                                <Help explanation="Findet ausschließlich Anwendung, sofern mindestens eine Portionsangabe vom Original abweicht." />
+                            </Box>
+                        ) : null}
                     </Box>
                 }
                 actions={

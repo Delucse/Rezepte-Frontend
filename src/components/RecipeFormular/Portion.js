@@ -23,7 +23,7 @@ import {
     singularPortions,
     singularPortionsDictionary,
     pluralPortionsDictionary,
-} from '../../data/dictionaries';
+} from '../../helpers/dictionaries';
 
 const getArt = (count, art) => {
     if (art === null) {

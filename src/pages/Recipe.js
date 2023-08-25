@@ -164,13 +164,25 @@ function Recipe() {
                         zIndex: 1,
                     }}
                 >
-                    <Portion />
+                    <Portion
+                        style={{ display: 'flex', marginBottom: '24px' }}
+                        portion={recipe.portion}
+                        settings={recipe.settings}
+                        onSubmit={(number, form, rounded) =>
+                            dispatch(setRecipeSettings(number, form, rounded))
+                        }
+                    />
                     <Times />
                     <Info />
                 </Grid>
             </Grid>
 
-            <Ingredients />
+            <Ingredients
+                ingredients={recipe.ingredients}
+                portion={recipe.portion}
+                settings={recipe.settings}
+                info
+            />
 
             <Steps />
 
