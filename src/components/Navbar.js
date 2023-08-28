@@ -174,7 +174,7 @@ const userMenue = [
     },
     { text: 'Konto', link: '/konto', auth: true, icon: mdiFolderAccount },
     {
-        text: 'Anmeldung',
+        text: 'Anmelden',
         link: '/anmeldung',
         auth: false,
         background: true,
