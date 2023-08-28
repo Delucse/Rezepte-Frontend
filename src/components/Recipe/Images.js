@@ -23,6 +23,7 @@ const CircularSwipeableViews = virtualize(SwipeableViews);
 function Images({ pictures, title, add }) {
     const [open, setOpen] = useState(false);
     const user = useSelector((state) => state.auth.user);
+    const check = useSelector((state) => state.recipe.favorite);
 
     const [activeStep, setActiveStep] = useState(0);
     const maxSteps = pictures.length;
@@ -200,10 +201,22 @@ function Images({ pictures, title, add }) {
             ) : null}
             {/* Tapes */}
             <Box sx={{ position: 'absolute', right: 30, top: -10 }}>
-                <Tape rotate={50} width={100} />
+                <Tape
+                    rotate={50}
+                    width={100}
+                    heart={user}
+                    check={check}
+                    transparency
+                />
             </Box>
             <Box sx={{ position: 'absolute', left: 40, top: 190 }}>
-                <Tape rotate={40} width={142} />
+                <Tape
+                    rotate={40}
+                    width={142}
+                    heart={user}
+                    check={check}
+                    transparency
+                />
             </Box>
             <ImageCarousel
                 images={pictures}

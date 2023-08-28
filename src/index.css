@@ -48,11 +48,11 @@ input[type=number] {
 }
 
 @media (hover: hover){
-    #tape:hover #tapeStyle {
+    #tape:hover #tapeStyleHover {
         visibility: visible;
     }
     
-    #tape:hover #tapeStyleCheck {
+    #tape:hover #tapeStyleCheckHover {
         visibility: hidden;
     }
     

@@ -25,7 +25,7 @@ function GridBox(props) {
     );
 }
 
-function Hearts() {
+function Hearts({ transparency }) {
     return Array(10)
         .fill(0)
         .map((item, index) => {
@@ -33,7 +33,10 @@ function Hearts() {
                 <Box
                     key={index}
                     sx={{
-                        color: (theme) => theme.palette.primary.light,
+                        color: (theme) =>
+                            `${theme.palette.primary.light}${
+                                transparency ? 'cc' : ''
+                            }`,
                         justifySelf: 'end',
                         marginTop: '-2px',
                     }}
@@ -44,7 +47,7 @@ function Hearts() {
         });
 }
 
-function Tape({ rotate, top, width, heart, check, onClick }) {
+function Tape({ rotate, top, width, heart, check, onClick, transparency }) {
     rotate = rotate ? rotate : 0;
 
     return (
@@ -68,7 +71,7 @@ function Tape({ rotate, top, width, heart, check, onClick }) {
                     width: width ? `${width}px` : '9em',
                     filter: 'drop-shadow(0 1px 1px hsla(0,0%,0%,.3))',
                     zIndex: 1,
-                    cursor: heart ? 'pointer' : 'default',
+                    cursor: heart && onClick ? 'pointer' : 'default',
 
                     '&::after, &::before': {
                         backgroundSize: '.4em .4em',
@@ -96,20 +99,22 @@ function Tape({ rotate, top, width, heart, check, onClick }) {
             >
                 {heart ? (
                     <Box
-                        id={`tapeStyle${check ? 'Check' : ''}`}
+                        id={`tapeStyle${check ? 'Check' : ''}${
+                            onClick ? 'Hover' : ''
+                        }`}
                         sx={{
                             margin: '3px 0',
                             visibility: check ? 'visible' : 'hidden',
                         }}
                     >
                         <GridBox>
-                            <Hearts />
+                            <Hearts transparency={transparency} />
                         </GridBox>
                         <GridBox displace={24}>
-                            <Hearts />
+                            <Hearts transparency={transparency} />
                         </GridBox>
                         <GridBox>
-                            <Hearts />
+                            <Hearts transparency={transparency} />
                         </GridBox>
                     </Box>
                 ) : null}
