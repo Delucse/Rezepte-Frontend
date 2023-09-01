@@ -7,7 +7,7 @@ import {
     setRecipesFavorite,
 } from '../../actions/recipeFilterActions';
 
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import moment from 'moment';
 
@@ -53,8 +53,6 @@ function Overview(props) {
     const user = useSelector((state) => state.auth.user);
     const route = useSelector((state) => state.recipeFilter.route);
 
-    const navigate = useNavigate();
-
     const elemRef = useRef();
     const inViewport = useInViewport(elemRef);
 
@@ -62,7 +60,7 @@ function Overview(props) {
     const open = Boolean(anchorEl);
 
     const handleClick = (event) => {
-        event.stopPropagation();
+        event.preventDefault();
         setAnchorEl(event.currentTarget);
     };
 
@@ -96,144 +94,148 @@ function Overview(props) {
                     }
                 />
             )}
-            <Box
-                sx={{
-                    height: 'inherit',
-                    margin: !props.fullscreen ? '2px 0' : 0,
-                    background: (theme) => theme.palette.action.hover,
-                    boxShadow: props.fullscreen
-                        ? 'none'
-                        : (theme) =>
-                              `0 1px 4px ${theme.palette.action.disabled}`, // original: hsla(0,0%,0%,.25)
-                    position: 'relative',
-                    backgroundImage: (theme) =>
-                        `radial-gradient(transparent 21%, transparent 21%), radial-gradient(transparent 10%, transparent 12%), linear-gradient(to top, hsla(0,0%,0%,0) 0%, hsla(0,0%,0%,0) 95%, ${`${theme.palette.primary.light}33`} 95%, ${`${theme.palette.primary.light}33`} 100%)`,
-                    backgroundPosition: '0px 6px, 6px 5px, 50% 18px',
-                    backgroundRepeat: 'repeat-y, repeat-y, repeat',
-                    backgroundSize: '48px 48px, 48px 48px, 24px 24px',
-                    cursor: 'pointer',
-                }}
-                onClick={() =>
-                    navigate(
-                        `/rezepte/${
-                            route !== 'vorlage'
-                                ? props.id
-                                : `formular/vorlagen/${props.id}`
-                        }`
-                    )
-                }
+            <Link
+                to={`/rezepte/${
+                    route !== 'vorlage'
+                        ? props.id
+                        : `formular/vorlagen/${props.id}`
+                }`}
+                style={{ textDecoration: 'none' }}
             >
-                {props.picture || props.fullscreen ? (
-                    <Box
-                        ref={elemRef}
-                        sx={{
-                            height: !props.fullscreen
-                                ? 'calc(24px * 10)'
-                                : 'calc(100% - 64px)',
-                            width: 'calc(100%)',
-                            position: 'relative',
-                            backgroundImage:
-                                inViewport && props.picture
-                                    ? `url(${props.picture})`
-                                    : 'none',
-                            backgroundSize: 'cover',
-                            backgroundRepeat: 'no-repeat',
-                            backgroundPosition: 'center center',
-                        }}
-                    >
-                        {!props.picture ? (
-                            <Box
-                                sx={{
-                                    width: '100%',
-                                    height: '100%',
-                                    color: (theme) =>
-                                        theme.palette.action.hover,
-                                    background: (theme) =>
-                                        theme.palette.primary.light,
-                                    display: 'grid',
-                                    justifyItems: 'center',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Icon path={mdiImageOffOutline} size={'100%'} />
-                            </Box>
-                        ) : null}
-                        <Ripped />
-                    </Box>
-                ) : null}
-
                 <Box
                     sx={{
-                        display: 'flex',
-                        padding: !props.fullscreen
-                            ? '20px 18px'
-                            : '16px 18px 20px 18px',
+                        height: 'inherit',
+                        margin: !props.fullscreen ? '2px 0' : 0,
+                        background: (theme) => theme.palette.action.hover,
+                        boxShadow: props.fullscreen
+                            ? 'none'
+                            : (theme) =>
+                                  `0 1px 4px ${theme.palette.action.disabled}`, // original: hsla(0,0%,0%,.25)
+                        position: 'relative',
+                        backgroundImage: (theme) =>
+                            `radial-gradient(transparent 21%, transparent 21%), radial-gradient(transparent 10%, transparent 12%), linear-gradient(to top, hsla(0,0%,0%,0) 0%, hsla(0,0%,0%,0) 95%, ${`${theme.palette.primary.light}33`} 95%, ${`${theme.palette.primary.light}33`} 100%)`,
+                        backgroundPosition: '0px 6px, 6px 5px, 50% 18px',
+                        backgroundRepeat: 'repeat-y, repeat-y, repeat',
+                        backgroundSize: '48px 48px, 48px 48px, 24px 24px',
+                        cursor: 'pointer',
                     }}
                 >
+                    {props.picture || props.fullscreen ? (
+                        <Box
+                            ref={elemRef}
+                            sx={{
+                                height: !props.fullscreen
+                                    ? 'calc(24px * 10)'
+                                    : 'calc(100% - 64px)',
+                                width: 'calc(100%)',
+                                position: 'relative',
+                                backgroundImage:
+                                    inViewport && props.picture
+                                        ? `url(${props.picture})`
+                                        : 'none',
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'center center',
+                            }}
+                        >
+                            {!props.picture ? (
+                                <Box
+                                    sx={{
+                                        width: '100%',
+                                        height: '100%',
+                                        color: (theme) =>
+                                            theme.palette.action.hover,
+                                        background: (theme) =>
+                                            theme.palette.primary.light,
+                                        display: 'grid',
+                                        justifyItems: 'center',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <Icon
+                                        path={mdiImageOffOutline}
+                                        size={'100%'}
+                                    />
+                                </Box>
+                            ) : null}
+                            <Ripped />
+                        </Box>
+                    ) : null}
                     <Box
                         sx={{
-                            fontWeight: 700,
-                            fontFamily: 'Lobster Two',
-                            fontSize: '24px',
-                            lineHeight: !props.fullscreen ? '24px' : '28px',
-                            flexGrow: 1,
-                            marginRight: !props.fullscreen ? '5px' : 0,
-                            color: (theme) => theme.palette.text.primary,
-                            overflow: !props.fullscreen ? 'inherit' : 'hidden',
-                            textOverflow: !props.fullscreen
-                                ? 'inherit'
-                                : 'ellipsis',
-                            whiteSpace: !props.fullscreen
-                                ? 'inherit'
-                                : 'nowrap',
+                            display: 'flex',
+                            padding: !props.fullscreen
+                                ? '20px 18px'
+                                : '16px 18px 20px 18px',
                         }}
                     >
-                        {props.title ? props.title : 'unbekannter Titel'}
-                    </Box>
-                    {!props.fullscreen ? (
-                        route !== 'vorlage' ? (
-                            <Button
-                                tooltipProps={{
-                                    title: 'weitere Informationen',
-                                }}
-                                sx={{
-                                    float: 'right',
-                                    height: '24px',
-                                    minWidth: '20px',
-                                    padding: 0,
-                                }}
-                                onClick={handleClick}
-                            >
-                                <Icon path={mdiDotsHorizontal} size={1} />
-                            </Button>
-                        ) : (
-                            <Button
-                                tooltipProps={{
-                                    title: 'löschen',
-                                }}
-                                sx={{
-                                    float: 'right',
-                                    height: '24px',
-                                    minWidth: '20px',
-                                    padding: 0,
-                                    color: (theme) =>
-                                        theme.palette.primary.light,
-                                    '&:hover': {
+                        <Box
+                            sx={{
+                                fontWeight: 700,
+                                fontFamily: 'Lobster Two',
+                                fontSize: '24px',
+                                lineHeight: !props.fullscreen ? '24px' : '28px',
+                                flexGrow: 1,
+                                marginRight: !props.fullscreen ? '5px' : 0,
+                                color: (theme) => theme.palette.text.primary,
+                                overflow: !props.fullscreen
+                                    ? 'inherit'
+                                    : 'hidden',
+                                textOverflow: !props.fullscreen
+                                    ? 'inherit'
+                                    : 'ellipsis',
+                                whiteSpace: !props.fullscreen
+                                    ? 'inherit'
+                                    : 'nowrap',
+                            }}
+                        >
+                            {props.title ? props.title : 'unbekannter Titel'}
+                        </Box>
+                        {!props.fullscreen ? (
+                            route !== 'vorlage' ? (
+                                <Button
+                                    tooltipProps={{
+                                        title: 'weitere Informationen',
+                                    }}
+                                    sx={{
+                                        float: 'right',
+                                        height: '24px',
+                                        minWidth: '20px',
+                                        padding: 0,
+                                    }}
+                                    onClick={handleClick}
+                                >
+                                    <Icon path={mdiDotsHorizontal} size={1} />
+                                </Button>
+                            ) : (
+                                <Button
+                                    tooltipProps={{
+                                        title: 'löschen',
+                                    }}
+                                    sx={{
+                                        float: 'right',
+                                        height: '24px',
+                                        minWidth: '20px',
+                                        padding: 0,
                                         color: (theme) =>
-                                            theme.palette.primary.main,
-                                    },
-                                }}
-                                onClick={(evt) => {
-                                    evt.stopPropagation();
-                                    setOpenDialog(true);
-                                }}
-                            >
-                                <Icon path={mdiDelete} size={1} />
-                            </Button>
-                        )
-                    ) : null}
+                                            theme.palette.primary.light,
+                                        '&:hover': {
+                                            color: (theme) =>
+                                                theme.palette.primary.main,
+                                        },
+                                    }}
+                                    onClick={(evt) => {
+                                        evt.stopPropagation();
+                                        setOpenDialog(true);
+                                    }}
+                                >
+                                    <Icon path={mdiDelete} size={1} />
+                                </Button>
+                            )
+                        ) : null}
+                    </Box>
                 </Box>
-            </Box>
+            </Link>
             {route !== 'vorlage' ? (
                 <Menu
                     anchorEl={anchorEl}
