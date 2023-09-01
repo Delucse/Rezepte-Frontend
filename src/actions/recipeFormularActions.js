@@ -410,6 +410,18 @@ export const addOtherIngredients = (newIngredients) => (dispatch, getState) => {
     }
 };
 
+export const addOtherFood = (index, food) => (dispatch, getState) => {
+    var ingredients = getState().recipeFormular.ingredients;
+    ingredients[index].food = food;
+    dispatch({
+        type: SET_RECIPE_INGREDIENTS,
+        payload: [...ingredients],
+    });
+    if (getState().recipeFormular.error.submit) {
+        dispatch(setError('ingredients', ingredients));
+    }
+};
+
 export const addIngredients = (index) => (dispatch, getState) => {
     var ingredients = getState().recipeFormular.ingredients;
     if (!ingredients[0].title) {

@@ -14,6 +14,7 @@ import {
     changeFoodPosition,
     removeIngredients,
     addOtherIngredients,
+    addOtherFood,
 } from '../../actions/recipeFormularActions';
 import { alertErrorMessage, resetMessage } from '../../actions/messageActions';
 import {
@@ -42,6 +43,7 @@ import {
     mdiChevronDown,
     mdiPlus,
     mdiTextShadow,
+    mdiPlaylistEdit,
 } from '@mdi/js';
 
 import api from '../../axiosInstance';
@@ -54,7 +56,12 @@ import {
     singularUnitsAlimentDictionary,
     pluralUnitsAlimentDictionary,
 } from '../../helpers/dictionaries';
-import { getAmount, getUnit, getAliment } from '../../helpers/portion';
+import {
+    getAmount,
+    getUnit,
+    getAliment,
+    getUnitFromDescription,
+} from '../../helpers/portion';
 
 function Title(props) {
     const dispatch = useDispatch();
@@ -319,7 +326,7 @@ function Food(props) {
                         }
                         optionLabel={'aliment'}
                         optionGroup={'group'}
-                        label="Zutat"
+                        label="Lebensmittel"
                         fullWidth
                         onChange={setAliment}
                         freeSolo
@@ -368,6 +375,7 @@ function ExistingIngredients() {
         if (open && recipes.length === 0) {
             getRecipes();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open, recipes]);
 
     useEffect(() => {
@@ -379,6 +387,7 @@ function ExistingIngredients() {
             dispatch(setProgressSuccess('ingredientsLoading'));
             dispatch(resetMessage());
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open]);
 
     const toggleDialog = () => {
@@ -614,6 +623,189 @@ function ExistingIngredients() {
     );
 }
 
+function DetectedFood({ index }) {
+    const dispatch = useDispatch();
+
+    const food = useSelector(
+        (state) => state.recipeFormular.ingredients[index].food
+    );
+    const translateFood = (food) => {
+        var tFood = [];
+        food.forEach((f) => {
+            if (f.amount !== '' || f.unit !== '' || f.aliment !== '') {
+                var note = '-  ';
+                if (f.amount !== '' && f.amount !== 0) {
+                    note += ` ${f.amount.toLocaleString('de-De')}`;
+                }
+                if (f.unit.trim() !== '') {
+                    note += ` ${f.unit}`;
+                }
+                if (f.aliment !== '') {
+                    note += ` ${f.aliment}`;
+                }
+                tFood.push(note);
+            }
+        });
+        return tFood.join('\n');
+    };
+
+    const [open, setOpen] = useState(false);
+    const [ingredients, setIngredients] = useState(translateFood(food));
+
+    useEffect(() => {
+        if (open) {
+            setIngredients(translateFood(food));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [open]);
+
+    const toggleDialog = () => {
+        setOpen(!open);
+    };
+
+    const submit = () => {
+        dispatch(addOtherFood(index, calculateIngredients()));
+        toggleDialog();
+    };
+
+    const onChange = (e) => {
+        const note = '-  ';
+        var value = e.target.value.replace(/\t/g, '');
+        var rows = value.split('\n').map((r) => {
+            if (r.length > 1) {
+                if (r[2] !== ' ') {
+                    if (r[0] !== '-') {
+                        r = note + r;
+                    } else {
+                        r = note + r.slice(2);
+                    }
+                }
+            } else {
+                r = note + r;
+            }
+            return r;
+        });
+        rows = rows.join('\n');
+        setIngredients(rows);
+    };
+
+    const calculateIngredients = () => {
+        var rows = ingredients.split('\n').map((r) => r.slice(3));
+        rows = rows.map((row) => {
+            row = row.trim().split(' ');
+            var amountIndex = 0;
+            var amount = 0;
+            var unitIndex = 1;
+            var unit = ' ';
+            var alimentIndex = 2;
+            var aliment = '';
+            if (row[amountIndex]) {
+                amount = Number(
+                    row[amountIndex].replace('.', '').replace(',', '.')
+                );
+                if (isNaN(amount)) {
+                    amount = 0;
+                    unitIndex = amountIndex;
+                }
+            }
+            if (row.length - 1 > unitIndex) {
+                if (row[unitIndex]) {
+                    unit = row[unitIndex];
+                    while (unit[unit.length - 1] === ',') {
+                        unitIndex += 1;
+                        unit += ' ' + row[unitIndex];
+                    }
+                    unit = getUnitFromDescription(amount, unit);
+                    alimentIndex = unitIndex + 1;
+                }
+            } else {
+                alimentIndex = unitIndex;
+            }
+            if (row[alimentIndex]) {
+                aliment = getAliment(
+                    amount,
+                    unit,
+                    row.slice(alimentIndex).join(' ')
+                );
+            }
+            return { amount, unit, aliment };
+        });
+        return rows;
+    };
+
+    return (
+        <>
+            <Box
+                sx={{
+                    padding: '0 3px',
+                    zIndex: 1,
+                    background: (theme) => theme.palette.background.default,
+                }}
+            >
+                <Button
+                    onClick={toggleDialog}
+                    sx={{
+                        height: '36px',
+                        minWidth: '36px',
+                        padding: '0px !important',
+                        margin: '10px 0',
+                        '&:hover': {
+                            background: (theme) => theme.palette.primary.main,
+                            color: (theme) => theme.palette.background.default,
+                        },
+                    }}
+                >
+                    <Icon path={mdiPlaylistEdit} size={1.2} />
+                </Button>
+            </Box>
+            <Dialog
+                open={open}
+                onClose={toggleDialog}
+                closeIcon
+                title={'Zutaten einfügen'}
+                fullWidth
+                content={
+                    <div>
+                        <Typography
+                            sx={{ fontStyle: 'italic', marginBottom: '20px' }}
+                        >
+                            Alle eingetragenen Zutaten werden bei Übernahme im
+                            Anschluss automatisert dem jeweiligen Eingabefeld
+                            zugeordnet und können noch beliebig verändert oder
+                            gelöscht werden. (Es kann ggf. zu einer falschen
+                            Zuordnung kommen, weshalb mitunter eine manuelle
+                            Nachbearbeitung im Formular notwendig ist.)
+                        </Typography>
+                        <Textfield
+                            autoFocus
+                            value={ingredients}
+                            onChange={(e) => onChange(e)}
+                            multiline
+                            minRows={4}
+                            label="Zutaten"
+                            placeholder="-  Menge Einheit Lebensmittel"
+                        />
+                    </div>
+                }
+                actions={
+                    <div style={{ paddingTop: '16px' }}>
+                        <Button
+                            variant="outlined"
+                            onClick={toggleDialog}
+                            sx={{ mr: 1 }}
+                        >
+                            Abbrechen
+                        </Button>
+                        <Button variant="contained" onClick={submit}>
+                            Zutaten übernehmen
+                        </Button>
+                    </div>
+                }
+            />
+        </>
+    );
+}
+
 function NewIngredients() {
     const ingredients = useSelector(
         (state) => state.recipeFormular.ingredients
@@ -663,13 +855,21 @@ function NewIngredients() {
                     {/* Eingabefelder */}
                     <div style={{ padding: '0px 10px' }}>
                         {/* Titel */}
-                        <Title
-                            key={iIndex}
-                            iIndex={iIndex}
-                            title={ingredient.title}
-                            length={ingredients.length}
-                            error={errorIngredients[iIndex]}
-                        />
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <Title
+                                key={iIndex}
+                                iIndex={iIndex}
+                                title={ingredient.title}
+                                length={ingredients.length}
+                                error={errorIngredients[iIndex]}
+                            />
+                            <DetectedFood index={iIndex} />
+                        </div>
                         {/* Zutaten */}
                         {ingredient.food.map((food, fIndex) => (
                             <Food

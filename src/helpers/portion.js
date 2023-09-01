@@ -9,6 +9,8 @@ import {
     pluralPortionsDictionary,
     singularInfoDictionary,
     pluralInfoDictionary,
+    singularUnits,
+    pluralUnits,
 } from './dictionaries';
 
 const calculateArea = (form) => {
@@ -23,13 +25,16 @@ export const getAmount = (amount, portion, settings) => {
     if (amount === 0) {
         return '';
     }
-    var calculatedAmount = amount * (settings.count / portion.count);
-    if (portion.form) {
+    var calculatedAmount =
+        portion && settings
+            ? amount * (settings.count / portion.count)
+            : amount;
+    if (portion && settings && portion.form) {
         calculatedAmount =
             calculatedAmount *
             (calculateArea(settings.form) / calculateArea(portion.form));
     }
-    if (settings.rounded || !settings.hasOwnProperty('rounded')) {
+    if (!settings || settings.rounded || !settings.hasOwnProperty('rounded')) {
         var int = amount.toString().split('.')[0];
         var decimal = amount.toString().split('.')[1];
         var intDigits = int && int.length === 1 ? 2 : int.length === 2 ? 1 : 0;
@@ -51,6 +56,31 @@ export const getUnit = (amount, unit) => {
             return pluralUnitsDictionary[unit];
         }
     } else {
+        if (singularUnitsDictionary[unit]) {
+            return singularUnitsDictionary[unit];
+        }
+    }
+    return unit;
+};
+
+export const getUnitFromDescription = (amount, unit) => {
+    if (amount === 1 || amount === 0) {
+        var pluralIndex = pluralUnits.findIndex((u) =>
+            u.description.toLowerCase().endsWith(`(${unit.toLowerCase()})`)
+        );
+        if (pluralIndex > -1) {
+            unit = pluralUnits[pluralIndex].unit;
+        }
+        if (pluralUnitsDictionary[unit]) {
+            return pluralUnitsDictionary[unit];
+        }
+    } else {
+        var singularIndex = singularUnits.findIndex((u) =>
+            u.description.toLowerCase().endsWith(`(${unit.toLowerCase()})`)
+        );
+        if (singularIndex > -1) {
+            unit = singularUnits[singularIndex].unit;
+        }
         if (singularUnitsDictionary[unit]) {
             return singularUnitsDictionary[unit];
         }
