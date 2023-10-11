@@ -13,6 +13,7 @@ const initialState = {
         resting: 0,
         baking: 0,
     },
+    credits: '',
     keywords: [],
     ingredients: [
         {
@@ -35,6 +36,7 @@ const reducer = (state = initialState, action) => {
                 title: action.payload.title,
                 portion: action.payload.portion,
                 time: action.payload.time,
+                credits: action.payload.credits,
                 keywords: action.payload.keywords,
                 ingredients: action.payload.ingredients,
                 steps: action.payload.steps,

@@ -13,6 +13,7 @@ import {
     SET_RECIPE_FORMULAR_UPLOADED,
     SET_SAVED_RECIPE_FORMULAR,
     SET_ACTIVE_STEP,
+    SET_RECIPE_CREDITS,
 } from '../actions/types';
 
 import {
@@ -151,6 +152,13 @@ export const setRecipeTitle = (title) => (dispatch, getState) => {
     if (getState().recipeFormular.error.submit) {
         dispatch(setError('title', title));
     }
+};
+
+export const setRecipeCredits = (credits) => (dispatch) => {
+    dispatch({
+        type: SET_RECIPE_CREDITS,
+        payload: credits,
+    });
 };
 
 export const setRecipePortion = (count, form, art) => (dispatch, getState) => {
@@ -661,7 +669,7 @@ const objectToFormData = (data, formData, subkey) => {
 
 export const submitRecipe = () => (dispatch, getState) => {
     dispatch(setProgress('recipeFormular'));
-    var { id, title, portion, time, keywords, steps, pictures } =
+    var { id, title, portion, time, credits, keywords, steps, pictures } =
         getState().recipeFormular;
 
     if (portion.form) {
@@ -696,6 +704,9 @@ export const submitRecipe = () => (dispatch, getState) => {
     if (id) {
         data.removedPictures = pictures.removed;
         data.picturesOrder = pictures.order.map((order) => order.id);
+    }
+    if (credits && credits.trim().length > 0) {
+        data.credits = credits.trim();
     }
 
     var body = new FormData();
@@ -776,6 +787,7 @@ export const resetRecipeFormular = () => (dispatch) => {
                 resting: 0,
                 baking: 0,
             },
+            credits: '',
             keywords: [],
             ingredients: [
                 {
@@ -814,11 +826,12 @@ export const setBlocked = (bool) => (dispatch) => {
 };
 
 export const setRecipeFormular = () => (dispatch, getState) => {
-    const {
+    var {
         id,
         title,
         portion,
         time,
+        credits,
         keywords,
         ingredients,
         steps,
@@ -838,6 +851,9 @@ export const setRecipeFormular = () => (dispatch, getState) => {
     if (!portion.art && !portion.form) {
         portion.art = null;
     }
+    if (!credits) {
+        credits = '';
+    }
     dispatch({
         type: SET_SAVED_RECIPE_FORMULAR,
         payload: {
@@ -846,6 +862,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
             title,
             portion,
             time,
+            credits,
             keywords,
             ingredients,
             steps,
@@ -858,6 +875,7 @@ export const setRecipeFormular = () => (dispatch, getState) => {
             title,
             portion,
             time,
+            credits,
             keywords,
             ingredients,
             steps,

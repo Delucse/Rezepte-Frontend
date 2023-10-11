@@ -12,6 +12,7 @@ import {
     SET_RECIPE_PICTURES,
     SET_RECIPE_FORMULAR,
     SET_ACTIVE_STEP,
+    SET_RECIPE_CREDITS,
 } from '../actions/types';
 
 const initialState = {
@@ -27,6 +28,7 @@ const initialState = {
         resting: 0,
         baking: 0,
     },
+    credits: '',
     keywords: [],
     ingredients: [
         {
@@ -68,6 +70,11 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 title: action.payload,
+            };
+        case SET_RECIPE_CREDITS:
+            return {
+                ...state,
+                credits: action.payload,
             };
         case SET_RECIPE_PORTION:
             return {

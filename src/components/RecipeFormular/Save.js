@@ -20,6 +20,7 @@ const Save = () => {
         title: state.recipeFormular.title,
         portion: state.recipeFormular.portion,
         time: state.recipeFormular.time,
+        credits: state.recipeFormular.credits,
         keywords: state.recipeFormular.keywords,
         ingredients: state.recipeFormular.ingredients,
         steps: state.recipeFormular.steps,

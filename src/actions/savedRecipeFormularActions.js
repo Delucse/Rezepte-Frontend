@@ -16,6 +16,7 @@ export const saveRecipeFormular = () => (dispatch, getState) => {
         title: recipeFormular.title,
         portion: recipeFormular.portion,
         time: recipeFormular.time,
+        credits: recipeFormular.credits,
         keywords: recipeFormular.keywords,
         ingredients: recipeFormular.ingredients,
         steps: recipeFormular.steps,
@@ -29,6 +30,7 @@ export const saveRecipeFormular = () => (dispatch, getState) => {
             resting: 0,
             baking: 0,
         },
+        credits: '',
         keywords: [],
         ingredients: [
             {
@@ -47,27 +49,39 @@ export const saveRecipeFormular = () => (dispatch, getState) => {
         );
         if (!isEqual(formular, savedRecipeFormular)) {
             dispatch(setProgress('saveRecipeFormular'));
-            var { title, portion, time, keywords, ingredients, steps } =
-                recipeFormular;
+            var {
+                title,
+                portion,
+                time,
+                credits,
+                keywords,
+                ingredients,
+                steps,
+            } = recipeFormular;
 
             if (portion.form) {
                 portion.form = portion.form.map((f) =>
                     Number(f.toString().replace(',', '.'))
                 );
             }
+            const data = {
+                id: recipe,
+                title,
+                portion,
+                time,
+                credits,
+                keywords,
+                ingredients,
+                steps,
+            };
+            if (credits && credits.length > 0) {
+                data.credits = credits;
+            }
 
             const config = {
                 method: id ? 'PUT' : 'POST',
                 url: `/recipe/prototype${id ? `/${id}` : ''}`,
-                data: {
-                    id: recipe,
-                    title,
-                    portion,
-                    time,
-                    keywords,
-                    ingredients,
-                    steps,
-                },
+                data: data,
                 success: (res) => {
                     dispatch({
                         type: SET_SAVED_RECIPE_FORMULAR,
@@ -77,6 +91,7 @@ export const saveRecipeFormular = () => (dispatch, getState) => {
                             title: recipeFormular.title,
                             portion: recipeFormular.portion,
                             time: recipeFormular.time,
+                            credits: recipeFormular.credits,
                             keywords: recipeFormular.keywords,
                             ingredients: recipeFormular.ingredients,
                             steps: recipeFormular.steps,
@@ -118,6 +133,7 @@ export const resetSaveRecipeFormular = () => (dispatch) => {
                 resting: 0,
                 baking: 0,
             },
+            credits: '',
             keywords: [],
             ingredients: [
                 {

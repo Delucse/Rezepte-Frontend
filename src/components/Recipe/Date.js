@@ -3,6 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Link from '../Link';
+import Credits from './Credits';
 
 import moment from 'moment';
 
@@ -23,7 +24,8 @@ function Date() {
         >
             <div>
                 von <Link to={`/rezepte?autor=${user}`}>{user}</Link> am{' '}
-                {moment(date).format('DD.MM.YYYY [um] HH:mm')} Uhr erstellt
+                {moment(date).format('DD.MM.YYYY [um] HH:mm')} Uhr <Credits />
+                erstellt
             </div>
         </Typography>
     );

@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { setRecipeTitle } from '../../actions/recipeFormularActions';
+import {
+    setRecipeTitle,
+    setRecipeCredits,
+} from '../../actions/recipeFormularActions';
 
 import Textfield from '../Textfield';
 import Portion from './Portion';
@@ -9,13 +12,14 @@ import Time from './Time';
 import Alert from '../Alert';
 
 import Icon from '@mdi/react';
-import { mdiTextShadow } from '@mdi/js';
+import { mdiBookOpenVariant, mdiLinkVariant, mdiTextShadow } from '@mdi/js';
 
 import { Box } from '@mui/material';
 
 function General() {
     const dispatch = useDispatch();
     const title = useSelector((state) => state.recipeFormular.title);
+    const credits = useSelector((state) => state.recipeFormular.credits);
     const errorTitle = useSelector((state) => state.recipeFormular.error.title);
     const errorPortion = useSelector(
         (state) => state.recipeFormular.error.portion
@@ -72,6 +76,22 @@ function General() {
             <Portion />
 
             <Time />
+
+            <Box sx={{ marginTop: '20px' }}>
+                <Textfield
+                    value={credits}
+                    onChange={(e) => dispatch(setRecipeCredits(e.target.value))}
+                    property={'credits'}
+                    label={'Quellenangabe (optional)'}
+                    start={
+                        <>
+                            <Icon path={mdiBookOpenVariant} size={1} />
+                            <div style={{ margin: '0 5px' }}>|</div>
+                            <Icon path={mdiLinkVariant} size={1} />
+                        </>
+                    }
+                />
+            </Box>
         </div>
     );
 }
