@@ -39,7 +39,7 @@ function Content(props) {
         <Box
             sx={{
                 margin: '0 24px',
-                paddingBottom: 'calc(10px + 40px + 20px)',
+                paddingBottom: '20px',
                 minHeight: {
                     xs: `calc(100vh - 55px - 78px - 24px - 36px - 10px)`,
                     md: `calc(100vh - 55px - 78px - 24px - 70px - 10px)`,
