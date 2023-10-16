@@ -9,8 +9,9 @@ import AddImage from './AddImage';
 import { Box } from '@mui/material';
 
 function Title() {
-    const user = useSelector((state) => state.auth.user);
-    const recipe = useSelector((state) => state.recipe);
+    const title = useSelector((state) => state.recipe.title);
+    const note = useSelector((state) => state.recipe.note);
+    const picturesLength = useSelector((state) => state.recipe.pictures.length);
     const formular = useLocation().pathname.includes('/formular');
 
     return (
@@ -24,7 +25,7 @@ function Title() {
                 color: (theme) => theme.palette.text.primary,
                 display: 'flex',
                 width:
-                    !formular && user && (recipe.note || recipe.note === '')
+                    !formular && note && note.length > 0
                         ? {
                               xs: 'calc(100% - 100px)',
                               sm: 'calc(100% - 130px)',
@@ -33,8 +34,8 @@ function Title() {
                         : '100%',
             }}
         >
-            {recipe.title}
-            {!formular && recipe.pictures.length === 0 ? (
+            {title}
+            {!formular && picturesLength === 0 ? (
                 <Box sx={{ height: '24px', marginTop: '-8px' }}>
                     <AddImage />
                 </Box>
