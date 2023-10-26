@@ -12,7 +12,7 @@ import Textfield from '../Textfield';
 import Alert from '../Alert';
 import Button from '../Button';
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import Icon from '@mdi/react';
 import { mdiDelete, mdiChevronUp, mdiChevronDown, mdiPlus } from '@mdi/js';
@@ -108,24 +108,36 @@ function Steps() {
 
     return (
         <div>
-            {errorSteps ? (
-                <Box
+            <Box
+                sx={{
+                    paddingBottom: '10px',
+                    position: 'sticky',
+                    top: 'calc(55px + 78px + 34px)',
+                    background: (theme) => theme.palette.background.default,
+                    zIndex: 2,
+                }}
+            >
+                <Typography
                     sx={{
-                        paddingBottom: '10px',
-                        position: 'sticky',
-                        top: 'calc(55px + 78px + 34px)',
-                        background: (theme) => theme.palette.background.default,
-                        zIndex: 2,
+                        fontStyle: 'italic',
+                        color: (theme) => theme.palette.text.primary,
                     }}
                 >
+                    Die Angabe der Arbeitsschritte soll in eigenen Worten
+                    erfolgen, um einerseits mögliches geistiges Eigentum anderer
+                    nicht zu verletzen und andererseits lediglich das
+                    Wesentliche zu fokussieren.
+                </Typography>
+                {errorSteps ? (
                     <Alert
                         error
                         message={
                             'Es muss mindestens ein Arbeitsschritt geben. Überflüssige Schritte bitte löschen.'
                         }
+                        style={{ marginTop: '10px' }}
                     />
-                </Box>
-            ) : null}
+                ) : null}
+            </Box>
             <div style={{ marginTop: '10px' }} />
             {steps.map((step, index) => (
                 <Step

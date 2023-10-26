@@ -82,7 +82,7 @@ function General() {
                     value={credits}
                     onChange={(e) => dispatch(setRecipeCredits(e.target.value))}
                     property={'credits'}
-                    label={'Quellenangabe (optional)'}
+                    label={'Inspirationsquelle (optional)'}
                     start={
                         <>
                             <Icon path={mdiBookOpenVariant} size={1} />
