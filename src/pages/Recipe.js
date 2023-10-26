@@ -29,6 +29,7 @@ import Keywords from '../components/Recipe/Keywords';
 import Edit from '../components/Recipe/Edit';
 import Date from '../components/Recipe/Date';
 import Link from '../components/Link';
+import Credits from '../components/Recipe/Credits';
 
 import { Grid, Box, Typography } from '@mui/material';
 
@@ -130,7 +131,7 @@ function Recipe() {
     }, [user]);
 
     return !loading && !(error || internalError) && recipe.title ? (
-        <NotePaper>
+        <NotePaper style={{ marginBottom: 'var(--credits)' }}>
             <Title />
 
             <Grid container spacing={0} sx={{ marginBottom: '25px' }}>
@@ -188,7 +189,14 @@ function Recipe() {
 
             <Keywords />
 
-            <Date />
+            <Grid container spacing={0}>
+                <Grid item xs={12} sm={recipe.credits ? 6 : 12}>
+                    <Date />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <Credits />
+                </Grid>
+            </Grid>
 
             {/* Manipulieren */}
             {!formular ? (

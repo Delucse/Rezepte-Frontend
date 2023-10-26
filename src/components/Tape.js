@@ -47,7 +47,16 @@ function Hearts({ transparency }) {
         });
 }
 
-function Tape({ rotate, top, width, heart, check, onClick, transparency }) {
+function Tape({
+    rotate,
+    top,
+    width,
+    heart,
+    check,
+    onClick,
+    transparency,
+    style,
+}) {
     rotate = rotate ? rotate : 0;
 
     return (
@@ -58,6 +67,7 @@ function Tape({ rotate, top, width, heart, check, onClick, transparency }) {
                 justifyContent: 'center',
                 display: 'flex',
             }}
+            style={style}
         >
             <Box
                 id="tape"
