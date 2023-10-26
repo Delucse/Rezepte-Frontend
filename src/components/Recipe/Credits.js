@@ -81,10 +81,14 @@ function Credits() {
                         size={1}
                         style={{ marginRight: '5px', marginBottom: '-4px' }}
                     />
-                    {credits.split(' ').map((credit) => {
-                        if (credit.startsWith('https://')) {
+                    {credits.split(' ').map((credit, index) => {
+                        if (
+                            /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/g.test(
+                                credits
+                            )
+                        ) {
                             return (
-                                <>
+                                <React.Fragment key={index}>
                                     <Link
                                         to={credit}
                                         target="_blank"
@@ -95,10 +99,14 @@ function Credits() {
                                     >
                                         {credit}
                                     </Link>{' '}
-                                </>
+                                </React.Fragment>
                             );
                         } else {
-                            return <>{credit} </>;
+                            return (
+                                <React.Fragment key={index}>
+                                    {credit}{' '}
+                                </React.Fragment>
+                            );
                         }
                     })}
                 </Typography>
