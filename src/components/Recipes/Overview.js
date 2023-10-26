@@ -100,7 +100,7 @@ function Overview(props) {
                         ? props.id
                         : `formular/vorlagen/${props.id}`
                 }`}
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none', height: '100%' }}
             >
                 <Box
                     sx={{
