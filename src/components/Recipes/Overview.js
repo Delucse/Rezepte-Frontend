@@ -29,11 +29,12 @@ import {
     mdiDotsHorizontal,
     mdiClockOutline,
     mdiCalendar,
-    mdiEggOffOutline,
     mdiFoodSteakOff,
     mdiBarleyOff,
     mdiImageOffOutline,
     mdiDelete,
+    mdiLeaf,
+    mdiCowOff,
 } from '@mdi/js';
 import Dialog from '../Dialog';
 import { Typography } from '@mui/material';
@@ -100,11 +101,11 @@ function Overview(props) {
                         ? props.id
                         : `formular/vorlagen/${props.id}`
                 }`}
-                style={{ textDecoration: 'none', height: '100%' }}
+                style={{ textDecoration: 'none' }}
             >
                 <Box
                     sx={{
-                        height: 'inherit',
+                        height: props.fullscreen ? '100%' : 'inherit',
                         margin: !props.fullscreen ? '2px 0' : 0,
                         background: (theme) => theme.palette.action.hover,
                         boxShadow: props.fullscreen
@@ -225,7 +226,7 @@ function Overview(props) {
                                         },
                                     }}
                                     onClick={(evt) => {
-                                        evt.stopPropagation();
+                                        evt.preventDefault();
                                         setOpenDialog(true);
                                     }}
                                 >
@@ -249,10 +250,21 @@ function Overview(props) {
                         vertical: 'top',
                         horizontal: 'center',
                     }}
+                    sx={{
+                        zIndex: (theme) => theme.zIndex.footer,
+                        '.MuiMenu-list': {
+                            padding: 0,
+                        },
+                    }}
+                    PaperProps={{
+                        sx: {
+                            borderRadius: 0,
+                        },
+                    }}
                 >
                     {[
                         props.keywords.includes('vegan')
-                            ? { title: 'vegan', icon: mdiEggOffOutline }
+                            ? { title: 'vegan', icon: mdiLeaf }
                             : {},
 
                         props.keywords.includes('vegetarisch')
@@ -263,7 +275,7 @@ function Overview(props) {
                             : {},
 
                         props.keywords.includes('laktosefrei')
-                            ? { title: 'laktosefrei', icon: mdiBarleyOff }
+                            ? { title: 'laktosefrei', icon: mdiCowOff }
                             : {},
                         {
                             title: `${msToHoursAndMinutes(
