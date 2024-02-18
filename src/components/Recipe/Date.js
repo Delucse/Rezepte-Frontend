@@ -3,7 +3,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Link from '../Link';
-import Credits from './Credits';
 
 import moment from 'moment';
 
